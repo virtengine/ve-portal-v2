@@ -1,7 +1,8 @@
 import * as React from 'react';
 import { connect } from 'react-redux';
 
-import { Product } from '@waldur/marketplace/types';
+import { translate } from '@waldur/i18n';
+import { OrderItem } from '@waldur/marketplace/cart/types';
 import { connectAngularComponent } from '@waldur/store/connect';
 
 import { ActionButtons } from './ActionButtons';
@@ -9,11 +10,11 @@ import { ShoppingCart } from './ShoppingCart';
 import { ShoppingCartSidebar } from './ShoppingCartSidebar';
 import { ShoppingCartSteps } from './ShoppingCartSteps';
 import * as actions from './store/actions';
-import { getItems, getState } from './store/selectors';
+import { getState, getCheckoutItems } from './store/selectors';
 import { OrderState } from './types';
 
 interface CheckoutPageProps {
-  items: Product[];
+  items: OrderItem[];
   state: OrderState;
   setState(state: OrderState): void;
   createOrder(): void;
@@ -37,13 +38,13 @@ const PureCheckoutPage = (props: CheckoutPageProps) => (
     </div>
   ) : (
     <p className="text-center">
-      Shopping cart is empty. You should add items to cart first.
+      {translate('Shopping cart is empty. You should add items to cart first.')}
     </p>
   )
 );
 
 const mapStateToProps = state => ({
-  items: getItems(state),
+  items: getCheckoutItems(state),
   state: getState(state),
 });
 

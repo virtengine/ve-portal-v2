@@ -248,6 +248,14 @@ msgstr ""
 msgid "Add snapshots"
 msgstr ""
 
+#: app/scripts/components/marketplace/cart/ShoppingCartButton.tsx
+msgid "Add to cart"
+msgstr ""
+
+#: app/scripts/components/marketplace/compare/OfferingCompareButton.tsx
+msgid "Add to comparison"
+msgstr ""
+
 #: app/scripts/components/ansible/jupyter-hub-management/form/JupyterHubUserRows.tsx
 msgid "Add user"
 msgstr ""
@@ -1403,6 +1411,7 @@ msgstr ""
 #: app/scripts/components/jira/issue/JiraIssueSummary.tsx
 #: app/scripts/components/jira/issue/JiraIssuesList.tsx
 #: app/scripts/components/jira/project/jira-project-config.js
+#: app/scripts/components/marketplace/details/OfferingTabs.tsx
 #: app/scripts/components/marketplace/offerings/OfferingDescribeStep.tsx
 #: app/scripts/components/offering/OfferingHeader.tsx
 #: app/scripts/components/offering/appstore-offering.js
@@ -1538,6 +1547,10 @@ msgstr ""
 #: app/scripts/components/billing/invoice-header.html
 #: app/scripts/components/paypal/paypal-invoice-actions.html
 msgid "Download invoice"
+msgstr ""
+
+#: app/scripts/components/marketplace/cart/ShoppingCartSidebar.tsx
+msgid "Download order PDF file"
 msgstr ""
 
 #: app/scripts/components/paypal/paypal-invoices-list.js
@@ -1892,6 +1905,10 @@ msgstr ""
 
 #: app/scripts/components/resource/state/utils.ts
 msgid "Failed to operate with backend."
+msgstr ""
+
+#: app/scripts/components/marketplace/details/OfferingTabs.tsx
+msgid "Features"
 msgstr ""
 
 #: app/scripts/components/form/appstore-field-email.js
@@ -2390,10 +2407,12 @@ msgstr ""
 msgid "Infrastructure"
 msgstr ""
 
+#: app/scripts/components/openstack/OpenStackPackageForm.tsx
 #: app/scripts/components/openstack/openstack-tenant/openstack-tenant-config.js
 msgid "Initial admin password"
 msgstr ""
 
+#: app/scripts/components/openstack/OpenStackPackageForm.tsx
 #: app/scripts/components/openstack/openstack-tenant/openstack-tenant-config.js
 msgid "Initial admin username"
 msgstr ""
@@ -2466,11 +2485,13 @@ msgstr ""
 msgid "Internal IPs"
 msgstr ""
 
+#: app/scripts/components/openstack/OpenStackPackageForm.tsx
 #: app/scripts/components/openstack/openstack-network/module.js
 #: app/scripts/components/openstack/openstack-tenant/openstack-tenant-config.js
 msgid "Internal network allocation pool"
 msgstr ""
 
+#: app/scripts/components/openstack/OpenStackPackageForm.tsx
 #: app/scripts/components/openstack/openstack-network/module.js
 #: app/scripts/components/openstack/openstack-tenant/openstack-tenant-config.js
 msgid "Internal network mask (CIDR)"
@@ -2583,6 +2604,8 @@ msgstr ""
 
 #: app/scripts/components/ansible/playbook-jobs/create/ansible-job-checkout-summary.html
 #: app/scripts/components/jira/project/jira-project-checkout-summary.html
+#: app/scripts/components/marketplace/cart/ShoppingCartSidebar.tsx
+#: app/scripts/components/marketplace/details/OrderSummary.tsx
 #: app/scripts/components/offering/appstore-offering-summary.html
 #: app/scripts/components/openstack/openstack-instance/openstack-instance-checkout-summary.html
 #: app/scripts/components/openstack/openstack-tenant/openstack-tenant-checkout-summary.html
@@ -2644,6 +2667,7 @@ msgstr ""
 
 #: app/scripts/components/billing/billing-record-details.html
 #: app/scripts/components/billing/invoice-details.html
+#: app/scripts/components/marketplace/cart/ShoppingCart.tsx
 msgid "Item"
 msgstr ""
 
@@ -2898,6 +2922,7 @@ msgstr ""
 msgid "Managed projects"
 msgstr ""
 
+#: app/scripts/components/marketplace/details/DetailsPage.tsx
 #: app/scripts/components/marketplace/routes.js
 #: app/scripts/components/marketplace/sidebar.js
 msgid "Marketplace"
@@ -2907,6 +2932,7 @@ msgstr ""
 msgid "Marketplace checkout"
 msgstr ""
 
+#: app/scripts/components/marketplace/routes.js
 #: app/scripts/components/marketplace/sidebar.js
 msgid "Marketplace offerings"
 msgstr ""
@@ -2914,10 +2940,6 @@ msgstr ""
 #: app/scripts/components/marketplace/routes.js
 #: app/scripts/components/marketplace/sidebar.js
 msgid "Marketplace orders"
-msgstr ""
-
-#: app/scripts/components/marketplace/routes.js
-msgid "Marketplace products"
 msgstr ""
 
 #: app/scripts/components/openstack/openstack-backup-schedule/OpenStackBackupScheduleSummary.tsx
@@ -3510,6 +3532,14 @@ msgstr ""
 msgid "Objectives"
 msgstr ""
 
+#: app/scripts/components/marketplace/details/OrderSummary.tsx
+msgid "Offering"
+msgstr ""
+
+#: app/scripts/components/marketplace/details/OverviewTab.tsx
+msgid "Offering details"
+msgstr ""
+
 #: app/scripts/components/offering/events.ts
 msgid "Offering events"
 msgstr ""
@@ -3649,8 +3679,24 @@ msgstr ""
 msgid "Oracle"
 msgstr ""
 
+#: app/scripts/components/marketplace/cart/ShoppingCartSidebar.tsx
+msgid "Order Summary"
+msgstr ""
+
+#: app/scripts/components/marketplace/routes.js
+msgid "Order details"
+msgstr ""
+
 #: app/scripts/components/marketplace/cart/store/effects.ts
 msgid "Order has been submitted."
+msgstr ""
+
+#: app/scripts/components/marketplace/cart/ShoppingCartButtonContainer.tsx
+msgid "Order item has been created."
+msgstr ""
+
+#: app/scripts/components/marketplace/details/OfferingDetails.tsx
+msgid "Order summary"
 msgstr ""
 
 #: app/scripts/components/marketplace/orders/OrdersList.tsx
@@ -3926,6 +3972,10 @@ msgstr ""
 msgid "Physical locations"
 msgstr ""
 
+#: app/scripts/components/openstack/OpenStackPackageForm.tsx
+msgid "Plan"
+msgstr ""
+
 #: app/scripts/components/experts/requests/create/expert-request-create.js
 msgid "Planned budget"
 msgstr ""
@@ -4101,6 +4151,8 @@ msgstr ""
 #: app/scripts/components/experts/bids/create/expert-bid-create-dialog.html
 #: app/scripts/components/experts/bids/expert-bids-list.js
 #: app/scripts/components/jira/project/jira-project-checkout-summary.html
+#: app/scripts/components/marketplace/cart/ShoppingCart.tsx
+#: app/scripts/components/marketplace/details/OrderSummary.tsx
 #: app/scripts/components/marketplace/offerings/OfferingConfigureStep.tsx
 #: app/scripts/components/offering/OfferingHeader.tsx
 #: app/scripts/components/paypal/paypal-invoices-list.js
@@ -4212,6 +4264,10 @@ msgstr ""
 msgid "Processing..."
 msgstr ""
 
+#: app/scripts/components/marketplace/details/OfferingDetails.tsx
+msgid "Product configuration"
+msgstr ""
+
 #: app/scripts/components/marketplace/routes.js
 msgid "Product details"
 msgstr ""
@@ -4225,6 +4281,8 @@ msgstr ""
 #: app/scripts/components/issues/list/constants.js
 #: app/scripts/components/jira/issue/JiraIssueSummary.tsx
 #: app/scripts/components/jira/project/jira-project-checkout-summary.html
+#: app/scripts/components/marketplace/cart/ShoppingCartSidebar.tsx
+#: app/scripts/components/marketplace/details/OrderSummary.tsx
 #: app/scripts/components/offering/appstore-offering-summary.html
 #: app/scripts/components/openstack/openstack-instance/openstack-instance-checkout-summary.html
 #: app/scripts/components/openstack/openstack-tenant/openstack-tenant-checkout-summary.html
@@ -4322,6 +4380,7 @@ msgstr ""
 #: app/scripts/components/ansible/playbook-jobs/details/ansible-job-details.js
 #: app/scripts/components/appstore/appstore-store.js
 #: app/scripts/components/experts/requests/details/expert-request-details.js
+#: app/scripts/components/marketplace/details/DetailsPage.tsx
 #: app/scripts/components/offering/offering-details.js
 #: app/scripts/components/project/project-workspace.js
 #: app/scripts/components/resource/breadcrumbs/resource-breadcrumbs-service.js
@@ -4434,6 +4493,10 @@ msgstr ""
 
 #: app/scripts/components/appstore/providers/appstore-providers-service.js
 msgid "Provider is in erred state."
+msgstr ""
+
+#: app/scripts/components/marketplace/details/OverviewTab.tsx
+msgid "Provider location"
 msgstr ""
 
 #: app/scripts/components/providers/ProviderNameField.tsx
@@ -4572,6 +4635,10 @@ msgstr ""
 
 #: app/scripts/components/slurm/details/constants.js
 msgid "RAM usage"
+msgstr ""
+
+#: app/scripts/components/marketplace/details/OrderSummary.tsx
+msgid "Rating"
 msgstr ""
 
 #: app/scripts/components/customer/details/customer-manage.js
@@ -4726,6 +4793,14 @@ msgstr ""
 msgid "Remove application"
 msgstr ""
 
+#: app/scripts/components/marketplace/cart/ShoppingCartButton.tsx
+msgid "Remove from cart"
+msgstr ""
+
+#: app/scripts/components/marketplace/compare/OfferingCompareButton.tsx
+msgid "Remove from comparison"
+msgstr ""
+
 #: app/scripts/components/marketplace/offerings/OfferingConfigureStep.tsx
 msgid "Remove offering flavor"
 msgstr ""
@@ -4795,6 +4870,10 @@ msgstr ""
 
 #: app/scripts/components/openstack/openstack-tenant/actions/request-custom-flavour.html
 msgid "Request custom flavour for {{ $ctrl.tenant.name }}"
+msgstr ""
+
+#: app/scripts/components/marketplace/details/OverviewTab.tsx
+msgid "Request demo"
 msgstr ""
 
 #: app/scripts/components/issues/create/issue-create-dialog.js
@@ -5135,6 +5214,10 @@ msgstr ""
 msgid "Schedule"
 msgstr ""
 
+#: app/scripts/components/marketplace/details/OfferingTabs.tsx
+msgid "Screenshots"
+msgstr ""
+
 #: app/scripts/components/marketplace/common/FilterBar.tsx
 #: app/scripts/components/navigation/header/main-search.html
 #: app/scripts/components/table-react/TableQuery.tsx
@@ -5385,6 +5468,10 @@ msgstr ""
 msgid "Service name"
 msgstr ""
 
+#: app/scripts/components/marketplace/details/LeafletMap.tsx
+msgid "Service provider"
+msgstr ""
+
 #: app/scripts/components/providers/support/FlowMapFilter.tsx
 msgid "Service provider type"
 msgstr ""
@@ -5425,6 +5512,10 @@ msgstr ""
 
 #: app/scripts/components/providers/details/dialog.html
 msgid "Settings"
+msgstr ""
+
+#: app/scripts/components/marketplace/cart/CheckoutPage.tsx
+msgid "Shopping cart is empty. You should add items to cart first."
 msgstr ""
 
 #: app/scripts/components/ansible/jupyter-hub-management/form/JupyterOAuthForm.tsx
@@ -5522,6 +5613,7 @@ msgstr ""
 msgid "Size name"
 msgstr ""
 
+#: app/scripts/components/openstack/OpenStackPackageForm.tsx
 #: app/scripts/components/openstack/openstack-tenant/openstack-tenant-config.js
 msgid "Skip connection to external network"
 msgstr ""
@@ -5847,6 +5939,10 @@ msgstr ""
 msgid "Tenant ID"
 msgstr ""
 
+#: app/scripts/components/openstack/OpenStackPackageForm.tsx
+msgid "Tenant description"
+msgstr ""
+
 #: app/scripts/components/openstack/openstack-tenant/actions/assign-package-dialog.js
 msgid "Tenant has been assigned to the package."
 msgstr ""
@@ -5856,6 +5952,7 @@ msgid "Tenant has been updated."
 msgstr ""
 
 #: app/scripts/components/openstack/OpenStackForm.tsx
+#: app/scripts/components/openstack/OpenStackPackageForm.tsx
 #: app/scripts/components/openstack/openstack-tenant/actions/change-package-dialog.html
 #: app/scripts/components/openstack/openstack-tenant/actions/request-custom-flavour.js
 #: app/scripts/components/openstack/openstack-tenant/actions/request-direct-access.js
@@ -5951,7 +6048,7 @@ msgstr ""
 msgid "There are no items yet."
 msgstr ""
 
-#: app/scripts/components/marketplace/common/ProductGrid.tsx
+#: app/scripts/components/marketplace/common/OfferingGrid.tsx
 msgid "There are no offerings in marketplace yet."
 msgstr ""
 
@@ -6119,6 +6216,7 @@ msgstr ""
 #: app/scripts/components/billing/PriceEstimateDialog.tsx
 #: app/scripts/components/billing/billing-records-list.js
 #: app/scripts/components/billing/invoices-list.js
+#: app/scripts/components/marketplace/cart/ShoppingCartSidebar.tsx
 #: app/scripts/components/paypal/paypal-invoices-list.js
 msgid "Total"
 msgstr ""
@@ -6338,8 +6436,16 @@ msgstr ""
 msgid "Unable to load marketplace categories."
 msgstr ""
 
-#: app/scripts/components/marketplace/common/ProductGrid.tsx
+#: app/scripts/components/marketplace/common/OfferingGrid.tsx
 msgid "Unable to load marketplace offerings."
+msgstr ""
+
+#: app/scripts/components/marketplace/details/DetailsPage.tsx
+msgid "Unable to load offering details."
+msgstr ""
+
+#: app/scripts/components/marketplace/orders/OrderDetails.tsx
+msgid "Unable to load order details."
 msgstr ""
 
 #: app/scripts/components/project/ProjectCreateContainer.tsx
@@ -6771,6 +6877,14 @@ msgstr ""
 msgid "VPC vCPU"
 msgstr ""
 
+#: app/scripts/components/marketplace/details/OrderSummary.tsx
+msgid "Vendor"
+msgstr ""
+
+#: app/scripts/components/marketplace/details/OverviewTab.tsx
+msgid "Vendor details"
+msgstr ""
+
 #: app/scripts/components/navigation/app-footer.html
 msgid "Version"
 msgstr ""
@@ -6934,6 +7048,10 @@ msgstr ""
 
 #: app/scripts/components/invitations/invitation-confirm-dialog.html
 msgid "Would you like to update your current email with the one from the invitation?"
+msgstr ""
+
+#: app/scripts/components/marketplace/common/OfferingCard.tsx
+msgid "Write review"
 msgstr ""
 
 #: app/scripts/components/azure/AzureForm.tsx

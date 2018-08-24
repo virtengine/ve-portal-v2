@@ -2,38 +2,41 @@ import * as React from 'react';
 
 import { Link } from '@waldur/core/Link';
 import { defaultCurrency } from '@waldur/core/services';
-import { Product } from '@waldur/marketplace/types';
 
 import './ShoppingCartItem.scss';
+import { OrderItem } from './types';
 
 interface ShoppingCartItemProps {
-  item: Product;
+  item: OrderItem;
   editable: boolean;
 }
 
 export const ShoppingCartItem = (props: ShoppingCartItemProps) => (
   <tr>
     <td>
-      <div className="product-item">
+      <div className="offering-item">
         <Link
-          state="marketplace-product"
-          className="product-thumb">
-          <img src={props.item.thumb}/>
+          state="marketplace-offering"
+          params={{offering_uuid: props.item.offering_uuid}}
+          className="offering-thumb">
+          <img src={props.item.offering_thumbnail}/>
         </Link>
-        <div className="product-info">
-          <h4 className="product-title">
-          <Link state="marketplace-product">
-            {props.item.name}
-          </Link>
+        <div className="offering-info">
+          <h4 className="offering-title">
+            <Link
+              state="marketplace-offering"
+              params={{offering_uuid: props.item.offering_uuid}}>
+              {props.item.offering_name}
+            </Link>
           </h4>
           <p>
-            <b>Details:</b> {props.item.subtitle}
+            <b>Details:</b> {props.item.offering_description}
           </p>
         </div>
       </div>
     </td>
     <td className="text-center text-lg">
-      {defaultCurrency(props.item.price)}
+      {defaultCurrency(props.item.cost)}
     </td>
     {props.editable && (
       <td className="text-center">

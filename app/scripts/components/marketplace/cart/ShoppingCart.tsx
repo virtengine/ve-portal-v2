@@ -1,12 +1,13 @@
 import * as React from 'react';
 
-import { Product } from '@waldur/marketplace/types';
+import { translate } from '@waldur/i18n';
 
 import './ShoppingCart.scss';
 import { ShoppingCartItem } from './ShoppingCartItem';
+import { OrderItem } from './types';
 
 interface ShoppingCartProps {
-  items: Product[];
+  items: OrderItem[];
   editable: boolean;
 }
 
@@ -16,8 +17,8 @@ export const ShoppingCart = (props: ShoppingCartProps) => (
       <table className="table">
         <thead>
           <tr>
-            <th>Item</th>
-            <th className="text-center">Price</th>
+            <th>{translate('Item')}</th>
+            <th className="text-center">{translate('Price')}</th>
             <th>{/* Actions column */}</th>
           </tr>
         </thead>

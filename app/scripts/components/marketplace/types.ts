@@ -1,46 +1,65 @@
 import { Customer } from '@waldur/customer/types';
 
-export interface Product {
-  thumb: string;
+export interface GeolocationPoint {
+  latitude: number;
+  longitude: number;
+}
+
+export type Geolocations = GeolocationPoint[];
+
+export interface Plan {
+  url: string;
+  name: string;
+  description: string;
+  unit_price: number;
+  unit: string;
+}
+
+export interface Offering {
+  uuid?: string;
+  thumbnail: string;
   name: string;
   subtitle: string;
   rating: number;
-  installs: number;
+  order_item_count: number;
   reviews: number;
   category?: string;
-  vendor: string;
-  vendorDetails?: string;
-  cloudDeploymentModel?: string;
-  vendorType?: string;
-  userSupportOptions?: string[];
-  interfaceOptions?: string[];
-  metricsReporting?: string[];
-  dataProtectionInternal?: string;
-  dataProtectionExternal?: string;
-  userAuth?: string;
-  managementAuth?: string;
-  securityCertifications?: string;
-  pricingOption?: string;
-  price: number;
+  category_title?: string;
+  category_uuid?: string;
+  vendor_details?: string;
   screenshots?: Screenshot[];
   description?: string;
+  geolocations?: Geolocations;
+  customer_uuid?: string;
+  customer_name?: string;
+  attributes?: {};
+  plans?: Plan[];
+  type: string;
 }
 
 export interface Screenshot {
-  thumb: string;
-  title: string;
+  thumbnail: string;
+  name: string;
   description: string;
 }
 
 export interface Attribute {
   title: string;
   key: string;
+  type: string;
   render?: React.SFC<any>;
+  options?: AttributeOption[];
+}
+
+interface AttributeOption {
+  key: string;
+  title: string;
 }
 
 export interface Section {
   title: string;
   attributes: Attribute[];
+  is_standalone: boolean;
 }
 
 export interface Category {
@@ -57,8 +76,8 @@ export interface CategoriesListType {
   loading: boolean;
 }
 
-export interface ProductsListType {
-  items: Product[];
+export interface OfferingsListType {
+  items: Offering[];
   loaded: boolean;
   loading: boolean;
 }
@@ -66,5 +85,5 @@ export interface ProductsListType {
 export interface Provider extends Customer {
   logo?: string;
   description?: string;
-  service_offerings?: Product[];
+  service_offerings?: Offering[];
 }

@@ -1,15 +1,18 @@
-import { Product } from '@waldur/marketplace/types';
-
 export type OrderState = 'Configure' | 'Approve' | 'Review';
 
 export interface State {
-  items: Product[];
+  items: OrderItem[];
   state: OrderState;
+  total_cost?: number;
 }
 
 export interface OrderItem {
-  order: string;
-  offering: Product;
+  uuid: string;
+  offering_uuid: string;
+  offering_name: string;
+  offering_description: string;
+  offering_thumbnail: string;
+  cost: string;
 }
 
 export interface Order {
