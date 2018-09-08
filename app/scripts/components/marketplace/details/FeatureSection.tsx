@@ -6,6 +6,7 @@ import { Section, Offering } from '@waldur/marketplace/types';
 interface FeatureSectionProps {
   section: Section;
   offering: Offering;
+  hideHeader: boolean;
 }
 
 const getOptions = attribute =>
@@ -35,10 +36,12 @@ const AttributeRow = ({ offering, attribute }) => {
 
 export const FeatureSection = (props: FeatureSectionProps) => (
   <>
-    <tr className="gray-bg">
-      <th>{props.section.title}</th>
-      <th/>
-    </tr>
+    {!props.hideHeader && (
+      <tr className="gray-bg">
+        <th>{props.section.title}</th>
+        <th/>
+      </tr>
+    )}
     {props.section.attributes
       .filter(attr => props.offering.attributes.hasOwnProperty(attr.key))
       .map((attr, index) => (

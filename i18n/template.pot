@@ -70,6 +70,7 @@ msgstr ""
 msgid "Accepted"
 msgstr ""
 
+#: app/scripts/components/openstack/OpenStackPackageForm.tsx
 #: app/scripts/components/openstack/openstack-tenant/OpenStackTenantSummary.tsx
 #: app/scripts/components/openstack/openstack-tenant/openstack-tenant-config.js
 #: app/scripts/components/resource/summary/VirtualMachineSummary.tsx
@@ -135,7 +136,6 @@ msgid "Activating"
 msgstr ""
 
 #: app/scripts/components/experts/requests/list/expert-request-customer-list.js
-#: app/scripts/components/marketplace/offerings/OfferingsList.tsx
 msgid "Active"
 msgstr ""
 
@@ -209,12 +209,16 @@ msgstr ""
 msgid "Add offering"
 msgstr ""
 
-#: app/scripts/components/marketplace/offerings/OfferingConfigureStep.tsx
-msgid "Add offering flavor"
+#: app/scripts/components/marketplace/offerings/OfferingOptions.tsx
+msgid "Add option"
 msgstr ""
 
 #: app/scripts/components/user/list/CustomerCreateButton.tsx
 msgid "Add organization"
+msgstr ""
+
+#: app/scripts/components/marketplace/offerings/PlanAddButton.tsx
+msgid "Add plan"
 msgstr ""
 
 #: app/scripts/components/resource/list/resource-private-clouds-list.js
@@ -350,6 +354,7 @@ msgstr ""
 msgid "Amazon EC2 provider"
 msgstr ""
 
+#: app/scripts/components/marketplace/offerings/OfferingPlanComponents.tsx
 #: app/scripts/components/payments/payment-list.js
 msgid "Amount"
 msgstr ""
@@ -495,10 +500,6 @@ msgstr ""
 
 #: app/scripts/components/issues/attachments/IssueAttachmentsContainer.tsx
 msgid "Attachments"
-msgstr ""
-
-#: app/scripts/components/marketplace/offerings/OfferingConfigureStep.tsx
-msgid "Attributes"
 msgstr ""
 
 #: app/scripts/components/offering/OfferingTabs.tsx
@@ -694,6 +695,10 @@ msgstr ""
 msgid "Billing details"
 msgstr ""
 
+#: app/scripts/components/marketplace/offerings/PlanForm.tsx
+msgid "Billing period"
+msgstr ""
+
 #: app/scripts/components/dashboard/base-quotas.ts
 msgid "Block device count"
 msgstr ""
@@ -846,6 +851,10 @@ msgstr ""
 msgid "Cannot create floating IP if tenant external network is not defined."
 msgstr ""
 
+#: app/scripts/components/marketplace/list/ShopCategories.tsx
+msgid "Categories"
+msgstr ""
+
 #: app/scripts/components/marketplace/offerings/OfferingConfigureStep.tsx
 #: app/scripts/components/marketplace/offerings/OfferingsList.tsx
 #: app/scripts/components/openstack/openstack-tenant/openstack-template.js
@@ -898,6 +907,10 @@ msgstr ""
 #: app/scripts/components/openstack/openstack-volume/openstack-volume-checkout-summary.html
 #: app/scripts/components/slurm/slurm-allocation-checkout-summary.html
 msgid "Checkout summary"
+msgstr ""
+
+#: app/scripts/components/marketplace/offerings/OptionForm.tsx
+msgid "Choices as comma-separated list"
 msgstr ""
 
 #: app/scripts/components/auth/saml2/auth-saml2-dialog.html
@@ -1364,6 +1377,10 @@ msgstr ""
 msgid "Default availability zone for provisioned instances."
 msgstr ""
 
+#: app/scripts/components/marketplace/offerings/OptionForm.tsx
+msgid "Default value"
+msgstr ""
+
 #: app/scripts/components/cost-planning/cost-plan-items.html
 #: app/scripts/components/experts/bids/details/expert-bid-details.html
 #: app/scripts/components/issues/comments/IssueCommentDeleteDialog.tsx
@@ -1413,6 +1430,8 @@ msgstr ""
 #: app/scripts/components/jira/project/jira-project-config.js
 #: app/scripts/components/marketplace/details/OfferingTabs.tsx
 #: app/scripts/components/marketplace/offerings/OfferingDescribeStep.tsx
+#: app/scripts/components/marketplace/offerings/OptionForm.tsx
+#: app/scripts/components/offering/OfferingConfigurationForm.tsx
 #: app/scripts/components/offering/OfferingHeader.tsx
 #: app/scripts/components/offering/appstore-offering.js
 #: app/scripts/components/openstack/openstack-backup/backup-snapshots-list.js
@@ -1466,6 +1485,7 @@ msgstr ""
 #: app/scripts/components/experts/requests/details/expert-request-summary.html
 #: app/scripts/components/experts/requests/list/expert-request-customer-list.js
 #: app/scripts/components/issues/create/issue-registration.html
+#: app/scripts/components/marketplace/cart/ShoppingCartItemDetails.tsx
 #: app/scripts/components/openstack/openstack-instance/openstack-instance-security-groups-field.html
 #: app/scripts/components/project/project-details-button.html
 #: app/scripts/components/project/projects-list.js
@@ -1594,6 +1614,7 @@ msgstr ""
 msgid "Each JupyterHub user is mapped to a corresponding system user. Appropriate system user will be created on a first login."
 msgstr ""
 
+#: app/scripts/components/marketplace/cart/ShoppingCartItem.tsx
 #: app/scripts/components/openstack/openstack-backup-schedule/module.js
 #: app/scripts/components/openstack/openstack-snapshot-schedule/module.js
 #: app/scripts/components/resource/actions/base.ts
@@ -2762,6 +2783,10 @@ msgstr ""
 msgid "Keystone auth URL (e.g. http://keystone.example.com:5000/v3)"
 msgstr ""
 
+#: app/scripts/components/marketplace/offerings/OptionForm.tsx
+msgid "Label"
+msgstr ""
+
 #: app/scripts/components/cost-planning/cost-plan-dialog.js
 msgid "Large"
 msgstr ""
@@ -2778,10 +2803,12 @@ msgstr ""
 msgid "Latvian"
 msgstr ""
 
+#: app/scripts/components/openstack/OpenStackPackageForm.tsx
 #: app/scripts/components/openstack/openstack-tenant/openstack-tenant-config.js
 msgid "Leave blank if you want admin password to be auto-generated."
 msgstr ""
 
+#: app/scripts/components/openstack/OpenStackPackageForm.tsx
 #: app/scripts/components/openstack/openstack-tenant/openstack-tenant-config.js
 msgid "Leave blank if you want admin username to be auto-generated."
 msgstr ""
@@ -2981,6 +3008,10 @@ msgstr ""
 msgid "Maximal valid value is"
 msgstr ""
 
+#: app/scripts/components/marketplace/offerings/OptionForm.tsx
+msgid "Maximal value"
+msgstr ""
+
 #: app/scripts/components/freeipa/freeipa-account-create.html
 msgid "Maximum username length with mandatory username prefix is 32 characters."
 msgstr ""
@@ -3023,6 +3054,10 @@ msgstr ""
 
 #: app/scripts/components/customer/details/customer-threshold.html
 msgid "Minimal valid value is 0"
+msgstr ""
+
+#: app/scripts/components/marketplace/offerings/OptionForm.tsx
+msgid "Minimal value"
 msgstr ""
 
 #: app/scripts/components/auth/valimo/auth-valimo-dialog.html
@@ -3090,9 +3125,11 @@ msgstr ""
 #: app/scripts/components/jira/project/JiraProjectSummary.tsx
 #: app/scripts/components/jira/project/jira-project-config.js
 #: app/scripts/components/jira/project/jira-projects-list.js
-#: app/scripts/components/marketplace/offerings/OfferingConfigureStep.tsx
 #: app/scripts/components/marketplace/offerings/OfferingDescribeStep.tsx
 #: app/scripts/components/marketplace/offerings/OfferingsList.tsx
+#: app/scripts/components/marketplace/offerings/OptionForm.tsx
+#: app/scripts/components/marketplace/offerings/PlanForm.tsx
+#: app/scripts/components/offering/OfferingConfigurationForm.tsx
 #: app/scripts/components/offering/OfferingHeader.tsx
 #: app/scripts/components/offering/appstore-offering.js
 #: app/scripts/components/offering/offerings-list.js
@@ -3136,6 +3173,10 @@ msgstr ""
 
 #: app/scripts/components/customer/create/customer-create-config.js
 msgid "Name of your organization."
+msgstr ""
+
+#: app/scripts/components/core/validators.ts
+msgid "Name should consist of latin symbols and numbers."
 msgstr ""
 
 #: app/scripts/components/project/ProjectNameField.tsx
@@ -3544,12 +3585,12 @@ msgstr ""
 msgid "Offering events"
 msgstr ""
 
-#: app/scripts/components/marketplace/offerings/OfferingConfigureStep.tsx
-msgid "Offering flavor #{index}"
+#: app/scripts/components/marketplace/offerings/utils.ts
+msgid "Offering has been created."
 msgstr ""
 
-#: app/scripts/components/marketplace/offerings/OfferingCreateContainer.tsx
-msgid "Offering has been created"
+#: app/scripts/components/marketplace/cart/ShoppingCartItemDetails.tsx
+msgid "Offering link"
 msgstr ""
 
 #: app/scripts/components/marketplace/offerings/OfferingDescribeStep.tsx
@@ -3657,6 +3698,10 @@ msgstr ""
 msgid "OpenStack events"
 msgstr ""
 
+#: app/scripts/components/openstack/marketplace.ts
+msgid "OpenStack package"
+msgstr ""
+
 #: app/scripts/components/openstack/events.ts
 msgid "OpenStack package {tenant_link} has been created."
 msgstr ""
@@ -3667,6 +3712,10 @@ msgstr ""
 
 #: app/scripts/components/issues/list/issues-short-list.html
 msgid "Opened by"
+msgstr ""
+
+#: app/scripts/components/marketplace/offerings/OfferingOptions.tsx
+msgid "Option #{index}"
 msgstr ""
 
 #: app/scripts/components/auth/auth-login.html
@@ -3687,11 +3736,15 @@ msgstr ""
 msgid "Order details"
 msgstr ""
 
+#: app/scripts/components/marketplace/orders/store/effects.ts
+msgid "Order has been approved."
+msgstr ""
+
 #: app/scripts/components/marketplace/cart/store/effects.ts
 msgid "Order has been submitted."
 msgstr ""
 
-#: app/scripts/components/marketplace/cart/ShoppingCartButtonContainer.tsx
+#: app/scripts/components/marketplace/cart/store/effects.ts
 msgid "Order item has been created."
 msgstr ""
 
@@ -3972,8 +4025,13 @@ msgstr ""
 msgid "Physical locations"
 msgstr ""
 
+#: app/scripts/components/offering/OfferingConfigurationForm.tsx
 #: app/scripts/components/openstack/OpenStackPackageForm.tsx
 msgid "Plan"
+msgstr ""
+
+#: app/scripts/components/marketplace/offerings/OfferingPlans.tsx
+msgid "Plan #{index}"
 msgstr ""
 
 #: app/scripts/components/experts/requests/create/expert-request-create.js
@@ -4153,7 +4211,8 @@ msgstr ""
 #: app/scripts/components/jira/project/jira-project-checkout-summary.html
 #: app/scripts/components/marketplace/cart/ShoppingCart.tsx
 #: app/scripts/components/marketplace/details/OrderSummary.tsx
-#: app/scripts/components/marketplace/offerings/OfferingConfigureStep.tsx
+#: app/scripts/components/marketplace/offerings/OfferingPlanComponents.tsx
+#: app/scripts/components/marketplace/offerings/PlanForm.tsx
 #: app/scripts/components/offering/OfferingHeader.tsx
 #: app/scripts/components/paypal/paypal-invoices-list.js
 msgid "Price"
@@ -4775,6 +4834,8 @@ msgid "Remote network"
 msgstr ""
 
 #: app/scripts/components/cost-planning/cost-plans-list.js
+#: app/scripts/components/marketplace/cart/ShoppingCartItem.tsx
+#: app/scripts/components/marketplace/offerings/OfferingOptions.tsx
 #: app/scripts/components/project/projects-list.js
 #: app/scripts/components/providers/provider-list.js
 #: app/scripts/components/team/customer-users-list.js
@@ -4801,16 +4862,16 @@ msgstr ""
 msgid "Remove from comparison"
 msgstr ""
 
-#: app/scripts/components/marketplace/offerings/OfferingConfigureStep.tsx
-msgid "Remove offering flavor"
-msgstr ""
-
 #: app/scripts/components/customer/details/customer-manage.html
 msgid "Remove organization"
 msgstr ""
 
 #: app/scripts/components/ansible/python-management/form/InstalledLibraryRowForm.tsx
 msgid "Remove package"
+msgstr ""
+
+#: app/scripts/components/marketplace/offerings/PlanRemoveButton.tsx
+msgid "Remove plan"
 msgstr ""
 
 #: app/scripts/components/user/support/UserEditForm.tsx
@@ -4936,12 +4997,20 @@ msgstr ""
 msgid "Request {requestId} has been created."
 msgstr ""
 
+#: app/scripts/components/offering/marketplace.ts
+msgid "Request-based item"
+msgstr ""
+
 #: app/scripts/components/customer/CustomerList.tsx
 #: app/scripts/components/offering/offering-details.js
 #: app/scripts/components/offering/routes.js
 #: app/scripts/components/offering/sidebar.js
 #: app/scripts/components/offering/table-extension.js
 msgid "Requests"
+msgstr ""
+
+#: app/scripts/components/marketplace/offerings/OptionForm.tsx
+msgid "Required"
 msgstr ""
 
 #: app/scripts/components/cost-planning/cost-plan-dialog.html
@@ -5015,6 +5084,10 @@ msgstr ""
 
 #: app/scripts/components/resource/monitoring/ZabbixHostCreateButton.tsx
 msgid "Resource is not monitored yet."
+msgstr ""
+
+#: app/scripts/components/marketplace/cart/ShoppingCartItemDetails.tsx
+msgid "Resource link"
 msgstr ""
 
 #: app/scripts/components/resource/actions/base.ts
@@ -5696,6 +5769,7 @@ msgstr ""
 #: app/scripts/components/experts/requests/details/ExpertRequestGeneralInfo.tsx
 #: app/scripts/components/experts/requests/list/expert-request-customer-list.js
 #: app/scripts/components/experts/requests/list/expert-request-project-list.js
+#: app/scripts/components/marketplace/offerings/OfferingsList.tsx
 #: app/scripts/components/marketplace/orders/OrdersList.tsx
 #: app/scripts/components/offering/OfferingHeader.tsx
 #: app/scripts/components/offering/offerings-list.js
@@ -6026,7 +6100,7 @@ msgstr ""
 msgid "There are no categories in marketplace yet."
 msgstr ""
 
-#: app/scripts/components/marketplace/list/FeatureFilterListContainer.tsx
+#: app/scripts/components/marketplace/list/AttributeFilterListContainer.tsx
 msgid "There are no category sections yet."
 msgstr ""
 
@@ -6118,6 +6192,7 @@ msgstr ""
 msgid "This field is required"
 msgstr ""
 
+#: app/scripts/components/core/validators.ts
 #: app/scripts/components/form/appstore-field-string.html
 msgid "This field is required."
 msgstr ""
@@ -6133,7 +6208,9 @@ msgstr ""
 #: app/scripts/components/ansible/playbook-jobs/create/ansible-job-create.js
 #: app/scripts/components/experts/requests/create/expert-request-create.js
 #: app/scripts/components/jira/project/jira-project-config.js
+#: app/scripts/components/offering/OfferingConfigurationForm.tsx
 #: app/scripts/components/offering/appstore-offering.js
+#: app/scripts/components/openstack/OpenStackPackageForm.tsx
 #: app/scripts/components/openstack/openstack-tenant/openstack-tenant-config.js
 #: app/scripts/components/project/ProjectNameField.tsx
 #: app/scripts/components/rijkscloud/VolumeCreateConfig.js
@@ -6257,6 +6334,8 @@ msgstr ""
 #: app/scripts/components/experts/requests/list/expert-request-project-list.js
 #: app/scripts/components/jira/project/jira-project-config.js
 #: app/scripts/components/jira/project/jira-projects-list.js
+#: app/scripts/components/marketplace/offerings/OfferingConfigureStep.tsx
+#: app/scripts/components/marketplace/offerings/OptionForm.tsx
 #: app/scripts/components/offering/OfferingHeader.tsx
 #: app/scripts/components/offering/offerings-list.js
 #: app/scripts/components/openstack/openstack-network/OpenStackNetworkSummary.tsx
@@ -6277,6 +6356,10 @@ msgstr ""
 
 #: app/scripts/components/auth/auth-activation.js
 msgid "Unable to activate account."
+msgstr ""
+
+#: app/scripts/components/marketplace/orders/store/effects.ts
+msgid "Unable to approve order."
 msgstr ""
 
 #: app/scripts/components/auth/valimo/auth-valimo-dialog.js
@@ -6316,7 +6399,7 @@ msgstr ""
 msgid "Unable to create link."
 msgstr ""
 
-#: app/scripts/components/marketplace/offerings/OfferingCreateContainer.tsx
+#: app/scripts/components/marketplace/offerings/utils.ts
 msgid "Unable to create offering."
 msgstr ""
 
@@ -6411,7 +6494,7 @@ msgstr ""
 msgid "Unable to load application configuration. Please reload this page."
 msgstr ""
 
-#: app/scripts/components/marketplace/list/FeatureFilterListContainer.tsx
+#: app/scripts/components/marketplace/list/AttributeFilterListContainer.tsx
 msgid "Unable to load category sections."
 msgstr ""
 
@@ -6528,6 +6611,10 @@ msgstr ""
 #: app/scripts/components/billing/billing-record-details.html
 #: app/scripts/components/billing/invoice-details.html
 msgid "Unit price"
+msgstr ""
+
+#: app/scripts/components/marketplace/offerings/OfferingPlanComponents.tsx
+msgid "Units"
 msgstr ""
 
 #: app/scripts/components/analytics/ResourceAnalysisItem.tsx
@@ -7325,6 +7412,7 @@ msgstr ""
 msgid "from"
 msgstr ""
 
+#: app/scripts/components/openstack/OpenStackPackageForm.tsx
 #: app/scripts/components/openstack/openstack-tenant/openstack-tenant-config.js
 msgid "generate automatically"
 msgstr ""

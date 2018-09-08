@@ -4,11 +4,12 @@ import { translate } from '@waldur/i18n';
 
 import './ShoppingCart.scss';
 import { ShoppingCartItem } from './ShoppingCartItem';
-import { OrderItem } from './types';
+import { OrderItemResponse } from './types';
 
 interface ShoppingCartProps {
-  items: OrderItem[];
+  items: OrderItemResponse[];
   editable: boolean;
+  onShoppingCartItemRemove?(item: OrderItemResponse): void;
 }
 
 export const ShoppingCart = (props: ShoppingCartProps) => (
@@ -28,6 +29,7 @@ export const ShoppingCart = (props: ShoppingCartProps) => (
               key={index}
               item={item}
               editable={props.editable}
+              onRemove={() => props.onShoppingCartItemRemove(item)}
             />
           ))}
         </tbody>

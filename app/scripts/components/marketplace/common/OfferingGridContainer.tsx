@@ -3,9 +3,11 @@ import { connect } from 'react-redux';
 import { compose } from 'redux';
 import { getFormValues } from 'redux-form';
 
+import { $state } from '@waldur/core/services';
 import { withTranslation } from '@waldur/i18n';
 import { TranslateProps } from '@waldur/i18n';
 import { getOfferings } from '@waldur/marketplace/common/api';
+import { FilterQuery } from '@waldur/marketplace/offerings/types';
 import { Offering } from '@waldur/marketplace/types';
 
 import { selectFilterQuery } from '../offerings/store/selectors';
@@ -18,13 +20,22 @@ interface OfferingGridWrapperState {
 }
 
 interface OfferingGridWrapperProps {
-  filterQuery: string;
+  filterQuery: FilterQuery;
 }
 
 export class OfferingGridWrapper extends React.Component<OfferingGridWrapperProps & TranslateProps, OfferingGridWrapperState> {
+  constructor(props) {
+    super(props);
+    this.state = {
+      items: [],
+      loading: true,
+      loaded: false,
+    };
+  }
 
-  componentDidUpdate(prevProps) {
-    if (prevProps.filterQuery !== this.props.filterQuery) {
+  componentDidUpdate(prevProps, prevState) {
+    if (prevState.items.length !== this.state.items.length
+        || prevProps.filterQuery !== this.props.filterQuery) {
       this.loadData(this.props.filterQuery);
     }
   }
@@ -36,14 +47,13 @@ export class OfferingGridWrapper extends React.Component<OfferingGridWrapperProp
   async loadData(filterQuery?) {
     const options = {
       params: {
+        category_uuid: $state.params.category_uuid,
         ...filterQuery,
       },
     };
     try {
       this.setState({
-        items: [],
         loading: true,
-        loaded: false,
       });
       const offerings = await getOfferings(options);
       this.setState({
@@ -69,11 +79,19 @@ export const formatAttributesFilter = query => {
   if (query) {
     const formattedQuery = {};
     Object.keys(query).forEach(key => {
-      const attributeKey = key.split('-')[0];
-      if (Object.keys(formattedQuery).indexOf(attributeKey) === -1) {
-        formattedQuery[attributeKey] = [query[key]];
+      const attributeType = key.split('-')[0];
+      const attributeKey = key.split('-')[1];
+      const queryKey = query[key];
+      if (attributeType === 'list') {
+        if (Object.keys(formattedQuery).indexOf(attributeKey) === -1) {
+          formattedQuery[attributeKey] = [queryKey];
+        } else {
+          formattedQuery[attributeKey].push(queryKey);
+        }
+      } else if (attributeType === 'boolean') {
+        formattedQuery[attributeKey] = JSON.parse(queryKey);
       } else {
-        formattedQuery[attributeKey].push(query[key]);
+        formattedQuery[attributeKey] = queryKey;
       }
     });
     return formattedQuery;
