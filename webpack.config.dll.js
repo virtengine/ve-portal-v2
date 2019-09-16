@@ -1,21 +1,32 @@
 const path = require('path');
 const webpack = require('webpack');
+const utils = require('./webpack.utils');
 
 const target = 'build.dll';
 
 module.exports = {
   entry: {
     vendor: [
-      'babel-polyfill',
-      'raven-js',
+      'core-js/stable',
+      'regenerator-runtime/runtime',
+      '@sentry/core',
+      '@sentry/browser',
+      '@sentry/types',
+      '@sentry/utils',
       'lodash',
       'jquery',
-      'moment',
+      'moment-timezone',
       'bootstrap/js/tooltip',
       'bootstrap/js/modal',
       'bootstrap/js/dropdown',
+      'file-saver',
       'papaparse',
 
+      '@fullcalendar/core',
+      '@fullcalendar/daygrid',
+      '@fullcalendar/interaction',
+      '@fullcalendar/react',
+      '@fullcalendar/timegrid',
       'redux',
       'redux-form',
       'redux-form-saga',
@@ -25,7 +36,10 @@ module.exports = {
       'react-overlays',
       'react-redux',
       'react-select',
+      'react-bootstrap/lib/Col',
       'react-bootstrap/lib/OverlayTrigger',
+      'react-bootstrap/lib/Panel',
+      'react-bootstrap/lib/Row',
       'react-bootstrap/lib/Tab',
       'react-bootstrap/lib/Tabs',
       'react-bootstrap/lib/ToggleButton',
@@ -39,7 +53,6 @@ module.exports = {
       'angular',
       'angular-cron-jobs',
       'angular-animate',
-      'angular-block-ui',
       'angular-cookies',
       'angular-loader',
       'angular-gravatar',
@@ -62,8 +75,7 @@ module.exports = {
       'oclazyload',
       'angular-intro.js',
 
-      'react2angular',
-      './app/scripts/shims/slimscroll',
+      './src/shims/slimscroll',
     ],
   },
   output: {
@@ -83,16 +95,19 @@ module.exports = {
       // Temporary workaround for Angular UI router and React Bootstrap integration
       {
         test: /SafeAnchor\.js$/,
-        loader: 'awesome-typescript-loader'
+        loader: 'ts-loader'
       },
     ],
   },
 
   plugins: [
+    // Moment locales extraction
+    new webpack.ContextReplacementPlugin(/moment[/\\]locale$/, /(az|en-gb|et|ru|lt|lv)/),
+
     // Temporary workaround for Angular UI router and React Bootstrap integration
     new webpack.NormalModuleReplacementPlugin(
       /SafeAnchor\.js/,
-      path.resolve('./app/scripts/shims/AngularRouterAnchor.tsx')
+      path.resolve('./src/shims/AngularRouterAnchor.tsx')
     ),
     new webpack.DllPlugin({
       // The path to the manifest file which maps between
@@ -105,7 +120,7 @@ module.exports = {
       name: '[name]_[hash]_lib',
     }),
   ],
-  devtool: 'source-map',
+  devtool: utils.isProd ? '' : 'source-map',
   resolve: {
     extensions: ['.js', '.jsx'],
   },

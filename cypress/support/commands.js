@@ -1,4 +1,5 @@
 import '../integration/support/commands';
+import '../integration/openstack/instance/commands';
 
 // Fill and sumbit login form
 Cypress.Commands.add('fillAndSubmitLoginForm', (username, password) => {
@@ -81,6 +82,7 @@ Cypress.Commands.add('openCustomerCreateDialog', () => {
 
 Cypress.Commands.add('mockUser', () => {
   cy
+    .route('http://localhost:8080/api/configuration/', 'fixture:configuration.json')
     .route({
       url: 'http://localhost:8080/api-auth/password/',
       method: 'POST',

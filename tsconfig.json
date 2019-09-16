@@ -13,15 +13,21 @@
     "allowSyntheticDefaultImports": false,
     "baseUrl": ".",
     "paths": {
-      "@waldur/*": ["app/scripts/components/*"]
+      "@waldur/*": ["src/*"]
     },
+    // Workaround for https://github.com/cypress-io/cypress/issues/1087
+    "skipLibCheck": true,
     "lib": [
-      "es2015",
+      "es2016",
       "dom"
     ]
   },
   "include": [
-    "./app/scripts/components/**/*",
+    "./src/**/*",
+  ],
+  "exclude": [
+    "./src/**/*.spec.ts",
+    "./src/**/*.spec.tsx",
   ],
   "typeRoots": [
     "./node_modules/@types",

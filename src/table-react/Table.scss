@@ -1,0 +1,42 @@
+.dataTables_wrapper {
+  position: relative;
+}
+
+.dataTables_info {
+  margin-bottom: 8px;
+}
+
+.table-block {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  background: #ffffff9c;
+  z-index: 100;
+}
+
+.blocking-layer {
+  position: absolute;
+  width: 100%;
+  height: 504px;
+  background-color: #808080;
+  opacity: 0.4;
+  z-index: 100;
+
+  .text-center {
+    color: #ffffff;
+    margin-top: 40px;
+  }
+}
+
+// Prevent vertical scroll of dropdown inside of table-responsive
+// https://stackoverflow.com/a/26021872/6917997
+@media (max-width: 767px) {
+  .table-responsive .dropdown-menu {
+      position: static !important;
+  }
+}
+@media (min-width: 768px) {
+  .table-responsive {
+      overflow: inherit;
+  }
+}

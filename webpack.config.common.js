@@ -1,17 +1,16 @@
-const webpack = require('webpack');
 const path = require('path');
-const ExtractTextPlugin = require('extract-text-webpack-plugin');
 const CopyWebpackPlugin = require('copy-webpack-plugin');
 const AngularGetTextPlugin = require('./angular-gettext-plugin');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
+const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const utils = require('./webpack.utils');
 
-const scssPath = path.resolve('./assets/sass');
-const imagesPath = path.resolve('./assets/images');
+const scssPath = path.resolve('./src/');
+const imagesPath = path.resolve('./src/images');
 
 module.exports = {
   entry: {
-    index: './app/scripts/index.js',
+    index: './src/index.js',
   },
   output: {
     path: utils.formatPath('.'),
@@ -22,10 +21,11 @@ module.exports = {
   resolve: {
     extensions: ['.js', '.jsx', '.ts', '.tsx'],
     alias: {
-      '@waldur': path.resolve('./app/scripts/components/'),
+      '@waldur': path.resolve('./src/'),
+      sass: path.resolve('./src/sass/'),
     }
   },
-  devtool: 'source-map',
+  devtool: utils.isProd ? '' : 'source-map',
   module: {
     rules: [
       {
@@ -33,13 +33,26 @@ module.exports = {
         exclude: /node_modules/,
         use: [
           {
+            loader: 'cache-loader',
+          },
+          {
             loader: 'babel-loader',
           },
         ],
       },
       {
         test: /\.tsx?$/,
-        loader: 'awesome-typescript-loader'
+        use: [
+          {
+            loader: 'cache-loader',
+          },
+          {
+            loader: 'ts-loader',
+            options: {
+              transpileOnly: true
+            },
+          },
+        ],
       },
       {
         test: /\.html$/,
@@ -47,43 +60,42 @@ module.exports = {
           {
             loader: 'html-loader',
             options: {
-              minimize: true,
+              minimize: utils.isProd,
             },
+          },
+          {
+            loader: path.resolve('./html-lint-loader'),
           },
         ],
       },
       {
         test: /\.scss$/,
-        loader: ExtractTextPlugin.extract({
-          fallback: 'style-loader',
-          use: [
-            utils.isProd ? 'css-loader': 'css-loader?sourceMap',
-            utils.isProd ? 'postcss-loader': 'postcss-loader?sourceMap',
-            utils.isProd ? 'sass-loader?includePaths[]=' + scssPath : 'sass-loader?sourceMap&includePaths[]=' + scssPath,
-          ]
-        }),
+        use: [
+          utils.isProd ? MiniCssExtractPlugin.loader : 'style-loader?sourceMap',
+          utils.isProd ? 'css-loader': 'css-loader?sourceMap',
+          utils.isProd ? 'postcss-loader': 'postcss-loader?sourceMap',
+          utils.isProd ? 'sass-loader?includePaths[]=' + scssPath : 'sass-loader?sourceMap&includePaths[]=' + scssPath,
+        ]
       },
       {
         test: /\.css$/,
-        loader: ExtractTextPlugin.extract({
-          fallback: 'style-loader',
-          use: utils.isProd ? 'css-loader' : 'css-loader?sourcemap',
-        })
+        use: [
+          utils.isProd ? MiniCssExtractPlugin.loader : 'style-loader?sourceMap',
+          utils.isProd ? 'css-loader' : 'css-loader?sourcemap',
+        ],
       },
       {
         test: /\.font\.js/,
-        loader: ExtractTextPlugin.extract({
-          use: [
-            'css-loader',
-            {
-              loader: 'webfonts-loader',
-              options: {
-                embed: utils.isProd,
-              },
+        use: [
+          utils.isProd ? MiniCssExtractPlugin.loader : 'style-loader?sourceMap',
+          'css-loader',
+          {
+            loader: 'webfonts-loader',
+            options: {
+              embed: utils.isProd,
             },
-          ],
-          fallback: 'style-loader',
-        })
+          },
+        ],
       },
       {
         test: /\.(eot|svg|otf|ttf|woff|woff2)(\?v=\d+\.\d+\.\d+)?/,
@@ -124,7 +136,7 @@ module.exports = {
   },
   plugins: [
     new HtmlWebpackPlugin({
-      template: './app/index-template.html',
+      template: './src/index-template.html',
       filename: utils.formatPath('index.html'),
       inject: 'body',
       chunks: ['index'],
@@ -133,14 +145,12 @@ module.exports = {
         return (a.names[0] < b.names[0]) ? 1 : -1;
       }
     }),
-    new ExtractTextPlugin({
+    new MiniCssExtractPlugin({
       filename: 'css/[name]-bundle.css?[contenthash]'
     }),
-    // Moment locales extraction
-    new webpack.ContextReplacementPlugin(/moment[\/\\]locale$/, /(az|en-gb|et|ru|lt|lv)/),
     // some files are not referenced explicitly, copy them.
     new CopyWebpackPlugin([
-      {from: './app/views', to: utils.formatPath('./views')},
+      {from: './src/views', to: utils.formatPath('./views')},
       {from: path.resolve(imagesPath, './appstore'), to: utils.formatPath('images/appstore')},
       {from: path.resolve(imagesPath, './help'), to: utils.formatPath('images/help')},
       {from: path.resolve(imagesPath, './waldur'), to: utils.formatPath('images/waldur')},
@@ -160,12 +170,11 @@ module.exports = {
       },
       extractStrings: {
         patterns: [
-          'app/views/**/*.html',
-          'app/scripts/components/**/*.html',
-          'app/scripts/**/*.js',
-          'app/scripts/**/*.jsx',
-          'app/scripts/**/*.ts',
-          'app/scripts/**/*.tsx',
+          'src/**/*.html',
+          'src/**/*.js',
+          'src/**/*.jsx',
+          'src/**/*.ts',
+          'src/**/*.tsx',
         ],
         destination: path.resolve('./i18n/template.pot'),
         lineNumbers: false,
