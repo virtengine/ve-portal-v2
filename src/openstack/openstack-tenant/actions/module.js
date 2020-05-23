@@ -1,20 +1,13 @@
-import actions from './index';
-import openstackTenantChangePackageDialog from './change-package-dialog';
-import openstackTenantRequestCustomFlavour from './request-custom-flavour';
-import openstackTenantRequestDirectAccess from './request-direct-access';
-import openstackTenantChangePackageService from './change-package-service';
-import openstackTenantAssignPackageDialog from './assign-package-dialog';
+import { ActionConfigurationRegistry } from '@waldur/resource/actions/action-configuration';
 
-// @ngInject
-function actionConfig(ActionConfigurationProvider) {
-  ActionConfigurationProvider.register('OpenStack.Tenant', actions);
-}
+import openstackTenantRequestDirectAccess from './request-direct-access';
+
+import actions from './index';
 
 export default module => {
-  module.config(actionConfig);
-  module.component('openstackTenantChangePackageDialog', openstackTenantChangePackageDialog);
-  module.component('openstackTenantRequestCustomFlavour', openstackTenantRequestCustomFlavour);
-  module.component('openstackTenantRequestDirectAccess', openstackTenantRequestDirectAccess);
-  module.service('openstackTenantChangePackageService', openstackTenantChangePackageService);
-  module.component('openstackTenantAssignPackageDialog', openstackTenantAssignPackageDialog);
+  ActionConfigurationRegistry.register('OpenStack.Tenant', actions);
+  module.component(
+    'openstackTenantRequestDirectAccess',
+    openstackTenantRequestDirectAccess,
+  );
 };

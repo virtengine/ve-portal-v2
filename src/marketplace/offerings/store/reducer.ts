@@ -1,7 +1,6 @@
 import * as constants from './constants';
 
 const INITIAL_STATE = {
-  bookings: {},
   step: 'Overview',
   loading: true,
   loaded: false,
@@ -9,6 +8,7 @@ const INITIAL_STATE = {
   categories: [],
   plugins: {},
   offering: {},
+  isAddingScreenshot: false,
 };
 
 export const offeringReducer = (state = INITIAL_STATE, action) => {
@@ -26,6 +26,12 @@ export const offeringReducer = (state = INITIAL_STATE, action) => {
         loading: true,
         loaded: false,
         erred: false,
+      };
+
+    case constants.IS_ADDING_OFFERING_SCREENSHOT:
+      return {
+        ...state,
+        isAddingScreenshot: payload.isAdding,
       };
 
     case constants.LOAD_DATA_SUCCESS:
@@ -51,15 +57,6 @@ export const offeringReducer = (state = INITIAL_STATE, action) => {
         loading: true,
         loaded: false,
         erred: false,
-      };
-    case constants.BOOKINGS_SET:
-      const { offeringId, items } = payload;
-      return {
-        ...state,
-        bookings: {
-          ...state.bookings,
-          [offeringId]: items,
-        },
       };
     default:
       return state;

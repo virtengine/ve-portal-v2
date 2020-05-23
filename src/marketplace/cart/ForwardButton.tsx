@@ -4,17 +4,18 @@ import { compose } from 'redux';
 import { createSelector } from 'reselect';
 
 import { withTranslation, TranslateProps } from '@waldur/i18n';
-import ActionButton from '@waldur/table-react/ActionButton';
+import { ActionButton } from '@waldur/table-react/ActionButton';
 import { isStaff } from '@waldur/workspace/selectors';
 
 import { orderCanBeApproved } from '../orders/store/selectors';
 import { OrderItemResponse } from '../orders/types';
+
 import { createOrderRequest } from './store/actions';
 import {
   getItems,
   isCreatingOrder,
   allTermsOfServiceAgreed,
-  allOfferingsPrivate
+  allOfferingsPrivate,
 } from './store/selectors';
 import { OuterState } from './types';
 
@@ -44,13 +45,15 @@ export const PureForwardButton = (props: PureForwardButton) => (
 );
 
 const ForwardButtonComponent = (props: ForwardButtonComponentProps) =>
-  props.items.length > 0 ?
+  props.items.length > 0 ? (
     props.orderCanBeApproved ? (
       <PureForwardButton
         title={props.translate('Purchase')}
         action={props.createOrder}
         disabled={props.disabled}
-        tooltip={props.translate('You have the right to purchase service without additional approval.')}
+        tooltip={props.translate(
+          'You have the right to purchase service without additional approval.',
+        )}
       />
     ) : (
       <PureForwardButton
@@ -58,13 +61,14 @@ const ForwardButtonComponent = (props: ForwardButtonComponentProps) =>
         action={props.createOrder}
         disabled={props.disabled}
       />
-    ) : null;
+    )
+  ) : null;
 
 const orderCanBeAutoapproved = createSelector(
   isStaff,
   allOfferingsPrivate,
   orderCanBeApproved,
-  (staff, isPrivate, permissions) => staff || isPrivate || permissions
+  (staff, isPrivate, permissions) => staff || isPrivate || permissions,
 );
 
 const mapStateToProps = (state: OuterState) => ({
@@ -74,8 +78,8 @@ const mapStateToProps = (state: OuterState) => ({
 });
 
 const enhance = compose(
-  connect(mapStateToProps, {createOrder: createOrderRequest}),
+  connect(mapStateToProps, { createOrder: createOrderRequest }),
   withTranslation,
 );
 
-export const ForwardButton = enhance(ForwardButtonComponent) as React.ComponentClass<{}>;
+export const ForwardButton = enhance(ForwardButtonComponent);

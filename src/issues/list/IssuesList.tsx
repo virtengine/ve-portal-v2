@@ -4,6 +4,7 @@ import { connect } from 'react-redux';
 import { formatDate, formatRelative } from '@waldur/core/dateUtils';
 import { Link } from '@waldur/core/Link';
 import { translate } from '@waldur/i18n';
+import { IssuesListPlaceholder } from '@waldur/issues/list/IssuesListPlaceholder';
 import { connectAngularComponent } from '@waldur/store/connect';
 import { Table, connectTable, createFetcher } from '@waldur/table-react';
 import { TableProps } from '@waldur/table-react/Table';
@@ -11,6 +12,7 @@ import { Column } from '@waldur/table-react/types';
 import { getUser } from '@waldur/workspace/selectors';
 
 import { IssueTypeIcon } from '../types/IssueTypeIcon';
+
 import { IssueCreateButton } from './IssueCreateButton';
 
 interface OwnProps {
@@ -24,7 +26,7 @@ interface IssueTableProps extends TableProps, OwnProps {
   filterColumns(cols: Column[]): Column[];
 }
 
-export const TableComponent: React.SFC<IssueTableProps> = props => {
+export const TableComponent: React.FC<IssueTableProps> = props => {
   const { filterColumns, supportOrStaff, hiddenColumns, ...rest } = props;
   const columns = filterColumns([
     {
@@ -32,7 +34,7 @@ export const TableComponent: React.SFC<IssueTableProps> = props => {
       render: ({ row }) => (
         <Link
           state="support.detail"
-          params={{uuid: row.uuid}}
+          params={{ uuid: row.uuid }}
           label={row.key || 'N/A'}
         />
       ),
@@ -42,21 +44,27 @@ export const TableComponent: React.SFC<IssueTableProps> = props => {
       title: translate('Status'),
       render: ({ row }) => (
         <>
-          <IssueTypeIcon type={row.type} />
-          {' '}
-          {row.status || 'N/A'}
+          <IssueTypeIcon type={row.type} /> {row.status || 'N/A'}
         </>
       ),
       orderField: 'status',
     },
     {
       title: translate('Title'),
-      render: ({ row }) => <span className="ellipsis" style={{width: 150}}>{row.summary}</span>,
+      render: ({ row }) => (
+        <span className="ellipsis" style={{ width: 150 }}>
+          {row.summary}
+        </span>
+      ),
       orderField: 'summary',
     },
     {
       title: translate('Description'),
-      render: ({ row }) => <span className="ellipsis" style={{width: 150}}>{row.description}</span>,
+      render: ({ row }) => (
+        <span className="ellipsis" style={{ width: 150 }}>
+          {row.description}
+        </span>
+      ),
     },
     {
       title: translate('Service type'),
@@ -105,8 +113,9 @@ export const TableComponent: React.SFC<IssueTableProps> = props => {
       verboseName={translate('support requests')}
       hasQuery={true}
       showPageSizeSelector={true}
+      placeholderComponent={<IssuesListPlaceholder />}
       enableExport={true}
-      actions={props.scope && <IssueCreateButton scope={props.scope}/>}
+      actions={props.scope && <IssueCreateButton scope={props.scope} />}
     />
   );
 };
@@ -116,7 +125,7 @@ TableComponent.defaultProps = {
 };
 
 const exportRow = (row, props) => {
-  const {supportOrStaff, hiddenColumns} = props;
+  const { supportOrStaff, hiddenColumns = [] } = props;
   const result = [
     row.key || 'N/A',
     row.status || 'N/A',
@@ -142,13 +151,15 @@ const exportRow = (row, props) => {
 };
 
 const exportFields = props => {
-  const {supportOrStaff, hiddenColumns} = props;
+  const { supportOrStaff, hiddenColumns = [] } = props;
   return [
     translate('Key'),
     translate('Status'),
     translate('Title'),
     translate('Description'),
-    supportOrStaff && !hiddenColumns.includes('resource_type') && translate('Service type'),
+    supportOrStaff &&
+      !hiddenColumns.includes('resource_type') &&
+      translate('Service type'),
     !hiddenColumns.includes('customer') && translate('Organization'),
     translate('Caller'),
     supportOrStaff && translate('Reporter'),
@@ -173,6 +184,8 @@ const mapStateToProps = state => ({
 
 const connector = connect(mapStateToProps);
 
-export const IssuesList = connector(connectTable(TableOptions)(TableComponent)) as React.ComponentType<OwnProps>;
+export const IssuesList = connector(
+  connectTable(TableOptions)(TableComponent),
+) as React.ComponentType<OwnProps>;
 
 export default connectAngularComponent(IssuesList, ['filter']);

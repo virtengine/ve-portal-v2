@@ -7,12 +7,12 @@ export const defaultFieldOptions = {
     altInputFormats: ['M!/d!/yyyy'],
     dateOptions: {
       minDate: new Date(),
-      startingDay: 1
-    }
-  }
+      startingDay: 1,
+    },
+  },
 };
 
-export const defaultEditAction = {
+export const DEFAULT_EDIT_ACTION = {
   title: gettext('Edit'),
   enabled: true,
   type: 'form',
@@ -23,15 +23,15 @@ export const defaultEditAction = {
       label: gettext('Name'),
       maxlength: 150,
       required: true,
-      type: 'string'
+      type: 'string',
     },
     description: {
       label: gettext('Description'),
       maxlength: 500,
       required: false,
-      type: 'text'
-    }
-  }
+      type: 'text',
+    },
+  },
 };
 
 export const latinName = {

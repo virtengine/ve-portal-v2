@@ -13,16 +13,20 @@ interface ActionDialogProps {
   error?: string;
 }
 
-export const ActionDialog: React.SFC<ActionDialogProps> = props => (
+export const ActionDialog: React.FC<ActionDialogProps> = props => (
   <form onSubmit={props.onSubmit}>
     <ModalDialog
       title={props.title}
       footer={
         <div>
-          <SubmitButton submitting={props.submitting} label={props.submitLabel} />
+          <SubmitButton
+            submitting={props.submitting}
+            label={props.submitLabel}
+          />
           <CloseDialogButton />
         </div>
-      }>
+      }
+    >
       <FormContainer submitting={props.submitting}>
         {props.children}
       </FormContainer>

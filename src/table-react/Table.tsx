@@ -30,14 +30,14 @@ export interface TableProps<RowType = any> extends TranslateProps, TableState {
   resetPagination?: () => void;
   sortList?(sorting: Sorting): void;
   initialSorting?: Sorting;
-  expandableRow?: React.ComponentType<{row: any}>;
+  expandableRow?: React.ComponentType<{ row: any }>;
   toggleRow?(row: any): void;
   toggled?: object;
   enableExport?: boolean;
   placeholderComponent?: React.ReactNode;
 }
 
-class Table extends React.Component<TableProps> {
+class Table<RowType = any> extends React.Component<TableProps<RowType>> {
   static defaultProps = {
     rows: [],
     columns: [],
@@ -47,43 +47,43 @@ class Table extends React.Component<TableProps> {
   render() {
     return (
       <div className="table-responsive dataTables_wrapper">
-        {this.props.blocked && <div className="table-block"/>}
-        <TableButtons {...this.props}/>
+        {this.props.blocked && <div className="table-block" />}
+        <TableButtons {...this.props} />
         {this.props.hasQuery && (
-          <TableQuery
-            query={this.props.query}
-            setQuery={this.props.setQuery}
-          />
+          <TableQuery query={this.props.query} setQuery={this.props.setQuery} />
         )}
-        {this.props.showPageSizeSelector &&
+        {this.props.showPageSizeSelector && (
           <TablePageSize
             pageSize={this.props.pagination.pageSize}
             updatePageSize={this.props.updatePageSize}
           />
-        }
-        {this.hasRows() && <TableInfo {...this.props.pagination}/>}
-        {this.renderBody()}
-        {
-          this.hasRows() &&
+        )}
+        {this.hasRows() && <TableInfo {...this.props.pagination} />}
+        <div className="table-container">{this.renderBody()}</div>
+        {this.hasRows() && (
           <TablePagination
             {...this.props.pagination}
             gotoPage={this.props.gotoPage}
           />
-        }
+        )}
       </div>
     );
   }
 
   renderBody() {
-    if (this.props.loading && (this.props.sorting && !this.props.sorting.loading)) {
-      return <LoadingSpinner/>;
+    if (
+      this.props.loading &&
+      this.props.sorting &&
+      !this.props.sorting.loading
+    ) {
+      return <LoadingSpinner />;
     }
 
     if (this.props.error) {
       return (
         <div>
           <p>{this.props.translate('Unable to fetch data.')}</p>
-          <TableRefreshButton {...this.props}/>
+          <TableRefreshButton {...this.props} />
         </div>
       );
     }
@@ -93,16 +93,16 @@ class Table extends React.Component<TableProps> {
         return this.props.placeholderComponent;
       } else {
         const { query, verboseName } = this.props;
-        return (<TablePlaceholder {...{query, verboseName}} />);
+        return <TablePlaceholder {...{ query, verboseName }} />;
       }
     }
 
     return (
       <>
-        {(this.props.sorting && this.props.sorting.loading) && (
+        {this.props.sorting && this.props.sorting.loading && (
           <>
             <div className="blocking-layer">
-              <LoadingSpinner/>
+              <LoadingSpinner />
             </div>
           </>
         )}
@@ -133,19 +133,28 @@ class Table extends React.Component<TableProps> {
     }
   }
 
-  componentWillUnmount() {
-    this.props.resetPagination();
-  }
-
   componentDidUpdate(prevProps: TableProps) {
-    if (prevProps.pagination.currentPage !== this.props.pagination.currentPage) {
+    if (
+      prevProps.pagination.currentPage !== this.props.pagination.currentPage
+    ) {
       this.props.fetch();
-    } else if (prevProps.pagination.pageSize !== this.props.pagination.pageSize) {
+    } else if (
+      prevProps.pagination.pageSize !== this.props.pagination.pageSize
+    ) {
+      if (
+        this.props.pagination.pageSize * this.props.pagination.currentPage >=
+        this.props.pagination.resultCount
+      ) {
+        this.props.resetPagination();
+      }
       this.props.fetch();
     } else if (prevProps.query !== this.props.query) {
       this.props.resetPagination();
       this.props.fetch();
-    } else if (prevProps.sorting !== this.props.sorting && this.props.sorting.loading) {
+    } else if (
+      prevProps.sorting !== this.props.sorting &&
+      this.props.sorting.loading
+    ) {
       this.props.fetch();
     }
   }

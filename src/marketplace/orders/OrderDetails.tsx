@@ -1,11 +1,11 @@
 import * as React from 'react';
 import * as Col from 'react-bootstrap/lib/Col';
 import * as Row from 'react-bootstrap/lib/Row';
+import useInterval from 'react-use/lib/useInterval';
 
 import { LoadingSpinner } from '@waldur/core/LoadingSpinner';
 import { Query } from '@waldur/core/Query';
 import { $state } from '@waldur/core/services';
-import { useInterval } from '@waldur/core/useInterval';
 import { getUUID } from '@waldur/core/utils';
 import { translate } from '@waldur/i18n';
 import { getOrderDetails } from '@waldur/marketplace/common/api';
@@ -42,15 +42,16 @@ const OrderRefreshButton = props => (
     className="btn btn-default btn-sm m-r-sm"
     onClick={props.loadData}
   >
-    <i className="fa fa-refresh"/>
-    {' '}
-    {translate('Refresh')}
+    <i className="fa fa-refresh" /> {translate('Refresh')}
   </button>
 );
 
 const OrderDetailsComponent = props => {
   // Refresh order details each 5 seconds until it is switched from pending state to terminal state
-  useInterval(props.loadData, props.data.order.state === 'executing' ? 5000 : null);
+  useInterval(
+    props.loadData,
+    props.data.order.state === 'executing' ? 5000 : null,
+  );
   return (
     <Row>
       <Col lg={8}>
@@ -61,13 +62,15 @@ const OrderDetailsComponent = props => {
           editable={false}
         />
         <div className="text-right">
-          <OrderRefreshButton loadData={props.loadData}/>
+          <OrderRefreshButton loadData={props.loadData} />
           {props.orderCanBeApproved && props.data.step === 'Approve' && (
             <>
               <ApproveButton
                 submitting={props.stateChangeStatus.approving}
                 onClick={() => props.approveOrder($state.params.order_uuid)}
-                tooltip={translate('You need approval to finish purchasing of services.')}
+                tooltip={translate(
+                  'You need approval to finish purchasing of services.',
+                )}
                 className="btn btn-primary btn-sm m-r-xs"
               />
               <RejectButton
@@ -79,22 +82,19 @@ const OrderDetailsComponent = props => {
         </div>
       </Col>
       <Col lg={4}>
-        <OrderSummary
-          total={props.data.total_cost}
-          file={props.data.file}
-        />
+        <OrderSummary total={props.data.total_cost} file={props.data.file} />
       </Col>
     </Row>
   );
 };
 
-export const OrderDetails: React.SFC<OrderDetailsProps> = props => (
+export const OrderDetails: React.FC<OrderDetailsProps> = props => (
   <Query variables={props.stateChangeStatus} loader={loadOrder}>
     {({ loading, loaded, error, data, loadData }) => {
       // Don't render loading indicator if order item is refreshing
       // since if it is in pending state it is refreshed via periodic polling
       if (loading && !loaded) {
-        return <LoadingSpinner/>;
+        return <LoadingSpinner />;
       }
       if (error) {
         return (
@@ -103,7 +103,9 @@ export const OrderDetails: React.SFC<OrderDetailsProps> = props => (
           </h3>
         );
       }
-      return <OrderDetailsComponent {...props} data={data} loadData={loadData}/>;
+      return (
+        <OrderDetailsComponent {...props} data={data} loadData={loadData} />
+      );
     }}
   </Query>
 );

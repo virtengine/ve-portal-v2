@@ -1,15 +1,13 @@
 import { Offering, Plan } from '@waldur/marketplace/types';
 import { Customer, Project } from '@waldur/workspace/types';
 
-import { OfferingFormData } from './types';
-
 export interface Limits {
   [key: string]: number;
 }
 
 export interface OfferingFormData {
   plan?: Plan;
-  attributes?: {[key: string]: any};
+  attributes?: { [key: string]: any };
   project?: Project;
   limits?: Limits;
 }
@@ -22,4 +20,5 @@ export interface OrderSummaryProps {
   formData: OfferingFormData;
   formValid: boolean;
   updateMode?: boolean;
+  extraComponent?: React.ComponentType<any>;
 }

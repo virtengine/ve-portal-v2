@@ -6,8 +6,7 @@ export type ResourceState =
   | 'Update Scheduled'
   | 'Updating'
   | 'Deletion Scheduled'
-  | 'Deleting'
-  ;
+  | 'Deleting';
 
 export interface BaseResource {
   name: string;
@@ -31,7 +30,7 @@ export interface Resource extends BaseResource {
   error_message?: string;
   action?: string;
   action_details?: {
-    message: string
+    message: string;
   };
 }
 
@@ -43,7 +42,15 @@ export interface Volume extends Resource {
   service_uuid?: string;
 }
 
+interface InternalIp {
+  ip4_address?: string;
+  mac_address?: string;
+  subnet_name?: string;
+  subnet_cidr?: string;
+}
+
 export interface VirtualMachine extends Resource {
+  internal_ips_set?: InternalIp[];
   cores: number;
   disk: number;
   ram: number;

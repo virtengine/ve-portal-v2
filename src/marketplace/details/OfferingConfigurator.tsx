@@ -1,4 +1,5 @@
 import * as React from 'react';
+import { useEffect } from 'react';
 import { connect } from 'react-redux';
 import { compose } from 'redux';
 import { reduxForm, InjectedFormProps } from 'redux-form';
@@ -19,18 +20,33 @@ export interface PureOfferingConfiguratorProps {
   limits: string[];
 }
 
-export const PureOfferingConfigurator = (props: PureOfferingConfiguratorProps & InjectedFormProps) => {
+export const PureOfferingConfigurator = (
+  props: PureOfferingConfiguratorProps & InjectedFormProps,
+) => {
   const FormComponent = getFormComponent(props.offering.type);
   if (!FormComponent) {
     return null;
   }
+  useEffect(() => {
+    const initializePlanField = () => {
+      const initialData: any = {};
+      if (props.plan) {
+        initialData.plan = props.plan;
+      } else if (props.offering.plans.length === 1) {
+        initialData.plan = props.offering.plans[0];
+      }
+      props.initialize(initialData);
+    };
+
+    initializePlanField();
+  }, []);
   return <FormComponent {...props} />;
 };
 
 const storeConnector = connect<
   { project: Project },
   {},
-  { offering: Offering },
+  { offering: Offering; limits: string[] },
   OuterState
 >(state => ({ project: getProject(state) }));
 
@@ -50,9 +66,6 @@ const formConnector = reduxForm<
   PureOfferingConfiguratorProps
 >({ form: FORM_ID, validate, touchOnChange: true });
 
-const enhance = compose(
-  storeConnector,
-  formConnector
-);
+const enhance = compose(storeConnector, formConnector);
 
-export const OfferingConfigurator = enhance(PureOfferingConfigurator) as React.ComponentClass<any>;
+export const OfferingConfigurator = enhance(PureOfferingConfigurator);

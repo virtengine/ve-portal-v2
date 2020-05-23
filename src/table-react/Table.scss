@@ -32,11 +32,23 @@
 // https://stackoverflow.com/a/26021872/6917997
 @media (max-width: 767px) {
   .table-responsive .dropdown-menu {
-      position: static !important;
+    position: static !important;
+  }
+
+  .dataTables_wrapper {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding-top: 12px;
+  }
+
+  .table-container {
+    width: 100%;
+    overflow-x: scroll;
   }
 }
 @media (min-width: 768px) {
   .table-responsive {
-      overflow: inherit;
+    overflow: inherit;
   }
 }

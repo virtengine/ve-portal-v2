@@ -1,9 +1,10 @@
 import * as React from 'react';
 import { compose } from 'redux';
-import { Field } from 'redux-form';
+import { Field, FormSection } from 'redux-form';
 
 import { required } from '@waldur/core/validators';
 import { withTranslation, TranslateProps } from '@waldur/i18n';
+import { WysiwygEditor } from '@waldur/marketplace/offerings/create/WysiwygEditor';
 import { OfferingComponent } from '@waldur/marketplace/types';
 
 import { ArticleCodeField } from '../ArticleCodeField';
@@ -22,9 +23,9 @@ interface PlanFormProps extends TranslateProps {
   plan: string;
 }
 
-const PlanNameField = props => (
+const PlanNameField = () => (
   <Field
-    name={`${props.plan}.name`}
+    name="name"
     type="text"
     component="input"
     className="form-control"
@@ -32,41 +33,34 @@ const PlanNameField = props => (
   />
 );
 
-const PlanDescriptionField = props => (
-  <Field
-    name={`${props.plan}.description`}
-    component="textarea"
-    rows="5"
-    maxLength="500"
-    className="form-control"
-  />
+const PlanDescriptionField = () => (
+  <Field name="description" component={WysiwygEditor} />
 );
 
 const enhance = compose(connectPlanComponents, withTranslation);
 
 export const PlanForm = enhance((props: PlanFormProps) => (
-  <>
+  <FormSection name={props.plan}>
     <FormGroup label={props.translate('Name')} required={true}>
-      <PlanNameField plan={props.plan}/>
+      <PlanNameField />
     </FormGroup>
     <FormGroup label={props.translate('Price')}>
-      <PriceField plan={props.plan}/>
+      <PriceField plan={props.plan} />
     </FormGroup>
     <FormGroup label={props.translate('Billing period')} required={true}>
-      <PlanBillingPeriodField plan={props.plan}/>
+      <PlanBillingPeriodField />
     </FormGroup>
     <FormGroup label={props.translate('Description')}>
-      <PlanDescriptionField plan={props.plan}/>
+      <PlanDescriptionField />
     </FormGroup>
-    <ArticleCodeField name={`${props.plan}.article_code`}/>
-    <ProductCodeField name={`${props.plan}.product_code`}/>
+    <ArticleCodeField />
+    <ProductCodeField />
     {props.components && props.components.length > 0 && (
       <PlanComponents
-        plan={props.plan}
-        components={props.components}
+        components={props.components.filter(component => component.type)}
         limits={props.limits}
         archived={props.archived}
       />
     )}
-  </>
+  </FormSection>
 ));

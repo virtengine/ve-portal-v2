@@ -1,22 +1,30 @@
 import * as React from 'react';
-import { ReactNode } from 'react';
 
-import { defaultCurrency } from '@waldur/core/services';
+import { $filter, ENV } from '@waldur/core/services';
 
 import { Component } from './types';
 
-export const ComponentRow = (props: {component: Component, className?: string, field: ReactNode}) => (
+interface Props {
+  offeringComponent: Component;
+  className?: string;
+}
+
+export const ComponentRow: React.FC<Props> = props => (
   <tr>
     <td>
-      <p className={props.className}>{props.component.label}</p>
+      <p className="form-control-static">{props.offeringComponent.name}</p>
     </td>
-    <td>{props.field}</td>
+    <td className={props.className}>{props.children}</td>
     <td>
-      <p className={props.className}>{props.component.units}</p>
+      <p className="form-control-static">
+        {props.offeringComponent.measured_unit || 'N/A'}
+      </p>
     </td>
-    {props.component.prices.map((price, innerIndex) => (
+    {props.offeringComponent.prices.map((price, innerIndex) => (
       <td key={innerIndex}>
-        <p className={props.className}>{defaultCurrency(price)}</p>
+        <p className="form-control-static">
+          {$filter('currency')(price, ENV.currency, 3)}
+        </p>
       </td>
     ))}
   </tr>

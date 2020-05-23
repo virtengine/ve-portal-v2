@@ -2,16 +2,25 @@ import { connect } from 'react-redux';
 import { compose } from 'redux';
 
 import { withTranslation } from '@waldur/i18n';
-import { showComponentsList } from '@waldur/marketplace/common/registry';
+import {
+  showComponentsList,
+  showOfferingLimits,
+} from '@waldur/marketplace/common/registry';
 
-import { removeOfferingComponent, removeOfferingQuotas } from '../store/actions';
-import { getType } from '../store/selectors';
+import {
+  removeOfferingComponent,
+  removeOfferingQuotas,
+} from '../store/actions';
+import { getType, getComponents } from '../store/selectors';
+
 import { AccountingStep } from './AccountingStep';
 
 const mapStateToProps = state => {
   const type = getType(state);
   const showComponents = type && showComponentsList(type);
-  return {showComponents, type};
+  const showLimits = type && showOfferingLimits(type);
+  const builtinComponents = type && getComponents(state, type);
+  return { showComponents, type, builtinComponents, showLimits };
 };
 
 const mapStateToDispatch = {
@@ -19,6 +28,9 @@ const mapStateToDispatch = {
   removeOfferingQuotas,
 };
 
-const connector = compose(connect(mapStateToProps, mapStateToDispatch), withTranslation);
+const connector = compose(
+  connect(mapStateToProps, mapStateToDispatch),
+  withTranslation,
+);
 
 export const AccountingStepContainer = connector(AccountingStep);

@@ -3,16 +3,17 @@ import {
   getServiceProviderList,
   getOfferingsList,
   getProjectList,
-  getCategories
+  getCategories,
 } from '@waldur/marketplace/common/api';
 
 export const organizationAutocomplete = (query: string) => {
   const params = {
     name: query,
+    has_resources: true,
     field: ['name', 'uuid'],
     o: 'name',
   };
-  return getCustomerList(params).then(options => ({options}));
+  return getCustomerList(params).then(options => ({ options }));
 };
 
 export const projectAutocomplete = (customer: string) => (query: string) => {
@@ -22,7 +23,7 @@ export const projectAutocomplete = (customer: string) => (query: string) => {
     field: ['name', 'uuid'],
     o: 'name',
   };
-  return getProjectList(params).then(options => ({options}));
+  return getProjectList(params).then(options => ({ options }));
 };
 
 export const providerAutocomplete = (query: string) => {
@@ -31,7 +32,7 @@ export const providerAutocomplete = (query: string) => {
     field: ['customer_name', 'customer_uuid'],
     o: 'customer_name',
   };
-  return getServiceProviderList(params).then(options => ({options}));
+  return getServiceProviderList(params).then(options => ({ options }));
 };
 
 export const categoryAutocomplete = (query: string) => {
@@ -40,7 +41,7 @@ export const categoryAutocomplete = (query: string) => {
     field: ['title', 'uuid'],
     o: 'title',
   };
-  return getCategories(params).then(options => ({options}));
+  return getCategories(params).then(options => ({ options }));
 };
 
 export const offeringsAutocomplete = (query: object) => {
@@ -50,5 +51,5 @@ export const offeringsAutocomplete = (query: object) => {
     state: 'Active',
     ...query,
   };
-  return getOfferingsList(params).then(options => ({options}));
+  return getOfferingsList(params).then(options => ({ options }));
 };

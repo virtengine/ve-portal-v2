@@ -3,7 +3,7 @@ import * as React from 'react';
 
 import { LoadingSpinner } from '@waldur/core/LoadingSpinner';
 import { translate } from '@waldur/i18n';
-import { LoadingOverlay } from '@waldur/issues/LoadingOverlay';
+import { LoadingOverlay } from '@waldur/issues/comments/LoadingOverlay';
 
 import { comment, issue } from './fixture';
 import { PureIssueCommentsContainer } from './IssueCommentsContainer';
@@ -16,7 +16,8 @@ const initialProps = {
   fetchComments: () => null,
   setIssue: x => x,
 };
-const renderWrapper = (props?) => shallow(<PureIssueCommentsContainer {...initialProps} {...props} />);
+const renderWrapper = (props?) =>
+  shallow(<PureIssueCommentsContainer {...initialProps} {...props} />);
 
 const getLoadingSpinner = container => container.find(LoadingSpinner);
 const getIssueCommentsList = container => container.find(IssueCommentsList);

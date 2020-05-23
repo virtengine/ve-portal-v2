@@ -4,7 +4,7 @@ import { compose } from 'redux';
 
 import { withTranslation, TranslateProps } from '@waldur/i18n';
 import { showError, showSuccess } from '@waldur/store/coreSaga';
-import ActionButton from '@waldur/table-react/ActionButton';
+import { ActionButton } from '@waldur/table-react/ActionButton';
 import { deleteEntity } from '@waldur/table-react/actions';
 
 import { showKeyRemoveConfirmation } from './actions';
@@ -12,8 +12,10 @@ import { removeKey } from './api';
 import * as constants from './constants';
 
 const mapDispatchToProps = dispatch => ({
-  showConfirmDialog: (action: () => void) => dispatch(showKeyRemoveConfirmation(action)),
-  removeEntity: (id: string) => dispatch(deleteEntity(constants.keysListTable, id)),
+  showConfirmDialog: (action: () => void) =>
+    dispatch(showKeyRemoveConfirmation(action)),
+  removeEntity: (id: string) =>
+    dispatch(deleteEntity(constants.keysListTable, id)),
   showError: (message: string) => dispatch(showError(message)),
   showSuccess: (message: string) => dispatch(showSuccess(message)),
 });
@@ -31,18 +33,19 @@ interface DispatchProps {
 
 interface KeyRemoveButtonState {
   removing: boolean;
-  removed: boolean;
 }
 
-class KeyRemoveButtonComponent extends React.Component<OwnProps & DispatchProps & TranslateProps, KeyRemoveButtonState> {
+class KeyRemoveButtonComponent extends React.Component<
+  OwnProps & DispatchProps & TranslateProps,
+  KeyRemoveButtonState
+> {
   state = {
     removing: false,
-    removed: false,
   };
 
   async removeKey(id: string) {
     try {
-      this.setState({removing: true});
+      this.setState({ removing: true });
       await removeKey(id);
       this.props.removeEntity(id);
       this.props.showSuccess(this.props.translate('SSH key has been removed.'));
@@ -56,7 +59,9 @@ class KeyRemoveButtonComponent extends React.Component<OwnProps & DispatchProps 
       <>
         <ActionButton
           title={this.props.translate('Remove')}
-          action={() => this.props.showConfirmDialog(() => this.removeKey(this.props.uuid))}
+          action={() =>
+            this.props.showConfirmDialog(() => this.removeKey(this.props.uuid))
+          }
           icon={this.state.removing ? 'fa fa-spinner fa-spin' : 'fa fa-trash'}
           disabled={this.state.removing}
         />

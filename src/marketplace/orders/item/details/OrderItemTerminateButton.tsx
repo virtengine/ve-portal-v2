@@ -5,7 +5,7 @@ import { format } from '@waldur/core/ErrorMessageFormatter';
 import { translate } from '@waldur/i18n';
 import { terminateOrderItem } from '@waldur/marketplace/common/api';
 import { showSuccess, showError } from '@waldur/store/coreSaga';
-import ActionButton from '@waldur/table-react/ActionButton';
+import { ActionButton } from '@waldur/table-react/ActionButton';
 
 interface Props {
   uuid: string;
@@ -23,13 +23,17 @@ class PureOrderItemTerminateButton extends React.Component<Props> {
     this.setState({ loading: true });
     try {
       await terminateOrderItem(this.props.uuid);
-      this.props.showSuccess(translate('Order item has cancel has been scheduled.'));
+      this.props.showSuccess(
+        translate('Order item has cancel has been scheduled.'),
+      );
       this.props.loadData();
     } catch (response) {
-      this.props.showSuccess(`${translate('Unable to cancel order item.')} ${format(response)}`);
+      this.props.showSuccess(
+        `${translate('Unable to cancel order item.')} ${format(response)}`,
+      );
     }
     this.setState({ loading: false });
-  }
+  };
 
   render() {
     return (
@@ -44,4 +48,7 @@ class PureOrderItemTerminateButton extends React.Component<Props> {
   }
 }
 
-export const OrderItemTerminateButton = connect(null, {showSuccess, showError})(PureOrderItemTerminateButton);
+export const OrderItemTerminateButton = connect(null, {
+  showSuccess,
+  showError,
+})(PureOrderItemTerminateButton);

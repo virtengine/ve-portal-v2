@@ -4,7 +4,7 @@ import { compose } from 'redux';
 
 import { withTranslation } from '@waldur/i18n/translate';
 import { openModalDialog } from '@waldur/modal/actions';
-import ActionButton from '@waldur/table-react/ActionButton';
+import { ActionButton } from '@waldur/table-react/ActionButton';
 
 const PureJiraIssueCreateButton = props => {
   const { translate, onClick } = props;
@@ -12,12 +12,13 @@ const PureJiraIssueCreateButton = props => {
     <ActionButton
       title={translate('Create request')}
       action={onClick}
-      icon="fa fa-plus"/>
+      icon="fa fa-plus"
+    />
   );
 };
 
 const createRequestDialog = project =>
-  openModalDialog('jiraIssueCreateDialog', {resolve: {project}});
+  openModalDialog('jiraIssueCreateDialog', { resolve: { project } });
 
 const mapDispatchToProps = (dispatch, ownProps) => ({
   onClick: () => dispatch(createRequestDialog(ownProps.project)),

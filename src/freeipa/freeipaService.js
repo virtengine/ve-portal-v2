@@ -1,21 +1,25 @@
-export default class FreeIPAService{
+import Axios from 'axios';
+
+export default class FreeIPAService {
   // @ngInject
-  constructor($http, ENV) {
+  constructor(ENV) {
     this.endpoint = `${ENV.apiEndpoint}api/freeipa-profiles/`;
-    this.$http = $http;
   }
 
-  createProfile(username, agreeWithPolicy){
-    return this.$http.post(this.endpoint, {username, agree_with_policy: agreeWithPolicy});
+  createProfile(username, agreeWithPolicy) {
+    return Axios.post(this.endpoint, {
+      username,
+      agree_with_policy: agreeWithPolicy,
+    });
   }
 
   getProfile(user) {
-    return this.$http.get(this.endpoint, {params: {user: user.uuid}});
+    return Axios.get(this.endpoint, { params: { user: user.uuid } });
   }
 
   resourceAction(uuid, action) {
     let url = `${this.endpoint}${uuid}/${action}/`;
-    return this.$http.post(url);
+    return Axios.post(url);
   }
 
   enableProfile(uuid) {

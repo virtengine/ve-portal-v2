@@ -1,8 +1,9 @@
 import * as React from 'react';
 
-import { $sanitize } from '@waldur/core/services';
+import { FormattedHtml } from '@waldur/core/FormattedHtml';
 
 import { Attribute } from '../types';
+
 import { SecretField } from './SecretField';
 
 interface AttributeCellProps {
@@ -10,12 +11,15 @@ interface AttributeCellProps {
   attr: Attribute;
 }
 
-export const AttributeCell: React.SFC<AttributeCellProps> = ({ attr, value }) => {
+export const AttributeCell: React.FC<AttributeCellProps> = ({
+  attr,
+  value,
+}) => {
   switch (attr.type) {
     case 'list': {
       const titles = [];
       if (Array.isArray(value)) {
-        value.map(key => {
+        value.forEach(key => {
           const option = attr.options.find(item => item.key === key);
           if (option) {
             titles.push(option.title);
@@ -26,8 +30,9 @@ export const AttributeCell: React.SFC<AttributeCellProps> = ({ attr, value }) =>
         <>
           {titles.map((item, index) => (
             <span key={index}>
-              <i className="fa fa-check"/>{` ${item}`}
-              <br/>
+              <i className="fa fa-check" />
+              {` ${item}`}
+              <br />
             </span>
           ))}
         </>
@@ -35,7 +40,8 @@ export const AttributeCell: React.SFC<AttributeCellProps> = ({ attr, value }) =>
     }
 
     case 'boolean': {
-      const icon = value === true ? 'fa fa-check text-info' : 'fa fa-times text-danger';
+      const icon =
+        value === true ? 'fa fa-check text-info' : 'fa fa-times text-danger';
       return <i className={icon} />;
     }
 
@@ -45,11 +51,13 @@ export const AttributeCell: React.SFC<AttributeCellProps> = ({ attr, value }) =>
     }
 
     case 'password': {
-      return <>{typeof value === 'string' ? <SecretField value={value}/> : 'N/A'}</>;
+      return (
+        <>{typeof value === 'string' ? <SecretField value={value} /> : 'N/A'}</>
+      );
     }
 
     case 'html':
-      return <div dangerouslySetInnerHTML={{__html: $sanitize(value) as string}}/>;
+      return <FormattedHtml html={value.toString()} />;
 
     default:
       return <>{value === undefined ? 'N/A' : value}</>;

@@ -5,6 +5,8 @@ export interface User {
   uuid: string;
   customer_permissions?: Permission[];
   full_name?: string;
+  email?: string;
+  job_title?: string;
 }
 
 export interface UserDetails extends User {
@@ -12,6 +14,7 @@ export interface UserDetails extends User {
   civil_number: string;
   phone_number: string;
   email: string;
+  requested_email?: string;
   registration_method: string;
   preferred_language: string;
   competence: string;
@@ -24,13 +27,35 @@ export interface UserDetails extends User {
   is_active: boolean;
 }
 
+interface PaymentProfileAttributes {
+  end_date: string;
+  agreement_number: string;
+}
+
+export interface PaymentProfile {
+  is_active: boolean;
+  name: string;
+  payment_type: string;
+  payment_type_display: string;
+  organization_uuid: string;
+  url: string;
+  attributes: PaymentProfileAttributes;
+  uuid: string;
+}
+
 export interface Customer {
+  billing_price_estimate?: {
+    total: string;
+  };
   name: string;
   uuid: string;
   url: string;
   owners: User[];
   projects?: Project[];
   is_service_provider?: boolean;
+  abbreviation?: string;
+  payment_profiles?: PaymentProfile[];
+  agreement_number?: string;
 }
 
 interface Permission {
@@ -57,6 +82,7 @@ export interface Project {
   permissions: Permission[];
   quotas: Quota[];
   billing_price_estimate?: BillingPriceEstimate;
+  customer_uuid?: string;
 }
 
 export type WorkspaceType = 'user' | 'project' | 'organization' | 'support';

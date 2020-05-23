@@ -4,8 +4,6 @@
 /.pydevproject
 /.settings
 /.sublime
-/.vscode
-launch.json
 *.sw*
 /atlassian-ide-plugin.xml
 
@@ -19,12 +17,12 @@ node_modules
 npm-debug.log
 coverage
 cypress/videos
+cypress/screenshots/
 
 # config
 src/configs/config.json
 src/configs/test/config.json
 
-tslint/rules/*.js
 build/
 build.dev/
 build.dll/
@@ -33,3 +31,5 @@ stats.json
 # npm
 yarn-error.log
 package-lock.json
+
+*.stackdump

@@ -8,6 +8,8 @@ import { Section } from '@waldur/marketplace/types';
 
 import { FORM_ID } from '../store/constants';
 
+import { hasError } from './utils';
+
 const PureOverviewSummary = props => {
   const schema: Section = {
     title: translate('Overview'),
@@ -20,7 +22,7 @@ const PureOverviewSummary = props => {
       {
         key: 'description',
         title: translate('Description'),
-        type: 'string',
+        type: 'html',
       },
       {
         key: 'full_description',
@@ -45,23 +47,21 @@ const PureOverviewSummary = props => {
     ],
   };
 
-  if (!props.formData) {
-    return <p className="text-center">{translate('Offering is not configured yet.')}</p>;
-  }
-
   return (
     <>
       <h3>{translate('Overview')}</h3>
-      <AttributesTable
-        attributes={props.formData}
-        sections={[schema]}
-      />
+      {props.nameInvalid ? (
+        <p>{translate('Name is not valid.')}</p>
+      ) : (
+        <AttributesTable attributes={props.formData} sections={[schema]} />
+      )}
     </>
   );
 };
 
 const connector = connect(state => ({
   formData: getFormValues(FORM_ID)(state),
+  nameInvalid: hasError('name')(state),
 }));
 
 export const OverviewSummary = connector(PureOverviewSummary);

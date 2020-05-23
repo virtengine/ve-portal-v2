@@ -7,21 +7,17 @@ export type OrderState =
   | 'executing'
   | 'done'
   | 'terminated'
-  | 'erred'
-  ;
+  | 'erred';
 
 export interface StatusChange {
   approving: boolean;
   rejecting: boolean;
 }
 
-export type OrderItemType =
-  | 'Create'
-  | 'Update'
-  | 'Terminate'
-  ;
+export type OrderItemType = 'Create' | 'Update' | 'Terminate';
 
 export interface OrderItemResponse {
+  name?: string;
   uuid: string;
   type: OrderItemType;
   offering: string;
@@ -48,12 +44,16 @@ export interface OrderItemResponse {
   plan_description?: string;
   plan_unit?: BillingPeriod;
   project: string;
+  project_name: string;
+  customer_name?: string;
+  customer_uuid?: string;
   category_title?: string;
   category_uuid?: string;
   created: string;
   error_message?: string;
   limits: Record<string, number>;
   current_usages?: Record<string, number>;
+  scope?: string;
 }
 
 export interface OrderItemDetailsType extends OrderItemResponse {

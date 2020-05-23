@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 
 import { translate } from '@waldur/i18n';
 import { stateGo } from '@waldur/store/coreSaga';
-import ActionButton from '@waldur/table-react/ActionButton';
+import { ActionButton } from '@waldur/table-react/ActionButton';
 
 interface OwnProps {
   category_uuid: string;
@@ -23,9 +23,12 @@ const PureCreateResourceButton = (props: OwnProps & DispatchProps) => (
 
 const mapDispatchToProps = (dispatch, ownProps: OwnProps) => {
   return {
-    onClick: () => dispatch(stateGo('marketplace-category', {
-      category_uuid: ownProps.category_uuid,
-    })),
+    onClick: () =>
+      dispatch(
+        stateGo('marketplace-category', {
+          category_uuid: ownProps.category_uuid,
+        }),
+      ),
   };
 };
 

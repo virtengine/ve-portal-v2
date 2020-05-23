@@ -2,6 +2,7 @@ import * as React from 'react';
 import * as Tab from 'react-bootstrap/lib/Tab';
 import * as Tabs from 'react-bootstrap/lib/Tabs';
 import { connect } from 'react-redux';
+import useEffectOnce from 'react-use/lib/useEffectOnce';
 import { compose } from 'redux';
 
 import { LoadingSpinner } from '@waldur/core/LoadingSpinner';
@@ -28,15 +29,13 @@ interface ZabbixHostDetailsDialogProps extends TranslateProps {
 
 const DialogFooter = ({ host }) => (
   <>
-    <ZabbixHostDeleteButton host={host}/>
-    {' '}
-    <CloseDialogButton/>
+    <ZabbixHostDeleteButton host={host} /> <CloseDialogButton />
   </>
 );
 
 export const DialogBody = props => {
   if (props.loading) {
-    return <LoadingSpinner/>;
+    return <LoadingSpinner />;
   } else if (props.host) {
     let defaultTab = 1;
     if (props.host.state === 'OK') {
@@ -47,7 +46,7 @@ export const DialogBody = props => {
         <Tab eventKey={1} title={props.translate('Details')}>
           <div className="row m-t-md">
             <dl className="dl-horizontal resource-details-table col-sm-12">
-              <ZabbixHostSummary resource={props.host}/>
+              <ZabbixHostSummary resource={props.host} />
             </dl>
           </div>
         </Tab>
@@ -61,21 +60,17 @@ export const DialogBody = props => {
   }
 };
 
-class ZabbixHostDetailsDialog extends React.Component<ZabbixHostDetailsDialogProps> {
-  render() {
-    return (
-      <ModalDialog
-        title={this.props.translate('Monitoring details')}
-        footer={<DialogFooter host={this.props.host}/>}
-        children={<DialogBody {...this.props}/>}
-      />
-    );
-  }
-
-  componenDidMount() {
-    this.props.onFetch();
-  }
-}
+const ZabbixHostDetailsDialog: React.FC<ZabbixHostDetailsDialogProps> = props => {
+  useEffectOnce(props.onFetch);
+  return (
+    <ModalDialog
+      title={props.translate('Monitoring details')}
+      footer={<DialogFooter host={props.host} />}
+    >
+      <DialogBody {...props} />
+    </ModalDialog>
+  );
+};
 
 const mapStateToDispatch = (dispatch, ownProps) => ({
   onFetch: () => dispatch(fetchZabbixHost(ownProps.resolve.resource.uuid)),
@@ -86,4 +81,6 @@ const enhance = compose(
   withTranslation,
 );
 
-export default connectAngularComponent(enhance(ZabbixHostDetailsDialog), ['resolve']);
+export default connectAngularComponent(enhance(ZabbixHostDetailsDialog), [
+  'resolve',
+]);

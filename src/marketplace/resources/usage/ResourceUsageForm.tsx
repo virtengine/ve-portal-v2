@@ -3,7 +3,13 @@ import { Options } from 'react-select';
 import { InjectedFormProps, Field } from 'redux-form';
 
 import { required } from '@waldur/core/validators';
-import { FormContainer, NumberField, TextField, SelectField } from '@waldur/form-react';
+import {
+  FormContainer,
+  NumberField,
+  TextField,
+  SelectField,
+} from '@waldur/form-react';
+import { AwesomeCheckboxField } from '@waldur/form-react/AwesomeCheckboxField';
 import { translate } from '@waldur/i18n';
 import { OfferingComponent } from '@waldur/marketplace/types';
 
@@ -22,9 +28,7 @@ const StaticPlanField = () => (
     name="period"
     component={fieldProps => (
       <p>
-        <strong>{translate('Period')}</strong>:
-        {' '}
-        {fieldProps.input.value.label}
+        <strong>{translate('Period')}</strong>: {fieldProps.input.value.label}
       </p>
     )}
   />
@@ -44,7 +48,7 @@ export const ResourceUsageForm = (props: ResourceUsageFormProps) => {
         required={true}
         validate={required}
         placeholder={translate('Amount')}
-      />
+      />,
     );
     components.push(
       <TextField
@@ -52,26 +56,35 @@ export const ResourceUsageForm = (props: ResourceUsageFormProps) => {
         key={`${index}.description`}
         placeholder={translate('Comment')}
         hideLabel={true}
-      />
+      />,
+    );
+    components.push(
+      <AwesomeCheckboxField
+        name={`components.${component.type}.recurring`}
+        key={`${index}.recurring`}
+        label={translate('Reported value is reused every month until changed.')}
+        hideLabel={true}
+      />,
     );
   });
 
   return (
     <form onSubmit={props.handleSubmit(props.submitReport)}>
-      <FormContainer
-        submitting={props.submitting}
-        layout="vertical"
-      >
+      <FormContainer submitting={props.submitting} layout="vertical">
         {props.periods.length > 1 ? (
           <SelectField
             name="period"
             label={translate('Plan')}
-            tooltip={translate('Each usage report must be connected with a billing plan to assure correct calculation of accounting data.')}
+            tooltip={translate(
+              'Each usage report must be connected with a billing plan to assure correct calculation of accounting data.',
+            )}
             options={props.periods}
             onChange={props.onPeriodChange}
             clearable={false}
           />
-        ) : <StaticPlanField/>}
+        ) : (
+          <StaticPlanField />
+        )}
         {components}
       </FormContainer>
     </form>

@@ -4,16 +4,20 @@ import { Link } from '@waldur/core/Link';
 import { translate } from '@waldur/i18n';
 import { ImageTablePlaceholder } from '@waldur/table-react/ImageTablePlaceholder';
 
-// tslint:disable-next-line: no-var-requires
 const DocumentSearchIllustration = require('@waldur/images/table-placeholders/undraw_file_searching_duff.svg');
 
 export const OrderItemslistTablePlaceholder = () => (
   <ImageTablePlaceholder
     illustration={DocumentSearchIllustration}
     title={translate(`Seems there's nothing here`)}
-    description={translate(`You can find offerings to order in the marketplace`)}
+    description={translate(
+      `You can find offerings to order in the marketplace`,
+    )}
     action={
-      <Link state="marketplace-landing-customer" className="btn btn-success btn-md">
+      <Link
+        state="marketplace-landing-customer"
+        className="btn btn-success btn-md"
+      >
         {translate('Go to marketplace')}
       </Link>
     }

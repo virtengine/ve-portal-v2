@@ -13,9 +13,10 @@ import { Customer } from '@waldur/workspace/types';
 
 import { ResourceState } from '../types';
 import { ResourceUsageButton } from '../usage/ResourceUsageButton';
+
 import { TABLE_PUBLIC_RESOURCE } from './constants';
+import { PublicResourceLink } from './PublicResourceLink';
 import { PublicResourcesListPlaceholder } from './PublicResourcesListPlaceholder';
-import { ResourceNameField } from './ResourceNameField';
 import { ResourceStateField } from './ResourceStateField';
 
 interface ResourceFilter {
@@ -34,12 +35,8 @@ export const TableComponent = props => {
   const columns = [
     {
       title: translate('Name'),
-      render: ResourceNameField,
+      render: PublicResourceLink,
       orderField: 'name',
-    },
-    {
-      title: translate('Resource UUID'),
-      render: ({ row }) => <span>{row.uuid}</span>,
     },
     {
       title: translate('Offering type'),
@@ -75,11 +72,11 @@ export const TableComponent = props => {
   return (
     <Table
       {...props}
-      placeholderComponent={<PublicResourcesListPlaceholder/>}
+      placeholderComponent={<PublicResourcesListPlaceholder />}
       columns={columns}
       verboseName={translate('Resources')}
       enableExport={true}
-      initialSorting={{field: 'created', mode: 'desc'}}
+      initialSorting={{ field: 'created', mode: 'desc' }}
       hasQuery={true}
       showPageSizeSelector={true}
     />
@@ -87,7 +84,11 @@ export const TableComponent = props => {
 };
 
 const mapPropsToFilter = (props: StateProps) => {
-  const filter: Record<string, string> = {};
+  const filter: Record<string, string | boolean> = {};
+
+  // Public resources should only contain resources from billable offerings.
+  filter.billable = true;
+
   if (props.customer) {
     filter.provider_uuid = props.customer.uuid;
   }
@@ -147,4 +148,6 @@ const enhance = compose(
   connectTable(TableOptions),
 );
 
-export const PublicResourcesList = enhance(TableComponent) as React.ComponentType<{}>;
+export const PublicResourcesList = enhance(
+  TableComponent,
+) as React.ComponentType<{}>;

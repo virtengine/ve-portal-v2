@@ -3,6 +3,7 @@ import * as React from 'react';
 interface QueryState<Data> {
   loading: boolean;
   loaded: boolean;
+  erred: boolean;
   error?: any;
   data?: Data;
 }
@@ -17,11 +18,17 @@ interface QueryProps<Variables, Data> {
   children: React.StatelessComponent<QueryChildProps<Data>>;
 }
 
-export class Query<Variables = object, Data = object> extends
-  React.Component<QueryProps<Variables, Data>, QueryState<Data>> {
+/**
+ * @deprecated Please use useAsync hook instead from react-use package.
+ */
+export class Query<Variables = object, Data = object> extends React.Component<
+  QueryProps<Variables, Data>,
+  QueryState<Data>
+> {
   state = {
     loading: true,
     loaded: false,
+    erred: false,
     error: null,
     data: null,
   };
@@ -61,16 +68,18 @@ export class Query<Variables = object, Data = object> extends
         loading: false,
         loaded: true,
         erred: false,
+        error: undefined,
       });
     } catch (error) {
       this.safeSetState({
         loading: false,
+        erred: true,
         error,
       });
     }
-  }
+  };
 
   render() {
-    return this.props.children({...this.state, loadData: this.loadData});
+    return this.props.children({ ...this.state, loadData: this.loadData });
   }
 }

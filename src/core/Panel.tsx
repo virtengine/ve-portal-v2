@@ -7,7 +7,12 @@ interface PanelProps {
   actions?: React.ReactNode;
 }
 
-const Panel: React.SFC<PanelProps> = ({ title, children, className, actions }) => (
+export const Panel: React.FC<PanelProps> = ({
+  title,
+  children,
+  className,
+  actions,
+}) => (
   <div className={classNames('ibox', className)}>
     {title && (
       <div className="ibox-title">
@@ -15,10 +20,6 @@ const Panel: React.SFC<PanelProps> = ({ title, children, className, actions }) =
         {actions}
       </div>
     )}
-    <div className="ibox-content">
-      {children}
-    </div>
+    <div className="ibox-content">{children}</div>
   </div>
 );
-
-export default Panel;

@@ -3,8 +3,6 @@ import * as Col from 'react-bootstrap/lib/Col';
 import * as Row from 'react-bootstrap/lib/Row';
 import MediaQuery from 'react-responsive';
 
-import { connectAngularComponent } from '@waldur/store/connect';
-
 import { AttributeFilterListContainer } from './filters/AttributeFilterListContainer';
 import { FilterBarContainer } from './filters/FilterBarContainer';
 import { MobileFilterActions } from './filters/MobileFilterActions';
@@ -21,7 +19,7 @@ export const CategoryPage = () => (
     </Col>
     <Col lg={9}>
       <div className="m-b-md p-sm gray-bg">
-        <div style={{display: 'flex'}}>
+        <div style={{ display: 'flex' }}>
           <FilterBarContainer />
           <MediaQuery maxWidth={768}>
             <MobileFilterActions />
@@ -32,5 +30,3 @@ export const CategoryPage = () => (
     </Col>
   </Row>
 );
-
-export default connectAngularComponent(CategoryPage);

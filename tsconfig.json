@@ -10,7 +10,8 @@
     "target": "es5",
     "jsx": "react",
     "allowJs": true,
-    "allowSyntheticDefaultImports": false,
+    "allowSyntheticDefaultImports": true,
+    "resolveJsonModule": true,
     "baseUrl": ".",
     "paths": {
       "@waldur/*": ["src/*"]
@@ -24,10 +25,7 @@
   },
   "include": [
     "./src/**/*",
-  ],
-  "exclude": [
-    "./src/**/*.spec.ts",
-    "./src/**/*.spec.tsx",
+    "./cypress/**/*",
   ],
   "typeRoots": [
     "./node_modules/@types",

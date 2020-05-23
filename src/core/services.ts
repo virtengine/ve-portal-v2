@@ -1,8 +1,6 @@
-import { IHttpService, IPromise } from 'angular';
-
 export let ENV = null;
-export let $http: IHttpService;
 export let $rootScope = null;
+export let $compile = null;
 export let $state = null;
 export let $filter = null;
 export let ngInjector = null;
@@ -11,12 +9,13 @@ export let $q = null;
 // When application is initialized, it is replaced with actual service.
 export let $sanitize = x => x;
 
-export const defaultCurrency = value => $filter('defaultCurrency')(value);
+export const defaultCurrency = value =>
+  $filter ? $filter('defaultCurrency')(value) : value;
 
 export default function injectServices($injector) {
   ENV = $injector.get('ENV');
-  $http = $injector.get('$http');
   $rootScope = $injector.get('$rootScope');
+  $compile = $injector.get('$compile');
   $state = $injector.get('$state');
   $filter = $injector.get('$filter');
   $q = $injector.get('$q');
@@ -31,14 +30,14 @@ injectServices.$inject = ['$injector'];
   It happens if either network or backend server is slow.
   Instead new task should be scheduled if previous have been completed.
   */
-export const blockingExecutor = (callback: () => IPromise<any>) => {
+export const blockingExecutor = (callback: () => Promise<any>) => {
   let isExecuting = false;
   return () => {
     if (isExecuting) {
       return;
     }
     isExecuting = true;
-    return $q.when(callback()).finally(() => isExecuting = false);
+    return $q.when(callback()).finally(() => (isExecuting = false));
   };
 };
 

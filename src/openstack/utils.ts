@@ -1,4 +1,5 @@
-import { QUOTA_NAMES_MAPPING, QUOTA_SPL_TYPE, QUOTA_PACKAGE_TYPE } from '@waldur/quotas/constants';
+import { ENV } from '@waldur/core/services';
+import { translate } from '@waldur/i18n';
 
 import { listToDict } from '../core/utils';
 
@@ -11,83 +12,48 @@ const parseQuotaName = name => quotaNames[name] || name;
 
 export const parseQuotas = listToDict(
   item => parseQuotaName(item.name),
-  item => item.limit
+  item => item.limit,
 );
 
 export const parseQuotasUsage = listToDict(
   item => parseQuotaName(item.name),
-  item => item.usage
+  item => item.usage,
 );
 
-export const parseComponents = listToDict(
-  item => parseQuotaName(item.type),
-  item => item.amount
+export const PRIVATE_CIDR_PATTERN = new RegExp(
+  // Class A
+  '(^(10)(.([2]([0-5][0-5]|[01234][6-9])|[1][0-9][0-9]|[1-9][0-9]|[0-9])){2}.0/24$)' +
+    // Class B
+    '|(^(172).(1[6-9]|2[0-9]|3[0-1])(.(2[0-4][0-9]|25[0-5]|[1][0-9][0-9]|[1-9][0-9]|[0-9])).0/24$)' +
+    // Class C
+    '|(^(192).(168)(.(25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[1-9][0-9]|[0-9])).0/24$)',
 );
 
-export const parsePrices = listToDict(
-  item => parseQuotaName(item.type),
-  item => parseFloat(item.price)
-);
-
-export function templateParser(template) {
-  /* Output is item with the following format:
-  {
-    "url": "https://example.com/api/package-templates/2/",
-    "name": "Minimal VPC package",
-    "dailyPrice": 1,
-    "monthlyPrice": 30,
-    "annualPrice": 365
-    "ram": 20240,
-    "cores": 20,
-    "disk": 51200,
-  }
-  */
-  const components = parseComponents(template.components);
-  const dailyPrice = parseFloat(template.price);
-  return {
-    ...template,
-    dailyPrice,
-    monthlyPrice: dailyPrice * 30,
-    annualPrice: dailyPrice * 365,
-  ...components,
-  };
-}
-
-export function getTenantTemplate(tenant) {
-  if (!tenant.extra_configuration.package_category) {
+export const validatePrivateSubnetCIDR = value => {
+  if (!value) {
     return;
   }
-  const quotas = parseQuotas(tenant.quotas);
-  return {
-    name: tenant.extra_configuration.package_name,
-    category: tenant.extra_configuration.package_category,
-    ...quotas,
-  };
-}
-
-export const aggregateQuotasFromSPL = (components, quotas) => {
-  components.limitsType = {};
-  quotas.forEach(quota => {
-    const componentQuotaName = QUOTA_NAMES_MAPPING[quota.name];
-    if (quota.limit !== -1) {
-      if (quota.limit < components.limits[componentQuotaName]) {
-        components.limits[componentQuotaName] = quota.limit;
-        components.limitsType[componentQuotaName] = QUOTA_SPL_TYPE;
-      } else {
-        components.limits[componentQuotaName] = components.limits[componentQuotaName];
-        components.limitsType[componentQuotaName] = QUOTA_PACKAGE_TYPE;
-      }
-    } else {
-      components.limitsType[componentQuotaName] = QUOTA_PACKAGE_TYPE;
-    }
-    components.usages[componentQuotaName] = Math.max(quota.usage, components.usages[componentQuotaName]);
-  });
-  return components;
-};
-
-export const extractSubnet = value => {
-  if (value) {
-    return value.split('.')[2];
+  if (!value.match(PRIVATE_CIDR_PATTERN)) {
+    return translate('Enter private IPv4 CIDR.');
   }
-  return '';
 };
+
+export const getTenantListState = projectId => ({
+  label: translate('Private clouds'),
+  state: 'marketplace-project-resources',
+  params: {
+    category_uuid:
+      ENV.plugins.WALDUR_MARKETPLACE_OPENSTACK.TENANT_CATEGORY_UUID,
+    uuid: projectId,
+  },
+});
+
+export const getInstanceListState = projectId => ({
+  label: translate('Virtual machines'),
+  state: 'marketplace-project-resources',
+  params: {
+    category_uuid:
+      ENV.plugins.WALDUR_MARKETPLACE_OPENSTACK.INSTANCE_CATEGORY_UUID,
+    uuid: projectId,
+  },
+});

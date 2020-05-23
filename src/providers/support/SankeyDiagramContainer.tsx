@@ -1,8 +1,6 @@
 import * as React from 'react';
 import { connect } from 'react-redux';
 
-import { connectAngularComponent } from '@waldur/store/connect';
-
 import { fetchServiceUsageStart } from './actions';
 import { FlowMapFilter } from './FlowMapFilter';
 import SankeyDiagram from './SankeyDiagram';
@@ -17,7 +15,9 @@ interface SankeyDiagramComponentProps {
   countryNames: any[];
 }
 
-class SankeyDiagramComponent extends React.Component<SankeyDiagramComponentProps> {
+class SankeyDiagramComponent extends React.Component<
+  SankeyDiagramComponentProps
+> {
   sankeyDiagramCalculator = new SankeyDiagramCalculator();
 
   componentDidMount() {
@@ -30,34 +30,47 @@ class SankeyDiagramComponent extends React.Component<SankeyDiagramComponentProps
       const countriesToProviderslinks = this.formatCountriesToProvidersLink();
       const data = this.props.organizationNames.concat(this.props.countryNames);
       const links = providersToConsumerslinks.concat(countriesToProviderslinks);
-      return {data, links};
+      return { data, links };
     }
   }
 
   formatProvidersToConsumersLink() {
     const links = [];
-    Object.keys(this.props.serviceUsage.service_providers).map(providerUuid => {
-      this.props.serviceUsage.service_providers[providerUuid].map(consumerUuid => {
-        links.push({
-          source: this.props.serviceUsage.organizations[consumerUuid].name,
-          target: this.props.serviceUsage.organizations[providerUuid].name,
-          value: this.sankeyDiagramCalculator.calculateValue(this.props.serviceUsage, providerUuid, consumerUuid),
-        });
-      });
-    });
+    Object.keys(this.props.serviceUsage.service_providers).forEach(
+      providerUuid => {
+        this.props.serviceUsage.service_providers[providerUuid].map(
+          consumerUuid => {
+            links.push({
+              source: this.props.serviceUsage.organizations[consumerUuid].name,
+              target: this.props.serviceUsage.organizations[providerUuid].name,
+              value: this.sankeyDiagramCalculator.calculateValue(
+                this.props.serviceUsage,
+                providerUuid,
+                consumerUuid,
+              ),
+            });
+          },
+        );
+      },
+    );
     return links;
   }
 
   formatCountriesToProvidersLink() {
     const links = [];
-    Object.keys(this.props.serviceUsage.service_providers).map(providerUuid => {
-      const provider = this.props.serviceUsage.organizations[providerUuid];
-      links.push({
-        source: provider.name,
-        target: provider.country,
-        value: this.sankeyDiagramCalculator.calculateValueForCountry(this.props.serviceUsage, providerUuid),
-      });
-    });
+    Object.keys(this.props.serviceUsage.service_providers).forEach(
+      providerUuid => {
+        const provider = this.props.serviceUsage.organizations[providerUuid];
+        links.push({
+          source: provider.name,
+          target: provider.country,
+          value: this.sankeyDiagramCalculator.calculateValueForCountry(
+            this.props.serviceUsage,
+            providerUuid,
+          ),
+        });
+      },
+    );
     return links;
   }
 
@@ -66,7 +79,7 @@ class SankeyDiagramComponent extends React.Component<SankeyDiagramComponentProps
     return (
       <>
         <FlowMapFilter />
-        <SankeyDiagram data={data} {...this.props}/>
+        <SankeyDiagram data={data} {...this.props} />
       </>
     );
   }
@@ -82,6 +95,7 @@ const matchDispatchToProps = dispatch => ({
   fetchServiceUsageStart: () => dispatch(fetchServiceUsageStart()),
 });
 
-const SankeyDiagramContainer = connect(mapStateToProps, matchDispatchToProps)(SankeyDiagramComponent);
-
-export default connectAngularComponent(SankeyDiagramContainer);
+export const SankeyDiagramContainer = connect(
+  mapStateToProps,
+  matchDispatchToProps,
+)(SankeyDiagramComponent);

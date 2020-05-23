@@ -4,7 +4,7 @@ import * as Row from 'react-bootstrap/lib/Row';
 import { InjectedFormProps } from 'redux-form';
 
 import { LoadingSpinner } from '@waldur/core/LoadingSpinner';
-import { $state } from '@waldur/core/services';
+import { $state, ngInjector } from '@waldur/core/services';
 import { translate } from '@waldur/i18n';
 
 import { TABS } from '../create/OfferingCreateDialog';
@@ -12,7 +12,8 @@ import { Wizard } from '../create/Wizard';
 import { STEPS, OfferingStep } from '../types';
 import { setStateBreadcrumbs } from '../utils';
 
-interface OfferingUpdateDialogProps extends InjectedFormProps {
+interface OfferingUpdateDialogProps
+  extends InjectedFormProps<{ name: string }> {
   step: OfferingStep;
   updateOffering(): void;
   loading: boolean;
@@ -26,8 +27,9 @@ interface OfferingUpdateDialogProps extends InjectedFormProps {
   loadOffering(offeringUuid: string): void;
 }
 
-export class OfferingUpdateDialog extends React.Component<OfferingUpdateDialogProps> {
-
+export class OfferingUpdateDialog extends React.Component<
+  OfferingUpdateDialogProps
+> {
   constructor(props) {
     super(props);
     setStateBreadcrumbs();
@@ -41,6 +43,16 @@ export class OfferingUpdateDialog extends React.Component<OfferingUpdateDialogPr
     this.props.setStep(STEPS[0]);
   }
 
+  componentDidUpdate(prevProps) {
+    if (this.props.initialValues.name !== prevProps.initialValues.name) {
+      ngInjector.get('titleService').setTitle(
+        translate('Update offering ({name})', {
+          name: this.props.initialValues.name,
+        }),
+      );
+    }
+  }
+
   render() {
     const {
       loading,
@@ -48,10 +60,11 @@ export class OfferingUpdateDialog extends React.Component<OfferingUpdateDialogPr
       erred,
       handleSubmit,
       updateOffering,
-      ...rest} = this.props;
+      ...rest
+    } = this.props;
 
     if (loading) {
-      return <LoadingSpinner/>;
+      return <LoadingSpinner />;
     } else if (erred) {
       return <p>{translate('Unable to load data.')}</p>;
     } else if (loaded) {
@@ -60,8 +73,14 @@ export class OfferingUpdateDialog extends React.Component<OfferingUpdateDialogPr
           <Col lg={10} lgOffset={1}>
             <form
               onSubmit={handleSubmit(updateOffering)}
-              className="form-horizontal">
-              <Wizard steps={STEPS} tabs={TABS} {...rest} submitLabel={translate('Update')}/>
+              className="form-horizontal"
+            >
+              <Wizard
+                steps={STEPS}
+                tabs={TABS}
+                {...rest}
+                submitLabel={translate('Update')}
+              />
             </form>
           </Col>
         </Row>

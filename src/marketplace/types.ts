@@ -1,15 +1,9 @@
 import { InjectedFormProps } from 'redux-form';
 
 import { OrderItemDetailsType } from '@waldur/marketplace/orders/types';
-import { Offering } from '@waldur/marketplace/types';
 import { Project, Customer } from '@waldur/workspace/types';
 
-export type BillingPeriod =
-  | 'hour'
-  | 'day'
-  | 'half_month'
-  | 'month'
-  ;
+export type BillingPeriod = 'hour' | 'day' | 'half_month' | 'month';
 
 export interface GeolocationPoint {
   latitude: number;
@@ -25,17 +19,17 @@ export interface BaseComponent {
   description: string;
 }
 
-export type BillingType =
-  | 'usage'
-  | 'fixed'
-  | 'one'
-  | 'few'
-  ;
+export type BillingType = 'usage' | 'fixed' | 'one' | 'few';
 
 export interface OfferingComponent extends BaseComponent {
   billing_type: BillingType;
   limit_period?: 'month' | 'total';
-  limit_amount: number;
+  limit_amount?: number;
+  disable_quotas?: boolean;
+  use_limit_for_billing?: boolean;
+  max_value?: number;
+  min_value?: number;
+  factor?: number;
 }
 
 export interface Plan {
@@ -47,8 +41,8 @@ export interface Plan {
   init_price?: number | string;
   switch_price?: number | string;
   unit: BillingPeriod;
-  quotas: {[key: string]: number};
-  prices: {[key: string]: number};
+  quotas: { [key: string]: number };
+  prices: { [key: string]: number };
   is_active: boolean;
   archived: boolean;
 }
@@ -66,7 +60,7 @@ export interface OptionField {
 
 export interface OfferingOptions {
   order: string[];
-  options: {[key: string]: OptionField};
+  options: { [key: string]: OptionField };
 }
 
 export interface ComparedOffering {
@@ -80,9 +74,19 @@ interface Quota {
   usage: number;
 }
 
+interface ReferredPids {
+  resource_type: string;
+  title: string;
+  published: string;
+  publisher: string;
+  pid: string;
+  relation_type: string;
+}
+
 export interface Offering {
   quotas?: Quota[];
   uuid?: string;
+  url?: string;
   thumbnail: string;
   name: string;
   native_name?: string;
@@ -104,6 +108,8 @@ export interface Offering {
   attributes: AttributesType;
   components: OfferingComponent[];
   options?: OfferingOptions;
+  plugin_options?: Record<string, any>;
+  secret_options?: Record<string, any>;
   plans?: Plan[];
   type: string;
   state: string;
@@ -113,9 +119,13 @@ export interface Offering {
   shared?: boolean;
   billable?: boolean;
   paused_reason?: string;
+  datacite_doi?: string;
+  citation_count?: number;
+  referred_pids: ReferredPids[];
 }
 
 export interface Screenshot {
+  image: string;
   thumbnail: string;
   name: string;
   description: string;
@@ -128,8 +138,7 @@ type AttributeType =
   | 'choice'
   | 'list'
   | 'password'
-  | 'html'
-  ;
+  | 'html';
 
 export interface Attribute {
   default?: any;
@@ -208,6 +217,7 @@ export interface OfferingConfigurationFormProps extends InjectedFormProps {
   initialLimits?: AttributesType;
   customer?: Customer;
   limits: string[];
+  previewMode?: boolean;
 }
 
 export interface OrderItemDetailsProps {
@@ -231,4 +241,9 @@ export interface PluginMetadata {
   offering_type: string;
   available_limits: string[];
   components: PluginComponent[];
+}
+
+export interface ImportableResource {
+  backend_id: string;
+  name: string;
 }

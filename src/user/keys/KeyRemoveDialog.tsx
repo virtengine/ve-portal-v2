@@ -6,7 +6,7 @@ import { closeModalDialog } from '@waldur/modal/actions';
 import { CloseDialogButton } from '@waldur/modal/CloseDialogButton';
 import { ModalDialog } from '@waldur/modal/ModalDialog';
 import { connectAngularComponent } from '@waldur/store/connect';
-import ActionButton from '@waldur/table-react/ActionButton';
+import { ActionButton } from '@waldur/table-react/ActionButton';
 
 interface KeyRemoveDialogProps extends TranslateProps {
   resolve: {
@@ -28,7 +28,7 @@ const PureKeyRemoveDialog = withTranslation((props: KeyRemoveDialogProps) => (
         }}
         className="btn btn-sm btn-danger"
       />,
-      <CloseDialogButton key={2} className="btn btn-sm btn-default"/>,
+      <CloseDialogButton key={2} className="btn btn-sm btn-default" />,
     ]}
   >
     {props.translate('Are you sure you would like to delete the key?')}

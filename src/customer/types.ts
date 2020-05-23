@@ -1,9 +1,9 @@
-import { Option } from 'react-select';
-
-export type PhoneNumber = string | {
-  national_number: string;
-  country_code: string;
-};
+export type PhoneNumber =
+  | string
+  | {
+      national_number: string;
+      country_code: string;
+    };
 
 // Customer has only two mandatory fields: name and email, rest are optional.
 export interface Customer {
@@ -11,6 +11,7 @@ export interface Customer {
   uuid?: string;
   email: string;
   name: string;
+  display_name?: string;
   abbreviation?: string;
   access_subnets?: string;
   accounting_start_date?: string;
@@ -34,9 +35,3 @@ export interface Customer {
   is_service_provider?: boolean;
   created?: string;
 }
-
-export type AccountingPeriodOption = Option<{
-  year: number;
-  month: number;
-  current: boolean;
-}>;

@@ -1,29 +1,30 @@
+import Axios from 'axios';
+
 // @ngInject
-export default function customersService(baseServiceClass, $state, $q, $http, ENV, currentStateService, usersService) {
-  let ServiceClass = baseServiceClass.extend({
+export default function customersService(
+  baseServiceClass,
+  $state,
+  $q,
+  ENV,
+  currentStateService,
+  usersService,
+) {
+  const ServiceClass = baseServiceClass.extend({
     filterByCustomer: false,
     countryChoices: [],
 
-    init:function() {
+    init: function() {
       this._super();
       this.endpoint = '/customers/';
     },
-    getBalanceHistory: function(uuid) {
-      let query = {UUID: uuid, operation: 'balance_history'};
-      return this.getList(query);
-    },
-    getCounters: function(query) {
-      let extendedQuery = angular.extend({operation: 'counters'}, query);
-      return this.getFactory(false).get(extendedQuery).$promise;
-    },
     isOwnerOrStaff: function() {
-      let vm = this;
-      return $q.all([
-        currentStateService.getCustomer(),
-        usersService.getCurrentUser()
-      ]).then(function(result) {
-        return vm.checkCustomerUser.apply(vm, result);
-      });
+      const vm = this;
+      return $q
+        .all([currentStateService.getCustomer(), usersService.getCurrentUser()])
+        .then(function(result) {
+          // eslint-disable-next-line prefer-spread
+          return vm.checkCustomerUser.apply(vm, result);
+        });
     },
     checkCustomerUser: function(customer, user) {
       if (user && user.is_staff) {
@@ -40,13 +41,13 @@ export default function customersService(baseServiceClass, $state, $q, $http, EN
       return false;
     },
     loadCountries: function() {
-      let vm = this;
+      const vm = this;
       if (vm.countryChoices.length !== 0) {
         return $q.when(vm.countryChoices);
       } else {
-        return $http({
+        return Axios.request({
           method: 'OPTIONS',
-          url: ENV.apiEndpoint + 'api/customers/'
+          url: ENV.apiEndpoint + 'api/customers/',
         }).then(function(response) {
           vm.countryChoices = response.data.actions.POST.country.choices;
           return vm.countryChoices;
@@ -54,17 +55,16 @@ export default function customersService(baseServiceClass, $state, $q, $http, EN
       }
     },
     countCustomers: function() {
-      return $http.head(ENV.apiEndpoint + 'api/customers/').then(response => {
-        return parseInt(response.headers()['x-result-count']);
+      return Axios.head(ENV.apiEndpoint + 'api/customers/').then(response => {
+        return parseInt(response.headers['x-result-count']);
       });
     },
     refreshCurrentCustomer(customerUuid) {
-      return this.$get(customerUuid)
-      .then(customer => {
+      return this.$get(customerUuid).then(customer => {
         currentStateService.setCustomer(customer);
         return customer;
       });
-    }
+    },
   });
   return new ServiceClass();
 }

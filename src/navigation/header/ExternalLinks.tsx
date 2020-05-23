@@ -5,7 +5,6 @@ import { connect } from 'react-redux';
 
 import { translate } from '@waldur/i18n';
 import { getConfig } from '@waldur/store/config';
-import { connectAngularComponent } from '@waldur/store/connect';
 
 interface ExternalLink {
   label: string;
@@ -17,18 +16,21 @@ interface Props {
   onSelect(eventKey: any): void;
 }
 
-const ExternalLinksComponent = (props: Props) => props.externalLinks.length > 0 && (
-  <DropdownButton
-    title={translate('External links')}
-    id="external-link-dropdown-btn"
-    onSelect={props.onSelect}
-    bsStyle="link"
-  >
-    {props.externalLinks.map((link, index) => (
-      <MenuItem eventKey={index}>{link.label}</MenuItem>
-    ))}
-  </DropdownButton>
-);
+const ExternalLinksComponent = (props: Props) =>
+  props.externalLinks.length > 0 && (
+    <DropdownButton
+      title={translate('External links')}
+      id="external-link-dropdown-btn"
+      onSelect={props.onSelect}
+      bsStyle="link"
+    >
+      {props.externalLinks.map((link, index) => (
+        <MenuItem eventKey={index} key={index}>
+          {link.label}
+        </MenuItem>
+      ))}
+    </DropdownButton>
+  );
 
 const mapStateToProps = state => {
   const externalLinks = getConfig(state).externalLinks;
@@ -38,6 +40,4 @@ const mapStateToProps = state => {
   };
 };
 
-const ExternalLinksContainer = connect(mapStateToProps)(ExternalLinksComponent);
-
-export default connectAngularComponent(ExternalLinksContainer);
+export const ExternalLinks = connect(mapStateToProps)(ExternalLinksComponent);

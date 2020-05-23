@@ -1,5 +1,6 @@
 import * as React from 'react';
-import { Row, Col } from 'react-bootstrap';
+import * as Col from 'react-bootstrap/lib/Col';
+import * as Row from 'react-bootstrap/lib/Row';
 
 import './ImageTablePlaceholder.scss';
 
@@ -10,12 +11,12 @@ export interface ImageTablePlaceholderProps {
   action?: React.ReactNode;
 }
 
-export const ImageTablePlaceholder: React.SFC<ImageTablePlaceholderProps> = props => (
+export const ImageTablePlaceholder: React.FC<ImageTablePlaceholderProps> = props => (
   <Row className="ImageTablePlaceholder">
     <Col sm={6} smOffset={3}>
       <Row>
         <Col className="ImageTablePlaceholder__img" sm={8} smOffset={2}>
-          <img src={props.illustration}/>
+          <img src={props.illustration} />
         </Col>
       </Row>
       <Row>

@@ -1,7 +1,7 @@
 import template from './slurm-allocation-usage-table.html';
 import './slurm-allocation-usage-table.scss';
 import { formatCharts } from './utils';
-import { palette, chartSpec } from './constants';
+import { palette, getChartSpec } from './constants';
 
 class SlurmAllocationUsageTableController {
   // @ngInject
@@ -21,24 +21,29 @@ class SlurmAllocationUsageTableController {
     return this.SlurmPackagesService.loadPackage(this.resource.service_settings)
       .then(pricePackage => {
         return this.SlurmAllocationUsageService.getAll({
-          allocation: this.resource.url
+          allocation: this.resource.url,
         }).then(rows => {
-          const { users, charts } = formatCharts(palette, chartSpec, rows, pricePackage);
+          const { users, charts } = formatCharts(
+            palette,
+            getChartSpec(),
+            rows,
+            pricePackage,
+          );
           this.users = users;
           this.charts = charts;
         });
       })
-      .catch(() => this.erred = false)
-      .then(() => this.loading = false);
+      .catch(() => (this.erred = false))
+      .then(() => (this.loading = false));
   }
 }
 
 const slurmAllocationUsageTable = {
   template,
   bindings: {
-    resource: '<'
+    resource: '<',
   },
-  controller: SlurmAllocationUsageTableController
+  controller: SlurmAllocationUsageTableController,
 };
 
 export default slurmAllocationUsageTable;

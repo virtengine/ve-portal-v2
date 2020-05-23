@@ -12,27 +12,23 @@ interface FormGroupProps {
   classNameWithoutLabel?: string;
 }
 
-export const FormGroup: React.SFC<FormGroupProps> = props => (
+export const FormGroup: React.FC<FormGroupProps> = props => (
   <div className={props.className}>
     {props.label ? (
       <>
         <label className={props.labelClassName}>
           {props.description && (
             <Tooltip id="form-field-tooltip" label={props.description}>
-              <i className="fa fa-question-circle"/>{' '}
+              <i className="fa fa-question-circle" />{' '}
             </Tooltip>
           )}
           {props.label}
           {props.required && <span className="text-danger"> *</span>}
         </label>
-        <div className={props.valueClassName}>
-          {props.children}
-        </div>
+        <div className={props.valueClassName}>{props.children}</div>
       </>
     ) : (
-      <div className={props.classNameWithoutLabel}>
-        {props.children}
-      </div>
+      <div className={props.classNameWithoutLabel}>{props.children}</div>
     )}
   </div>
 );

@@ -6,29 +6,28 @@ import './OfferingTabs.scss';
 
 export interface OfferingTab {
   title: React.ReactNode;
-  component: React.SFC<{}>;
+  component: React.FC<{}>;
+  visible: boolean;
 }
 
 interface OfferingTabsComponentProps {
   tabs: OfferingTab[];
 }
 
-export const OfferingTabsComponent: React.SFC<OfferingTabsComponentProps> = props => {
+export const OfferingTabsComponent: React.FC<OfferingTabsComponentProps> = props => {
   if (props.tabs.length === 0) {
     return null;
   }
   return (
     <Tabs
       defaultActiveKey="tab-0"
-      id="tabs"
+      id="offering-tabs"
       className="m-t-lg offering-tabs"
       unmountOnExit={true}
     >
       {props.tabs.map((tab, index) => (
         <Tab key={index} eventKey={`tab-${index}`} title={tab.title}>
-          <div className="m-t-md">
-            {React.createElement(tab.component)}
-          </div>
+          <div className="m-t-md">{React.createElement(tab.component)}</div>
         </Tab>
       ))}
     </Tabs>

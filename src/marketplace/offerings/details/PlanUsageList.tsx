@@ -41,10 +41,10 @@ export const TableComponent = props => {
     <Table
       {...props}
       columns={columns}
-      verboseName={translate('offerings')}
+      verboseName={translate('plans')}
       showPageSizeSelector={true}
       enableExport={true}
-      initialSorting={{field: 'usage', mode: 'desc'}}
+      initialSorting={{ field: 'usage', mode: 'desc' }}
     />
   );
 };
@@ -55,22 +55,12 @@ const TableOptions = {
   mapPropsToFilter: props => ({
     offering_uuid: props.offering_uuid,
   }),
-  verboseName: translate('plans'),
-  exportRow: row => [
-    row.plan_name,
-    row.limit,
-    row.usage,
-  ],
-  exportFields: [
-    'Plan',
-    'Limit',
-    'Active plan count',
-  ],
+  exportRow: row => [row.plan_name, row.limit, row.usage],
+  exportFields: ['Plan', 'Limit', 'Active plan count'],
 };
 
-const connector = compose(
-  connectTable(TableOptions),
-  withTranslation,
-);
+const connector = compose(connectTable(TableOptions), withTranslation);
 
-export const PlanUsageList = connector(TableComponent) as React.ComponentType<PlanUsageListProps>;
+export const PlanUsageList = connector(TableComponent) as React.ComponentType<
+  PlanUsageListProps
+>;

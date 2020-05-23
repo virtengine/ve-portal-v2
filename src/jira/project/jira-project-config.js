@@ -1,17 +1,12 @@
-const JiraProjectConfig = {
-  order: [
-    'name',
-    'key',
-    'template',
-    'description',
-  ],
+export const JiraProjectConfig = {
+  order: ['name', 'key', 'template', 'description'],
   options: {
     name: {
       type: 'string',
       required: true,
       label: gettext('Name'),
       form_text: gettext('This name will be visible in accounting data.'),
-      maxlength: 150
+      maxlength: 150,
     },
     key: {
       type: 'string',
@@ -30,12 +25,12 @@ const JiraProjectConfig = {
         {
           name: 'name',
           label: gettext('Name'),
-          headerClass: 'col-md-4'
+          headerClass: 'col-md-4',
         },
         {
           name: 'description',
-          label: gettext('Description')
-        }
+          label: gettext('Description'),
+        },
       ],
     },
     description: {
@@ -46,15 +41,5 @@ const JiraProjectConfig = {
     },
   },
   summaryComponent: 'jiraProjectCheckoutSummary',
-  onSuccess: onSuccess,
+  // TODO: Invalidate cache when action succeeds
 };
-
-// @ngInject
-export default function fieldsConfig(AppstoreFieldConfigurationProvider) {
-  AppstoreFieldConfigurationProvider.register('JIRA.Project', JiraProjectConfig);
-}
-
-function onSuccess($injector) {
-  const JiraProjectService = $injector.get('JiraProjectService');
-  JiraProjectService.clearAllCacheForCurrentEndpoint();
-}

@@ -2,11 +2,20 @@ import { connect } from 'react-redux';
 import { compose } from 'redux';
 
 import { withTranslation } from '@waldur/i18n';
-import { getOfferingTypes, showOfferingOptions, getProviderType, isOfferingTypeSchedulable } from '@waldur/marketplace/common/registry';
+import {
+  getOfferingTypes,
+  showOfferingOptions,
+  getProviderType,
+  isOfferingTypeSchedulable,
+  getPluginOptionsForm,
+  getSecretOptionsForm,
+} from '@waldur/marketplace/common/registry';
 import { Offering } from '@waldur/marketplace/types';
+import { openModalDialog } from '@waldur/modal/actions';
 import { findProvider } from '@waldur/providers/registry';
 
 import { getOffering, getType, getTypeLabel } from '../store/selectors';
+
 import { ManagementStep, ManagementStepProps } from './ManagementStep';
 
 const mapStateToProps = state => {
@@ -20,6 +29,8 @@ const mapStateToProps = state => {
   if (type) {
     props.showOptions = showOfferingOptions(type);
     props.schedulable = isOfferingTypeSchedulable(type);
+    props.pluginOptionsForm = getPluginOptionsForm(type);
+    props.secretOptionsForm = getSecretOptionsForm(type);
     const providerType = getProviderType(type);
     if (providerType) {
       const providerConfig = findProvider(providerType);
@@ -29,6 +40,14 @@ const mapStateToProps = state => {
   return props;
 };
 
-const connector = compose(withTranslation, connect(mapStateToProps));
+const mapDispatchToProps = dispatch => ({
+  openServiceSettingsDetails: () =>
+    dispatch(openModalDialog('serviceSettingsDetailsDialog', { size: 'lg' })),
+});
+
+const connector = compose(
+  withTranslation,
+  connect(mapStateToProps, mapDispatchToProps),
+);
 
 export const ManagementStepContainer = connector(ManagementStep);

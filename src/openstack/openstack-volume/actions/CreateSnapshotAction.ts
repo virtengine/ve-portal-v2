@@ -1,5 +1,8 @@
 import { translate } from '@waldur/i18n';
-import { createLatinNameField, createDescriptionField } from '@waldur/resource/actions/base';
+import {
+  createLatinNameField,
+  createDescriptionField,
+} from '@waldur/resource/actions/base';
 import { ResourceAction } from '@waldur/resource/actions/types';
 
 export default function createAction(): ResourceAction {
@@ -12,6 +15,7 @@ export default function createAction(): ResourceAction {
     dialogTitle: translate('Create snapshot for OpenStack volume'),
     iconClass: 'fa fa-plus',
     component: 'snapshotCreateDialog',
+    useResolve: true,
     fields: [
       createLatinNameField(),
       createDescriptionField(),
@@ -20,7 +24,9 @@ export default function createAction(): ResourceAction {
         type: 'datetime',
         required: false,
         label: translate('Kept until'),
-        help_text: translate('Guaranteed time of snapshot retention. If null - keep forever.'),
+        help_text: translate(
+          'Guaranteed time of snapshot retention. If null - keep forever.',
+        ),
       },
     ],
   };

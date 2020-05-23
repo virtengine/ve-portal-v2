@@ -11,20 +11,25 @@ interface FormContainerProps {
   layout?: 'horizontal' | 'vertical';
 }
 
-export const FormContainer: React.SFC<FormContainerProps> = props => (
+export const FormContainer: React.FC<FormContainerProps> = props => (
   <div>
-    {React.Children.map(props.children, (input: any) => (input && input.props.name ?
-      <Field
-        {...input.props}
-        component={FormGroup}
-        children={input}
-        disabled={props.submitting || input.props.disabled}
-        labelClass={props.labelClass}
-        controlClass={props.controlClass}
-        clearOnUnmount={props.clearOnUnmount}
-        layout={props.layout}
-      /> : input
-    ))}
+    {React.Children.map(props.children, (input: any) =>
+      input && input.props && input.props.name ? (
+        <Field
+          {...input.props}
+          component={FormGroup}
+          disabled={props.submitting || input.props.disabled}
+          labelClass={props.labelClass}
+          controlClass={props.controlClass}
+          clearOnUnmount={props.clearOnUnmount}
+          layout={props.layout}
+        >
+          {input}
+        </Field>
+      ) : (
+        input
+      ),
+    )}
   </div>
 );
 

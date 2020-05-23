@@ -4,7 +4,7 @@ import { getFormValues } from 'redux-form';
 
 import { isEmpty } from '@waldur/core/utils';
 import { getEventsList } from '@waldur/events/BaseEventsList';
-import { connectAngularComponent } from '@waldur/store/connect';
+import { getProject } from '@waldur/workspace/selectors';
 
 import { ProjectEventsFilter } from './ProjectEventsFilter';
 
@@ -12,8 +12,10 @@ export const PureProjectEvents = getEventsList({
   mapPropsToFilter: props => {
     const filter = {
       ...props.userFilter,
-      scope: props.project.url,
     };
+    if (props.project) {
+      filter.scope = props.project.url;
+    }
     if (props.userFilter && isEmpty(props.userFilter.feature)) {
       filter.feature = ['projects', 'resources'];
     }
@@ -23,15 +25,14 @@ export const PureProjectEvents = getEventsList({
 
 const mapStateToProps = state => ({
   userFilter: getFormValues('projectEventsFilter')(state),
+  project: getProject(state),
 });
 
 const ProjectEvents = connect(mapStateToProps)(PureProjectEvents);
 
-const ProjectEventsView = props => (
+export const ProjectEventsView = props => (
   <>
-    <ProjectEventsFilter/>
-    <ProjectEvents {...props}/>
+    <ProjectEventsFilter />
+    <ProjectEvents {...props} />
   </>
 );
-
-export default connectAngularComponent(ProjectEventsView, ['project']);

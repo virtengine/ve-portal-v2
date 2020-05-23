@@ -8,9 +8,11 @@ import '@waldur/openstack/provider';
 
 import { ResourceName } from './ResourceName';
 
-jest.mock('@waldur/core/services', () => ({
-  $state: {href: (_, params) => `/resource/${params.resource_type}/${params.uuid}/`},
-}));
+jest.mock('@waldur/core/Link', () => {
+  return {
+    Link: ({ label, children }) => <a>{label || children}</a>,
+  };
+});
 
 const resource = {
   name: 'FreeIPA server',
@@ -24,14 +26,13 @@ const renderLink = (extraProps?) => {
   const store = mockStore();
   const component = (
     <Provider store={store}>
-      <ResourceName resource={{...resource, ...extraProps}}/>
+      <ResourceName resource={{ ...resource, ...extraProps }} />
     </Provider>
   );
   return mount(component);
 };
 
 describe('ResourceName', () => {
-
   it('renders a name', () => {
     const wrapper = renderLink();
     const label = wrapper.text().trim();
@@ -50,14 +51,8 @@ describe('ResourceName', () => {
     expect(img).toBe('images/appstore/icon-openstack.png');
   });
 
-  it('renders a link', () => {
-    const wrapper = renderLink();
-    const href = wrapper.find('a').prop('href');
-    expect(href).toBe('/resource/OpenStackTenant.Instance/VALID_UUID/');
-  });
-
   it('renders a warning', () => {
-    const wrapper = renderLink({is_link_valid: false});
+    const wrapper = renderLink({ is_link_valid: false });
     const icon = wrapper.find('i').prop('className');
     expect(icon).toContain('fa-exclamation-triangle');
   });

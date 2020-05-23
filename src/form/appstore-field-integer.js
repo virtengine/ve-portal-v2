@@ -7,11 +7,13 @@ const appstoreFieldInteger = {
     model: '<',
     form: '<',
   },
-  controller: function() {
-    if (this.field.type === 'integer' && !this.field.factor) {
-      this.field.factor = 1;
+  controller: class Controller {
+    $onInit() {
+      if (this.field.type === 'integer' && !this.field.factor) {
+        this.field.factor = 1;
+      }
     }
-  }
+  },
 };
 
 export default appstoreFieldInteger;

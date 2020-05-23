@@ -9,11 +9,9 @@ interface ProjectFilterProps {
   customer_uuid: string;
 }
 
-export const ProjectFilter: React.SFC<ProjectFilterProps> = props => (
+export const ProjectFilter: React.FC<ProjectFilterProps> = props => (
   <div className="form-group col-sm-3">
-    <label className="control-label">
-      {translate('Project')}
-    </label>
+    <label className="control-label">{translate('Project')}</label>
     <Field
       name="project"
       component={fieldProps => (

@@ -9,7 +9,7 @@ const serializer = ({
   datastore,
   folder,
   networks,
-  // tslint:disable-next-line: trailing-comma
+
   ...rest
 }) => ({
   template: template && template.url,
@@ -20,22 +20,24 @@ const serializer = ({
   ...rest,
 });
 
-const limitSerializer = limits => limits && ({
-  cpu: limits.cpu,
-  ram: limits.ram && limits.ram * 1024,
-  disk: limits.disk && limits.disk * 1024,
-});
+const limitSerializer = limits =>
+  limits && {
+    cpu: limits.cpu,
+    ram: limits.ram && limits.ram * 1024,
+    disk: limits.disk && limits.disk * 1024,
+  };
 
-const limitParser = limits => limits && ({
-  cpu: limits.cpu,
-  ram: limits.ram && limits.ram / 1024,
-  disk: limits.disk && limits.disk / 1024,
-});
+const limitParser = limits =>
+  limits && {
+    cpu: limits.cpu,
+    ram: limits.ram && limits.ram / 1024,
+    disk: limits.disk && limits.disk / 1024,
+  };
 
 registerOfferingType({
   type: 'VMware.VirtualMachine',
   get label() {
-    return translate('VMware Virtual Machine');
+    return translate('vSphere Virtual Machine');
   },
   component: VMwareVirtualMachineForm,
   providerType: 'VMware',

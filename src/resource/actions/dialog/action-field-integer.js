@@ -8,7 +8,7 @@ export default {
     form: '<',
   },
   controller: class {
-    constructor() {
+    $onInit() {
       if (!this.field.factor) {
         this.field.factor = 1;
       }
@@ -21,5 +21,5 @@ export default {
     get maxValue() {
       return Math.round(this.field.max_value / this.field.factor);
     }
-  }
+  },
 };

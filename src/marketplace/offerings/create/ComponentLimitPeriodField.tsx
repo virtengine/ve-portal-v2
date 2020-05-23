@@ -16,25 +16,28 @@ export function getLimitPeriods(): LimitPeriodOption[] {
     {
       value: 'month',
       label: translate('Maximum monthly'),
-      description: translate('Every month service provider can report up to the amount requested by user.'),
+      description: translate(
+        'Every month service provider can report up to the amount requested by user.',
+      ),
     },
     {
       value: 'total',
       label: translate('Maximum total'),
-      description: translate('Service provider can report up to the requested amount over the whole active state of resource.'),
+      description: translate(
+        'Service provider can report up to the requested amount over the whole active state of resource.',
+      ),
     },
   ];
 }
 
 interface Props {
-  component: string;
   limitPeriod: LimitPeriodOption;
 }
 
 export const ComponentLimitPeriodField = (props: Props) => (
   <FormGroup label={translate('Limit period')}>
     <Field
-      name={`${props.component}.limit_period`}
+      name="limit_period"
       component={fieldProps => (
         <Select
           value={fieldProps.input.value}
@@ -45,9 +48,7 @@ export const ComponentLimitPeriodField = (props: Props) => (
       )}
     />
     {props.limitPeriod && (
-      <div className="help-text m-t-sm">
-        {props.limitPeriod.description}
-      </div>
+      <div className="help-text m-t-sm">{props.limitPeriod.description}</div>
     )}
   </FormGroup>
 );

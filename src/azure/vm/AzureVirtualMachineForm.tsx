@@ -12,11 +12,11 @@ import { OfferingConfigurationFormProps } from '@waldur/marketplace/types';
 
 import { loadData } from './utils';
 
-export const AzureVirtualMachineForm: React.SFC<OfferingConfigurationFormProps> = props => (
+export const AzureVirtualMachineForm: React.FC<OfferingConfigurationFormProps> = props => (
   <Query variables={props.offering.scope_uuid} loader={loadData}>
     {({ loading, error, data }) => {
       if (loading) {
-        return <LoadingSpinner/>;
+        return <LoadingSpinner />;
       }
       if (error) {
         return <span>{translate('Unable to load locations.')}</span>;
@@ -26,18 +26,33 @@ export const AzureVirtualMachineForm: React.SFC<OfferingConfigurationFormProps> 
           <FormContainer
             submitting={false}
             labelClass="col-sm-3"
-            controlClass="col-sm-9">
-            <ProjectField/>
+            controlClass="col-sm-9"
+          >
+            <ProjectField />
             <StringField
               label={translate('Name')}
               name="attributes.name"
-              description={translate('This name will be visible in accounting data.')}
+              description={translate(
+                'This name will be visible in accounting data.',
+              )}
               validate={[required, virtualMachineName]}
               required={true}
             />
-            {CreateSelectField(translate('Location'), 'attributes.location', data.locations)}
-            {CreateSelectField(translate('Image'), 'attributes.image', data.images)}
-            {CreateSelectField(translate('Size'), 'attributes.size', data.sizes)}
+            {CreateSelectField(
+              translate('Location'),
+              'attributes.location',
+              data.locations,
+            )}
+            {CreateSelectField(
+              translate('Image'),
+              'attributes.image',
+              data.images,
+            )}
+            {CreateSelectField(
+              translate('Size'),
+              'attributes.size',
+              data.sizes,
+            )}
             <TextField
               label={translate('Description')}
               name="attributes.description"

@@ -1,9 +1,9 @@
 import * as React from 'react';
 import { connect } from 'react-redux';
 
-import { isCustomerQuotaReached } from '@waldur/core/ncUtils';
+import { isCustomerQuotaReached } from '@waldur/core/utils';
 import { translate } from '@waldur/i18n/translate';
-import ActionButton from '@waldur/table-react/ActionButton';
+import { ActionButton } from '@waldur/table-react/ActionButton';
 import { getCustomer, isOwnerOrStaff } from '@waldur/workspace/selectors';
 
 import { gotoProjectCreate } from './actions';
@@ -25,7 +25,9 @@ const mapStateToProps = state => {
   if (!ownerOrStaff) {
     return {
       disabled: true,
-      tooltip: translate('You don\'t have enough privileges to perform this operation.'),
+      tooltip: translate(
+        "You don't have enough privileges to perform this operation.",
+      ),
     };
   } else if (isCustomerQuotaReached(customer, 'project')) {
     return {
@@ -41,4 +43,6 @@ const mapStateToProps = state => {
 
 const enhance = connect(mapStateToProps, { gotoProjectCreate });
 
-export const ProjectCreateButton = enhance(PureProjectCreateButton) as React.ComponentType<{}>;
+export const ProjectCreateButton = enhance(
+  PureProjectCreateButton,
+) as React.ComponentType<{}>;

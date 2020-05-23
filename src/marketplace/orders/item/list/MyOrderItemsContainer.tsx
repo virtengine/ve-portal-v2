@@ -1,10 +1,11 @@
 import * as React from 'react';
-import { connect } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 
+import { Panel } from '@waldur/core/Panel';
 import { $state } from '@waldur/core/services';
-import { connectAngularComponent } from '@waldur/store/connect';
 
 import { setOrderStateFilter } from '../../store/actions';
+
 import { MyOrderItemsFilter } from './MyOrderItemsFilter';
 import { MyOrderItemsList } from './MyOrderItemsList';
 
@@ -18,42 +19,26 @@ interface Props {
   setOrderStateFilter: (arg: StateOptions) => void;
 }
 
-class PureOrderItemsContainer extends React.Component<Props> {
+const filterOptionsSelector = state =>
+  state.marketplace.orders.tableFilter.stateOptions;
 
-  componentWillMount() {
+export const MyOrderItemsContainer: React.FC<Props> = () => {
+  const dispatch = useDispatch();
+  const filterOptions = useSelector(filterOptionsSelector);
+  React.useEffect(() => {
     const { filterState } = $state.params;
     if (filterState) {
-      const filterOptions = this.props.orderFilterStateOptions;
       const filterOption = filterOptions.find(op => op.value === filterState);
       if (filterOption) {
-        this.props.setOrderStateFilter(filterOption);
+        dispatch(setOrderStateFilter('MyOrderItemsFilter', filterOption));
       }
     }
-  }
+  }, [filterOptions, dispatch]);
 
-  render() {
-    return (
-      <div className="ibox-content">
-        <MyOrderItemsFilter/>
-        <MyOrderItemsList/>
-      </div>
-    );
-  }
-}
-
-const mapStateToProps = state => {
-  return {
-    orderFilterStateOptions: state.marketplace.orders.tableFilter.stateOptions,
-  };
+  return (
+    <Panel>
+      <MyOrderItemsFilter />
+      <MyOrderItemsList />
+    </Panel>
+  );
 };
-
-const mapDispatchToProps = dispatch => ({
-  setOrderStateFilter: filterOption =>
-      dispatch(setOrderStateFilter('MyOrderItemsFilter', filterOption)),
-});
-
-const enhance = connect(mapStateToProps, mapDispatchToProps);
-
-const OrderItemsContainer = enhance(PureOrderItemsContainer);
-
-export default connectAngularComponent(OrderItemsContainer);

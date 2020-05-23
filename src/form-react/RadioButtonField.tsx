@@ -7,8 +7,6 @@ interface RadioButtonFieldProps extends FormField {
   isHiddenInput?: boolean;
   choices: RadioButtonChoice[];
   wrapperClassName?: string;
-  WrapperElement?: string;
-  ItemElement?: string;
   defaultItemClassName?: string;
 }
 
@@ -17,24 +15,34 @@ export class RadioButtonChoice {
     public value: any,
     public label: React.ReactNode,
     public itemClassName?: string,
-  ) {
-  }
+  ) {}
 }
 
-export const RadioButtonField: React.SFC<RadioButtonFieldProps> = props => {
-  const { input, choices, WrapperElement, wrapperClassName, ItemElement, defaultItemClassName, isHiddenInput, ...rest } = props;
+export const RadioButtonField: React.FC<RadioButtonFieldProps> = props => {
+  const {
+    input,
+    choices,
+    wrapperClassName,
+    defaultItemClassName,
+    isHiddenInput,
+    ...rest
+  } = props;
   return (
-    <WrapperElement className={wrapperClassName}>
+    <div className={wrapperClassName}>
       {choices.map((choice, index) => {
-        if (!choice) { return null; }
+        if (!choice) {
+          return null;
+        }
         return (
-          <ItemElement
+          <div
             className={classNames(choice.itemClassName || defaultItemClassName)}
             key={index}
           >
-            <label className={classNames({
-              checked: input.value === choice.value,
-            })}>
+            <label
+              className={classNames({
+                checked: input.value === choice.value,
+              })}
+            >
               <input
                 {...input}
                 className={classNames({
@@ -47,15 +55,13 @@ export const RadioButtonField: React.SFC<RadioButtonFieldProps> = props => {
               />
               {choice.label}
             </label>
-          </ItemElement>
+          </div>
         );
       })}
-    </WrapperElement>
+    </div>
   );
 };
 
 RadioButtonField.defaultProps = {
-  WrapperElement: 'div',
-  ItemElement: 'div',
   defaultItemClassName: 'row',
 };

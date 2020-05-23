@@ -13,22 +13,26 @@ interface ActionButtonProps {
 }
 
 export const wrapTooltip = (label, children) =>
-  label ? <Tooltip label={label} id="button-tooltip">{children}</Tooltip> : children;
+  label ? (
+    <Tooltip label={label} id="button-tooltip">
+      {children}
+    </Tooltip>
+  ) : (
+    children
+  );
 
-const ActionButton: React.SFC<ActionButtonProps> = props =>
-  wrapTooltip(props.tooltip, (
-  <button
-    type="button"
-    className={classNames(props.className, {disabled: props.disabled})}
-    onClick={props.action}>
-      {props.icon && <i className={props.icon}/>}
-      {' '}
-      {props.title}
-  </button>
-));
+export const ActionButton: React.FC<ActionButtonProps> = props =>
+  wrapTooltip(
+    props.tooltip,
+    <button
+      type="button"
+      className={classNames(props.className, { disabled: props.disabled })}
+      onClick={props.action}
+    >
+      {props.icon && <i className={props.icon} />} {props.title}
+    </button>,
+  );
 
 ActionButton.defaultProps = {
   className: 'btn btn-sm btn-default',
 };
-
-export default ActionButton;

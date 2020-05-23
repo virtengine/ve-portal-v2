@@ -19,12 +19,16 @@ interface DispatchProps {
 
 const mapStateToProps = (state: OuterState, ownProps: OwnProps) => ({
   disabled: ownProps.disabled || isAddingItem(state),
+  isAddingItem: isAddingItem(state),
 });
 
 const mapDispatchToProps = (dispatch: Dispatch, ownProps: OwnProps) => ({
   onBtnClick: () => dispatch(addItemRequest(ownProps.item)),
 });
 
-const enhance = connect<{}, DispatchProps, OwnProps>(mapStateToProps, mapDispatchToProps);
+const enhance = connect<{}, DispatchProps, OwnProps>(
+  mapStateToProps,
+  mapDispatchToProps,
+);
 
 export const ShoppingCartButtonContainer = enhance(ShoppingCartButton);

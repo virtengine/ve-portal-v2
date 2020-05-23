@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import { compose } from 'redux';
 
 import { TranslateProps, withTranslation } from '@waldur/i18n';
-import ActionButton from '@waldur/table-react/ActionButton';
+import { ActionButton } from '@waldur/table-react/ActionButton';
 import { UserDetails } from '@waldur/workspace/types';
 
 import * as actions from './actions';
@@ -17,7 +17,8 @@ const PureUserDetailsButton = (props: UserDetailsButtonProps) => (
   <ActionButton
     title={props.translate('Details')}
     action={props.onClick}
-    icon="fa fa-icon-info-sign"/>
+    icon="fa fa-icon-info-sign"
+  />
 );
 
 const mapDispatchToProps = (dispatch, ownProps) => ({
@@ -27,9 +28,6 @@ const mapDispatchToProps = (dispatch, ownProps) => ({
   },
 });
 
-const enhance = compose(
-  connect(null, mapDispatchToProps),
-  withTranslation,
-);
+const enhance = compose(connect(null, mapDispatchToProps), withTranslation);
 
 export const UserDetailsButton = enhance(PureUserDetailsButton);

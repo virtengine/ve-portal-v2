@@ -1,6 +1,5 @@
 const path = require('path');
 const webpack = require('webpack');
-const utils = require('./webpack.utils');
 
 const target = 'build.dll';
 
@@ -13,20 +12,10 @@ module.exports = {
       '@sentry/browser',
       '@sentry/types',
       '@sentry/utils',
-      'lodash',
-      'jquery',
       'moment-timezone',
-      'bootstrap/js/tooltip',
-      'bootstrap/js/modal',
-      'bootstrap/js/dropdown',
       'file-saver',
       'papaparse',
 
-      '@fullcalendar/core',
-      '@fullcalendar/daygrid',
-      '@fullcalendar/interaction',
-      '@fullcalendar/react',
-      '@fullcalendar/timegrid',
       'redux',
       'redux-form',
       'redux-form-saga',
@@ -55,14 +44,10 @@ module.exports = {
       'angular-animate',
       'angular-cookies',
       'angular-loader',
-      'angular-gravatar',
       'angular-flash-alert',
       'angulartics',
       'angulartics-google-analytics',
-      'angular-moment',
       'angular-resource',
-      'angular-scroll',
-      'angular-ui-router',
       'ui-select',
       'satellizer',
       'angular-translate',
@@ -72,10 +57,7 @@ module.exports = {
       'angular-sanitize',
       'angular-ui-bootstrap',
       'angular-bind-html-compile-ci-dev',
-      'oclazyload',
       'angular-intro.js',
-
-      './src/shims/slimscroll',
     ],
   },
   output: {
@@ -95,19 +77,22 @@ module.exports = {
       // Temporary workaround for Angular UI router and React Bootstrap integration
       {
         test: /SafeAnchor\.js$/,
-        loader: 'ts-loader'
+        loader: 'ts-loader',
       },
     ],
   },
 
   plugins: [
     // Moment locales extraction
-    new webpack.ContextReplacementPlugin(/moment[/\\]locale$/, /(az|en-gb|et|ru|lt|lv)/),
+    new webpack.ContextReplacementPlugin(
+      /moment[/\\]locale$/,
+      /(az|en-gb|et|ru|lt|lv)/,
+    ),
 
     // Temporary workaround for Angular UI router and React Bootstrap integration
     new webpack.NormalModuleReplacementPlugin(
       /SafeAnchor\.js/,
-      path.resolve('./src/shims/AngularRouterAnchor.tsx')
+      path.resolve('./src/shims/AngularRouterAnchor.tsx'),
     ),
     new webpack.DllPlugin({
       // The path to the manifest file which maps between
@@ -120,7 +105,7 @@ module.exports = {
       name: '[name]_[hash]_lib',
     }),
   ],
-  devtool: utils.isProd ? '' : 'source-map',
+  devtool: 'source-map',
   resolve: {
     extensions: ['.js', '.jsx'],
   },

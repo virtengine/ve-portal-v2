@@ -1,7 +1,8 @@
 import * as React from 'react';
 import { reduxForm } from 'redux-form';
 
-import { FormContainer, FieldError, SubmitButton} from '@waldur/form-react';
+import { FormContainer, FieldError, SubmitButton } from '@waldur/form-react';
+import { TranslateProps } from '@waldur/i18n';
 
 import { ProviderFormBody } from './ProviderFormBody';
 import { ProviderNameField } from './ProviderNameField';
@@ -16,12 +17,11 @@ export const PureProviderUpdateForm = props => {
   return (
     <form
       onSubmit={props.handleSubmit(props.updateProvider)}
-      className="form-horizontal">
-      <FormContainer {...container}>
-        {ProviderNameField(props)}
-      </FormContainer>
-      <ProviderFormBody {...props} container={container}/>
-      <FieldError error={props.error}/>
+      className="form-horizontal"
+    >
+      <FormContainer {...container}>{ProviderNameField(props)}</FormContainer>
+      <ProviderFormBody {...props} container={container} />
+      <FieldError error={props.error} />
       <div className="text-center">
         <SubmitButton
           submitting={props.submitting}
@@ -32,4 +32,10 @@ export const PureProviderUpdateForm = props => {
   );
 };
 
-export const ProviderUpdateForm = reduxForm({form: 'providerUpdate'})(PureProviderUpdateForm);
+interface OwnProps<FormData = {}> extends TranslateProps {
+  updateProvider(data: FormData): void;
+}
+
+export const ProviderUpdateForm = reduxForm<{}, OwnProps>({
+  form: 'providerUpdate',
+})(PureProviderUpdateForm);

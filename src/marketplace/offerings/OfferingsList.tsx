@@ -1,4 +1,5 @@
 import * as React from 'react';
+import * as ButtonGroup from 'react-bootstrap/lib/ButtonGroup';
 import { connect } from 'react-redux';
 import { compose } from 'redux';
 import { getFormValues } from 'redux-form';
@@ -6,11 +7,13 @@ import { createSelector } from 'reselect';
 
 import { formatDateTime } from '@waldur/core/dateUtils';
 import { withTranslation } from '@waldur/i18n';
+import { PreviewOfferingButton } from '@waldur/marketplace/offerings/PreviewOfferingButton';
 import { TABLE_NAME } from '@waldur/marketplace/offerings/store/constants';
 import { Table, connectTable, createFetcher } from '@waldur/table-react';
 import { getCustomer, isOwnerOrStaff } from '@waldur/workspace/selectors';
 
 import { Offering } from '../types';
+
 import { OfferingActions } from './actions/OfferingActions';
 import { OfferingCreateButton } from './actions/OfferingCreateButton';
 import { OfferingDetailsLink } from './details/OfferingDetailsLink';
@@ -22,7 +25,11 @@ export const TableComponent = props => {
   const columns = [
     {
       title: translate('Name'),
-      render: ({ row }) => <OfferingDetailsLink offering_uuid={row.uuid}>{row.name}</OfferingDetailsLink>,
+      render: ({ row }) => (
+        <OfferingDetailsLink offering_uuid={row.uuid}>
+          {row.name}
+        </OfferingDetailsLink>
+      ),
       orderField: 'name',
     },
     {
@@ -43,7 +50,14 @@ export const TableComponent = props => {
   if (!props.actionsDisabled) {
     columns.push({
       title: translate('Actions'),
-      render: ({ row }) => <OfferingActions row={row}/>,
+      render: ({ row }) => {
+        return (
+          <ButtonGroup>
+            <OfferingActions row={row} />
+            <PreviewOfferingButton offering={row} />
+          </ButtonGroup>
+        );
+      },
     });
   }
 
@@ -53,8 +67,8 @@ export const TableComponent = props => {
       placeholderComponent={<OfferingsListTablePlaceholder />}
       columns={columns}
       verboseName={translate('Offerings')}
-      actions={props.showOfferingCreateButton && <OfferingCreateButton/>}
-      initialSorting={{field: 'created', mode: 'desc'}}
+      actions={props.showOfferingCreateButton && <OfferingCreateButton />}
+      initialSorting={{ field: 'created', mode: 'desc' }}
       enableExport={true}
     />
   );
@@ -87,19 +101,14 @@ export const TableOptions = {
     row.category_title,
     row.state,
   ],
-  exportFields: [
-    'Name',
-    'Native name',
-    'Created',
-    'Category',
-    'State',
-  ],
+  exportFields: ['Name', 'Native name', 'Created', 'Category', 'State'],
 };
 
 const showOfferingCreateButton = createSelector(
   isOwnerOrStaff,
   getCustomer,
-  (ownerOrStaff, customer) => customer && customer.is_service_provider && ownerOrStaff,
+  (ownerOrStaff, customer) =>
+    customer && customer.is_service_provider && ownerOrStaff,
 );
 
 const mapStateToProps = state => ({

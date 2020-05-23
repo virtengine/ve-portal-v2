@@ -34,7 +34,7 @@ interface SelectField<Resource> extends BaseField<Resource> {
 
 interface TextField<Resource> extends BaseField<Resource> {
   type: 'string' | 'text';
-  pattern?: string;
+  pattern?: string | RegExp;
   maxlength: number;
 }
 
@@ -53,8 +53,7 @@ export type ActionField<Resource = BaseResource> =
   | TextField<Resource>
   | SelectField<Resource>
   | IntegerField<Resource>
-  | ComponentField<Resource>
-;
+  | ComponentField<Resource>;
 
 type ActionType = 'button' | 'form' | 'callback';
 

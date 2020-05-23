@@ -22,17 +22,12 @@ const formatImageOption = (image: Image): Option => {
   };
 };
 
-// tslint:disable:variable-name
 export const loadData = (settings_uuid: string) =>
   Promise.all([
     getLocations(settings_uuid),
     getImages(settings_uuid),
     getSizes(settings_uuid),
-  ]).then(([
-    locations,
-    images,
-    sizes,
-  ]) => ({
+  ]).then(([locations, images, sizes]) => ({
     locations,
     images: images.map(formatImageOption),
     sizes: sizes.map(formatSizeOption),

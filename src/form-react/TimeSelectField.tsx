@@ -18,12 +18,13 @@ function getMomentDayRange(interval = 5) {
   return timeArray;
 }
 
-const getOptions = (interval: number) => getMomentDayRange(interval)
-  .map(formatTime)
-  .map(formattedOption => ({
-    label: formattedOption,
-    value: formattedOption,
-  }));
+export const getOptions = (interval: number) =>
+  getMomentDayRange(interval)
+    .map(formatTime)
+    .map(formattedOption => ({
+      label: formattedOption,
+      value: formattedOption,
+    }));
 
 interface TimeSelectFieldProps {
   interval?: number;

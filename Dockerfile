@@ -12,10 +12,12 @@ RUN apk add --no-cache --virtual python make g++ \
     && yarn install --frozen-lockfile
 
 COPY . /app
+ARG VERSION=latest
+RUN sed -i "s/buildId: 'develop'/buildId: '$VERSION'/" src/configs/base-config.js
 RUN yarn build
 
 # production environment
-FROM nginx:1.16.0-alpine
+FROM nginx:stable-alpine
 COPY --from=build /app/build /usr/share/nginx/html
 EXPOSE 80
 CMD ["nginx", "-g", "daemon off;"]

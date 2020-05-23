@@ -1,6 +1,6 @@
 import * as React from 'react';
 
-import { $sanitize } from '@waldur/core/services';
+import { FormattedHtml } from '@waldur/core/FormattedHtml';
 import { translate } from '@waldur/i18n';
 import { CloseDialogButton } from '@waldur/modal/CloseDialogButton';
 import { ModalDialog } from '@waldur/modal/ModalDialog';
@@ -17,7 +17,7 @@ export const TermsOfServiceDialog = (props: TermsOfServiceDialogProps) => (
     title={translate('Terms of Service')}
     footer={<CloseDialogButton />}
   >
-    <div dangerouslySetInnerHTML={{__html: $sanitize(props.resolve.content)}}/>
+    <FormattedHtml html={props.resolve.content} />
   </ModalDialog>
 );
 

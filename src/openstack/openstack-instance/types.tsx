@@ -1,16 +1,17 @@
 import { VirtualMachine } from '@waldur/resource/types';
 
-interface InternalIp {
-  subnet: string;
+interface RancherClusterReference {
+  uuid: string;
+  name: string;
 }
 
 export interface OpenStackInstance extends VirtualMachine {
   flavor_name: string;
-  internal_ips_set: InternalIp[];
   floating_ips?: string[];
   runtime_state: 'SHUTOFF' | 'ACTIVE';
   security_groups?: string[];
   availability_zone_name?: string;
+  rancher_cluster?: RancherClusterReference;
 }
 
 export interface Subnet {
@@ -19,11 +20,12 @@ export interface Subnet {
   name: string;
   cidr: string;
   gateway_ip: string;
-  allocation_pools: Array<{[key: string]: string}>;
+  allocation_pools: Array<{ [key: string]: string }>;
   ip_version: number;
   enable_dhcp: boolean;
-  dns_nameservers: Array<{[key: string]: string}>;
+  dns_nameservers: Array<{ [key: string]: string }>;
   network: string;
+  network_name?: string;
 }
 
 export interface FloatingIp {
@@ -45,6 +47,7 @@ export interface Flavor extends ServiceComponent {
   url: string;
   name: string;
   disabled: boolean;
+  display_name?: string;
 }
 
 export interface Image extends ServiceComponent {

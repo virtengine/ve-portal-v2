@@ -3,12 +3,19 @@ import { compose } from 'redux';
 import { reduxForm } from 'redux-form';
 
 import { $state } from '@waldur/core/services';
-import { connectAngularComponent } from '@waldur/store/connect';
+import { translate } from '@waldur/i18n';
 
 import { loadDataStart, setStep } from '../store/actions';
 import { FORM_ID, createOffering } from '../store/constants';
-import { getStep, isLoading, isLoaded, isOfferingManagementDisabled, isErred } from '../store/selectors';
+import {
+  getStep,
+  isLoading,
+  isLoaded,
+  isOfferingManagementDisabled,
+  isErred,
+} from '../store/selectors';
 import { OfferingStep, STEPS } from '../types';
+
 import { OfferingCreateDialog } from './OfferingCreateDialog';
 
 const mapStateToProps = state => ({
@@ -44,15 +51,20 @@ export const mergeProps = (stateProps, dispatchProps, ownProps) => ({
 
 const connector = connect(mapStateToProps, mapDispatchToProps, mergeProps);
 
+const validate = values => {
+  const errors: any = {};
+  if (!values.plans || !values.plans.length) {
+    errors.plans = { _error: translate('At least one plan must be entered') };
+  }
+  return errors;
+};
+
 const enhance = compose(
   connector,
   reduxForm({
     form: FORM_ID,
-    enableReinitialize: true,
-    destroyOnUnmount: false,
+    validate,
   }),
 );
 
-const OfferingCreateContainer = enhance(OfferingCreateDialog);
-
-export default connectAngularComponent(OfferingCreateContainer);
+export const OfferingCreateContainer = enhance(OfferingCreateDialog);

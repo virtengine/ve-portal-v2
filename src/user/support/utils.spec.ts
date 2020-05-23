@@ -3,25 +3,25 @@ import {
   staffUser,
   supportAndStaffUser,
   supportUser,
-  userWithEstonianId,
-  userWithFacebookId
+  userWithFacebookId,
 } from '@waldur/user/support/fixtures';
 import {
   formatLifetime,
   formatRegistrationMethod,
-  formatUserStatus
+  formatUserStatus,
 } from '@waldur/user/support/utils';
 
 describe('Utils functions', () => {
   it('should return appropriate user status', () => {
     expect(formatUserStatus(staffUser)).toEqual('Staff');
     expect(formatUserStatus(supportUser)).toEqual('Support user');
-    expect(formatUserStatus(supportAndStaffUser)).toEqual('Staff and Support user');
+    expect(formatUserStatus(supportAndStaffUser)).toEqual(
+      'Staff and Support user',
+    );
     expect(formatUserStatus(ordinaryUser)).toEqual('Regular user');
   });
 
   it('should return appropriate registration method', () => {
-    expect(formatRegistrationMethod(userWithEstonianId)).toEqual('Estonian ID');
     expect(formatRegistrationMethod(ordinaryUser)).toEqual('Default');
     expect(formatRegistrationMethod(userWithFacebookId)).toEqual('Facebook');
   });

@@ -6,8 +6,8 @@ import { compose } from 'redux';
 import { reduxForm, formValueSelector } from 'redux-form';
 import { createSelector } from 'reselect';
 
-import { AccountingPeriodFilter } from '@waldur/customer/AccountingPeriodFilter';
-import { AccountingPeriodOption } from '@waldur/customer/types';
+import { AccountingPeriodFilter } from '@waldur/customer/list/AccountingPeriodFilter';
+import { AccountingPeriodOption } from '@waldur/customer/list/types';
 import { OfferingAutocomplete } from '@waldur/marketplace/offerings/details/OfferingAutocomplete';
 import { OrganizationAutocomplete } from '@waldur/marketplace/orders/OrganizationAutocomplete';
 import { ProjectFilter } from '@waldur/marketplace/resources/list/ProjectFilter';
@@ -22,7 +22,7 @@ const makeAccountingPeriods = () => {
     const label = date.format('MMMM, YYYY');
     choices.push({
       label,
-      value: { year, month, current: i === 0},
+      value: { year, month, current: i === 0 },
     });
     date = date.subtract(1, 'month');
   }
@@ -36,10 +36,12 @@ interface Props {
 
 const PureSupportUsageFilter = (props: Props) => (
   <Row>
-    <AccountingPeriodFilter options={props.options}/>
-    <OrganizationAutocomplete/>
-    <ProjectFilter customer_uuid={props.customer ? props.customer.uuid : null}/>
-    <OfferingAutocomplete/>
+    <AccountingPeriodFilter options={props.options} />
+    <OrganizationAutocomplete />
+    <ProjectFilter
+      customer_uuid={props.customer ? props.customer.uuid : null}
+    />
+    <OfferingAutocomplete />
   </Row>
 );
 
@@ -55,9 +57,6 @@ const mapStateToProps = createSelector(
   }),
 );
 
-const enhance = compose(
-  reduxForm({form: FORM_ID}),
-  connect(mapStateToProps),
-);
+const enhance = compose(reduxForm({ form: FORM_ID }), connect(mapStateToProps));
 
 export const SupportUsageFilter = enhance(PureSupportUsageFilter);

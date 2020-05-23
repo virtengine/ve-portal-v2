@@ -1,15 +1,15 @@
 import * as React from 'react';
 
-import BooleanField from '@waldur/table-react/BooleanField';
+import { BooleanField } from '@waldur/table-react/BooleanField';
 
 interface Props {
   row: {
-    role: string
+    role: string;
   };
 }
 
 const CustomerRole = ({ row }: Props) => (
-  <BooleanField value={row.role === 'owner'}/>
+  <BooleanField value={row.role === 'owner'} />
 );
 
 export default CustomerRole;

@@ -1,18 +1,20 @@
 import { translate } from '@waldur/i18n';
 import { registerOfferingType } from '@waldur/marketplace/common/registry';
 import { Attribute } from '@waldur/marketplace/types';
-import { OpenStackPackageDetails } from '@waldur/openstack/OpenStackPackageDetails';
-import { OpenStackPackageForm, DEFAULT_SUBNET_CIDR } from '@waldur/openstack/OpenStackPackageForm';
 
-const serializer = props => ({
-  ...props,
-  subnet_cidr: DEFAULT_SUBNET_CIDR.replace('X', props.subnet_cidr),
-});
+import { OpenStackPackageDetails } from './OpenStackPackageDetails';
+import { OpenStackPackageForm } from './OpenStackPackageForm';
+import { OpenStackPluginOptionsForm } from './OpenStackPluginOptionsForm';
 
 const ServiceSettingsAttributes = (): Attribute[] => [
   {
     key: 'backend_url',
     title: translate('API URL'),
+    type: 'string',
+  },
+  {
+    key: 'domain',
+    title: translate('Domain name'),
     type: 'string',
   },
   {
@@ -42,6 +44,42 @@ const ServiceSettingsAttributes = (): Attribute[] => [
   },
 ];
 
+const serializeVolumeTypeLimits = limits =>
+  Object.keys(limits)
+    .filter(key => key.startsWith('gigabytes_') && limits[key])
+    .reduce(
+      (r, i) => ({
+        ...r,
+        [i]: limits[i],
+      }),
+      {},
+    );
+
+const limitSerializer = limits =>
+  limits && {
+    cores: limits.cores,
+    ram: limits.ram && limits.ram * 1024,
+    storage: limits.storage && limits.storage * 1024,
+    ...serializeVolumeTypeLimits(limits),
+  };
+
+const limitParser = limits =>
+  limits && {
+    cores: limits.cores,
+    ram: limits.ram && limits.ram / 1024,
+    storage: limits.storage && limits.storage / 1024,
+    ...serializeVolumeTypeLimits(limits),
+  };
+
+const offeringComponentsFilter = (formData, components) => {
+  const storageMode = (formData.plugin_options || {}).storage_mode || 'fixed';
+  if (storageMode == 'fixed') {
+    return components.filter(c => ['ram', 'cores', 'storage'].includes(c.type));
+  } else {
+    return components.filter(c => c.type !== 'storage');
+  }
+};
+
 registerOfferingType({
   type: 'Packages.Template',
   get label() {
@@ -49,7 +87,12 @@ registerOfferingType({
   },
   component: OpenStackPackageForm,
   detailsComponent: OpenStackPackageDetails,
-  serializer,
+  pluginOptionsForm: OpenStackPluginOptionsForm,
+  limitSerializer,
+  limitParser,
   providerType: 'OpenStack',
   attributes: ServiceSettingsAttributes,
+  showOfferingLimits: true,
+  onlyOnePlan: true,
+  offeringComponentsFilter,
 });

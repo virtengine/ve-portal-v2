@@ -6,19 +6,19 @@ import { PriceTooltip } from '@waldur/price/PriceTooltip';
 
 import { Component } from './types';
 
-export const LimitlessComponentsTable = ({components}: {components: Component[]}) => (
+export const LimitlessComponentsTable = ({
+  components,
+}: {
+  components: Component[];
+}) => (
   <table className="table table-bordered">
     <thead>
       <tr>
-        <th>
-          {translate('Component name')}
-        </th>
-        <th>
-          {translate('Unit')}
-        </th>
+        <th>{translate('Component name')}</th>
+        <th>{translate('Unit')}</th>
         <th>
           {translate('Price per unit')}
-          <PriceTooltip/>
+          <PriceTooltip />
         </th>
       </tr>
     </thead>
@@ -26,12 +26,10 @@ export const LimitlessComponentsTable = ({components}: {components: Component[]}
       {components.map((component, index) => (
         <tr key={index}>
           <td>
-            <p>
-              {component.label}
-            </p>
+            <p>{component.name}</p>
           </td>
           <td>
-            <p>{component.units}</p>
+            <p>{component.measured_unit}</p>
           </td>
           <td>
             <p>{defaultCurrency(component.price)}</p>

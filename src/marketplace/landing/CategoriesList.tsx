@@ -12,7 +12,7 @@ interface CategoriesListProps extends TranslateProps, CategoriesListType {}
 
 export const CategoriesList = withTranslation((props: CategoriesListProps) => {
   if (props.loading) {
-    return <LoadingSpinner/>;
+    return <LoadingSpinner />;
   }
 
   if (!props.loaded) {
@@ -23,7 +23,7 @@ export const CategoriesList = withTranslation((props: CategoriesListProps) => {
     );
   }
 
-  if (props.loaded && !props.items) {
+  if (!props.items) {
     return (
       <h3 className="text-center">
         {props.translate('There are no categories in marketplace yet.')}
@@ -35,7 +35,7 @@ export const CategoriesList = withTranslation((props: CategoriesListProps) => {
     <Row>
       {props.items.map((category, index) => (
         <Col key={index} md={2} sm={6}>
-          <CategoryCard category={category}/>
+          <CategoryCard category={category} />
         </Col>
       ))}
     </Row>
