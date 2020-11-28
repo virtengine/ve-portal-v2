@@ -3,7 +3,7 @@ import * as Table from 'react-bootstrap/lib/Table';
 
 import { translate } from '@waldur/i18n';
 
-export const KeyValueTable = props => (
+export const KeyValueTable = (props) => (
   <Table bordered={true}>
     <thead>
       <tr>
@@ -12,13 +12,15 @@ export const KeyValueTable = props => (
       </tr>
     </thead>
     <tbody>
-      {Object.keys(props.items).map(key => (
+      {Object.keys(props.items).map((key) => (
         <tr key={key}>
           <td>{key}</td>
           <td>
-            {typeof props.items[key] === 'object'
-              ? JSON.stringify(props.items[key])
-              : props.items[key]}
+            {typeof props.items[key] === 'object' ? (
+              <pre>{JSON.stringify(props.items[key], null, 2)}</pre>
+            ) : (
+              props.items[key]
+            )}
           </td>
         </tr>
       ))}

@@ -1,11 +1,9 @@
 import * as React from 'react';
 
 import { translate } from '@waldur/i18n';
-import { ActionButton } from '@waldur/table-react/ActionButton';
+import { ActionButton } from '@waldur/table/ActionButton';
 
-import { refreshResource } from './actions';
-
-export const ResourceRefreshButton = () => (
+export const ResourceRefreshButton = ({ refreshResource }) => (
   <ActionButton
     title={translate('Refresh')}
     icon="fa fa-refresh"

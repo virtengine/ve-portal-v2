@@ -1,7 +1,8 @@
 import * as React from 'react';
 import { useDispatch } from 'react-redux';
+import useAsync from 'react-use/lib/useAsync';
+import useAsyncFn from 'react-use/lib/useAsyncFn';
 
-import { useQuery } from '@waldur/core/useQuery';
 import { translate } from '@waldur/i18n';
 import {
   getAllOfferings,
@@ -11,16 +12,16 @@ import {
 import { Offering, Plan, ImportableResource } from '@waldur/marketplace/types';
 import { closeModalDialog } from '@waldur/modal/actions';
 import { showSuccess, showError } from '@waldur/store/coreSaga';
-import { createEntity } from '@waldur/table-react/actions';
+import { createEntity } from '@waldur/table/actions';
 
 import { ImportDialogProps } from './types';
 
-const getOfferingsForImport = resolve =>
+const getOfferingsForImport = (resolve) =>
   getAllOfferings({ params: { ...resolve, importable: true } });
 
 const toggleElement = (element, list) =>
   list.includes(element)
-    ? list.filter(item => item !== element)
+    ? list.filter((item) => item !== element)
     : [...list, element];
 
 export const useImportDialog = (props: ImportDialogProps) => {
@@ -33,8 +34,10 @@ export const useImportDialog = (props: ImportDialogProps) => {
     () =>
       resources.length > 0 &&
       (!offering.billable ||
-        resources.every(resource => plans[resource.backend_id] !== undefined)),
-    [resources, plans],
+        resources.every(
+          (resource) => plans[resource.backend_id] !== undefined,
+        )),
+    [resources, plans, offering],
   );
 
   const selectOffering = (value: Offering) => {
@@ -46,13 +49,21 @@ export const useImportDialog = (props: ImportDialogProps) => {
   const toggleResource = (resource: ImportableResource) =>
     setResources(toggleElement(resource, resources));
 
-  const { state: offeringsProps, call: loadOfferings } = useQuery<Offering[]>(
-    getOfferingsForImport,
-    props.resolve,
+  const offeringsProps = useAsync<Offering[]>(
+    () => getOfferingsForImport(props.resolve),
+    [props.resolve],
   );
-  const { state: resourceProps, call: loadResources } = useQuery<
-    ImportableResource[]
-  >(offering && getImportableResources, offering && offering.uuid);
+
+  const [resourceProps, resourceCallback] = useAsyncFn<ImportableResource[]>(
+    () => getImportableResources(offering.uuid),
+    [offering],
+  );
+
+  React.useEffect(() => {
+    if (offering) {
+      resourceCallback();
+    }
+  }, [resourceCallback, offering]);
 
   const dispatch = useDispatch();
 
@@ -83,9 +94,6 @@ export const useImportDialog = (props: ImportDialogProps) => {
     }
     dispatch(closeModalDialog());
   };
-
-  React.useEffect(loadOfferings, []);
-  React.useEffect(loadResources, [offering]);
 
   return {
     offering,

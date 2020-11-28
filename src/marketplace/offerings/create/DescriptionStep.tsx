@@ -1,7 +1,7 @@
 import * as React from 'react';
 
 import { required } from '@waldur/core/validators';
-import { FormContainer, SelectField } from '@waldur/form-react';
+import { FormContainer, SelectField } from '@waldur/form';
 import { TranslateProps } from '@waldur/i18n';
 import { Category } from '@waldur/marketplace/types';
 
@@ -26,9 +26,9 @@ export const DescriptionStep = (props: DescriptionStepProps) => (
         label={props.translate('Category')}
         options={props.categories}
         required={true}
-        labelKey="title"
-        valueKey="url"
-        clearable={false}
+        getOptionValue={(option) => option.url}
+        getOptionLabel={(option) => option.title}
+        isClearable={false}
         validate={required}
         onChange={props.onCategoryChange}
       />

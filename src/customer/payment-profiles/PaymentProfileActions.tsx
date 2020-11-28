@@ -6,11 +6,12 @@ import {
   enablePaymentProfile,
   removePaymentProfile,
 } from '@waldur/customer/payment-profiles/store/actions';
+import { translate } from '@waldur/i18n';
 import { openModalDialog, waitForConfirmation } from '@waldur/modal/actions';
+import { ActionButton } from '@waldur/table/ActionButton';
 import { PaymentProfile } from '@waldur/workspace/types';
 
-import { translate } from '../../i18n';
-import { ActionButton } from '../../table-react/ActionButton';
+import { PaymentProfileUpdateDialogContainer } from './PaymentProfileUpdateDialog';
 
 const openDialog = async (dispatch, profile: PaymentProfile) => {
   try {
@@ -26,12 +27,12 @@ const openDialog = async (dispatch, profile: PaymentProfile) => {
 };
 
 const openPaymentProfileUpdateDialog = (profile: PaymentProfile) =>
-  openModalDialog('paymentProfileUpdateDialog', {
+  openModalDialog(PaymentProfileUpdateDialogContainer, {
     resolve: profile,
     size: 'lg',
   });
 
-const Actions = props => (
+const Actions = (props) => (
   <ButtonGroup>
     {!props.profile.is_active ? (
       <ActionButton
@@ -56,7 +57,7 @@ const Actions = props => (
   </ButtonGroup>
 );
 
-const mapDispatchToProps = dispatch => ({
+const mapDispatchToProps = (dispatch) => ({
   openConfirmationDialog: (profile: PaymentProfile) =>
     openDialog(dispatch, profile),
   openUpdateDialog: (profile: PaymentProfile) =>

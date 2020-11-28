@@ -1,6 +1,6 @@
 import * as React from 'react';
 import * as Table from 'react-bootstrap/lib/Table';
-import Select, { Option, OptionValues } from 'react-select';
+import Select from 'react-select';
 
 import { Tooltip } from '@waldur/core/Tooltip';
 import { translate } from '@waldur/i18n';
@@ -8,8 +8,8 @@ import { internalIpFormatter } from '@waldur/openstack/openstack-instance/openst
 import { Subnet, FloatingIp } from '@waldur/openstack/openstack-instance/types';
 
 interface NetworkItem {
-  subnet?: Option<OptionValues>;
-  floatingIp?: Option<OptionValues>;
+  subnet?;
+  floatingIp;
 }
 
 interface OpenstackInstanceNetworksComponentProps {
@@ -54,7 +54,7 @@ export class OpenstackInstanceNetworks extends React.Component<
       getDefaultFloatingIps().length !== 0 ? getDefaultFloatingIps()[0] : {},
   });
 
-  removeItem = index => {
+  removeItem = (index) => {
     const valueCopy = [
       ...this.props.input.value.slice(0, index),
       ...this.props.input.value.slice(index + 1),
@@ -86,16 +86,16 @@ export class OpenstackInstanceNetworks extends React.Component<
     this.props.input.onChange(valueCopy);
   };
 
-  getAvailableNetworkItems = itemType => item =>
+  getAvailableNetworkItems = (itemType) => (item) =>
     this.props.input.value
-      ? this.props.input.value.filter(val => val[itemType].uuid === item.uuid)
+      ? this.props.input.value.filter((val) => val[itemType].uuid === item.uuid)
           .length === 0
       : true;
 
   getFreeSubnets = () =>
     this.props.subnets
       .filter(this.getAvailableNetworkItems('subnet'))
-      .map(subnet => ({
+      .map((subnet) => ({
         ...subnet,
         label: internalIpFormatter(subnet),
       }));
@@ -107,7 +107,7 @@ export class OpenstackInstanceNetworks extends React.Component<
     ),
   ];
 
-  getSelectValue = selectType => index => {
+  getSelectValue = (selectType) => (index) => {
     if (this.props.input.value[index]) {
       return this.props.input.value[index][selectType];
     }
@@ -116,7 +116,7 @@ export class OpenstackInstanceNetworks extends React.Component<
 
   hasFreeSubnets = () => this.getFreeSubnets().length !== 0;
 
-  disableFloatingIpSelect = index =>
+  disableFloatingIpSelect = (index) =>
     this.props.input.value[index].subnet.uuid === undefined;
 
   render() {
@@ -131,29 +131,31 @@ export class OpenstackInstanceNetworks extends React.Component<
                     <Select
                       name="subnets"
                       value={this.getSelectValue('subnet')(index)}
-                      onChange={value => this.onSubnetChange(value, index)}
+                      onChange={(value) => this.onSubnetChange(value, index)}
                       placeholder={translate('Select subnet')}
                       onBlur={() => {
                         /* Noop */
                       }}
                       options={this.getFreeSubnets()}
-                      clearable={false}
-                      valueKey="url"
+                      isClearable={false}
+                      getOptionValue={(option) => option.url}
                     />
                   </td>
                   <td className="col-md-5">
                     <Select
                       name="floatingIps"
                       value={this.getSelectValue('floatingIp')(index)}
-                      onChange={value => this.onFloatingIpChange(value, index)}
+                      onChange={(value) =>
+                        this.onFloatingIpChange(value, index)
+                      }
                       onBlur={() => {
                         /* Noop */
                       }}
                       options={this.getFreeFloatingIps()}
-                      disabled={this.disableFloatingIpSelect(index)}
-                      clearable={false}
-                      labelKey="address"
-                      valueKey="url"
+                      isDisabled={this.disableFloatingIpSelect(index)}
+                      isClearable={false}
+                      getOptionValue={(option) => option.url}
+                      getOptionLabel={(option) => option.address}
                     />
                   </td>
                   <td className="p-r-n">

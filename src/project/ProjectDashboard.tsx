@@ -7,7 +7,8 @@ import { CategoryResourcesList } from '@waldur/dashboard/CategoryResourcesList';
 import { DashboardHeader } from '@waldur/dashboard/DashboardHeader';
 import { translate } from '@waldur/i18n';
 import { ComplianceChecklists } from '@waldur/marketplace-checklist/ComplianceChecklists';
-import { User, Project } from '@waldur/workspace/types';
+import { useTitle } from '@waldur/navigation/title';
+import { User, Project, PROJECT_WORKSPACE } from '@waldur/workspace/types';
 
 import { ProjectActions } from './ProjectActions';
 import { ProjectCounters } from './ProjectCounters';
@@ -17,11 +18,17 @@ interface ProjectDashboardProps {
   user: User;
   project: Project;
   canAddUser: boolean;
-  marketplaceChecklistEnabled: boolean;
 }
 
-export const ProjectDashboard = (props: ProjectDashboardProps) =>
-  props.project ? (
+export const ProjectDashboard = (props: ProjectDashboardProps) => {
+  useTitle(translate('Dashboard'));
+  if (!props.project) {
+    return null;
+  }
+  if (!props.user) {
+    return null;
+  }
+  return (
     <>
       <DashboardHeader
         title={translate('Welcome, {user}!', { user: props.user.full_name })}
@@ -38,15 +45,15 @@ export const ProjectDashboard = (props: ProjectDashboardProps) =>
             <ProjectActions {...props} />
           </Col>
         </Row>
-        {props.marketplaceChecklistEnabled && (
-          <Panel title={translate('Compliance checklists')}>
-            <ComplianceChecklists />
-          </Panel>
-        )}
+        <ComplianceChecklists />
         <Panel title={translate('Resources')}>
           <ProjectResourcesList />
         </Panel>
-        <CategoryResourcesList scopeType="project" scope={props.project} />
+        <CategoryResourcesList
+          scopeType={PROJECT_WORKSPACE}
+          scope={props.project}
+        />
       </div>
     </>
-  ) : null;
+  );
+};

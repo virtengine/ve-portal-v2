@@ -4,13 +4,13 @@ import { ResourceBreadcrumbsRegistry } from '@waldur/resource/breadcrumbs/Resour
 
 import { getTenantListState } from '../utils';
 
-ResourceBreadcrumbsRegistry.register('OpenStack.Network', resource => {
+ResourceBreadcrumbsRegistry.register('OpenStack.Network', (resource) => {
   const tenant_uuid = getUUID(resource.tenant);
   return [
     getTenantListState(resource.project_uuid),
     {
       label: resource.tenant_name,
-      state: 'resources.details',
+      state: 'resource-details',
       params: {
         uuid: tenant_uuid,
         resource_type: 'OpenStack.Tenant',
@@ -18,7 +18,7 @@ ResourceBreadcrumbsRegistry.register('OpenStack.Network', resource => {
     },
     {
       label: gettext('Networks'),
-      state: 'resources.details',
+      state: 'resource-details',
       params: {
         uuid: tenant_uuid,
         resource_type: 'OpenStack.Tenant',

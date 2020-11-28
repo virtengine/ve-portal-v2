@@ -1,16 +1,19 @@
 import { translate } from '@waldur/i18n';
+import { updateInstance } from '@waldur/openstack/api';
 import {
-  createDefaultEditAction,
   createLatinNameField,
   validateState,
+  createEditAction,
+  createDescriptionField,
 } from '@waldur/resource/actions/base';
 import { ResourceAction } from '@waldur/resource/actions/types';
-import { mergeActions } from '@waldur/resource/actions/utils';
 
-export default function createAction(): ResourceAction {
-  return mergeActions(createDefaultEditAction(), {
-    successMessage: translate('Instance has been updated.'),
-    fields: [createLatinNameField()],
+export default function createAction({ resource }): ResourceAction {
+  return createEditAction({
+    resource,
+    fields: [createLatinNameField(), createDescriptionField()],
     validators: [validateState('OK')],
+    verboseName: translate('OpenStack instance'),
+    updateResource: updateInstance,
   });
 }

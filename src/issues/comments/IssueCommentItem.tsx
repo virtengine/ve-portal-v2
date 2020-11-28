@@ -14,6 +14,7 @@ import { openModalDialog } from '@waldur/modal/actions';
 
 import * as actions from './actions';
 import './IssueCommentItem.scss';
+import { IssueCommentDeleteDialog } from './IssueCommentDeleteDialog';
 import { IssueCommentsFormContainer } from './IssueCommentsFormContainer';
 import {
   getIsDeleting,
@@ -59,7 +60,7 @@ export const PureIssueCommentItem = (props: PureIssueCommentItemProps) => {
     users[comment.author_uuid].map((currentUser, index) => (
       <React.Fragment key={index}>{currentUser.toUpperCase()}</React.Fragment>
     ));
-  const onCommentClick = evt => {
+  const onCommentClick = (evt) => {
     const target = evt.target as HTMLElement;
     if (!target.matches('img')) {
       return;
@@ -132,8 +133,8 @@ export const PureIssueCommentItem = (props: PureIssueCommentItemProps) => {
   );
 };
 
-const createDeleteDialog = uuid =>
-  openModalDialog('IssueCommentDeleteDialog', { resolve: { uuid } });
+const createDeleteDialog = (uuid) =>
+  openModalDialog(IssueCommentDeleteDialog, { resolve: { uuid } });
 
 const mapStateToProps = (state, ownProps) => ({
   attachments: getAttachments(state),

@@ -5,22 +5,23 @@ import Col from 'react-bootstrap/lib/Col';
 import ControlLabel from 'react-bootstrap/lib/ControlLabel';
 import FormGroup from 'react-bootstrap/lib/FormGroup';
 import { useDispatch, useSelector } from 'react-redux';
+import { AsyncPaginate } from 'react-select-async-paginate';
 import { Field } from 'redux-form';
 
 import { translate } from '@waldur/i18n';
 import { openModalDialog } from '@waldur/modal/actions';
+import { UserPopover } from '@waldur/user/UserPopover';
 
 import { refreshUsers } from './api';
-import { AsyncSelectField } from './AsyncSelectField';
 import { callerSelector } from './selectors';
 
-const renderer = option => option.full_name || option.username;
+const renderer = (option) => option.full_name || option.username;
 
 const CallerActions = ({ onSearch }) => {
   const dispatch = useDispatch();
   const caller = useSelector(callerSelector);
   const openUserDialog = () =>
-    dispatch(openModalDialog('userPopover', { resolve: { user: caller } }));
+    dispatch(openModalDialog(UserPopover, { resolve: { user: caller } }));
   const filterByCaller = () => onSearch({ caller });
   if (!caller) {
     return null;
@@ -39,7 +40,7 @@ const CallerActions = ({ onSearch }) => {
   );
 };
 
-const filterOptions = options => options;
+const filterOption = (options) => options;
 
 export const CallerGroup = ({ onSearch }) => (
   <FormGroup>
@@ -50,16 +51,24 @@ export const CallerGroup = ({ onSearch }) => (
     <Col sm={6}>
       <Field
         name="caller"
-        component={AsyncSelectField}
-        required={true}
-        placeholder={translate('Select caller...')}
-        clearable={true}
-        labelKey="username"
-        valueKey="uuid"
-        valueRenderer={renderer}
-        optionRenderer={renderer}
-        loadOptions={refreshUsers}
-        filterOptions={filterOptions}
+        component={(fieldProps) => (
+          <AsyncPaginate
+            placeholder={translate('Select caller...')}
+            loadOptions={refreshUsers}
+            defaultOptions
+            getOptionValue={(option) => option.uuid}
+            getOptionLabel={renderer}
+            value={fieldProps.input.value}
+            required={true}
+            onChange={(value) => fieldProps.input.onChange(value)}
+            filterOption={filterOption}
+            noOptionsMessage={() => translate('No organizations')}
+            isClearable={true}
+            additional={{
+              page: 1,
+            }}
+          />
+        )}
       />
     </Col>
     <CallerActions onSearch={onSearch} />

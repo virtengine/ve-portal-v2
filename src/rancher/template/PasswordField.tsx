@@ -1,4 +1,3 @@
-import generator from 'generate-password';
 import * as React from 'react';
 import Button from 'react-bootstrap/lib/Button';
 import FormControl from 'react-bootstrap/lib/FormControl';
@@ -6,6 +5,7 @@ import InputGroup from 'react-bootstrap/lib/InputGroup';
 import { useDispatch } from 'react-redux';
 import { change } from 'redux-form';
 
+import { range } from '@waldur/core/utils';
 import { translate } from '@waldur/i18n';
 
 import { FieldProps } from '../types';
@@ -13,20 +13,24 @@ import { FieldProps } from '../types';
 import { FORM_ID } from './constants';
 import { DecoratedField } from './DecoratedField';
 
-export const PasswordField: React.FC<FieldProps> = props => {
+export function generatePassword(length) {
+  const chars =
+    'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
+  const getChar = () => chars.charAt(Math.floor(Math.random() * chars.length));
+  return range(length).map(getChar).join('');
+}
+
+export const PasswordField: React.FC<FieldProps> = (props) => {
   const dispatch = useDispatch();
 
   const setGeneratedPassword = React.useCallback(() => {
-    const password = generator.generate({
-      length: 10,
-      numbers: true,
-    });
+    const password = generatePassword(10);
 
     dispatch(change(FORM_ID, `answers.${props.variable}`, password));
   }, [dispatch, props.variable]);
 
   const renderControl = React.useCallback(
-    props => (
+    (props) => (
       <InputGroup>
         <FormControl {...props.input} />
         <InputGroup.Button>

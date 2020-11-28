@@ -28,6 +28,7 @@ interface OfferingConfiguration<AttributesType = any, RequestPaylodType = any> {
   ) => RequestPaylodType;
   limitSerializer?: LimitParser;
   limitParser?: LimitParser;
+  formValidator?(values: any): any;
   label: string;
   showOptions?: boolean;
   showComponents?: boolean;
@@ -70,7 +71,7 @@ export function getFormSerializer(offeringType: string) {
   return (
     (REGISTRY.hasOwnProperty(offeringType) &&
       REGISTRY[offeringType].serializer) ||
-    (x => x)
+    ((x) => x)
   );
 }
 
@@ -78,7 +79,7 @@ export function getFormLimitSerializer(offeringType: string) {
   return (
     (REGISTRY.hasOwnProperty(offeringType) &&
       REGISTRY[offeringType].limitSerializer) ||
-    (x => x)
+    ((x) => x)
   );
 }
 
@@ -86,7 +87,14 @@ export function getFormLimitParser(offeringType: string) {
   return (
     (REGISTRY.hasOwnProperty(offeringType) &&
       REGISTRY[offeringType].limitParser) ||
-    (x => x)
+    ((x) => x)
+  );
+}
+
+export function getFormValidator(offeringType: string) {
+  return (
+    REGISTRY.hasOwnProperty(offeringType) &&
+    REGISTRY[offeringType].formValidator
   );
 }
 
@@ -99,9 +107,9 @@ export function getCheckoutSummaryComponent(offeringType: string) {
 
 export function getOfferingTypes(): Option[] {
   const keys = Object.keys(REGISTRY).filter(
-    key => !REGISTRY[key].disableOfferingCreation,
+    (key) => !REGISTRY[key].disableOfferingCreation,
   );
-  return keys.map(key => ({
+  return keys.map((key) => ({
     value: key,
     label: REGISTRY[key].label,
   }));

@@ -24,7 +24,7 @@ Cypress.Commands.add('fillAndSubmitLoginForm', (username, password) => {
 });
 
 // Login using UI
-Cypress.Commands.add('login', function(username, password) {
+Cypress.Commands.add('login', function (username, password) {
   const log = Cypress.log({
     name: 'login',
     message: [username, password],
@@ -47,17 +47,33 @@ Cypress.Commands.add('login', function(username, password) {
     // We should be on the dashboard now
     .get('h2', { log: false })
     .contains('User dashboard', { log: false })
-    .hash({ log: false })
+    .location('pathname')
     .should('match', /profile/, { log: false })
 
     // Make DOM snapshot
-    .then(function() {
+    .then(function () {
       log.snapshot().end();
     });
 });
 
 Cypress.Commands.add('waitForSpinner', () => {
   cy.get('.fa-spinner.fa-spin').should('not.be.visible');
+});
+
+Cypress.Commands.add('openDropdownByLabel', (label) => {
+  cy.get('label')
+    .contains(label)
+    .next()
+    .find('div[class$="placeholder"]') // select classnames which end with "placeholder"
+    .click({ force: true });
+});
+
+Cypress.Commands.add('openDropdownByLabelForce', (label) => {
+  cy.openDropdownByLabel(label).openDropdownByLabel(label);
+});
+
+Cypress.Commands.add('selectTheFirstOptionOfDropdown', () => {
+  cy.get('*div[id^="react-select"]').first().click(); // get ids which start with "react-select"
 });
 
 Cypress.Commands.add('openWorkspaceSelector', () => {
@@ -81,8 +97,8 @@ Cypress.Commands.add('openCustomerCreateDialog', () => {
   cy
     // Click on "Add organization" button
     .get('button')
-    .contains('Add organization')
-    .click()
+    .contains('Create')
+    .click({ force: true })
 
     // Modal dialog should be displayed
     .get('.modal-title')
@@ -111,7 +127,7 @@ Cypress.Commands.add('mockCustomer', () => {
     {},
   )
     .route(
-      'http://localhost:8080/api/customers/bf6d515c9e6e445f9c339021b30fc96b/?uuid=bf6d515c9e6e445f9c339021b30fc96b',
+      'http://localhost:8080/api/customers/bf6d515c9e6e445f9c339021b30fc96b/',
       'fixture:customers/alice.json',
     )
     .route('http://localhost:8080/api/invoices/**', [])

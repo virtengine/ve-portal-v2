@@ -1,4 +1,4 @@
-import { GeolocationPoint } from '@waldur/marketplace/types';
+import { GeolocationPoint } from '@waldur/map/types';
 
 export interface Category {
   name: string;
@@ -15,9 +15,12 @@ export interface Question {
 
 export interface Checklist {
   name: string;
+  icon: string;
   description: string;
   uuid: string;
   questions_count: number;
+  category_uuid: string;
+  checklists_count: number;
 }
 
 export interface Answer {
@@ -31,4 +34,13 @@ export interface ChecklistStats extends GeolocationPoint {
   uuid: string;
   name: string;
   score: number;
+}
+
+export interface ProjectStats {
+  uuid: string;
+  name: string;
+  score: number;
+  positive_count: number;
+  negative_count: number;
+  unknown_count: number;
 }

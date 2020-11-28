@@ -25,6 +25,7 @@ interface CreateIssueDialogProps {
   resolve: {
     issue: CreateIssueProps;
     options: IssueOptions;
+    defer: { resolve(): void; reject(): void };
   };
 }
 
@@ -54,6 +55,8 @@ const createIssue = async (
     summary: formData.summary,
     description,
     is_reported_manually: true,
+    project: formData.project?.url,
+    resource: formData.resource?.url,
   };
   if (issue.customer) {
     payload.customer = issue.customer.url;
@@ -63,6 +66,9 @@ const createIssue = async (
   }
   if (issue.resource) {
     payload.resource = issue.resource.url;
+  }
+  if (issue.summary) {
+    payload.summary = issue.summary;
   }
   if (formData.issueTemplate) {
     payload.template = formData.issueTemplate.url;
@@ -82,21 +88,21 @@ export const IssueCreateDialog = ({ resolve }: CreateIssueDialogProps) => {
     : ISSUE_IDS.INFORMATIONAL;
   const issueTypes = getIssueTypes(showAllTypes);
   const defaultTypeOption = resolve.issue.type
-    ? issueTypes.find(t => t.id === resolve.issue.type)
-    : issueTypes.find(t => t.id === defaultType);
+    ? issueTypes.find((t) => t.id === resolve.issue.type)
+    : issueTypes.find((t) => t.id === defaultType);
   const dispatch = useDispatch();
 
   const templateState = useAsync(getTemplates);
 
   const onCreateIssue = React.useCallback(
-    formData => createIssue(formData, resolve.issue, dispatch),
+    (formData) => createIssue(formData, resolve.issue, dispatch),
     [resolve.issue, dispatch],
   );
 
-  const issueType = useSelector<any, IssueTypeOption>(state =>
+  const issueType = useSelector<any, IssueTypeOption>((state) =>
     selector(state, 'type'),
   );
-  const issueTemplate = useSelector<any, IssueTemplate>(state =>
+  const issueTemplate = useSelector<any, IssueTemplate>((state) =>
     selector(state, 'template'),
   );
 
@@ -104,7 +110,7 @@ export const IssueCreateDialog = ({ resolve }: CreateIssueDialogProps) => {
     () =>
       templateState.value && issueType
         ? templateState.value.filter(
-            option => ISSUE_IDS[option.issue_type] === issueType.id,
+            (option) => ISSUE_IDS[option.issue_type] === issueType.id,
           )
         : [],
     [templateState.value, issueType],

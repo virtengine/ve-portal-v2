@@ -12,8 +12,10 @@ import {
   SecurityGroupOption,
 } from '@waldur/openstack/openstack-security-groups/types';
 
+import { OpenStackSecurityGroupsDialog } from '../openstack-security-groups/OpenStackSecurityGroupsDialog';
+
 const openSecurityGroupsDetailsDialog = (securityGroups: SecurityGroup[]) =>
-  openModalDialog('SecurityGroupsDialogReact', {
+  openModalDialog(OpenStackSecurityGroupsDialog, {
     resolve: { securityGroups },
     size: 'lg',
   });
@@ -33,13 +35,13 @@ interface DispatchProps {
 class OpenstackInstanceSecurityGroupsComponent extends React.Component<
   OwnProps & DispatchProps & TranslateProps
 > {
-  openDetailsDialog = e => {
+  openDetailsDialog = (e) => {
     e.preventDefault();
     const selectedSecurityGroupsUuids = this.props.input.value.map(
-      selectedSecurityGroup => selectedSecurityGroup.uuid,
+      (selectedSecurityGroup) => selectedSecurityGroup.uuid,
     );
     const selectedSecurityGroups = this.props.securityGroups.filter(
-      selectedSecurityGroup =>
+      (selectedSecurityGroup) =>
         selectedSecurityGroupsUuids.indexOf(selectedSecurityGroup.uuid) !== -1,
     );
     this.props.openSecurityGroupsDetailsDialog(selectedSecurityGroups);
@@ -47,7 +49,7 @@ class OpenstackInstanceSecurityGroupsComponent extends React.Component<
 
   componentDidMount() {
     const defaultSecurityGroup = this.props.securityGroups.find(
-      securityGroup => securityGroup.name === 'default',
+      (securityGroup) => securityGroup.name === 'default',
     );
     if (defaultSecurityGroup && !this.props.input.value) {
       this.props.input.onChange([
@@ -68,14 +70,14 @@ class OpenstackInstanceSecurityGroupsComponent extends React.Component<
             placeholder={this.props.translate('Select security groups...')}
             value={this.props.input.value}
             options={this.props.securityGroups}
-            labelKey="name"
-            valueKey="uuid"
+            getOptionValue={(option) => option.uuid}
+            getOptionLabel={(option) => option.name}
             onChange={this.props.input.onChange}
             onBlur={() => {
               /* Noop */
             }}
-            multi={true}
-            clearable={false}
+            isMulti={true}
+            isClearable={false}
           />
         </Col>
         <Col md={3}>
@@ -92,8 +94,8 @@ class OpenstackInstanceSecurityGroupsComponent extends React.Component<
   }
 }
 
-const mapDispatchToProps = dispatch => ({
-  openSecurityGroupsDetailsDialog: securityGroups =>
+const mapDispatchToProps = (dispatch) => ({
+  openSecurityGroupsDetailsDialog: (securityGroups) =>
     dispatch(openSecurityGroupsDetailsDialog(securityGroups)),
 });
 

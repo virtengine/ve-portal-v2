@@ -1,9 +1,6 @@
 describe('Project creation dialog', () => {
   beforeEach(() => {
-    cy.server()
-      .mockUser()
-      .mockCustomer()
-      .login();
+    cy.server().mockUser().mockCustomer().login();
   });
 
   it('Validates required fields', () => {
@@ -27,7 +24,7 @@ describe('Project creation dialog', () => {
       .as('createProject')
 
       // Go to projects list in organization workspace
-      .visit('/#/organizations/bf6d515c9e6e445f9c339021b30fc96b/createProject/')
+      .visit('/organizations/bf6d515c9e6e445f9c339021b30fc96b/createProject/')
 
       .wait(['@getCerts', '@getTypes'])
       .then(() => {
@@ -46,22 +43,22 @@ describe('Project creation dialog', () => {
           .type('Test project')
 
           // Open dropdown for project type selector
-          .get('.Select-placeholder')
+          .get('div[class$="placeholder"]')
           .first()
           .click()
 
           // Select first project type
-          .get('.Select-option')
+          .get('*div[id^="react-select"]')
           .first()
           .click()
 
           // // Open dropdown for project certifications selector
-          .get('.Select-placeholder')
+          .get('div[class$="placeholder"]')
           .eq(0)
           .click()
 
           // // Select first certification
-          .get('.Select-option')
+          .get('*div[id^="react-select"]')
           .first()
           .click()
 

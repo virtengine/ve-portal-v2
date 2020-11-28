@@ -1,15 +1,17 @@
 import * as React from 'react';
 import { useDispatch } from 'react-redux';
 
+import { AuthService } from '@waldur/auth/AuthService';
 import { post, getFirst } from '@waldur/core/api';
 import { format } from '@waldur/core/ErrorMessageFormatter';
 import { LoadingSpinner } from '@waldur/core/LoadingSpinner';
-import { $state, ngInjector } from '@waldur/core/services';
+import { $state } from '@waldur/core/services';
 import { translate } from '@waldur/i18n';
 import { showError, showSuccess, stateGo } from '@waldur/store/coreSaga';
+import { setCurrentUser } from '@waldur/workspace/actions';
 
 function delay(ms) {
-  return new Promise(resolve => {
+  return new Promise((resolve) => {
     setTimeout(resolve, ms);
   });
 }
@@ -29,7 +31,7 @@ export const UserEmailChangeCallback = () => {
         dispatch(showError(errorMessage));
       }
 
-      if (!ngInjector.get('$auth').isAuthenticated()) {
+      if (!AuthService.isAuthenticated()) {
         dispatch(stateGo('login'));
         return;
       }
@@ -45,13 +47,13 @@ export const UserEmailChangeCallback = () => {
       }
 
       if (currentUser) {
-        ngInjector.get('usersService').setCurrentUser(currentUser);
+        dispatch(setCurrentUser(currentUser));
         await delay(1000);
       }
       dispatch(stateGo('profile.manage'));
     }
     load();
-  }, []);
+  }, [dispatch]);
 
   return (
     <div className="middle-box text-center">

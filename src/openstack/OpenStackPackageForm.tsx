@@ -7,9 +7,9 @@ import {
   StringField,
   TextField,
   SecretField,
-} from '@waldur/form-react';
-import { AwesomeCheckboxField } from '@waldur/form-react/AwesomeCheckboxField';
-import { LabelField } from '@waldur/form-react/LabelField';
+} from '@waldur/form';
+import { AwesomeCheckboxField } from '@waldur/form/AwesomeCheckboxField';
+import { LabelField } from '@waldur/form/LabelField';
 import { translate } from '@waldur/i18n';
 import { PlanDetailsTable } from '@waldur/marketplace/details/plan/PlanDetailsTable';
 import { PlanField } from '@waldur/marketplace/details/plan/PlanField';
@@ -19,7 +19,7 @@ import { OfferingConfigurationFormProps } from '@waldur/marketplace/types';
 
 import { OpenStackAllocationPool } from './OpenStackAllocationPool';
 import { OpenStackSubnetField } from './OpenStackSubnetField';
-import { validatePrivateSubnetCIDR } from './utils';
+import { validateSubnetPrivateCIDR } from './utils';
 
 export class OpenStackPackageForm extends React.Component<
   OfferingConfigurationFormProps
@@ -36,6 +36,9 @@ export class OpenStackPackageForm extends React.Component<
       project,
       plan,
     };
+    if (!plan && this.props.offering.plans.length === 1) {
+      initialData.plan = this.props.offering.plans[0];
+    }
     this.props.initialize(initialData);
   }
 
@@ -90,7 +93,7 @@ export class OpenStackPackageForm extends React.Component<
           <OpenStackSubnetField
             label={translate('Internal network mask (CIDR)')}
             name="attributes.subnet_cidr"
-            validate={validatePrivateSubnetCIDR}
+            validate={validateSubnetPrivateCIDR}
           />
           <OpenStackAllocationPool
             label={translate('Internal network allocation pool')}

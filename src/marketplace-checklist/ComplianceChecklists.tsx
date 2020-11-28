@@ -2,41 +2,19 @@ import * as React from 'react';
 import * as Col from 'react-bootstrap/lib/Col';
 import * as Row from 'react-bootstrap/lib/Row';
 import { useSelector } from 'react-redux';
+import useAsync from 'react-use/lib/useAsync';
 
-import { get } from '@waldur/core/api';
 import { LoadingSpinner } from '@waldur/core/LoadingSpinner';
-import { useQuery } from '@waldur/core/useQuery';
+import { Panel } from '@waldur/core/Panel';
 import { translate } from '@waldur/i18n';
 import { getProject } from '@waldur/workspace/selectors';
 
+import { countChecklists, getProjectStats } from './api';
 import { ChartHeader } from './ChartHeader';
 import { PieChart } from './PieChart';
 
-interface Checklist {
-  uuid: string;
-  name: string;
-  score: number;
-  positive_count: number;
-  negative_count: number;
-  unknown_count: number;
-}
-
-const getChecklists = (projectId: string) =>
-  get<Checklist[]>(`/projects/${projectId}/marketplace-checklists/`).then(
-    response => response.data,
-  );
-
-export const ComplianceChecklists = () => {
-  const project = useSelector(getProject);
-  const { call, state } = useQuery(
-    project && (() => getChecklists(project.uuid)),
-    [project],
-  );
-  React.useEffect(call, []);
-
-  if (!project) {
-    return null;
-  }
+const ProjectChecklist = ({ project }) => {
+  const state = useAsync(() => getProjectStats(project.uuid), [project]);
 
   if (state.loading) {
     return <LoadingSpinner />;
@@ -46,13 +24,13 @@ export const ComplianceChecklists = () => {
     return <h3>{translate('Unable to load checklists.')}</h3>;
   }
 
-  if (!state.loaded) {
+  if (!state.value) {
     return null;
   }
 
   return (
     <Row>
-      {state.data.map(checklist => (
+      {state.value.map((checklist) => (
         <Col key={checklist.uuid} md={3}>
           <ChartHeader label={`${checklist.score} %`} value={checklist.name} />
           <PieChart
@@ -63,5 +41,32 @@ export const ComplianceChecklists = () => {
         </Col>
       ))}
     </Row>
+  );
+};
+
+export const ComplianceChecklists = () => {
+  const project = useSelector(getProject);
+  if (!project) {
+    return null;
+  }
+
+  const statsState = useAsync(countChecklists);
+
+  if (statsState.loading) {
+    return <LoadingSpinner />;
+  }
+
+  if (statsState.error) {
+    return null;
+  }
+
+  if (!statsState.value) {
+    return null;
+  }
+
+  return (
+    <Panel title={translate('Checklists')}>
+      <ProjectChecklist project={project} />
+    </Panel>
   );
 };

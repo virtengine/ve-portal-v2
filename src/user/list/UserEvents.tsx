@@ -1,7 +1,6 @@
 import * as React from 'react';
 
 import { getEventsList } from '@waldur/events/BaseEventsList';
-import { connectAngularComponent } from '@waldur/store/connect';
 import { User } from '@waldur/workspace/types';
 
 interface UserEventsProps {
@@ -9,10 +8,10 @@ interface UserEventsProps {
   user: User;
 }
 
-export const UserEvents: React.FC<UserEventsProps> = outerProps =>
+export const UserEvents: React.FC<UserEventsProps> = (outerProps) =>
   outerProps.user
     ? getEventsList({
-        mapPropsToFilter: props => ({
+        mapPropsToFilter: (props) => ({
           scope: props.user.url,
           feature: 'users',
           exclude_extra: true,
@@ -23,5 +22,3 @@ export const UserEvents: React.FC<UserEventsProps> = outerProps =>
 UserEvents.defaultProps = {
   showActions: true,
 };
-
-export default connectAngularComponent(UserEvents, ['user']);

@@ -6,15 +6,16 @@ import {
   BookingStateFilter,
   getStates,
 } from '@waldur/booking/BookingStateFilter';
+import { BOOKINGS_FILTER_FORM_ID } from '@waldur/customer/dashboard/contants';
 
 const PureBookingsFilter = () => (
-  <Row>
+  <Row style={{ margin: '0' }}>
     <BookingStateFilter />
   </Row>
 );
 
 const enhance = reduxForm({
-  form: 'BookingsFilter',
+  form: BOOKINGS_FILTER_FORM_ID,
   initialValues: {
     state: [getStates()[0], getStates()[1]],
   },

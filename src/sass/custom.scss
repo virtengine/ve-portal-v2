@@ -179,6 +179,12 @@ body.landing {
   }
 }
 
+@media (max-width: 1010px) {
+  .hidden-md-stable {
+    display: none !important;
+  }
+}
+
 @media (max-width: 992px) {
   .btn-block-md {
     display: block;
@@ -193,7 +199,8 @@ body.landing {
 }
 
 .state-indicator {
-  display: inline-block;
+  display: block;
+  width: fit-content;
 }
 
 .white-panel-heading .panel-heading {
@@ -235,4 +242,19 @@ body.landing {
 
 .Select-menu-outer {
   z-index: 5;
+}
+
+.dropdown-btn {
+  padding: 5px 10px;
+  font-size: 12px;
+  line-height: 1.5;
+  border-radius: 3px;
+}
+
+.modal-xl {
+  width: 1300px;
+}
+
+div[role='tooltip'] > .tooltip-inner {
+  max-width: 100%;
 }

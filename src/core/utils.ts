@@ -1,8 +1,14 @@
 import { formatDateTime } from '@waldur/core/dateUtils';
+import { ENV } from '@waldur/core/services';
 
 export const FILESIZE_UNITS = ['B', 'KB', 'MB', 'GB', 'TB', 'PB'];
 
-export const formatFilesize = (input, fromUnit = 'MB', toUnit = 'B') => {
+export const formatFilesize = (
+  input,
+  fromUnit = 'MB',
+  toUnit = 'B',
+  customSuffix = '',
+) => {
   if (isNaN(parseFloat(input)) || !isFinite(input)) {
     return '?';
   }
@@ -29,28 +35,30 @@ export const formatFilesize = (input, fromUnit = 'MB', toUnit = 'B') => {
     startUnit++;
   }
 
-  return Math.floor(input * 10) / 10 + ' ' + FILESIZE_UNITS[startUnit];
+  return (
+    Math.floor(input * 10) / 10 + ' ' + FILESIZE_UNITS[startUnit] + customSuffix
+  );
 };
 
 const SNAKE_CASE_REGEXP = /[A-Z]/g;
 
-export const formatSnakeCase = input =>
+export const formatSnakeCase = (input) =>
   input.replace(
     SNAKE_CASE_REGEXP,
     (letter, pos) => (pos ? '-' : '') + letter.toLowerCase(),
   );
 
-export const flatten = lists => Array.prototype.concat.apply([], lists);
+export const flatten = (lists) => Array.prototype.concat.apply([], lists);
 
-export const listToDict = (key, value) => list => {
+export const listToDict = (key, value) => (list) => {
   const dict = {};
-  list.forEach(item => {
+  list.forEach((item) => {
     dict[key(item)] = value(item);
   });
   return dict;
 };
 
-export const dictToList = dict => {
+export const dictToList = (dict) => {
   const list = [];
   for (const key in dict) {
     if (!dict.hasOwnProperty(key)) {
@@ -61,9 +69,9 @@ export const dictToList = dict => {
   return list;
 };
 
-export const getUUID = url => url.split('/').splice(-2)[0];
+export const getUUID = (url) => url.split('/').splice(-2)[0];
 
-export const minutesToHours = input => {
+export const minutesToHours = (input) => {
   if (isNaN(parseInt(input, 10)) || !isFinite(input)) {
     return '?';
   }
@@ -76,16 +84,16 @@ export const minutesToHours = input => {
   return hours.toFixed(2) + 'h';
 };
 
-export const pick = fields => source =>
+export const pick = (fields) => (source) =>
   fields.reduce((target, field) => ({ ...target, [field]: source[field] }), {});
 
-export const titleCase = input => {
+export const titleCase = (input) => {
   if (input) {
     return input.charAt(0).toUpperCase() + input.slice(1);
   }
 };
 
-export const dateTime = input => {
+export const dateTime = (input) => {
   if (input) {
     return formatDateTime(input);
   }
@@ -100,43 +108,22 @@ export const omit = (object, prop) => {
   }
 };
 
-export const toKeyValue = obj =>
-  Object.keys(obj)
-    .map(key => `${key}=${encodeURIComponent(obj[key])}`)
-    .join('&');
-
 export const LATIN_NAME_PATTERN = new RegExp('^[A-Za-z][A-Za-z0-9-._ ()]+$');
 
-export const range = n => Array.from(Array(n).keys());
+export const range = (n) => Array.from(Array(n).keys());
 
 export function getQueryString() {
-  // Example input: http://example.com/#/approve/?foo=123&bar=456
+  // Example input: http://example.com/approve/?foo=123&bar=456
   // Example output: foo=123&bar=456
 
-  const hash = document.location.hash;
-  const parts = hash.split('?');
+  const parts = document.location.search.split('?');
   if (parts.length > 1) {
     return parts[1];
   }
   return '';
 }
 
-export function parseQueryString(qs) {
-  // Example input: foo=123&bar=456
-  // Example output: {foo: "123", bar: "456"}
-
-  return qs.split('&').reduce((result, part) => {
-    const tokens = part.split('=');
-    if (tokens.length > 1) {
-      const key = tokens[0];
-      const value = tokens[1];
-      result[key] = value;
-    }
-    return result;
-  }, {});
-}
-
-export const isEmpty = obj => Object.keys(obj).length === 0;
+export const isEmpty = (obj) => Object.keys(obj).length === 0;
 
 const entityMap = {
   '<': '&lt;',
@@ -148,28 +135,6 @@ export function escapeHtml(str) {
   return String(str).replace(/[<>]/g, function fromEntityMap(s) {
     return entityMap[s];
   });
-}
-
-export function copyToClipboard(text) {
-  const hiddenDiv = document.createElement('div');
-  const style = hiddenDiv.style;
-  style.height = '1px';
-  style.width = '1px';
-  style.overflow = 'hidden';
-  style.position = 'fixed';
-  style.top = '0px';
-  style.left = '0px';
-
-  const textarea = document.createElement('textarea');
-  textarea.readOnly = true;
-  textarea.value = text;
-
-  hiddenDiv.appendChild(textarea);
-  document.body.appendChild(hiddenDiv);
-
-  textarea.select();
-  document.execCommand('copy');
-  document.body.removeChild(hiddenDiv);
 }
 
 // Taken from https://stackoverflow.com/questions/5723154
@@ -212,7 +177,7 @@ export function mergeLists(list1, list2, fieldIdentifier) {
   list2 = list2 || [];
   fieldIdentifier = fieldIdentifier || 'uuid';
   const itemByUuid = {};
-  const newListUuids = list2.map(item => {
+  const newListUuids = list2.map((item) => {
     return item[fieldIdentifier];
   });
   for (const item of list1) {
@@ -220,7 +185,7 @@ export function mergeLists(list1, list2, fieldIdentifier) {
   }
 
   // Remove stale items
-  list1 = list1.filter(item => {
+  list1 = list1.filter((item) => {
     return newListUuids.indexOf(item[fieldIdentifier]) !== -1;
   });
 
@@ -239,3 +204,15 @@ export function mergeLists(list1, list2, fieldIdentifier) {
   }
   return list1;
 }
+
+export const returnReactSelectAsyncPaginateObject = (
+  response,
+  prevOptions,
+  currentPage: number,
+) => ({
+  options: response.options,
+  hasMore: response.totalItems > prevOptions.length + ENV.pageSize,
+  additional: {
+    page: currentPage + 1,
+  },
+});

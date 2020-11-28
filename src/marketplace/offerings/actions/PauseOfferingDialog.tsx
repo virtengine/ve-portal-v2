@@ -3,16 +3,15 @@ import { connect } from 'react-redux';
 import { compose } from 'redux';
 import { InjectedFormProps, reduxForm, Field } from 'redux-form';
 
-import { SubmitButton } from '@waldur/form-react';
+import { SubmitButton } from '@waldur/form';
 import { translate } from '@waldur/i18n';
 import { CloseDialogButton } from '@waldur/modal/CloseDialogButton';
 import { ModalDialog } from '@waldur/modal/ModalDialog';
-import { connectAngularComponent } from '@waldur/store/connect';
 
 import { updateOfferingState } from '../store/actions';
 
 const mapDispatchToProps = (dispatch, ownProps) => ({
-  submitRequest: formData =>
+  submitRequest: (formData) =>
     dispatch(
       updateOfferingState(ownProps.resolve.offering, 'pause', formData.reason),
     ),
@@ -55,5 +54,3 @@ export const PauseOfferingDialog = connector(
     </form>
   ),
 );
-
-export default connectAngularComponent(PauseOfferingDialog, ['resolve']);

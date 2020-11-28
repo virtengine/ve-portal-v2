@@ -9,23 +9,25 @@ import { required } from '@waldur/core/validators';
 import { translate } from '@waldur/i18n';
 import { FormGroup } from '@waldur/marketplace/offerings/FormGroup';
 
-const SelectTenantField = props => (
+const SelectTenantField = (props) => (
   <Select
-    value={props.input.value}
-    onChange={props.input.onChange}
+    value={props.options.filter(
+      ({ settings }) => settings === props.input.value,
+    )}
+    onChange={({ settings }) => props.input.onChange(settings)}
     options={props.options}
-    labelKey="name"
-    valueKey="settings"
-    simpleValue={true}
+    getOptionValue={(option) => option.settings}
+    getOptionLabel={(option) => option.name}
+    isClearable={true}
   />
 );
 
-const loadData = projectId =>
+const loadData = (projectId) =>
   getAll('/openstacktenant/', {
     params: { project_uuid: projectId },
   });
 
-export const TenantSelector = props => {
+export const TenantSelector = (props) => {
   const resourceProps = useAsync(() => loadData(props.project.uuid), [
     props.project,
   ]);

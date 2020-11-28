@@ -1,6 +1,6 @@
 import { translate } from '@waldur/i18n';
 
-export const BillingPeriod = props => {
+export const BillingPeriod = (props) => {
   const labels = {
     month: translate('Price per month'),
     half_month: translate('Price per half month'),
@@ -8,5 +8,5 @@ export const BillingPeriod = props => {
     hour: translate('Price per hour'),
     quantity: translate('Price per unit'),
   };
-  return labels[props.unit];
+  return labels[props.unit] ? labels[props.unit] : null;
 };

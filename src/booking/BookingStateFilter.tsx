@@ -15,13 +15,14 @@ export const BookingStateFilter = () => (
     <label className="control-label">{translate('State')}</label>
     <Field
       name="state"
-      component={fieldProps => (
+      component={(fieldProps) => (
         <Select
           placeholder={translate('Select state...')}
           options={getStates()}
           value={fieldProps.input.value}
-          onChange={value => fieldProps.input.onChange(value)}
-          multi={true}
+          onChange={(value) => fieldProps.input.onChange(value)}
+          isMulti={true}
+          isClearable={true}
         />
       )}
     />

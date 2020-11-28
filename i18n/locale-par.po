@@ -145,3 +145,30 @@ msgstr "Department {project_name} has been deleted."
 #: src/project/ProjectCreateForm.tsx
 msgid "Provider certification required by this department."
 msgstr ""
+
+#: src/project/team/AddProjectMemberDialog.tsx
+msgid "Add project member"
+msgstr "Add employee"
+
+#: src/project/team/AddProjectMemberDialog.tsx
+msgid "Edit project member"
+msgstr "Edit employee"
+
+#: src/configs/base-config.ts
+msgid "Project member"
+msgstr "Employee"
+
+#: src/invitations/actions/ProjectGroup.tsx
+msgid "Select project"
+msgstr "Select department"
+
+#: src/issues/create/IssueQuickCreate.tsx
+#: src/issues/create/ProjectGroup.tsx
+#: src/marketplace/resources/list/ProjectFilter.tsx
+#: src/user/SelectAffiliationDialog.tsx
+msgid "Select project..."
+msgstr "Select department..."
+
+#: src/issues/notifications/NotificationCreateDialog.tsx
+msgid "Select projects..."
+msgstr "Select departments..."

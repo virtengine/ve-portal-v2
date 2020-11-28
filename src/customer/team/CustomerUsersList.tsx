@@ -4,9 +4,9 @@ import { connect } from 'react-redux';
 import { compose } from 'redux';
 
 import { translate } from '@waldur/i18n';
-import { Table, connectTable } from '@waldur/table-react';
-import { BooleanField } from '@waldur/table-react/BooleanField';
-import { TableOptionsType } from '@waldur/table-react/types';
+import { Table, connectTable } from '@waldur/table';
+import { TableOptionsType } from '@waldur/table/types';
+import { CustomerRole } from '@waldur/user/list/CustomerRole';
 import {
   getProject,
   getUser,
@@ -19,8 +19,23 @@ import { ProjectRolesList } from './ProjectRolesList';
 import { UserDetailsButton } from './UserDetailsButton';
 import { UserEditButton } from './UserEditButton';
 import { UserRemoveButton } from './UserRemoveButton';
+import { getRoles } from './utils';
 
-const TableComponent = props => {
+const UserProjectRolesList = ({ row }) => {
+  const roles = React.useMemo(getRoles, []);
+  return (
+    <>
+      {roles.map((role) => (
+        <p key={role.value}>
+          <b>{translate('{label} in:', role)}</b>{' '}
+          <ProjectRolesList roleName={role.value} row={row} />
+        </p>
+      ))}
+    </>
+  );
+};
+
+const TableComponent = (props) => {
   return (
     <Table
       {...props}
@@ -40,17 +55,7 @@ const TableComponent = props => {
         },
         {
           title: translate('Owner'),
-          render: ({ row }) => <BooleanField value={row.role === 'owner'} />,
-        },
-        {
-          title: translate('Manager in:'),
-          render: ({ row }) => (
-            <ProjectRolesList roleName="manager" row={row} />
-          ),
-        },
-        {
-          title: translate('Admin in:'),
-          render: ({ row }) => <ProjectRolesList roleName="admin" row={row} />,
+          render: CustomerRole,
         },
         {
           title: translate('Actions'),
@@ -67,6 +72,7 @@ const TableComponent = props => {
       ]}
       verboseName={translate('team members')}
       hasQuery={true}
+      expandableRow={UserProjectRolesList}
     />
   );
 };
@@ -75,13 +81,13 @@ const TableOptions: TableOptionsType = {
   table: 'customer-users',
   fetchData: fetchCustomerUsers,
   queryField: 'full_name',
-  mapPropsToFilter: props => ({
+  mapPropsToFilter: (props) => ({
     customer_uuid: props.customer.uuid,
     o: 'concatenated_name',
   }),
 };
 
-const mapStateToProps = state => ({
+const mapStateToProps = (state) => ({
   project: getProject(state),
   user: getUser(state),
   isOwnerOrStaff: isOwnerOrStaffSelector(state),

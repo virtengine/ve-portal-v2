@@ -20,7 +20,7 @@ export class FilterBar extends React.Component<FilterBarProps, FilterBarState> {
     };
   }
 
-  setFilterQuery = e => {
+  setFilterQuery = (e) => {
     this.setState({ filter: e.target.value });
     this.applyQuery();
   };
@@ -35,7 +35,7 @@ export class FilterBar extends React.Component<FilterBarProps, FilterBarState> {
         type="text"
         className="form-control"
         value={this.state.filter}
-        placeholder={this.props.translate('Search for apps and services...')}
+        placeholder={this.props.translate('Search for offerings...')}
         onChange={this.setFilterQuery}
       />
     );

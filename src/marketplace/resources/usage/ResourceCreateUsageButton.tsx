@@ -3,17 +3,14 @@ import { connect } from 'react-redux';
 
 import { translate } from '@waldur/i18n';
 import { openModalDialog } from '@waldur/modal/actions';
-import { ActionButton } from '@waldur/table-react/ActionButton';
+import { ActionButton } from '@waldur/table/ActionButton';
 
+import { ResourceCreateUsageDialog } from './ResourceCreateUsageDialog';
 import { UsageReportContext } from './types';
 
-const openResourceUsageDialog = (
-  resource_uuid: string,
-  resource_name: string,
-  offering_uuid: string,
-) =>
-  openModalDialog('marketplaceResourceCreateUsageDialog', {
-    resolve: { resource_uuid, resource_name, offering_uuid },
+const openResourceUsageDialog = (props: UsageReportContext) =>
+  openModalDialog(ResourceCreateUsageDialog, {
+    resolve: props,
   });
 
 interface DispatchProps {
@@ -29,14 +26,7 @@ const PureResourceUsageButton = (props: UsageReportContext & DispatchProps) => (
 );
 
 const mapDispatchToProps = (dispatch, ownProps: UsageReportContext) => ({
-  openDialog: () =>
-    dispatch(
-      openResourceUsageDialog(
-        ownProps.resource_uuid,
-        ownProps.resource_name,
-        ownProps.offering_uuid,
-      ),
-    ),
+  openDialog: () => dispatch(openResourceUsageDialog(ownProps)),
 });
 
 export const ResourceCreateUsageButton = connect<

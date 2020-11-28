@@ -17,19 +17,19 @@ describe('SlurmAllocationSummary', () => {
     const wrapper = renderSummary({ resource });
     expect(getField(wrapper, 'CPU')).toBe('2.00h of 40.00h');
     expect(getField(wrapper, 'GPU')).toBe('0.00h of ∞');
-    expect(getField(wrapper, 'RAM')).toBe('10 GB of 20 GB');
+    expect(getField(wrapper, 'RAM')).toBe('170.6 MB-h of 20 GB-h');
   });
 
   it('renders login details', () => {
     const wrapper = renderSummary({ resource });
-    expect(getField(wrapper, 'Login details')).toBe('admin@example.com');
+    expect(getField(wrapper, 'Login with')).toBe('ssh admin@example.com');
   });
 
   it('renders placeholder if login details are absent', () => {
     const wrapper = renderSummary({
       resource: { ...resource, username: undefined },
     });
-    expect(getField(wrapper, 'Login details')).toBe(
+    expect(getField(wrapper, 'Login with')).toBe(
       'FreeIPA account needs to be set up.',
     );
   });
@@ -49,7 +49,7 @@ describe('SlurmAllocationSummary', () => {
     const homepage = 'https://example.com/';
     const moab = { ...resource, homepage };
     const wrapper = renderSummary({ resource: moab });
-    const link = wrapper.find({ label: 'Submit with' }).find('a');
+    const link = wrapper.find({ label: 'Submit with' }).find('a').first();
     expect(link.prop('href')).toBe(homepage);
   });
 });

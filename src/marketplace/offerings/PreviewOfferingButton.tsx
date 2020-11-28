@@ -5,7 +5,9 @@ import { translate } from '@waldur/i18n';
 import { getFormComponent } from '@waldur/marketplace/common/registry';
 import { openModalDialog } from '@waldur/modal/actions';
 import { Offering } from '@waldur/offering/types';
-import { ActionButton } from '@waldur/table-react/ActionButton';
+import { ActionButton } from '@waldur/table/ActionButton';
+
+import { PreviewOfferingDialog } from './PreviewOfferingDialog';
 
 interface PreviewOfferingButtonProps {
   offering: Offering;
@@ -13,7 +15,7 @@ interface PreviewOfferingButtonProps {
 }
 
 const openPreviewOfferingDialog = (props: PreviewOfferingButtonProps) => {
-  return openModalDialog('marketplacePreviewOfferingDialog', {
+  return openModalDialog(PreviewOfferingDialog, {
     resolve: props,
     size: 'lg',
   });

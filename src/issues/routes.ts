@@ -1,15 +1,18 @@
 import { StateDeclaration } from '@waldur/core/types';
+import { CustomersDivisionsContainer } from '@waldur/customer/divisions/CustomersDivisionsContainer';
 import { LazyCustomerList } from '@waldur/customer/list/LazyCustomerList';
-import { gettext } from '@waldur/i18n';
+import { OrganizationUpdateContainer } from '@waldur/customer/list/OrganizationUpdateContainer';
+import { SupportCustomersContainer } from '@waldur/customer/list/SupportCustomersContainer';
+import { SupportFeedback } from '@waldur/issues/feedback/SupportFeedback';
+import { SupportIssues } from '@waldur/issues/SupportIssues';
 import { FlowMapViewContainer } from '@waldur/providers/support/FlowMapViewContainer';
 import { HeatMapContainer } from '@waldur/providers/support/HeatMapContainer';
 import { SankeyDiagramContainer } from '@waldur/providers/support/SankeyDiagramContainer';
-import { withStore } from '@waldur/store/connect';
 import { UserListView } from '@waldur/user/support/UserListView';
-
-import { WOKSPACE_NAMES } from '../navigation/workspace/constants';
+import { SUPPORT_WORKSPACE } from '@waldur/workspace/types';
 
 import { IssueDetailsContainer } from './IssueDetailsContainer';
+import { NotificationsList } from './notifications/NotificationsList';
 import { checkPermission } from './utils';
 import { IssuesDashboard } from './workspace/IssuesDashboard';
 import { IssuesHelpdesk } from './workspace/IssuesHelpdesk';
@@ -19,11 +22,11 @@ export const states: StateDeclaration[] = [
   {
     name: 'support',
     url: '/support/',
-    component: withStore(SupportWorkspace),
+    component: SupportWorkspace,
     abstract: true,
     data: {
       auth: true,
-      workspace: WOKSPACE_NAMES.support,
+      workspace: SUPPORT_WORKSPACE,
       pageClass: 'gray-bg',
     },
   },
@@ -31,9 +34,8 @@ export const states: StateDeclaration[] = [
   {
     name: 'support.dashboard',
     url: '',
-    component: withStore(IssuesDashboard),
+    component: IssuesDashboard,
     data: {
-      pageTitle: gettext('Support dashboard'),
       hideBreadcrumbs: true,
       feature: 'support',
     },
@@ -42,9 +44,8 @@ export const states: StateDeclaration[] = [
   {
     name: 'support.helpdesk',
     url: 'helpdesk/',
-    component: withStore(IssuesHelpdesk),
+    component: IssuesHelpdesk,
     data: {
-      pageTitle: gettext('Helpdesk dashboard'),
       feature: 'support',
     },
   },
@@ -52,9 +53,8 @@ export const states: StateDeclaration[] = [
   {
     name: 'support.detail',
     url: 'issue/:uuid/',
-    component: withStore(IssueDetailsContainer),
+    component: IssueDetailsContainer,
     data: {
-      pageTitle: gettext('Request detail'),
       feature: 'support',
     },
   },
@@ -62,21 +62,40 @@ export const states: StateDeclaration[] = [
   {
     name: 'support.list',
     url: 'list/',
-    template:
-      '<div class="ibox"><div class="ibox-content"><issues-list filter="{}"></issues-list></div></div>',
+    component: SupportIssues,
     data: {
-      pageTitle: gettext('Support requests'),
       feature: 'support',
+    },
+  },
+
+  {
+    name: 'supportFeedback',
+    url: '/support/feedback/?token&evaluation',
+    component: SupportFeedback,
+    data: {
+      feature: 'support',
+      bodyClass: 'old',
     },
   },
 
   {
     name: 'support.organizations',
     url: 'organizations/',
-    component: withStore(LazyCustomerList),
+    component: LazyCustomerList,
     data: {
       feature: 'support.organizations',
-      pageTitle: gettext('Financial overview'),
+    },
+    resolve: {
+      permission: checkPermission,
+    },
+  },
+
+  {
+    name: 'support.organizations-divisions',
+    url: 'organizations-divisions/',
+    component: CustomersDivisionsContainer,
+    data: {
+      feature: 'support.organizations',
     },
     resolve: {
       permission: checkPermission,
@@ -86,10 +105,34 @@ export const states: StateDeclaration[] = [
   {
     name: 'support.users',
     url: 'users/',
-    component: withStore(UserListView),
+    component: UserListView,
     data: {
-      pageTitle: gettext('Users'),
       feature: 'support.users',
+    },
+    resolve: {
+      permission: checkPermission,
+    },
+  },
+
+  {
+    name: 'support.customers',
+    url: 'customers/',
+    component: SupportCustomersContainer,
+    data: {
+      feature: 'support.organizations',
+    },
+    resolve: {
+      permission: checkPermission,
+    },
+  },
+
+  {
+    name: 'support.customer-update',
+    url: 'customer-update/:customer_uuid/',
+    component: OrganizationUpdateContainer,
+    data: {
+      feature: 'support.organizations',
+      pageClass: 'white-bg',
     },
     resolve: {
       permission: checkPermission,
@@ -99,9 +142,8 @@ export const states: StateDeclaration[] = [
   {
     name: 'support.flowmap',
     url: 'flowmap/',
-    component: withStore(FlowMapViewContainer),
+    component: FlowMapViewContainer,
     data: {
-      pageTitle: gettext('Flowmap'),
       feature: 'support.flowmap',
     },
     resolve: {
@@ -112,9 +154,8 @@ export const states: StateDeclaration[] = [
   {
     name: 'support.heatmap',
     url: 'heatmap/',
-    component: withStore(HeatMapContainer),
+    component: HeatMapContainer,
     data: {
-      pageTitle: gettext('Heatmap'),
       feature: 'support.heatmap',
     },
     resolve: {
@@ -125,18 +166,21 @@ export const states: StateDeclaration[] = [
   {
     name: 'support.sankey-diagram',
     url: 'sankey-diagram/',
-    component: withStore(SankeyDiagramContainer),
+    component: SankeyDiagramContainer,
     data: {
-      pageTitle: gettext('Sankey diagram'),
       feature: 'support.sankey-diagram',
     },
     resolve: {
       permission: checkPermission,
     },
   },
-];
 
-export default function registerRoutes($stateProvider) {
-  states.forEach(({ name, ...rest }) => $stateProvider.state(name, rest));
-}
-registerRoutes.$inject = ['$stateProvider'];
+  {
+    name: 'support.notifications',
+    url: 'notifications/',
+    component: NotificationsList,
+    resolve: {
+      permission: checkPermission,
+    },
+  },
+];

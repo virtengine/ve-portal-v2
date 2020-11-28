@@ -3,8 +3,8 @@ import { connect } from 'react-redux';
 import Select from 'react-select';
 import { Field, formValueSelector } from 'redux-form';
 
-import { AwesomeCheckbox } from '@waldur/core/AwesomeCheckbox';
 import { required } from '@waldur/core/validators';
+import { AwesomeCheckboxField } from '@waldur/form/AwesomeCheckboxField';
 import { withTranslation, TranslateProps } from '@waldur/i18n';
 import { FORM_ID } from '@waldur/marketplace/offerings/store/constants';
 
@@ -28,7 +28,7 @@ const connector = connect<{ type?: string }, {}, { option: string }>(
   },
 );
 
-const StringField = props => (
+const StringField = (props) => (
   <Field
     name={`${props.option}.${props.name}`}
     type="text"
@@ -42,27 +42,22 @@ const RequiredField = withTranslation(
   (props: TranslateProps & { option: string }) => (
     <Field
       name={`${props.option}.required`}
-      component={fieldProps => (
-        <AwesomeCheckbox
-          id={`${props.option}.required`}
-          label={props.translate('Required')}
-          {...fieldProps.input}
-        />
-      )}
+      component={AwesomeCheckboxField}
+      label={props.translate('Required')}
     />
   ),
 );
 
-const OptionTypeField = props => (
+const OptionTypeField = (props) => (
   <Field
     name={`${props.option}.type`}
     validate={props.validate}
-    component={fieldProps => (
+    component={(fieldProps) => (
       <Select
         value={fieldProps.input.value}
-        onChange={value => fieldProps.input.onChange(value)}
+        onChange={(value) => fieldProps.input.onChange(value)}
         options={FIELD_TYPES}
-        clearable={false}
+        isClearable={false}
       />
     )}
   />
@@ -110,7 +105,8 @@ export const OptionForm = connector(
       {(props.type === 'integer' || props.type === 'money') && (
         <MinMaxFields option={props.option} />
       )}
-      {props.type === 'select_string' && (
+      {(props.type === 'select_string' ||
+        props.type === 'select_string_multi') && (
         <FormGroup
           label={props.translate('Choices as comma-separated list')}
           required={true}

@@ -1,8 +1,8 @@
 import * as React from 'react';
+import useAsync from 'react-use/lib/useAsync';
 import { formValues, Field } from 'redux-form';
 
 import { LoadingSpinner } from '@waldur/core/LoadingSpinner';
-import { Query } from '@waldur/core/Query';
 import { ENV } from '@waldur/core/services';
 import { required } from '@waldur/core/validators';
 import {
@@ -12,8 +12,8 @@ import {
   SelectField,
   NumberField,
   FieldError,
-} from '@waldur/form-react';
-import { StaticField } from '@waldur/form-react/StaticField';
+} from '@waldur/form';
+import { StaticField } from '@waldur/form/StaticField';
 import { translate } from '@waldur/i18n';
 import {
   maxAmount,
@@ -37,7 +37,7 @@ interface Template {
 
 const GuestOSField = formValues<any>({
   template: 'attributes.template',
-})(props =>
+})((props) =>
   props.template ? (
     <StaticField
       label={translate('Guest OS')}
@@ -53,12 +53,12 @@ interface Props extends OfferingConfigurationFormProps {
   };
 }
 
-const initAttributes = props => {
+const initAttributes = (props) => {
   React.useEffect(() => {
     const attributes = { ...props.initialAttributes };
     const initialData: Record<string, any> = { attributes };
     const activePlans = props.offering.plans.filter(
-      plan => plan.archived === false,
+      (plan) => plan.archived === false,
     );
     if (props.plan) {
       initialData.plan = props.plan;
@@ -79,7 +79,7 @@ const initAttributes = props => {
   }, []);
 };
 
-const StaticDiskField = props => {
+const StaticDiskField = (props) => {
   const diskValidator = React.useMemo(() => {
     const validators = [];
     if (props.limits.max_disk) {
@@ -95,7 +95,7 @@ const StaticDiskField = props => {
     <Field
       name="limits.disk"
       validate={diskValidator}
-      component={fieldProps =>
+      component={(fieldProps) =>
         fieldProps.input.value ? (
           <>
             <StaticField
@@ -179,11 +179,11 @@ const FormComponent = (props: any) => {
             label={translate('Template')}
             name="attributes.template"
             required={true}
-            clearable={false}
+            isClearable={false}
             validate={required}
             options={props.data.templates}
-            labelKey="name"
-            valueKey="url"
+            getOptionValue={(option) => option.url}
+            getOptionLabel={(option) => option.name}
             onChange={(value: Template) => {
               props.change('limits.cpu', value.cores);
               props.change('limits.ram', value.ram / 1024);
@@ -226,8 +226,9 @@ const FormComponent = (props: any) => {
             label={translate('Cluster')}
             name="attributes.cluster"
             options={props.data.clusters}
-            labelKey="name"
-            valueKey="url"
+            getOptionValue={(option) => option.url}
+            getOptionLabel={(option) => option.name}
+            isClearable={true}
           />
         )}
         {advancedMode && props.data.datastores.length > 0 && (
@@ -235,8 +236,9 @@ const FormComponent = (props: any) => {
             label={translate('Datastore')}
             name="attributes.datastore"
             options={props.data.datastores}
-            labelKey="name"
-            valueKey="url"
+            getOptionValue={(option) => option.url}
+            getOptionLabel={(option) => option.name}
+            isClearable={true}
           />
         )}
         {advancedMode && props.data.folders.length > 0 && (
@@ -244,8 +246,9 @@ const FormComponent = (props: any) => {
             label={translate('Folder')}
             name="attributes.folder"
             options={props.data.folders}
-            labelKey="name"
-            valueKey="url"
+            getOptionValue={(option) => option.url}
+            getOptionLabel={(option) => option.name}
+            isClearable={true}
           />
         )}
         {advancedMode && props.data.networks.length > 0 && (
@@ -253,9 +256,10 @@ const FormComponent = (props: any) => {
             label={translate('Networks')}
             name="attributes.networks"
             options={props.data.networks}
-            labelKey="name"
-            valueKey="url"
-            multi={true}
+            getOptionValue={(option) => option.url}
+            getOptionLabel={(option) => option.name}
+            isMulti={true}
+            isClearable={true}
           />
         )}
         <TextField
@@ -267,16 +271,16 @@ const FormComponent = (props: any) => {
   );
 };
 
-export const VMwareVirtualMachineForm = connector((props: Props) => (
-  <Query variables={props.variable} loader={loadFormOptions}>
-    {({ loading, error, data }) => {
-      if (loading) {
-        return <LoadingSpinner />;
-      }
-      if (error) {
-        return <span>{translate('Unable to load form options.')}</span>;
-      }
-      return <FormComponent {...props} data={data} />;
-    }}
-  </Query>
-));
+export const VMwareVirtualMachineForm = connector((props: Props) => {
+  const { loading, error, value } = useAsync(
+    () => loadFormOptions(props.variable),
+    [props.variable],
+  );
+  if (loading) {
+    return <LoadingSpinner />;
+  }
+  if (error) {
+    return <>{translate('Unable to load form options.')}</>;
+  }
+  return <FormComponent {...props} data={value} />;
+});

@@ -8,7 +8,7 @@ import { CreateResourceFormGroup } from '../CreateResourceFormGroup';
 
 import { SimpleSelectField } from './SimpleSelectField';
 
-export const SystemVolumeTypeGroup = props =>
+export const SystemVolumeTypeGroup = (props) =>
   props.volumeTypes.length > 0 ? (
     <CreateResourceFormGroup
       label={translate('System volume type')}
@@ -19,6 +19,7 @@ export const SystemVolumeTypeGroup = props =>
         options={props.volumeTypes}
         component={SimpleSelectField}
         validate={required}
+        isClearable={true}
       />
     </CreateResourceFormGroup>
   ) : null;

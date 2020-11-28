@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { Async } from 'react-select';
+import { AsyncPaginate } from 'react-select-async-paginate';
 import { Field } from 'redux-form';
 
 import { translate } from '@waldur/i18n';
@@ -10,14 +10,20 @@ export const CategoryFilter: React.FC<{}> = () => (
     <label className="control-label">{translate('Category')}</label>
     <Field
       name="category"
-      component={fieldProps => (
-        <Async
+      component={(fieldProps) => (
+        <AsyncPaginate
           placeholder={translate('Select category...')}
           loadOptions={categoryAutocomplete}
-          valueKey="uuid"
-          labelKey="title"
+          defaultOptions
+          getOptionValue={(option) => option.uuid}
+          getOptionLabel={(option) => option.title}
           value={fieldProps.input.value}
-          onChange={value => fieldProps.input.onChange(value)}
+          onChange={(value) => fieldProps.input.onChange(value)}
+          noOptionsMessage={() => translate('No categories')}
+          isClearable={true}
+          additional={{
+            page: 1,
+          }}
         />
       )}
     />

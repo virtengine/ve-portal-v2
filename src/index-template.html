@@ -2,6 +2,7 @@
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
+    <base href="/" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge, chrome=1" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="author" content="opennodecloud.com" />
@@ -16,6 +17,7 @@
     id="page-top"
     ng-csp="no-unsafe-eval"
   >
+    <div id="notifications-root"></div>
     <div class="loading-screen" ng-if="::false">
       <style>
         .loading-screen {
@@ -189,7 +191,7 @@
         </div>
       </div>
     </noscript>
-    <div class="flash-message-fixed" flash-message="5000"></div>
+    <div id="react-root"></div>
     <ui-view id="wrapper"></ui-view>
   </body>
 </html>

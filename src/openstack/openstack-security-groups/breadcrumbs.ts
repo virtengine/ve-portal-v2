@@ -3,12 +3,12 @@ import { ResourceBreadcrumbsRegistry } from '@waldur/resource/breadcrumbs/Resour
 
 import { getTenantListState } from '../utils';
 
-ResourceBreadcrumbsRegistry.register('OpenStack.SecurityGroup', resource => {
+ResourceBreadcrumbsRegistry.register('OpenStack.SecurityGroup', (resource) => {
   return [
     getTenantListState(resource.project_uuid),
     {
       label: resource.tenant_name,
-      state: 'resources.details',
+      state: 'resource-details',
       params: {
         uuid: resource.tenant_uuid,
         resource_type: 'OpenStack.Tenant',
@@ -16,7 +16,7 @@ ResourceBreadcrumbsRegistry.register('OpenStack.SecurityGroup', resource => {
     },
     {
       label: gettext('Security groups'),
-      state: 'resources.details',
+      state: 'resource-details',
       params: {
         uuid: resource.tenant_uuid,
         resource_type: 'OpenStack.Tenant',

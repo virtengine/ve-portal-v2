@@ -8,6 +8,7 @@ const INITIAL_STATE: State = {
     weekends: true,
     minTime: '00:00',
     maxTime: '24:00',
+    slotDuration: '01:00:00',
     businessHours: {
       startTime: '00:00',
       endTime: '24:00',
@@ -45,7 +46,7 @@ export const reducer = (state = INITIAL_STATE, action) => {
       return {
         ...state,
         schedules: [
-          ...state.schedules.filter(item => item.id !== payload.oldID),
+          ...state.schedules.filter((item) => item.id !== payload.oldID),
           payload.event,
         ],
       };
@@ -54,7 +55,7 @@ export const reducer = (state = INITIAL_STATE, action) => {
       return {
         ...state,
         schedules: state.schedules.filter(
-          item => item.id !== payload.bookingID,
+          (item) => item.id !== payload.bookingID,
         ),
       };
 

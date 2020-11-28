@@ -1,11 +1,12 @@
 const webpack = require('webpack');
 const path = require('path');
 const CopyWebpackPlugin = require('copy-webpack-plugin');
-const AngularGetTextPlugin = require('./angular-gettext-plugin');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
-const utils = require('./webpack.utils');
+const MonacoWebpackPlugin = require('monaco-editor-webpack-plugin');
 
+const AngularGetTextPlugin = require('./angular-gettext-plugin');
+const utils = require('./webpack.utils');
 const scssPath = path.resolve('./src/');
 const imagesPath = path.resolve('./src/images');
 
@@ -64,9 +65,6 @@ module.exports = {
               minimize: utils.isProd,
             },
           },
-          {
-            loader: path.resolve('./html-lint-loader'),
-          },
         ],
       },
       {
@@ -102,6 +100,21 @@ module.exports = {
       {
         test: /\.css$/,
         use: [
+          'style-loader',
+          {
+            loader: 'css-loader',
+            options: {
+              sourceMap: !utils.isProd,
+              importLoaders: 1,
+              modules: true,
+            },
+          },
+        ],
+        include: /\.module\.css$/,
+      },
+      {
+        test: /\.css$/,
+        use: [
           utils.isProd ? MiniCssExtractPlugin.loader : 'style-loader',
           {
             loader: 'css-loader',
@@ -110,6 +123,7 @@ module.exports = {
             },
           },
         ],
+        exclude: /\.module\.css$/,
       },
       {
         test: /\.font\.js/,
@@ -157,6 +171,11 @@ module.exports = {
     ],
   },
   plugins: [
+    new MonacoWebpackPlugin({
+      // available options are documented at https://github.com/Microsoft/monaco-editor-webpack-plugin#options
+      languages: ['json', 'yaml', 'shell', 'python'],
+    }),
+
     // Ignore all locale files of moment.js
     new webpack.IgnorePlugin(/^\.\/locale$/, /moment$/),
 
@@ -166,7 +185,7 @@ module.exports = {
       inject: 'body',
       chunks: ['index'],
       alwaysWriteToDisk: true,
-      chunksSortMode: function(a, b) {
+      chunksSortMode: function (a, b) {
         return a.names[0] < b.names[0] ? 1 : -1;
       },
     }),

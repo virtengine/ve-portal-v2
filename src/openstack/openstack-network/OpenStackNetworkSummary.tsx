@@ -12,7 +12,7 @@ import { formatDefault } from '@waldur/resource/utils';
 
 import { Network } from './types';
 
-const formatTenant = props => (
+const formatTenant = (props) => (
   <ResourceLink
     type="OpenStack.Tenant"
     uuid={getUUID(props.tenant)}
@@ -39,6 +39,7 @@ const PureOpenStackNetworkSummary = (props: ResourceSummaryProps<Network>) => {
         label={translate('Is external')}
         value={resource.is_external ? translate('Yes') : translate('No')}
       />
+      <Field label={translate('MTU')} value={formatDefault(resource.mtu)} />
     </span>
   );
 };

@@ -2,7 +2,7 @@ import * as React from 'react';
 import Select from 'react-select';
 import { Field } from 'redux-form';
 
-import { AwesomeCheckbox } from '@waldur/core/AwesomeCheckbox';
+import { AwesomeCheckboxField } from '@waldur/form/AwesomeCheckboxField';
 import { translate } from '@waldur/i18n';
 
 import './VmOverviewFilter.scss';
@@ -17,29 +17,25 @@ export const VmOverviewFilter = (props: VmOverviewFilterProps) => (
       <form className="form-inline" id="vm-overview-filter">
         <Field
           name="shared"
-          component={prop => (
-            <AwesomeCheckbox
-              id="show-shared"
-              label={translate('Show shared')}
-              {...prop.input}
-            />
-          )}
+          component={AwesomeCheckboxField}
+          label={translate('Show shared')}
         />
         <div className="form-group">
           <Field
             name="service_provider"
-            component={prop => (
+            component={(prop) => (
               <Select
                 className="service-provider-selector"
                 placeholder={translate('Select service provider')}
-                labelKey="name"
-                valueKey="value"
+                getOptionValue={(option) => option.value}
+                getOptionLabel={(option) => option.name}
                 value={prop.input.value}
                 onChange={prop.input.onChange}
                 onBlur={() => prop.input.onBlur(prop.input.value)}
                 options={props.serviceProviders}
-                multi={true}
-                disabled={props.serviceProviders.length === 0}
+                isMulti={true}
+                isDisabled={props.serviceProviders.length === 0}
+                isClearable={true}
               />
             )}
           />

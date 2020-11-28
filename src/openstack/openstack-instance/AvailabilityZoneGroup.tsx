@@ -8,7 +8,7 @@ import { translate } from '@waldur/i18n';
 
 import { CreateResourceFormGroup } from '../CreateResourceFormGroup';
 
-export const AvailabilityZoneGroup = props =>
+export const AvailabilityZoneGroup = (props) =>
   props.availabilityZones.length > 0 ? (
     <CreateResourceFormGroup
       label={translate('Availability zone')}
@@ -21,14 +21,16 @@ export const AvailabilityZoneGroup = props =>
             ? required
             : undefined
         }
-        component={fieldProps => (
+        component={(fieldProps) => (
           <Select
-            value={fieldProps.input.value}
-            onChange={fieldProps.input.onChange}
+            value={props.availabilityZones.filter(
+              (zone) => zone.url === fieldProps.input.value,
+            )}
+            onChange={(newValue) => fieldProps.input.onChange(newValue.url)}
             options={props.availabilityZones}
-            labelKey="name"
-            valueKey="url"
-            simpleValue={true}
+            getOptionValue={(option) => option.url}
+            getOptionLabel={(option) => option.name}
+            isClearable={true}
           />
         )}
       />

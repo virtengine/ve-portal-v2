@@ -1,16 +1,10 @@
 import { InjectedFormProps } from 'redux-form';
 
+import { GeolocationPoint } from '@waldur/map/types';
 import { OrderItemDetailsType } from '@waldur/marketplace/orders/types';
 import { Project, Customer } from '@waldur/workspace/types';
 
 export type BillingPeriod = 'hour' | 'day' | 'half_month' | 'month';
-
-export interface GeolocationPoint {
-  latitude: number;
-  longitude: number;
-}
-
-export type Geolocations = GeolocationPoint[];
 
 export interface BaseComponent {
   type: string;
@@ -30,6 +24,8 @@ export interface OfferingComponent extends BaseComponent {
   max_value?: number;
   min_value?: number;
   factor?: number;
+  is_boolean?: boolean;
+  default_limit?: number;
 }
 
 export interface Plan {
@@ -83,14 +79,12 @@ interface ReferredPids {
   relation_type: string;
 }
 
-export interface Offering {
+export interface Offering extends GeolocationPoint {
   quotas?: Quota[];
   uuid?: string;
   url?: string;
   thumbnail: string;
   name: string;
-  native_name?: string;
-  native_description?: string;
   terms_of_service?: string;
   rating: number;
   order_item_count: number;
@@ -102,7 +96,6 @@ export interface Offering {
   screenshots?: Screenshot[];
   description?: string;
   full_description: string;
-  geolocations?: Geolocations;
   customer_uuid?: string;
   customer_name?: string;
   attributes: AttributesType;
@@ -122,6 +115,8 @@ export interface Offering {
   datacite_doi?: string;
   citation_count?: number;
   referred_pids: ReferredPids[];
+  latitude: number;
+  longitude: number;
 }
 
 export interface Screenshot {
@@ -202,6 +197,7 @@ export interface OfferingsListType {
 }
 
 export interface ServiceProvider {
+  name: string;
   uuid: string;
   image?: string;
   description?: string;

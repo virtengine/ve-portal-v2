@@ -1,28 +1,27 @@
-import { ngInjector } from '@waldur/core/services';
+import { translate } from '@waldur/i18n';
 
-import { getCategories } from './api';
-import { FEATURE, ICON_CLASS } from './constants';
+import { countChecklists, getCategories } from './api';
+import { ICON_CLASS } from './constants';
 import { Category } from './types';
 
-const getMenuItems = linkFunction => () => {
-  return getCategories().then(categories => {
-    return categories.map((category, index) => ({
-      label: category.name,
-      icon: ICON_CLASS,
-      ...linkFunction(category),
-      feature: FEATURE,
-      index: 220 + index,
-    }));
-  });
+const getMenuItems = (linkFunction) => async () => {
+  const checklistCount = await countChecklists();
+  if (checklistCount === 0) {
+    return [];
+  }
+  const categories = await getCategories();
+  return categories.map((category, index) => ({
+    label: category.name,
+    icon: ICON_CLASS,
+    ...linkFunction(category),
+    index: 220 + index,
+  }));
 };
 
-export const getMenuForProject = async () => {
-  const currentStateService = ngInjector.get('currentStateService');
-  const project = await currentStateService.getProject();
+export const getMenuForUser = async () => {
   const items = await getMenuItems((category: Category) => ({
-    state: 'marketplace-checklist-project',
+    state: 'marketplace-checklist-user',
     params: {
-      uuid: project.uuid,
       category: category.uuid,
     },
   }))();
@@ -33,3 +32,16 @@ export const getMenuForSupport = getMenuItems((category: Category) => ({
   state: 'marketplace-checklist-overview',
   params: { category: category.uuid },
 }));
+
+export const getMenuForOrganization = async () => {
+  const checklistCount = await countChecklists();
+  if (checklistCount === 0) {
+    return [];
+  }
+
+  return {
+    label: translate('Checklist setup'),
+    state: 'marketplace-checklist-customer',
+    icon: ICON_CLASS,
+  };
+};

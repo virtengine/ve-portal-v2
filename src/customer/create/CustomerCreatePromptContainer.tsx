@@ -5,18 +5,18 @@ import { reduxForm, SubmissionError } from 'redux-form';
 import { translate, withTranslation } from '@waldur/i18n';
 import { renderServiceProvider } from '@waldur/marketplace/service-providers/selectors';
 import { closeModalDialog, openModalDialog } from '@waldur/modal/actions';
-import { connectAngularComponent } from '@waldur/store/connect';
 
 import * as constants from './constants';
+import { CustomerCreateDialog } from './CustomerCreateDialog';
 import { CustomerCreatePrompt } from './CustomerCreatePrompt';
 
-const mapStateToProps = state => ({
+const mapStateToProps = (state) => ({
   renderServiceProvider: renderServiceProvider(state),
 });
 
-const mapDispatchToProps = dispatch => ({
+const mapDispatchToProps = (dispatch) => ({
   closeModal: (): void => dispatch(closeModalDialog()),
-  onSubmit: data => {
+  onSubmit: (data) => {
     if (!data[constants.FIELD_NAMES.role]) {
       throw new SubmissionError({
         _error: translate('Сhoose the role please'),
@@ -24,7 +24,7 @@ const mapDispatchToProps = dispatch => ({
     }
 
     dispatch(
-      openModalDialog('customer-create-dialog', {
+      openModalDialog(CustomerCreateDialog, {
         resolve: {
           role: data[constants.FIELD_NAMES.role],
         },
@@ -46,7 +46,3 @@ const enhance = compose(
 );
 
 export const CustomerCreatePromptContainer = enhance(CustomerCreatePrompt);
-
-export default connectAngularComponent(CustomerCreatePromptContainer, [
-  'resolve',
-]);

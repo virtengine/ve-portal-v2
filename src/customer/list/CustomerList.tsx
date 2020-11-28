@@ -7,12 +7,15 @@ import { formatDate } from '@waldur/core/dateUtils';
 import { ENV } from '@waldur/core/services';
 import { withTranslation, translate } from '@waldur/i18n';
 import { PriceTooltip } from '@waldur/price/PriceTooltip';
-import { Table, connectTable, createFetcher } from '@waldur/table-react';
-import { renderFieldOrDash } from '@waldur/table-react/utils';
+import { Table, connectTable, createFetcher } from '@waldur/table';
+import { renderFieldOrDash } from '@waldur/table/utils';
 
-import { CurrentCostField } from './CurrentCostField';
+import { CurrentCostField, ExportCurrentCostField } from './CurrentCostField';
 import { CustomerExpandableRow } from './CustomerExpandableRow';
-import { EstimatedCostField } from './EstimatedCostField';
+import {
+  EstimatedCostField,
+  ExportEstimatedCostField,
+} from './EstimatedCostField';
 import { OrganizationLink } from './OrganizationLink';
 
 const AbbreviationField = ({ row }) => (
@@ -35,13 +38,13 @@ const AgreementNumberField = ({ row }) => (
   <span>{renderFieldOrDash(row.agreement_number)}</span>
 );
 
-const renderTitleWithPriceTooltip = title => (
+const renderTitleWithPriceTooltip = (title) => (
   <>
     <PriceTooltip /> {title}
   </>
 );
 
-export const TableComponent = props => {
+export const TableComponent = (props) => {
   const { filterColumns, customerListFilter } = props;
   const accountingPeriodIsCurrent =
     customerListFilter.accounting_period &&
@@ -116,20 +119,22 @@ const exportRow = (row, props) => {
     row.abbreviation,
     formatDate(row.created),
     formatDate(row.accounting_start_date),
-    CurrentCostField({ row }),
+    renderFieldOrDash(row.agreement_number),
+    ExportCurrentCostField({ row }),
   ];
   return props.customerListFilter.accounting_period &&
     props.customerListFilter.accounting_period.value.current
-    ? [...base, EstimatedCostField({ row })]
+    ? [...base, ExportEstimatedCostField({ row })]
     : base;
 };
 
-const exportFields = props => {
+const exportFields = (props) => {
   const base = [
     translate('Organization'),
     translate('Abbreviation'),
     translate('Created'),
     translate('Start day of accounting'),
+    translate('Agreement number'),
   ];
   const accountingPeriodIsCurrent =
     props.customerListFilter.accounting_period &&
@@ -147,7 +152,7 @@ const exportFields = props => {
     : [...base, `${translate('Cost')} (${vatMessage})`];
 };
 
-const formatFilter = filter => {
+const formatFilter = (filter) => {
   if (filter) {
     if (filter.accounting_period) {
       return {
@@ -166,12 +171,12 @@ const TableOptions = {
   table: 'customerList',
   fetchData: createFetcher('customers'),
   queryField: 'query',
-  mapPropsToFilter: props => formatFilter(props.customerListFilter),
+  mapPropsToFilter: (props) => formatFilter(props.customerListFilter),
   exportRow,
   exportFields,
 };
 
-const mapStateToProps = state => ({
+const mapStateToProps = (state) => ({
   customerListFilter: getFormValues('customerListFilter')(state),
 });
 

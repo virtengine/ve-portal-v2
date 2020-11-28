@@ -11,6 +11,7 @@ import {
 import { getScopeChartOptions } from '@waldur/dashboard/chart';
 import { Scope, Chart } from '@waldur/dashboard/types';
 import { translate } from '@waldur/i18n';
+import { getActiveFixedPricePaymentProfile } from '@waldur/invoices/details/utils';
 
 interface InvoiceSummary {
   year: number;
@@ -34,7 +35,7 @@ const formatCostChartLabel = (
 };
 
 export const formatCostChart = (invoices: InvoiceSummary[], count): Chart => {
-  let items: DateValuePair[] = invoices.map(invoice => ({
+  let items: DateValuePair[] = invoices.map((invoice) => ({
     value: invoice.price,
     date: new Date(invoice.year, invoice.month - 1, 1),
   }));
@@ -43,11 +44,7 @@ export const formatCostChart = (invoices: InvoiceSummary[], count): Chart => {
   items = padMissingValues(items, count);
   const data = items.map((item, index) => {
     const isEstimate = index === items.length - 1;
-    const date = isEstimate
-      ? moment()
-          .endOf('month')
-          .toDate()
-      : item.date;
+    const date = isEstimate ? moment().endOf('month').toDate() : item.date;
     return {
       label: formatCostChartLabel(item.value, date, isEstimate),
       value: item.value,
@@ -69,6 +66,12 @@ const getInvoiceSummary = (customer: string) =>
   });
 
 async function getCustomerCharts(customer: Scope): Promise<Chart[]> {
+  const charts: Chart[] = [];
+  if (!getActiveFixedPricePaymentProfile(customer.payment_profiles)) {
+    const invoices = await getInvoiceSummary(customer.url);
+    const costChart = formatCostChart(invoices, 12);
+    charts.push(costChart);
+  }
   const quotas = [
     {
       quota: 'nc_user_count',
@@ -76,18 +79,19 @@ async function getCustomerCharts(customer: Scope): Promise<Chart[]> {
     },
   ];
   const quotaCharts = await getDailyQuotaCharts(quotas, customer);
-  const invoices = await getInvoiceSummary(customer.url);
-  const costChart = formatCostChart(invoices, 12);
-  return [costChart, ...quotaCharts];
+  if (quotaCharts.length) {
+    charts.push(...quotaCharts);
+  }
+  return charts;
 }
 
-export const loadSummary = async customer => {
+export const loadSummary = async (customer) => {
   const charts: Chart[] = await getCustomerCharts(customer);
-  return charts.map(chart => ({
+  return charts.map((chart) => ({
     chart,
     options: getScopeChartOptions(
-      chart.data.map(item => item.label),
-      chart.data.map(item => item.value),
+      chart.data.map((item) => item.label),
+      chart.data.map((item) => item.value),
     ),
   }));
 };

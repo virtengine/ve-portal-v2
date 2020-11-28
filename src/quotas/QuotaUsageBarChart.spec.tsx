@@ -2,16 +2,15 @@ import { shallow } from 'enzyme';
 import * as React from 'react';
 
 import { quotas } from '@waldur/openstack/openstack-instance/storyFixtures';
-import { exceeds } from '@waldur/quotas/QuotaUsageBarChart';
-import { getSummary } from '@waldur/quotas/QuotaUsageBarChart';
-import { getExisting } from '@waldur/quotas/QuotaUsageBarChart';
-import { getPlanned } from '@waldur/quotas/QuotaUsageBarChart';
-import { getAvailable } from '@waldur/quotas/QuotaUsageBarChart';
-
 import {
+  exceeds,
+  getSummary,
+  getExisting,
+  getPlanned,
+  getAvailable,
   ProgressTooltipMessage,
   QuotaUsageBarChartDescription,
-} from './QuotaUsageBarChart';
+} from '@waldur/quotas/QuotaUsageBarChart';
 
 describe('exceeds', () => {
   it("should return false if quota's usage and required sum is less than limit", () => {
@@ -54,7 +53,8 @@ describe('getAvailable', () => {
 });
 
 describe('ProgressTooltipMessage', () => {
-  const renderWrapper = props => shallow(<ProgressTooltipMessage {...props} />);
+  const renderWrapper = (props) =>
+    shallow(<ProgressTooltipMessage {...props} />);
 
   it("should render danger message if quota's usage exceeds limit", () => {
     const wrapper = renderWrapper({ quota: quotas[1] });
@@ -69,7 +69,7 @@ describe('ProgressTooltipMessage', () => {
 });
 
 describe('QuotaUsageBarChartDescription', () => {
-  const renderWrapper = props =>
+  const renderWrapper = (props) =>
     shallow(<QuotaUsageBarChartDescription {...props} />);
 
   it("should render danger message if quota's usage exceeds limit", () => {

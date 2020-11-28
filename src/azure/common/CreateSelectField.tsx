@@ -1,7 +1,7 @@
 import * as React from 'react';
 
 import { required } from '@waldur/core/validators';
-import { SelectField } from '@waldur/form-react';
+import { SelectField } from '@waldur/form';
 
 export const CreateSelectField = (label, name, options) => (
   <SelectField
@@ -9,9 +9,9 @@ export const CreateSelectField = (label, name, options) => (
     name={name}
     options={options}
     required={true}
-    labelKey="name"
-    valueKey="url"
-    clearable={false}
+    getOptionValue={(option) => option.url}
+    getOptionLabel={(option) => option.name}
+    isClearable={false}
     validate={required}
     simpleValue={true}
   />

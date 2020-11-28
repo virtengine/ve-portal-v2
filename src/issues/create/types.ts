@@ -20,6 +20,8 @@ export interface CreateIssueProps {
   customer?: Customer;
   project?: Project;
   resource?: any;
+  summary?: string;
+  description?: string;
   options: Partial<IssueOptions>;
 }
 
@@ -30,6 +32,8 @@ export interface IssueFormData {
   template: any;
   files: FileList;
   issueTemplate?: any;
+  project?: Project;
+  resource?: any;
 }
 
 export interface IssueRequestPayload {

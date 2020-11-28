@@ -1,5 +1,10 @@
 import { createSelector } from 'reselect';
 
+import {
+  PROJECT_ADMIN_ROLE,
+  PROJECT_MANAGER_ROLE,
+} from '@waldur/core/constants';
+
 import { User, Customer, Project, OuterState, WorkspaceType } from './types';
 
 export const getUser = (state: OuterState): User => state.workspace.user;
@@ -7,9 +12,16 @@ export const getUser = (state: OuterState): User => state.workspace.user;
 export const getCustomer = (state: OuterState): Customer =>
   state.workspace.customer;
 
-export const getUserCustomerPermissions = createSelector(getUser, user => {
+export const getUserCustomerPermissions = createSelector(getUser, (user) => {
   if (user) {
     return user.customer_permissions;
+  }
+  return [];
+});
+
+export const getUserProjectPermissions = createSelector(getUser, (user) => {
+  if (user) {
+    return user.project_permissions;
   }
   return [];
 });
@@ -29,7 +41,7 @@ export const isSupport = (state: OuterState): boolean =>
 export const isStaffOrSupport = (state: OuterState): boolean =>
   isStaff(state) || isSupport(state);
 
-const checkIsOwner = (customer, user) => {
+export const checkIsOwner = (customer, user) => {
   for (let i = 0; i < customer.owners.length; i++) {
     if (user && user.uuid === customer.owners[i].uuid) {
       return true;
@@ -53,12 +65,12 @@ export const getOwner = createSelector(
       return undefined;
     }
     if (customer) {
-      return customer.owners.find(owner => owner.uuid === user.uuid);
+      return customer.owners.find((owner) => owner.uuid === user.uuid);
     }
   },
 );
 
-export const isOwner = createSelector(getOwner, owner => {
+export const isOwner = createSelector(getOwner, (owner) => {
   return !!owner;
 });
 
@@ -81,7 +93,7 @@ const checkRole = (project, user, role) => {
     return false;
   }
   const projectUser = project.permissions.find(
-    perm => perm.user_uuid === user.uuid,
+    (perm) => perm.user_uuid === user.uuid,
   );
   if (projectUser) {
     return projectUser.role === role;
@@ -92,14 +104,26 @@ export const isManager = createSelector(
   getUser,
   getProject,
   (user, project) => {
-    return project && checkRole(project, user, 'manager');
+    return project && checkRole(project, user, PROJECT_MANAGER_ROLE);
   },
 );
 
 export const isAdmin = createSelector(getUser, getProject, (user, project) => {
-  return checkRole(project, user, 'admin');
+  return checkRole(project, user, PROJECT_ADMIN_ROLE);
 });
 
 export const filterByUser = (state: OuterState) => ({
-  user_url: getUser(state).url,
+  user_url: getUser(state)?.url,
 });
+
+export const selectTablePagination = (state, table) => {
+  if (state.tables && state.tables[table]) {
+    return state.tables[table].pagination;
+  }
+};
+
+export const selectTableSorting = (state, table) => {
+  if (state.tables && state.tables[table]) {
+    return state.tables[table].sorting;
+  }
+};

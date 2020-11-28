@@ -5,10 +5,10 @@ import { ResourceRowActions } from '@waldur/resource/actions/ResourceRowActions'
 import { formatCrontab } from '@waldur/resource/crontab';
 import { ResourceName } from '@waldur/resource/ResourceName';
 import { ResourceState } from '@waldur/resource/state/ResourceState';
-import { Table, connectTable, createFetcher } from '@waldur/table-react';
-import { BooleanField } from '@waldur/table-react/BooleanField';
+import { Table, connectTable, createFetcher } from '@waldur/table';
+import { BooleanField } from '@waldur/table/BooleanField';
 
-const TableComponent = props => {
+const TableComponent = (props) => {
   const { translate } = props;
   return (
     <Table
@@ -20,7 +20,7 @@ const TableComponent = props => {
           orderField: 'name',
         },
         {
-          title: translate('Max number of backups'),
+          title: translate('Max number of VM snapshots'),
           render: ({ row }) => row.maximal_number_of_resources || 'N/A',
         },
         {
@@ -40,7 +40,7 @@ const TableComponent = props => {
           render: ({ row }) => <ResourceRowActions resource={row} />,
         },
       ]}
-      verboseName={translate('backup schedules')}
+      verboseName={translate('VM snapshot schedules')}
       hasQuery={false}
       actions={
         <NestedListActions resource={props.resource} tab="backup_schedules" />
@@ -49,7 +49,7 @@ const TableComponent = props => {
   );
 };
 
-const mapPropsToFilter = props => ({
+const mapPropsToFilter = (props) => ({
   instance: props.resource.url,
 });
 

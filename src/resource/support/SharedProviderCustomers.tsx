@@ -4,10 +4,10 @@ import { formatDate } from '@waldur/core/dateUtils';
 import { OrganizationLink } from '@waldur/customer/list/OrganizationLink';
 import { Customer } from '@waldur/customer/types';
 import { translate } from '@waldur/i18n';
-import { createFetcher, Table, connectTable } from '@waldur/table-react';
-import { TableProps } from '@waldur/table-react/Table';
-import { Column, TableOptionsType } from '@waldur/table-react/types';
-import { renderFieldOrDash } from '@waldur/table-react/utils';
+import { createFetcher, Table, connectTable } from '@waldur/table';
+import { TableProps } from '@waldur/table/Table';
+import { Column, TableOptionsType } from '@waldur/table/types';
+import { renderFieldOrDash } from '@waldur/table/utils';
 
 const AbbreviationField = ({ row }) => (
   <span>{renderFieldOrDash(row.abbreviation)}</span>
@@ -20,7 +20,7 @@ const CreatedDateField = ({ row }) => (
 const TableComponent = (
   props: TableProps<Customer> & { provider_uuid: string },
 ) => {
-  const columns: Array<Column<Customer & { vm_count: number }>> = [
+  const columns: Array<Column<Customer & { vm_count: string }>> = [
     {
       title: translate('Organization'),
       render: OrganizationLink,
@@ -50,19 +50,21 @@ const TableComponent = (
   );
 };
 
-const exportRow = (row: Customer) => [
+const exportRow = (row: Customer & { vm_count: string }) => [
   row.name,
   row.abbreviation,
   formatDate(row.created),
+  row.vm_count.toString(),
 ];
 
 const exportFields = () => [
   translate('Organization'),
   translate('Abbreviation'),
   translate('Created'),
+  translate('VMs'),
 ];
 
-const mapPropsToFilter = props => ({
+const mapPropsToFilter = (props) => ({
   service_settings_uuid: props.provider_uuid,
 });
 

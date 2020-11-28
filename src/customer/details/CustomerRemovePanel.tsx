@@ -8,16 +8,19 @@ import { LoadingSpinner } from '@waldur/core/LoadingSpinner';
 import { ENV, ngInjector } from '@waldur/core/services';
 import { isFeatureVisible } from '@waldur/features/connect';
 import { translate } from '@waldur/i18n';
+import { IssueCreateDialog } from '@waldur/issues/create/IssueCreateDialog';
 import { ISSUE_IDS } from '@waldur/issues/types/constants';
 import { openModalDialog } from '@waldur/modal/actions';
 import { showError } from '@waldur/store/coreSaga';
+import store from '@waldur/store/store';
+import { setCurrentCustomer } from '@waldur/workspace/actions';
 import {
   getUser,
   isOwner as isOwnerSelector,
   getCustomer,
 } from '@waldur/workspace/selectors';
 
-const loadInvoices = customer =>
+const loadInvoices = (customer) =>
   getAll<{ state: string; price: string }>('/invoices/', {
     params: { field: ['state', 'price'], customer_uuid: customer.uuid },
   });
@@ -35,7 +38,7 @@ export const CustomerRemovePanel = () => {
 
   const removeCustomer = () => {
     const hasActiveInvoices = invoices.some(
-      invoice => invoice.state !== 'pending' || parseFloat(invoice.price) > 0,
+      (invoice) => invoice.state !== 'pending' || parseFloat(invoice.price) > 0,
     );
     const hasProjects = customer.projects.length > 0;
     const needsSupport = hasProjects || hasActiveInvoices;
@@ -54,7 +57,7 @@ export const CustomerRemovePanel = () => {
         return dispatch(showError(notification));
       }
       return dispatch(
-        openModalDialog('issueCreateDialog', {
+        openModalDialog(IssueCreateDialog, {
           resolve: {
             issue: {
               customer,
@@ -77,19 +80,15 @@ export const CustomerRemovePanel = () => {
 
     const confirmDelete = confirm(translate('Confirm deletion?'));
     if (confirmDelete) {
-      const currentStateService = ngInjector.get('currentStateService');
-      const customersService = ngInjector.get('customersService');
-      const stateUtilsService = ngInjector.get('stateUtilsService');
-      currentStateService.setCustomer(null);
+      const StateUtilsService = ngInjector.get('StateUtilsService');
+      store.dispatch(setCurrentCustomer(null));
       deleteById('/customers/', customer.uuid).then(
         () => {
-          customersService.clearAllCacheForCurrentEndpoint();
           router.stateService.go('profile.details').then(() => {
-            stateUtilsService.clear();
-            currentStateService.setHasCustomer(false);
+            StateUtilsService.clear();
           });
         },
-        () => currentStateService.setCustomer(customer),
+        () => store.dispatch(setCurrentCustomer(customer)),
       );
     }
   };

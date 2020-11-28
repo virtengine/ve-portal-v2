@@ -1,4 +1,5 @@
 import { Omit } from 'react-redux';
+import { Dispatch } from 'redux';
 
 import { BaseResource } from '@waldur/resource/types';
 import { User } from '@waldur/workspace/types';
@@ -8,7 +9,6 @@ interface BaseField<Resource> {
   label?: string;
   type?: string;
   required?: boolean;
-  component?: string;
   placeholder?: string;
   init?: (field, resource: Resource, form?: any, action?: any) => void;
   default_value?: any;
@@ -40,12 +40,12 @@ interface TextField<Resource> extends BaseField<Resource> {
 
 interface IntegerField<Resource> extends BaseField<Resource> {
   type: 'integer';
-  min_value?: number;
-  max_value?: number;
+  minValue?: number;
+  maxValue?: number;
 }
 
 interface ComponentField<Resource> extends Omit<BaseField<Resource>, 'type'> {
-  component: string;
+  component: string | React.ComponentType<any>;
 }
 
 export type ActionField<Resource = BaseResource> =
@@ -59,7 +59,9 @@ type ActionType = 'button' | 'form' | 'callback';
 
 type ActionMethod = 'POST' | 'PUT' | 'DELETE';
 
-type ActionValidator<Resource> = (ctx: ActionContext<Resource>) => string;
+export type ActionValidator<Resource> = (
+  ctx: ActionContext<Resource>,
+) => string;
 
 export interface ResourceAction<Resource = BaseResource> {
   name: string;
@@ -75,13 +77,16 @@ export interface ResourceAction<Resource = BaseResource> {
   method?: ActionMethod;
   destructive?: boolean;
   validators?: Array<ActionValidator<Resource>>;
-  dialogSize?: 'lg';
-  component?: string;
+  dialogSize?: 'lg' | 'xl';
+  component?: string | React.ComponentType<any>;
   useResolve?: boolean;
   isVisible?: boolean;
   init?(resource, form, action): void;
   serializer?(form): object;
   execute?(resource): void;
+  getInitialValues?(): any;
+  submitForm?(dispatch: Dispatch<any>, formData: any);
+  formId?: string;
 }
 
 export interface ActionContext<Resource = BaseResource> {

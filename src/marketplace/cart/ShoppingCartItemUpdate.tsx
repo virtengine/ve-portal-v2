@@ -8,6 +8,7 @@ import { LoadingSpinner } from '@waldur/core/LoadingSpinner';
 import { $state } from '@waldur/core/services';
 import { translate } from '@waldur/i18n';
 import { Plan, Offering } from '@waldur/marketplace/types';
+import { setTitle } from '@waldur/navigation/title';
 
 import * as api from '../common/api';
 import { OrderSummary } from '../details/OrderSummary';
@@ -58,6 +59,7 @@ const PureShoppingCartItemUpdate = (props: PureShoppingCartItemUpdateProps) => (
 
 interface ShoppingCartItemUpdateProps {
   shoppingCartItem: OrderItemResponse;
+  setTitle: typeof setTitle;
 }
 
 class ShoppingCartItemUpdateComponent extends React.Component<
@@ -79,12 +81,12 @@ class ShoppingCartItemUpdateComponent extends React.Component<
       );
       const plugins = await api.getPlugins();
       const limits = plugins.find(
-        plugin => plugin.offering_type === offering.type,
+        (plugin) => plugin.offering_type === offering.type,
       ).available_limits;
       let plan = {};
       if (offering && this.props.shoppingCartItem.plan_uuid) {
         plan = offering.plans.find(
-          offeringPlan =>
+          (offeringPlan) =>
             offeringPlan.uuid === this.props.shoppingCartItem.plan_uuid,
         );
       }
@@ -96,6 +98,7 @@ class ShoppingCartItemUpdateComponent extends React.Component<
 
   componentDidMount() {
     this.loadData();
+    this.props.setTitle(translate('Shopping cart item update'));
   }
 
   render() {
@@ -116,12 +119,12 @@ class ShoppingCartItemUpdateComponent extends React.Component<
   }
 }
 
-const mapStateToProps = state => ({
+const mapStateToProps = (state) => ({
   shoppingCartItem: getItemSelectorFactory($state.params.order_item_uuid)(
     state,
   ),
 });
 
-export const ShoppingCartItemUpdate = connect(mapStateToProps)(
+export const ShoppingCartItemUpdate = connect(mapStateToProps, { setTitle })(
   ShoppingCartItemUpdateComponent,
 );

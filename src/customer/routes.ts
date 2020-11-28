@@ -1,10 +1,8 @@
 import { StateDeclaration } from '@waldur/core/types';
 import { PaymentProfileCreateContainer } from '@waldur/customer/payment-profiles/PaymentProfileCreateContainer';
-import { gettext } from '@waldur/i18n';
 import { ProjectsList } from '@waldur/project/ProjectsList';
-import { withStore } from '@waldur/store/connect';
+import { ORGANIZATION_WORKSPACE } from '@waldur/workspace/types';
 
-import { WOKSPACE_NAMES } from '../navigation/workspace/constants';
 import { ProjectCreateContainer } from '../project/ProjectCreateContainer';
 
 import { CustomerDashboardContainer } from './dashboard/CustomerDashboardContainer';
@@ -21,7 +19,7 @@ export const states: StateDeclaration[] = [
     abstract: true,
     data: {
       auth: true,
-      workspace: WOKSPACE_NAMES.organization,
+      workspace: ORGANIZATION_WORKSPACE,
     },
     template: '<customer-workspace></customer-workspace>',
     resolve: {
@@ -33,9 +31,8 @@ export const states: StateDeclaration[] = [
   {
     name: 'organization.dashboard',
     url: 'dashboard/',
-    component: withStore(CustomerDashboardContainer),
+    component: CustomerDashboardContainer,
     data: {
-      pageTitle: gettext('Dashboard'),
       pageClass: 'gray-bg',
       hideBreadcrumbs: true,
     },
@@ -44,46 +41,35 @@ export const states: StateDeclaration[] = [
   {
     name: 'organization.details',
     url: 'events/',
-    component: withStore(CustomerEventsView),
-    data: {
-      pageTitle: gettext('Audit logs'),
-    },
+    component: CustomerEventsView,
   },
 
   {
     name: 'organization.issues',
     url: 'issues/',
-    component: withStore(CustomerIssuesList),
+    component: CustomerIssuesList,
     data: {
       feature: 'support',
-      pageTitle: gettext('Issues'),
     },
   },
 
   {
     name: 'organization.projects',
     url: 'projects/',
-    component: withStore(ProjectsList),
-    data: {
-      pageTitle: gettext('Projects'),
-    },
+    component: ProjectsList,
   },
 
   {
     name: 'organization.team',
     url: 'team/',
-    component: withStore(CustomerTeam),
-    data: {
-      pageTitle: gettext('Team'),
-    },
+    component: CustomerTeam,
   },
 
   {
     name: 'organization.manage',
     url: 'manage/',
-    component: withStore(CustomerManage),
+    component: CustomerManage,
     data: {
-      pageTitle: gettext('Manage organization'),
       hideBreadcrumbs: true,
     },
   },
@@ -92,23 +78,12 @@ export const states: StateDeclaration[] = [
     name: 'payment-profile-create',
     url: 'payment-profile-create/',
     parent: 'organization',
-    component: withStore(PaymentProfileCreateContainer),
-    data: {
-      pageTitle: gettext('Add payment profile'),
-    },
+    component: PaymentProfileCreateContainer,
   },
 
   {
     name: 'organization.createProject',
     url: 'createProject/',
-    component: withStore(ProjectCreateContainer),
-    data: {
-      pageTitle: gettext('Create project'),
-    },
+    component: ProjectCreateContainer,
   },
 ];
-
-export default function registerRoutes($stateProvider) {
-  states.forEach(({ name, ...rest }) => $stateProvider.state(name, rest));
-}
-registerRoutes.$inject = ['$stateProvider'];

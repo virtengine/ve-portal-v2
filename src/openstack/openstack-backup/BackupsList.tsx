@@ -5,9 +5,9 @@ import { NestedListActions } from '@waldur/resource/actions/NestedListActions';
 import { ResourceRowActions } from '@waldur/resource/actions/ResourceRowActions';
 import { ResourceName } from '@waldur/resource/ResourceName';
 import { ResourceState } from '@waldur/resource/state/ResourceState';
-import { Table, connectTable, createFetcher } from '@waldur/table-react';
+import { Table, connectTable, createFetcher } from '@waldur/table';
 
-const TableComponent = props => {
+const TableComponent = (props) => {
   const { translate } = props;
   return (
     <Table
@@ -24,7 +24,7 @@ const TableComponent = props => {
         },
         {
           title: translate('Keep until'),
-          render: ({ row }) => formatDateTime(row.created),
+          render: ({ row }) => formatDateTime(row.kept_until),
         },
         {
           title: translate('State'),
@@ -35,14 +35,14 @@ const TableComponent = props => {
           render: ({ row }) => <ResourceRowActions resource={row} />,
         },
       ]}
-      verboseName={translate('backups')}
+      verboseName={translate('VM snapshots')}
       hasQuery={false}
       actions={<NestedListActions resource={props.resource} tab="backups" />}
     />
   );
 };
 
-const mapPropsToFilter = props => {
+const mapPropsToFilter = (props) => {
   const fields = {
     'OpenStackTenant.Instance': 'instance',
     'OpenStackTenant.BackupSchedule': 'backup_schedule',

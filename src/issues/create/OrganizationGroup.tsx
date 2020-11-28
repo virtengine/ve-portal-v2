@@ -8,6 +8,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import Select from 'react-select';
 import { Field, change } from 'redux-form';
 
+import { CustomerPopover } from '@waldur/customer/popover/CustomerPopover';
 import { translate } from '@waldur/i18n';
 import { openModalDialog } from '@waldur/modal/actions';
 
@@ -16,7 +17,7 @@ import { AsyncSelectField } from './AsyncSelectField';
 import { ISSUE_REGISTRATION_FORM_ID } from './constants';
 import { callerSelector, customerSelector } from './selectors';
 
-const filterOptions = options => options;
+const filterOption = (options) => options;
 
 export const OrganizationGroup = ({ onSearch }) => {
   const dispatch = useDispatch();
@@ -24,14 +25,14 @@ export const OrganizationGroup = ({ onSearch }) => {
   const customer = useSelector(customerSelector);
   const openCustomerDialog = () =>
     dispatch(
-      openModalDialog('customerPopover', {
+      openModalDialog(CustomerPopover, {
         size: 'lg',
         resolve: { customer_uuid: customer.uuid },
       }),
     );
   const filterByCustomer = () => onSearch({ customer });
   const loadOptions = React.useCallback(
-    name => refreshCustomers(name, caller),
+    (name) => refreshCustomers(name, caller),
     [caller],
   );
 
@@ -52,16 +53,17 @@ export const OrganizationGroup = ({ onSearch }) => {
             component={AsyncSelectField}
             required
             placeholder={translate('Select organization...')}
-            clearable={true}
+            isClearable={true}
+            defaultOptions
             loadOptions={loadOptions}
-            labelKey="name"
-            valueKey="name"
-            filterOptions={filterOptions}
+            getOptionValue={(option) => option.name}
+            getOptionLabel={(option) => option.name}
+            filterOption={filterOption}
           />
         ) : (
           <Select
             options={[]}
-            disabled={true}
+            isDisabled={true}
             placeholder={translate('Select organization...')}
           />
         )}

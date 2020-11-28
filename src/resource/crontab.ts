@@ -1,26 +1,27 @@
 import { translate } from '@waldur/i18n';
 
-const Frequency = {
-  MINUTE: 1,
-  HOUR: 2,
-  DAY: 3,
-  WEEK: 4,
-  MONTH: 5,
-  YEAR: 6,
+const moment = require('moment-timezone');
+
+export const Frequency = {
+  MINUTE: 'minute',
+  HOUR: 'hour',
+  DAY: 'day',
+  WEEK: 'week',
+  MONTH: 'month',
+  YEAR: 'year',
 };
 
-export const parseCrontab = (value, allowMultiple) => {
+export const parseCrontab = (value: string) => {
   const cron = value.replace(/\s+/g, ' ').split(' ');
   // default: every minute
   const frequency = {
-    base: 1,
+    base: Frequency.MINUTE,
     minuteValues: undefined,
     hourValues: undefined,
     dayOfMonthValues: undefined,
     monthValues: undefined,
     dayValues: undefined,
   };
-  let tempArray = [];
 
   if (
     cron[0] === '*' &&
@@ -48,132 +49,39 @@ export const parseCrontab = (value, allowMultiple) => {
   }
 
   if (cron[0] !== '*') {
-    // preparing to handle multiple minutes
-    if (allowMultiple) {
-      tempArray = cron[0].split(',');
-      for (let i = 0; i < tempArray.length; i++) {
-        tempArray[i] = +tempArray[i];
-      }
-      frequency.minuteValues = tempArray;
-    } else {
-      frequency.minuteValues = parseInt(cron[0], 10);
-    }
+    frequency.minuteValues = parseInt(cron[0], 10);
   }
+
   if (cron[1] !== '*') {
-    // preparing to handle multiple hours
-    if (allowMultiple) {
-      tempArray = cron[1].split(',');
-      for (let i = 0; i < tempArray.length; i++) {
-        tempArray[i] = +tempArray[i];
-      }
-      frequency.hourValues = tempArray;
-    } else {
-      frequency.hourValues = parseInt(cron[1], 10);
-    }
+    frequency.hourValues = parseInt(cron[1], 10);
   }
+
   if (cron[2] !== '*') {
-    // preparing to handle multiple days of the month
-    if (allowMultiple) {
-      tempArray = cron[2].split(',');
-      for (let i = 0; i < tempArray.length; i++) {
-        tempArray[i] = +tempArray[i];
-      }
-      frequency.dayOfMonthValues = tempArray;
-    } else {
-      frequency.dayOfMonthValues = parseInt(cron[2], 10);
-    }
+    frequency.dayOfMonthValues = parseInt(cron[2], 10);
   }
+
   if (cron[3] !== '*') {
-    // preparing to handle multiple months
-    if (allowMultiple) {
-      tempArray = cron[3].split(',');
-      for (let i = 0; i < tempArray.length; i++) {
-        tempArray[i] = +tempArray[i];
-      }
-      frequency.monthValues = tempArray;
-    } else {
-      frequency.monthValues = parseInt(cron[3], 10);
-    }
+    frequency.monthValues = parseInt(cron[3], 10);
   }
+
   if (cron[4] !== '*') {
-    // preparing to handle multiple days of the week
-    if (allowMultiple) {
-      tempArray = cron[4].split(',');
-      for (let i = 0; i < tempArray.length; i++) {
-        tempArray[i] = +tempArray[i];
-      }
-      frequency.dayValues = tempArray;
-    } else {
-      frequency.dayValues = parseInt(cron[4], 10);
-    }
+    frequency.dayValues = parseInt(cron[4], 10);
   }
+
   return frequency;
 };
 
-const cronDayName = input => {
-  const days = {
-    0: 'Sunday',
-    1: 'Monday',
-    2: 'Tuesday',
-    3: 'Wednesday',
-    4: 'Thursday',
-    5: 'Friday',
-    6: 'Saturday',
-  };
-  if (input !== null && days[input]) {
-    return days[input];
-  } else {
-    return null;
-  }
-};
+export const cronDayName = (input) => moment().day(input).format('dddd');
 
-const cronMonthName = input => {
-  const months = {
-    1: 'January',
-    2: 'February',
-    3: 'March',
-    4: 'April',
-    5: 'May',
-    6: 'June',
-    7: 'July',
-    8: 'August',
-    9: 'September',
-    10: 'October',
-    11: 'November',
-    12: 'December',
-  };
-  if (input !== null && months[input]) {
-    return months[input];
-  } else {
-    return null;
-  }
-};
+export const cronMonthName = (input) =>
+  moment()
+    .month(input - 1)
+    .format('MMMM');
 
-const cronNumeral = input => {
-  switch (input) {
-    case 1:
-      return '1st';
-    case 2:
-      return '2nd';
-    case 3:
-      return '3rd';
-    case 21:
-      return '21st';
-    case 22:
-      return '22nd';
-    case 23:
-      return '23rd';
-    case 31:
-      return '31st';
-    case null:
-      return null;
-    default:
-      return input + 'th';
-  }
-};
+export const cronNumeral = (input) => moment.localeData().ordinal(input);
 
-export const formatCrontab = crontab => {
-  const schedule = parseCrontab(crontab, false);
+export const formatCrontab = (crontab) => {
+  const schedule = parseCrontab(crontab);
   const {
     base,
     minuteValues,
@@ -182,7 +90,7 @@ export const formatCrontab = crontab => {
     dayValues,
     monthValues,
   } = schedule;
-  const zeroPad = value => (value < 10 ? '0' + value : String(value));
+  const zeroPad = (value) => (value < 10 ? '0' + value : String(value));
 
   const formatTime = () => `${zeroPad(hourValues)}:${zeroPad(minuteValues)}`;
   const formatDay = () => cronDayName(dayValues);
@@ -243,4 +151,42 @@ export const formatCrontab = crontab => {
     default:
       return crontab;
   }
+};
+
+export const serializeCron = (input) => {
+  const cron = ['*', '*', '*', '*', '*'];
+
+  if (
+    [
+      Frequency.HOUR,
+      Frequency.DAY,
+      Frequency.WEEK,
+      Frequency.MONTH,
+      Frequency.YEAR,
+    ].includes(input?.base)
+  ) {
+    cron[0] = input.minuteValues || 0;
+  }
+
+  if (
+    [Frequency.DAY, Frequency.WEEK, Frequency.MONTH, Frequency.YEAR].includes(
+      input?.base,
+    )
+  ) {
+    cron[1] = input.hourValues || 0;
+  }
+
+  if (input?.base === Frequency.WEEK) {
+    cron[4] = input.dayValues || 0;
+  }
+
+  if ([Frequency.MONTH, Frequency.YEAR].includes(input?.base)) {
+    cron[2] = input.dayOfMonthValues || 1;
+  }
+
+  if (input?.base === Frequency.YEAR) {
+    cron[3] =
+      typeof input.monthValues !== 'undefined' ? input.monthValues : '*';
+  }
+  return cron.join(' ');
 };

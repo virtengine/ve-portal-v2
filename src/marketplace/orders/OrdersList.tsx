@@ -6,11 +6,14 @@ import { formatDateTime } from '@waldur/core/dateUtils';
 import { Link } from '@waldur/core/Link';
 import { defaultCurrency } from '@waldur/core/services';
 import { withTranslation } from '@waldur/i18n';
-import { Table, connectTable, createFetcher } from '@waldur/table-react';
+import { useTitle } from '@waldur/navigation/title';
+import { Table, connectTable, createFetcher } from '@waldur/table';
+import { DASH_ESCAPE_CODE } from '@waldur/table/constants';
 import { getProject } from '@waldur/workspace/selectors';
 
-export const TableComponent = props => {
+export const TableComponent = (props) => {
   const { translate } = props;
+  useTitle(translate('My orders'));
   const columns = [
     {
       title: translate('Created at'),
@@ -35,12 +38,14 @@ export const TableComponent = props => {
     {
       title: translate('Approved at'),
       render: ({ row }) =>
-        row.approved_at ? formatDateTime(row.approved_at) : '\u2014',
+        row.approved_at ? formatDateTime(row.approved_at) : DASH_ESCAPE_CODE,
     },
     {
       title: translate('Approved by'),
       render: ({ row }) =>
-        row.approved_by_full_name || row.approved_by_username || '\u2014',
+        row.approved_by_full_name ||
+        row.approved_by_username ||
+        DASH_ESCAPE_CODE,
     },
     {
       title: translate('Cost'),
@@ -65,14 +70,16 @@ export const TableComponent = props => {
 const TableOptions = {
   table: 'ordersList',
   fetchData: createFetcher('marketplace-orders'),
-  mapPropsToFilter: props =>
+  mapPropsToFilter: (props) =>
     props.project ? { project_uuid: props.project.uuid } : {},
-  exportRow: row => [
+  exportRow: (row) => [
     formatDateTime(row.created),
     row.created_by_full_name || row.created_by_username,
     row.state,
-    row.approved_at ? formatDateTime(row.approved_at) : '\u2014',
-    row.row.approved_by_full_name || row.approved_by_username || '\u2014',
+    row.approved_at ? formatDateTime(row.approved_at) : DASH_ESCAPE_CODE,
+    row.row.approved_by_full_name ||
+      row.approved_by_username ||
+      DASH_ESCAPE_CODE,
     row.total_cost,
   ],
   exportFields: [
@@ -85,7 +92,7 @@ const TableOptions = {
   ],
 };
 
-const mapStateToProps = state => ({
+const mapStateToProps = (state) => ({
   project: getProject(state),
 });
 

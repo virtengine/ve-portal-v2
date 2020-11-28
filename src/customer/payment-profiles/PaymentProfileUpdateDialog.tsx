@@ -1,7 +1,6 @@
 import * as React from 'react';
 import { useState } from 'react';
 import { connect } from 'react-redux';
-import { Option } from 'react-select';
 import { compose } from 'redux';
 import { reduxForm } from 'redux-form';
 
@@ -14,22 +13,22 @@ import {
 } from '@waldur/customer/payment-profiles/utils';
 import {
   FormContainer,
+  NumberField,
   SelectField,
   StringField,
   SubmitButton,
   TextField,
-} from '@waldur/form-react';
-import { DateField } from '@waldur/form-react/DateField';
+} from '@waldur/form';
+import { DateField } from '@waldur/form/DateField';
+import { reactSelectMenuPortaling } from '@waldur/form/utils';
 import { translate } from '@waldur/i18n';
 import { CloseDialogButton } from '@waldur/modal/CloseDialogButton';
 import { ModalDialog } from '@waldur/modal/ModalDialog';
-import { connectAngularComponent } from '@waldur/store/connect';
 
-const PaymentProfileUpdateDialog = props => {
-  const [
-    showAgreementNumberAndEndDate,
-    setShowAgreementNumberAndEndDate,
-  ] = useState(props.resolve.payment_type === 'fixed_price');
+const PaymentProfileUpdateDialog = (props) => {
+  const [isFixedPrice, setIsFixedPrice] = useState(
+    props.resolve.payment_type === 'fixed_price',
+  );
 
   const paymentProfileTypeOptions = React.useMemo(
     () => getPaymentProfileTypeOptions(),
@@ -73,22 +72,30 @@ const PaymentProfileUpdateDialog = props => {
             label={translate('Type')}
             required={true}
             options={paymentProfileTypeOptions}
-            clearable={false}
+            isClearable={false}
             validate={required}
-            onChange={(value: Option<any>) =>
-              setShowAgreementNumberAndEndDate(value.value === 'fixed_price')
+            onChange={(value: any) =>
+              setIsFixedPrice(value.value === 'fixed_price')
             }
+            {...reactSelectMenuPortaling()}
           />
 
-          {showAgreementNumberAndEndDate ? (
+          {isFixedPrice ? (
             <DateField name="end_date" label={translate('End date')} />
           ) : null}
 
-          {showAgreementNumberAndEndDate && (
+          {isFixedPrice && (
             <TextField
               name="agreement_number"
               label={translate('Agreement number')}
               maxLength={150}
+            />
+          )}
+
+          {isFixedPrice && (
+            <NumberField
+              name="contract_sum"
+              label={translate('Contract sum')}
             />
           )}
         </FormContainer>
@@ -102,7 +109,7 @@ const mapStateToProps = (_state, ownProps) => ({
 });
 
 const mapDispatchToProps = (dispatch, ownProps) => ({
-  submitRequest: formData =>
+  submitRequest: (formData) =>
     dispatch(editPaymentProfile(ownProps.resolve.uuid, formData)),
 });
 
@@ -115,8 +122,6 @@ const enhance = compose(
   }),
 );
 
-const PaymentProfileUpdateDialogContainer = enhance(PaymentProfileUpdateDialog);
-
-export default connectAngularComponent(PaymentProfileUpdateDialogContainer, [
-  'resolve',
-]);
+export const PaymentProfileUpdateDialogContainer = enhance(
+  PaymentProfileUpdateDialog,
+);

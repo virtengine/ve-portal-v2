@@ -2,7 +2,7 @@ import { ENV } from '@waldur/core/services';
 import { LATIN_NAME_PATTERN } from '@waldur/core/utils';
 import { translate } from '@waldur/i18n';
 
-export const required = value =>
+export const required = (value) =>
   value || value === 0 ? undefined : translate('This field is required.');
 
 export const latinName = (value: string) => {
@@ -26,3 +26,13 @@ export const getLatinNameValidators = () => {
   }
   return validators;
 };
+
+export const minValue = (min: number) => (value: number) =>
+  value && value < min
+    ? translate('Must be at least {min}', { min })
+    : undefined;
+
+export const maxValue = (max: number) => (value: number) =>
+  value && value > max
+    ? translate('Must be at most {max}', { max })
+    : undefined;

@@ -1,9 +1,11 @@
+import { AxiosResponse } from 'axios';
+import { notify } from 'reapop';
 import { takeEvery } from 'redux-saga/effects';
 
-import { $rootScope, ngInjector, $state } from '@waldur/core/services';
+import { format } from '@waldur/core/ErrorMessageFormatter';
+import { $rootScope, $state } from '@waldur/core/services';
 
 export const EMIT_SIGNAL = 'waldur/core/EMIT_SIGNAL';
-export const SHOW_NOTIFICATION = 'waldur/core/SHOW_NOTIFICATION';
 export const STATE_GO = 'waldur/core/STATE_GO';
 
 export const emitSignal = (signal: string, params?: {}) => ({
@@ -12,17 +14,18 @@ export const emitSignal = (signal: string, params?: {}) => ({
   params,
 });
 
-const showNotification = (type, message) => ({
-  type: SHOW_NOTIFICATION,
-  payload: {
-    type,
-    message,
-  },
-});
+export const showSuccess = (message) => notify({ status: 'success', message });
 
-export const showSuccess = message => showNotification('success', message);
+export const showError = (message) => notify({ status: 'error', message });
 
-export const showError = message => showNotification('danger', message);
+export const showErrorResponse = (
+  response: AxiosResponse,
+  message?: string,
+) => {
+  const details = format(response);
+  const errorMessage = `${message}. ${details}`;
+  return showError(errorMessage);
+};
 
 export const stateGo = (to, params?: object, options?: object) => ({
   type: STATE_GO,
@@ -34,15 +37,11 @@ export const stateGo = (to, params?: object, options?: object) => ({
 });
 
 export default function* watchEmit() {
-  yield takeEvery<any>(EMIT_SIGNAL, action =>
+  yield takeEvery<any>(EMIT_SIGNAL, (action) =>
     $rootScope.$broadcast(action.signal, action.params),
   );
 
-  yield takeEvery<any>(SHOW_NOTIFICATION, ({ payload: { type, message } }) =>
-    ngInjector.get('Flash').create(type, message),
-  );
-
-  yield takeEvery<any>(STATE_GO, action => {
+  yield takeEvery<any>(STATE_GO, (action) => {
     $state.go(action.payload.to, action.payload.params, action.payload.options);
   });
 }

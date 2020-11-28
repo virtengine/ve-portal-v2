@@ -23,6 +23,7 @@ import { QuotaUsageBarChart } from '@waldur/quotas/QuotaUsageBarChart';
 import { getCustomer, getProject } from '@waldur/workspace/selectors';
 
 import { Flavor } from './types';
+import { getVolumeTypeRequirements } from './utils';
 
 interface FormData {
   name?: string;
@@ -36,7 +37,7 @@ interface OwnProps {
   offering: Offering;
 }
 
-const getTotalStorage = formData =>
+const getTotalStorage = (formData) =>
   formData.system_volume_size + (formData.data_volume_size || 0);
 
 const getStoragePrice = (formData, components) => {
@@ -51,7 +52,7 @@ const getStoragePrice = (formData, components) => {
     ? `gigabytes_${formData.data_volume_type.name}`
     : 'storage';
   const dataVolumePrice =
-    (formData.data_volume_size / 1024.0) *
+    ((formData.data_volume_size || 0) / 1024.0) *
     (components[dataVolumeComponent] || 0);
 
   return systemVolumePrice + dataVolumePrice;
@@ -80,19 +81,10 @@ const getMonthlyPrice = (formData, components) =>
 function extendVolumeTypeQuotas(formData, usages, limits) {
   const quotas = [];
   if (isFeatureVisible('openstack.volume-types')) {
-    const required = {};
-    if (formData.data_volume_type) {
-      const key = `gigabytes_${formData.data_volume_type.name}`;
-      required[key] = (required[key] || 0) + formData.data_volume_size / 1024.0;
-    }
-    if (formData.system_volume_type) {
-      const key = `gigabytes_${formData.system_volume_type.name}`;
-      required[key] =
-        (required[key] || 0) + formData.system_volume_size / 1024.0;
-    }
+    const required = getVolumeTypeRequirements(formData);
     Object.keys(limits)
-      .filter(key => key.startsWith('gigabytes_'))
-      .forEach(key => {
+      .filter((key) => key.startsWith('gigabytes_'))
+      .forEach((key) => {
         quotas.push({
           name: key,
           usage: usages[key] || 0,
@@ -137,19 +129,20 @@ const getQuotas = ({ formData, usages, limits, project, components }) => {
   return quotas;
 };
 
-const formDataSelector = state =>
+const formDataSelector = (state) =>
   (getFormValues('marketplaceOffering')(state) || {}) as FormData;
 
-const formHasFlavorSelector = state => Boolean(formDataSelector(state).flavor);
+const formHasFlavorSelector = (state) =>
+  Boolean(formDataSelector(state).flavor);
 
-const formIsValidSelector = state => isValid('marketplaceOffering')(state);
+const formIsValidSelector = (state) => isValid('marketplaceOffering')(state);
 
-const formAttributesSelector = state => {
+const formAttributesSelector = (state) => {
   const formData = formDataSelector(state);
   return formData.attributes || {};
 };
 
-const flavorSelector = state => {
+const flavorSelector = (state) => {
   const formAttrs = formAttributesSelector(state);
   return formAttrs.flavor ? formAttrs.flavor : {};
 };
@@ -163,7 +156,8 @@ export const OpenstackInstanceCheckoutSummary: React.FC<OwnProps> = ({
   const formHasFlavor = useSelector(formHasFlavorSelector);
   const formData = useSelector(formAttributesSelector);
   const flavor = useSelector(flavorSelector);
-  const total = useSelector(state => pricesSelector(state, { offering })).total;
+  const total = useSelector((state) => pricesSelector(state, { offering }))
+    .total;
   const components = React.useMemo(
     () => (offering.plans.length > 0 ? offering.plans[0].prices : {}),
     [offering],

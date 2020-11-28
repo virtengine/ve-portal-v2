@@ -1,6 +1,9 @@
 import * as React from 'react';
 import { connect } from 'react-redux';
 
+import { translate } from '@waldur/i18n';
+import { setTitle } from '@waldur/navigation/title';
+
 import { fetchServiceUsageStart } from './actions';
 import { FlowMapFilter } from './FlowMapFilter';
 import SankeyDiagram from './SankeyDiagram';
@@ -13,6 +16,7 @@ interface SankeyDiagramComponentProps {
   data: any;
   organizationNames: any[];
   countryNames: any[];
+  setTitle: typeof setTitle;
 }
 
 class SankeyDiagramComponent extends React.Component<
@@ -22,6 +26,7 @@ class SankeyDiagramComponent extends React.Component<
 
   componentDidMount() {
     this.props.fetchServiceUsageStart();
+    this.props.setTitle(translate('Sankey diagram'));
   }
 
   formatData() {
@@ -37,9 +42,9 @@ class SankeyDiagramComponent extends React.Component<
   formatProvidersToConsumersLink() {
     const links = [];
     Object.keys(this.props.serviceUsage.service_providers).forEach(
-      providerUuid => {
+      (providerUuid) => {
         this.props.serviceUsage.service_providers[providerUuid].map(
-          consumerUuid => {
+          (consumerUuid) => {
             links.push({
               source: this.props.serviceUsage.organizations[consumerUuid].name,
               target: this.props.serviceUsage.organizations[providerUuid].name,
@@ -59,7 +64,7 @@ class SankeyDiagramComponent extends React.Component<
   formatCountriesToProvidersLink() {
     const links = [];
     Object.keys(this.props.serviceUsage.service_providers).forEach(
-      providerUuid => {
+      (providerUuid) => {
         const provider = this.props.serviceUsage.organizations[providerUuid];
         links.push({
           source: provider.name,
@@ -85,17 +90,18 @@ class SankeyDiagramComponent extends React.Component<
   }
 }
 
-const mapStateToProps = state => ({
+const mapStateToProps = (state) => ({
   serviceUsage: selectServiceUsage(state),
   organizationNames: propertySelectorFactory('name')(state),
   countryNames: propertySelectorFactory('country')(state),
 });
 
-const matchDispatchToProps = dispatch => ({
-  fetchServiceUsageStart: () => dispatch(fetchServiceUsageStart()),
-});
+const matchDispatchToProps = {
+  fetchServiceUsageStart,
+  setTitle,
+};
 
 export const SankeyDiagramContainer = connect(
   mapStateToProps,
   matchDispatchToProps,
-)(SankeyDiagramComponent);
+)(SankeyDiagramComponent) as React.ComponentType<{}>;

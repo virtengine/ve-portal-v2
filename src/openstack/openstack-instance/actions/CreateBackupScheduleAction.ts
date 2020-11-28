@@ -1,61 +1,56 @@
 import { $rootScope } from '@waldur/core/services';
+import { getDefaultTimezone } from '@waldur/form/TimezoneField';
 import { translate } from '@waldur/i18n';
+import { closeModalDialog } from '@waldur/modal/actions';
+import { getFields } from '@waldur/openstack/openstack-backup-schedule/actions/fields';
+import { validateState } from '@waldur/resource/actions/base';
 import {
-  validateState,
-  createNameField,
-  createDescriptionField,
-} from '@waldur/resource/actions/base';
+  ResourceActionDialog,
+  RESOURCE_ACTION_FORM,
+} from '@waldur/resource/actions/ResourceActionDialog';
 import { ResourceAction } from '@waldur/resource/actions/types';
+import { showErrorResponse, showSuccess } from '@waldur/store/coreSaga';
 
-export default function createAction(): ResourceAction {
+import { createBackupSchedule } from '../../api';
+
+export default function createAction({ resource }): ResourceAction {
   return {
     name: 'create_backup_schedule',
     title: translate('Create'),
-    dialogTitle: translate('Create backup schedule for OpenStack instance'),
+    dialogTitle: translate(
+      'Create VM snapshot schedule for OpenStack instance',
+    ),
     tab: 'backup_schedules',
     iconClass: 'fa fa-plus',
     type: 'form',
     method: 'POST',
     validators: [validateState('OK')],
-    fields: [
-      createNameField(),
-      createDescriptionField(),
-      {
-        name: 'retention_time',
-        type: 'integer',
-        required: true,
-        label: translate('Retention time'),
-        help_text: translate(
-          'Retention time in days, if 0 - resource will be kept forever',
-        ),
-        min_value: 0,
-        max_value: 2147483647,
-      },
-      {
-        name: 'timezone',
-        label: translate('Timezone'),
-        type: 'timezone',
-      },
-      {
-        name: 'maximal_number_of_resources',
-        type: 'integer',
-        required: true,
-        label: translate('Maximal number of resources'),
-        min_value: 0,
-        max_value: 32767,
-      },
-      {
-        name: 'schedule',
-        type: 'crontab',
-        required: true,
-        label: translate('Schedule'),
-        maxlength: 15,
-      },
-      {
-        name: 'warning',
-        component: 'openstackBackupScheduleWarning',
-      },
-    ],
+    fields: getFields(),
+    component: ResourceActionDialog,
+    formId: RESOURCE_ACTION_FORM,
+    useResolve: true,
+    getInitialValues: () => ({
+      timezone: getDefaultTimezone(),
+      schedule: '0 * * * *',
+      retention_time: 0,
+      maximal_number_of_resources: 0,
+    }),
+    submitForm: async (dispatch, formData) => {
+      try {
+        await createBackupSchedule(resource.uuid, formData);
+        dispatch(
+          showSuccess(translate('VM snapshot schedule has been created.')),
+        );
+        dispatch(closeModalDialog());
+      } catch (e) {
+        dispatch(
+          showErrorResponse(
+            e,
+            translate('Unable to create VM snapshot schedule.'),
+          ),
+        );
+      }
+    },
     onSuccess() {
       $rootScope.$broadcast('updateBackupScheduleList');
     },

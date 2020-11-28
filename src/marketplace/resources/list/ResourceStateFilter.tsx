@@ -4,7 +4,7 @@ import { Field } from 'redux-form';
 
 import { translate } from '@waldur/i18n';
 
-const getStates = () => [
+export const getStates = () => [
   { value: 'Creating', label: translate('Creating') },
   { value: 'OK', label: translate('OK') },
   { value: 'Erred', label: translate('Erred') },
@@ -18,12 +18,13 @@ export const ResourceStateFilter = () => (
     <label className="control-label">{translate('State')}</label>
     <Field
       name="state"
-      component={fieldProps => (
+      component={(fieldProps) => (
         <Select
           placeholder={translate('Select state...')}
           options={getStates()}
           value={fieldProps.input.value}
-          onChange={value => fieldProps.input.onChange(value)}
+          onChange={(value) => fieldProps.input.onChange(value)}
+          isClearable={true}
         />
       )}
     />

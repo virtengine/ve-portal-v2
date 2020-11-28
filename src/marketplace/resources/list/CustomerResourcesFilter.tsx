@@ -9,13 +9,15 @@ import { Customer } from '@waldur/workspace/types';
 
 import { CategoryFilter } from './CategoryFilter';
 import { ProjectFilter } from './ProjectFilter';
-import { ResourceStateFilter } from './ResourceStateFilter';
+import { getStates, ResourceStateFilter } from './ResourceStateFilter';
 
 interface CustomerResourcesFilterProps {
   customer: Customer;
 }
 
-const PureCustomerResourcesFilter: React.FC<CustomerResourcesFilterProps> = props => (
+const PureCustomerResourcesFilter: React.FC<CustomerResourcesFilterProps> = (
+  props,
+) => (
   <Row>
     <ProjectFilter customer_uuid={props.customer.uuid} />
     <CategoryFilter />
@@ -23,12 +25,17 @@ const PureCustomerResourcesFilter: React.FC<CustomerResourcesFilterProps> = prop
   </Row>
 );
 
-const mapStateToProps = state => ({
+const mapStateToProps = (state) => ({
   customer: getCustomer(state),
 });
 
 const enhance = compose(
-  reduxForm({ form: 'CustomerResourcesFilter' }),
+  reduxForm({
+    form: 'CustomerResourcesFilter',
+    initialValues: {
+      state: [getStates()[1]],
+    },
+  }),
   connect(mapStateToProps),
 );
 

@@ -3,9 +3,11 @@ import * as React from 'react';
 import { getById } from '@waldur/core/api';
 import { NestedListActions } from '@waldur/resource/actions/NestedListActions';
 import { VirtualMachine } from '@waldur/resource/types';
-import { Table, connectTable } from '@waldur/table-react';
+import { Table, connectTable } from '@waldur/table';
 
-const TableComponent = props => {
+import { SetAllowedAddressPairsButton } from './SetAllowedAddressPairsButton';
+
+const TableComponent = (props) => {
   const { translate } = props;
   return (
     <Table
@@ -27,6 +29,15 @@ const TableComponent = props => {
           title: translate('Subnet CIDR'),
           render: ({ row }) => row.subnet_cidr,
         },
+        {
+          title: translate('Actions'),
+          render: ({ row }) => (
+            <SetAllowedAddressPairsButton
+              instance={props.resource}
+              internalIp={row}
+            />
+          ),
+        },
       ]}
       verboseName={translate('internal IPs')}
       actions={
@@ -36,11 +47,11 @@ const TableComponent = props => {
   );
 };
 
-const getInternalIps = request =>
+const getInternalIps = (request) =>
   getById<VirtualMachine>(
     '/openstacktenant-instances/',
     request.filter.uuid,
-  ).then(vm => ({
+  ).then((vm) => ({
     rows: vm.internal_ips_set,
     resultCount: vm.internal_ips_set.length,
   }));
@@ -48,7 +59,7 @@ const getInternalIps = request =>
 const TableOptions = {
   table: 'openstack-internal-ips',
   fetchData: getInternalIps,
-  mapPropsToFilter: props => ({
+  mapPropsToFilter: (props) => ({
     uuid: props.resource.uuid,
   }),
 };

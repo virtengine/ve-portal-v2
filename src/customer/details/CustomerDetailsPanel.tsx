@@ -9,7 +9,7 @@ import { getConfig, getNativeNameVisible } from '@waldur/store/config';
 import { getCustomer } from '@waldur/workspace/selectors';
 
 import { CustomerAccordion } from './CustomerAccordion';
-import { CustomerEditDetailsContainer } from './CustomerEditDetailsContainer';
+import { CustomerLogoUpdateContainer } from './CustomerLogoUpdateContainer';
 
 interface CustomerDetailsProps {
   customer: Partial<Customer>;
@@ -33,8 +33,6 @@ export const PureCustomerDetails: React.FC<CustomerDetailsProps> = ({
     >
       <dl className="dl-horizontal resource-details-table">
         <Field label={translate('Name')} value={customer.display_name} />
-
-        <Field label={translate('Organization type')} value={customer.type} />
 
         {nativeNameVisible && (
           <Field
@@ -111,12 +109,12 @@ export const PureCustomerDetails: React.FC<CustomerDetailsProps> = ({
         />
       </dl>
 
-      <CustomerEditDetailsContainer customer={customer} />
+      <CustomerLogoUpdateContainer customer={customer} />
     </CustomerAccordion>
   );
 };
 
-const mapStateToProps = state => ({
+const mapStateToProps = (state) => ({
   customer: getCustomer(state),
   organizationSubnetsVisible: getConfig(state).organizationSubnetsVisible,
   organizationDomainVisible: getConfig(state).organizationDomainVisible,

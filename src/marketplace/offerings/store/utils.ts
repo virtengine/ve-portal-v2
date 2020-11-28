@@ -34,6 +34,7 @@ export const planWithoutQuotas = (plan: PlanFormData, component: string) => ({
 const formatPlan = (
   plan: PlanFormData,
   fixedComponents: string[],
+  validComponents: string[],
 ): PlanRequest => {
   const result: PlanRequest = {
     name: plan.name,
@@ -43,7 +44,14 @@ const formatPlan = (
     product_code: plan.product_code,
   };
   if (plan.prices) {
-    result.prices = plan.prices;
+    // Skip prices for invalid components
+    result.prices = Object.keys(plan.prices).reduce(
+      (acc, key) =>
+        validComponents.includes(key)
+          ? { ...acc, [key]: plan.prices[key] }
+          : acc,
+      {},
+    );
   }
   if (plan.quotas) {
     // Skip quotas for usage-based components
@@ -65,7 +73,7 @@ const formatPlan = (
 };
 
 const formatOptions = (options: OptionFormData[]) => ({
-  order: options.map(option => option.name),
+  order: options.map((option) => option.name),
   options: options.reduce((result, option) => {
     const { name, type, choices, ...rest } = option;
     const item: OptionField = {
@@ -76,8 +84,8 @@ const formatOptions = (options: OptionFormData[]) => ({
     if (choices) {
       item.choices = choices
         .split(',')
-        .map(s => s.trim())
-        .filter(s => s.length > 0)
+        .map((s) => s.trim())
+        .filter((s) => s.length > 0)
         .sort();
     }
     return {
@@ -101,7 +109,7 @@ export const formatAttributes = (category: Category, attributes) => {
       if (value.length === 0) {
         value = undefined;
       } else {
-        value = value.map(item => item.key);
+        value = value.map((item) => item.key);
       }
     } else if (meta.type === 'choice' && typeof value !== 'undefined') {
       if (value === '') {
@@ -117,11 +125,11 @@ export const formatAttributes = (category: Category, attributes) => {
   }, {});
 };
 
-const getBillingTypeValue = option =>
+const getBillingTypeValue = (option) =>
   typeof option === 'object' ? option.value : option;
 
-export const formatComponents = components =>
-  components.map(component => ({
+export const formatComponents = (components) =>
+  components.map((component) => ({
     ...component,
     billing_type: getBillingTypeValue(component.billing_type),
     limit_period: component.limit_period ? component.limit_period.value : null,
@@ -134,9 +142,7 @@ export const formatOfferingRequest = (
 ) => {
   const result: OfferingRequest = {
     name: request.name,
-    native_name: request.native_name,
     description: request.description,
-    native_description: request.native_description,
     full_description: request.full_description,
     terms_of_service: request.terms_of_service,
     category: request.category.url,
@@ -157,7 +163,7 @@ export const formatOfferingRequest = (
     result.attributes = {
       ...result.attributes,
       schedules: request.schedules.map(
-        pick(['start', 'end', 'title', 'type', 'id']),
+        pick(['start', 'end', 'title', 'allDay', 'extendedProps', 'id']),
       ),
     };
   }
@@ -166,14 +172,16 @@ export const formatOfferingRequest = (
   result.secret_options = request.secret_options;
 
   if (request.plans) {
+    const allComponents =
+      components.length > 0 ? components : request.components || [];
     // Pick either built-in or custom fixed components.
-    const fixedComponents = (components.length > 0
-      ? components
-      : request.components || []
-    )
-      .filter(c => getBillingTypeValue(c.billing_type) === 'fixed')
-      .map(c => c.type);
-    result.plans = request.plans.map(plan => formatPlan(plan, fixedComponents));
+    const fixedComponents = allComponents
+      .filter((c) => getBillingTypeValue(c.billing_type) === 'fixed')
+      .map((c) => c.type);
+    const validComponents = allComponents.map((c) => c.type);
+    result.plans = request.plans.map((plan) =>
+      formatPlan(plan, fixedComponents, validComponents),
+    );
   }
   if (request.options) {
     result.options = formatOptions(request.options);

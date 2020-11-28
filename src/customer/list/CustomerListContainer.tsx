@@ -1,10 +1,12 @@
 import * as moment from 'moment-timezone';
 import * as React from 'react';
+import useAsync from 'react-use/lib/useAsync';
 
 import { getList } from '@waldur/core/api';
 import { LoadingSpinner } from '@waldur/core/LoadingSpinner';
-import { Query } from '@waldur/core/Query';
 import { translate } from '@waldur/i18n';
+import { useReportingBreadcrumbs } from '@waldur/issues/workspace/SupportWorkspace';
+import { useTitle } from '@waldur/navigation/title';
 
 import { getOptions } from './AccountingRunningField';
 import { CustomerList } from './CustomerList';
@@ -33,7 +35,7 @@ interface Invoice {
   month: number;
 }
 
-const getInvoices = params => getList<Invoice>('/invoices/', params);
+const getInvoices = (params) => getList<Invoice>('/invoices/', params);
 
 async function oldestInvoice() {
   const params = {
@@ -60,24 +62,23 @@ async function loadData() {
   return { initialValues, accountingPeriods };
 }
 
-export const CustomerListContainer = () => (
-  <Query loader={loadData}>
-    {({ loading, error, data }) => {
-      if (loading) {
-        return <LoadingSpinner />;
-      }
-      if (error) {
-        return <span>{translate('Unable to load financial overview.')}</span>;
-      }
-      return (
-        <>
-          <CustomerListFilter {...data} />
-          <div className="ibox-content">
-            <CustomerList />
-            <TotalCostContainer />
-          </div>
-        </>
-      );
-    }}
-  </Query>
-);
+export const CustomerListContainer = () => {
+  useTitle(translate('Financial overview'));
+  useReportingBreadcrumbs();
+  const { loading, error, value: data } = useAsync(loadData);
+  if (loading) {
+    return <LoadingSpinner />;
+  }
+  if (error) {
+    return <>{translate('Unable to load financial overview.')}</>;
+  }
+  return (
+    <>
+      <CustomerListFilter {...data} />
+      <div className="ibox-content">
+        <CustomerList />
+        <TotalCostContainer />
+      </div>
+    </>
+  );
+};

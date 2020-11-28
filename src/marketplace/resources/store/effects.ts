@@ -15,7 +15,7 @@ function* redirectToDetailView(resource_type, resource_uuid) {
   const state =
     resource_type === 'Support.Offering'
       ? 'offeringDetails'
-      : 'resources.details';
+      : 'resource-details';
   if ($state.current.name !== state) {
     return;
   }
@@ -32,7 +32,7 @@ function* handleSubmitUsage(action) {
   const { period, components } = action.payload;
   const payload = {
     plan_period: period.value.uuid,
-    usages: Object.keys(components).map(key => ({
+    usages: Object.keys(components).map((key) => ({
       type: key,
       ...components[key],
     })),
@@ -152,7 +152,7 @@ function* handlePeriodChange(action) {
   }
 }
 
-export default function*() {
+export default function* () {
   yield takeEvery(constants.submitUsage.REQUEST, handleSubmitUsage);
   yield takeEvery(constants.switchPlan.REQUEST, handleSwitchPlan);
   yield takeEvery(constants.changeLimits.REQUEST, handleChangeLimits);

@@ -2,11 +2,11 @@ import * as React from 'react';
 import { useSelector } from 'react-redux';
 import { formValueSelector } from 'redux-form';
 
-import { FormContainer, SelectField, NumberField } from '@waldur/form-react';
+import { FormContainer, SelectField, NumberField } from '@waldur/form';
 import { translate } from '@waldur/i18n';
 import { FORM_ID } from '@waldur/marketplace/offerings/store/constants';
 
-const pluginOptionsSelector = state =>
+const pluginOptionsSelector = (state) =>
   formValueSelector(FORM_ID)(state, 'plugin_options');
 
 export const OpenStackPluginOptionsForm = ({ container }) => {
@@ -36,6 +36,7 @@ export const OpenStackPluginOptionsForm = ({ container }) => {
         options={STORAGE_MODE_OPTIONS}
         simpleValue={true}
         required={true}
+        isClearable={false}
       />
       {pluginOptions && pluginOptions.storage_mode == 'dynamic' && (
         <NumberField

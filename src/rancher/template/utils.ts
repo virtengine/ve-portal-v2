@@ -4,9 +4,8 @@ import {
   getTemplateVersion,
   getProjects,
 } from '../api';
-import { Template, Question } from '../types';
+import { Template, Question, QuestionType } from '../types';
 
-import { refreshBreadcrumbs } from './breadcrumbs';
 import { FormData } from './types';
 
 export const groupQuestions = (
@@ -29,12 +28,38 @@ export const groupByN = (n: number, data: any[]) => {
   return result;
 };
 
+export const buildQuestionTypeMap = (
+  questions: Question[],
+): Record<string, QuestionType> => {
+  const questionTypeMap = {};
+  questions.forEach((question) => {
+    questionTypeMap[question.variable] = question.type;
+    if (Array.isArray(question.subquestions)) {
+      question.subquestions.forEach((subQuestion) => {
+        questionTypeMap[subQuestion.variable] = subQuestion.type;
+      });
+    }
+  });
+  return questionTypeMap;
+};
+
+const parseShowIf = (
+  question: Question,
+  questionTypeMap: Record<string, QuestionType>,
+): Record<string, string | boolean> =>
+  question.showIf && typeof question.showIf === 'string'
+    ? question.showIf.split('&&').reduce((result, part) => {
+        const [variable, value] = part.split('=');
+        const variableType = questionTypeMap[variable];
+        const parsedValue =
+          variableType === 'boolean' ? value === 'true' : value;
+        return { ...result, [variable]: parsedValue };
+      }, {})
+    : undefined;
+
 export const parseQuestions = (questions: Question[]) => {
-  const questionsMap = questions.reduce((result, question) => ({
-    ...result,
-    [question.variable]: question,
-  }));
-  return questions.map(question => ({
+  const questionTypeMap = buildQuestionTypeMap(questions);
+  return questions.map((question) => ({
     ...question,
     showSubquestionIf:
       question.showSubquestionIf === 'true'
@@ -43,28 +68,19 @@ export const parseQuestions = (questions: Question[]) => {
         ? false
         : undefined,
     subquestions: question.subquestions
-      ? question.subquestions.map(subQuestion => ({
+      ? question.subquestions.map((subQuestion) => ({
           ...subQuestion,
           group: question.group,
+          showIf: parseShowIf(subQuestion, questionTypeMap),
         }))
       : undefined,
-    showIf:
-      question.showIf && typeof question.showIf === 'string'
-        ? question.showIf.split('&&').reduce((result, part) => {
-            const [variable, value] = part.split('=');
-            const variableType = questionsMap[variable].type;
-            const parsedValue =
-              variableType === 'boolean' ? value === 'true' : value;
-            return { ...result, [variable]: parsedValue };
-          }, {})
-        : undefined,
+    showIf: parseShowIf(question, questionTypeMap),
   }));
 };
 
 export const loadData = async (templateUuid: string, clusterUuid: string) => {
   const template = await getTemplate(templateUuid);
   const cluster = await getCluster(clusterUuid);
-  refreshBreadcrumbs(cluster, template);
   const version = await getTemplateVersion(
     template.uuid,
     template.default_version,
@@ -77,9 +93,10 @@ export const loadData = async (templateUuid: string, clusterUuid: string) => {
     namespace: namespaces ? namespaces[0] : undefined,
     useNewNamespace: namespaces.length === 0,
   };
-  const questions = parseQuestions(version.questions);
+  const questions = parseQuestions(version.questions || []);
 
   return {
+    cluster,
     template,
     version,
     projects,
@@ -106,7 +123,7 @@ export function getValue(obj, path) {
 
 const serializeAnswer = (question: Question, answers: object) => {
   const value = getValue(answers, question.variable);
-  if (question.type === 'secret') {
+  if (value && question.type === 'secret') {
     return value.id;
   } else {
     return value;
@@ -116,17 +133,17 @@ const serializeAnswer = (question: Question, answers: object) => {
 export const serializeApplication = (
   formData: FormData,
   template: Template,
+  service_project_link: string,
   visibleQuestions: Question[],
 ) => ({
   name: formData.name,
   description: formData.description,
   version: formData.version,
-  template_uuid: template.uuid,
-  project_uuid: formData.project.uuid,
+  template: template.url,
+  service_project_link,
+  rancher_project: formData.project.url,
   namespace_name: formData.useNewNamespace ? formData.newNamespace : undefined,
-  namespace_uuid: formData.useNewNamespace
-    ? undefined
-    : formData.namespace.uuid,
+  namespace: formData.useNewNamespace ? undefined : formData.namespace.url,
   answers: visibleQuestions.reduce(
     (result, question) => ({
       ...result,
@@ -144,7 +161,7 @@ export const parseVisibleQuestions = (
     return [];
   }
   const result = [];
-  const questionIsVisible = question => {
+  const questionIsVisible = (question) => {
     if (typeof question.showIf !== 'object') {
       return true;
     }
@@ -159,13 +176,13 @@ export const parseVisibleQuestions = (
     }
     return true;
   };
-  questions.forEach(question => {
+  questions.forEach((question) => {
     if (questionIsVisible(question)) {
       result.push(question);
       if (answers && question.subquestions) {
         const answer = getValue(answers, question.variable);
         if (answer === question.showSubquestionIf) {
-          question.subquestions.forEach(subQuestion => {
+          question.subquestions.forEach((subQuestion) => {
             result.push(subQuestion);
           });
         }

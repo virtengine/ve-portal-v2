@@ -3,10 +3,13 @@ export interface User {
   is_support: boolean;
   url: string;
   uuid: string;
+  username?: string;
   customer_permissions?: Permission[];
+  project_permissions?: Permission[];
   full_name?: string;
   email?: string;
   job_title?: string;
+  organization?: string;
 }
 
 export interface UserDetails extends User {
@@ -30,6 +33,7 @@ export interface UserDetails extends User {
 interface PaymentProfileAttributes {
   end_date: string;
   agreement_number: string;
+  contract_sum: number;
 }
 
 export interface PaymentProfile {
@@ -41,6 +45,15 @@ export interface PaymentProfile {
   url: string;
   attributes: PaymentProfileAttributes;
   uuid: string;
+}
+
+export interface Payment {
+  date_of_payment: string;
+  sum: string;
+  proof: string;
+  uuid: string;
+  invoice_uuid?: string;
+  invoice_period?: string;
 }
 
 export interface Customer {
@@ -58,7 +71,7 @@ export interface Customer {
   agreement_number?: string;
 }
 
-interface Permission {
+export interface Permission {
   user_uuid: string;
   role: string;
 }
@@ -85,7 +98,19 @@ export interface Project {
   customer_uuid?: string;
 }
 
-export type WorkspaceType = 'user' | 'project' | 'organization' | 'support';
+export const ORGANIZATION_WORKSPACE = 'WORKSPACE/ORGANIZATION';
+
+export const SUPPORT_WORKSPACE = 'WORKSPACE/SUPPORT';
+
+export const PROJECT_WORKSPACE = 'WORKSPACE/PROJECT';
+
+export const USER_WORKSPACE = 'WORKSPACE/USER';
+
+export type WorkspaceType =
+  | typeof ORGANIZATION_WORKSPACE
+  | typeof SUPPORT_WORKSPACE
+  | typeof PROJECT_WORKSPACE
+  | typeof USER_WORKSPACE;
 
 export interface Workspace {
   user: User;

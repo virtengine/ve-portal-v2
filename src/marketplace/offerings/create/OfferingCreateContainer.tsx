@@ -4,6 +4,7 @@ import { reduxForm } from 'redux-form';
 
 import { $state } from '@waldur/core/services';
 import { translate } from '@waldur/i18n';
+import { setTitle } from '@waldur/navigation/title';
 
 import { loadDataStart, setStep } from '../store/actions';
 import { FORM_ID, createOffering } from '../store/constants';
@@ -18,7 +19,7 @@ import { OfferingStep, STEPS } from '../types';
 
 import { OfferingCreateDialog } from './OfferingCreateDialog';
 
-const mapStateToProps = state => ({
+const mapStateToProps = (state) => ({
   step: getStep(state),
   loading: isLoading(state),
   loaded: isLoaded(state),
@@ -26,10 +27,11 @@ const mapStateToProps = state => ({
   disabled: isOfferingManagementDisabled(state),
 });
 
-const mapDispatchToProps = dispatch => ({
-  createOffering: data => createOffering(data, dispatch),
+const mapDispatchToProps = (dispatch) => ({
+  createOffering: (data) => createOffering(data, dispatch),
   loadData: () => dispatch(loadDataStart()),
   setStep: (step: OfferingStep) => dispatch(setStep(step)),
+  setTitle: (value) => dispatch(setTitle(value)),
 });
 
 export const mergeProps = (stateProps, dispatchProps, ownProps) => ({
@@ -51,7 +53,7 @@ export const mergeProps = (stateProps, dispatchProps, ownProps) => ({
 
 const connector = connect(mapStateToProps, mapDispatchToProps, mergeProps);
 
-const validate = values => {
+const validate = (values) => {
   const errors: any = {};
   if (!values.plans || !values.plans.length) {
     errors.plans = { _error: translate('At least one plan must be entered') };

@@ -2,15 +2,19 @@ describe('User manage', () => {
   beforeEach(() => {
     cy.server()
       .mockUser()
+      .route('http://localhost:8080/api/support-templates/', [])
+      .route({
+        url:
+          'http://localhost:8080/api/users/3a836bc76e1b40349ec1a0d8220f374f/',
+        method: 'PATCH',
+        response: 'fixture:users/alice.json',
+      })
+      .route('http://localhost:8080/api/marketplace-checklists-categories/', [])
       .login()
-
-      .log('visit /profile/manage/')
-      .get('a')
-      .contains('Manage')
-      .click();
+      .visit('/profile/manage/');
   });
 
-  it('Checks input fields and buttons', () => {
+  it('allows to update user details', () => {
     cy
       // Ensure that full_name input field is present
       .get('input[name="full_name"]')
@@ -47,8 +51,8 @@ describe('User manage', () => {
       .contains('Remove profile')
       .click()
       // Close remove profile dialog
-      .get('button')
-      .contains('Close')
+      .get('span:contains(Close)')
+      .last()
       .click()
 
       // Ensure that Update profile button works

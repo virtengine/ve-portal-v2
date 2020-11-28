@@ -47,6 +47,13 @@ export const removeOfferingScreenshot = (
   };
 };
 
+export const addOfferingLocation = (offering: Offering) => ({
+  type: constants.ADD_OFFERING_LOCATION,
+  payload: {
+    offering,
+  },
+});
+
 export const isAddingOfferingScreenshot = (isAdding: boolean) => {
   return {
     type: constants.IS_ADDING_OFFERING_SCREENSHOT,
@@ -60,7 +67,7 @@ export const loadDataStart = () => ({
   type: constants.LOAD_DATA_START,
 });
 
-export const loadDataSuccess = data => ({
+export const loadDataSuccess = (data) => ({
   type: constants.LOAD_DATA_SUCCESS,
   payload: {
     ...data,
@@ -71,7 +78,7 @@ export const loadDataError = () => ({
   type: constants.LOAD_DATA_ERROR,
 });
 
-export const loadOfferingStart = offeringUuid => ({
+export const loadOfferingStart = (offeringUuid) => ({
   type: constants.LOAD_OFFERING_START,
   payload: {
     offeringUuid,

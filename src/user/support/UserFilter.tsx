@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import { compose } from 'redux';
 import { reduxForm } from 'redux-form';
 
-import { StringField, FormContainer, SelectField } from '@waldur/form-react';
+import { StringField, FormContainer, SelectField } from '@waldur/form';
 import { withTranslation, TranslateProps, translate } from '@waldur/i18n';
 import { getNativeNameVisible } from '@waldur/store/config';
 
@@ -49,51 +49,52 @@ const PureUserFilter = (props: UserFilterProps) => (
         noUpdateOnBlur={true}
       />
       <SelectField
+        className="Select"
         label={props.translate('Role')}
         name="role"
         placeholder={props.translate('Select role')}
         options={[
           {
-            name: translate('Staff'),
+            label: translate('Staff'),
             value: 'is_staff',
           },
           {
-            name: translate('Support'),
+            label: translate('Support'),
             value: 'is_support',
           },
         ]}
-        labelKey="name"
-        valueKey="value"
-        multi={true}
+        isMulti={true}
         noUpdateOnBlur={true}
+        isClearable={true}
       />
       <SelectField
+        className="Select"
         label={props.translate('Status')}
         name="status"
         placeholder={props.translate('Select status')}
         options={[
           {
-            name: translate('Any'),
+            label: translate('Any'),
             value: undefined,
           },
           {
-            name: translate('Active'),
+            label: translate('Active'),
             value: true,
           },
           {
-            name: translate('Disabled'),
+            label: translate('Disabled'),
             value: false,
           },
         ]}
-        labelKey="name"
-        valueKey="value"
         noUpdateOnBlur={true}
+        simpleValue={true}
+        isClearable={true}
       />
     </FormContainer>
   </form>
 );
 
-const mapStateToProps = state => ({
+const mapStateToProps = (state) => ({
   nativeNameVisible: getNativeNameVisible(state),
 });
 

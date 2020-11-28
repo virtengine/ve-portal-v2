@@ -5,7 +5,7 @@ import { getFormValues } from 'redux-form';
 import { withTranslation, TranslateProps } from '@waldur/i18n';
 import { FORM_ID } from '@waldur/marketplace/details/constants';
 import { showOfferingPlanDescription } from '@waldur/marketplace/details/plan/actions';
-import { ActionButton } from '@waldur/table-react/ActionButton';
+import { ActionButton } from '@waldur/table/ActionButton';
 
 interface PlanDescriptionButtonProps extends TranslateProps {
   showOfferingPlanDescription(planDescription: string): void;
@@ -22,10 +22,10 @@ export const PurePlanDescriptionButton = withTranslation(
       props.formData.plan &&
       props.formData.plan.description
     ) {
-      planDescription = props.formData.plan.description;
+      planDescription = (props.formData.plan.description as string).trim();
     }
     if (props.planDescription) {
-      planDescription = props.planDescription;
+      planDescription = props.planDescription.trim();
     }
     if (!planDescription) {
       return null;
@@ -41,12 +41,12 @@ export const PurePlanDescriptionButton = withTranslation(
   },
 );
 
-const mapStateToProps = state => ({
+const mapStateToProps = (state) => ({
   formData: getFormValues(FORM_ID)(state),
 });
 
-const mapDispatchToProps = dispatch => ({
-  showOfferingPlanDescription: planDescription =>
+const mapDispatchToProps = (dispatch) => ({
+  showOfferingPlanDescription: (planDescription) =>
     dispatch(showOfferingPlanDescription(planDescription)),
 });
 

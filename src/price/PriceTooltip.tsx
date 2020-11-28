@@ -4,7 +4,6 @@ import { compose } from 'redux';
 
 import { Tooltip } from '@waldur/core/Tooltip';
 import { TranslateProps, withTranslation } from '@waldur/i18n';
-import { connectAngularComponent } from '@waldur/store/connect';
 
 type AccountingMode = 'billing' | 'accounting';
 
@@ -48,12 +47,10 @@ class PurePriceTooltip extends React.PureComponent<Props> {
   }
 }
 
-const mapStateToProps = state => ({
+const mapStateToProps = (state) => ({
   accountingMode: state.config.accountingMode,
 });
 
 const enhance = compose(connect(mapStateToProps), withTranslation);
 
 export const PriceTooltip = enhance(PurePriceTooltip);
-
-export default connectAngularComponent(PriceTooltip, ['estimated']);

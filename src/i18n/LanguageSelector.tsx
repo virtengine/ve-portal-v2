@@ -23,10 +23,12 @@ export const LanguageSelector = () => {
         noCaret
         title={translate(currentLanguage.label)}
       >
-        {currentLanguage.code.toUpperCase()}
+        {currentLanguage.display_code
+          ? currentLanguage.display_code.toUpperCase()
+          : currentLanguage.code.toUpperCase()}
       </Dropdown.Toggle>
       <Dropdown.Menu>
-        {languageChoices.map(language => (
+        {languageChoices.map((language) => (
           <MenuItem
             key={language.code}
             onClick={() => setLanguage(language)}

@@ -1,6 +1,5 @@
 import { StateDeclaration } from '@waldur/core/types';
-import { gettext } from '@waldur/i18n';
-import { withStore } from '@waldur/store/connect';
+import { PROJECT_WORKSPACE } from '@waldur/workspace/types';
 
 import { ProjectDashboardContainer } from './ProjectDashboardContainer';
 import { ProjectEventsView } from './ProjectEventsList';
@@ -14,10 +13,10 @@ export const states: StateDeclaration[] = [
     name: 'project',
     url: '/projects/:uuid/',
     abstract: true,
-    component: withStore(ProjectWorkspace),
+    component: ProjectWorkspace,
     data: {
       auth: true,
-      workspace: 'project',
+      workspace: PROJECT_WORKSPACE,
     },
     resolve: {
       project: loadProject,
@@ -27,9 +26,8 @@ export const states: StateDeclaration[] = [
   {
     name: 'project.details',
     url: '',
-    component: withStore(ProjectDashboardContainer),
+    component: ProjectDashboardContainer,
     data: {
-      pageTitle: gettext('Dashboard'),
       pageClass: 'gray-bg',
       hideBreadcrumbs: true,
     },
@@ -38,10 +36,9 @@ export const states: StateDeclaration[] = [
   {
     name: 'project.issues',
     url: 'issues/',
-    component: withStore(ProjectIssuesList),
+    component: ProjectIssuesList,
     data: {
       feature: 'support',
-      pageTitle: gettext('Issues'),
       pageClass: 'gray-bg',
     },
   },
@@ -49,23 +46,12 @@ export const states: StateDeclaration[] = [
   {
     name: 'project.events',
     url: 'events/',
-    component: withStore(ProjectEventsView),
-    data: {
-      pageTitle: gettext('Audit logs'),
-    },
+    component: ProjectEventsView,
   },
 
   {
     name: 'project.team',
     url: 'team/',
-    component: withStore(ProjectTeam),
-    data: {
-      pageTitle: gettext('Team'),
-    },
+    component: ProjectTeam,
   },
 ];
-
-export default function registerRoutes($stateProvider) {
-  states.forEach(({ name, ...rest }) => $stateProvider.state(name, rest));
-}
-registerRoutes.$inject = ['$stateProvider'];

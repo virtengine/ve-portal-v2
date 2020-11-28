@@ -21,15 +21,15 @@ export const ResourceTabs = ({ resource }: { resource: Resource }) => {
   React.useEffect(() => {
     if (selectedTabName) {
       const selectedTab =
-        tabs.filter(tab => tab.key === selectedTabName)[0] || tabs[0];
+        tabs.filter((tab) => tab.key === selectedTabName)[0] || tabs[0];
       if (selectedTab) {
         setActiveKey(selectedTab.key);
       }
     }
   }, [tabs, selectedTabName]);
 
-  const onSelect = eventKey => {
-    router.stateService.go('resources.details', { params: { tab: eventKey } });
+  const onSelect = (eventKey) => {
+    router.stateService.go('resource-details', { params: { tab: eventKey } });
     setActiveKey(eventKey);
   };
 

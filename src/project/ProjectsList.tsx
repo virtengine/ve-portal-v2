@@ -5,8 +5,9 @@ import { formatDateTime } from '@waldur/core/dateUtils';
 import { Link } from '@waldur/core/Link';
 import { defaultCurrency } from '@waldur/core/services';
 import { withTranslation } from '@waldur/i18n';
-import { Table, connectTable, createFetcher } from '@waldur/table-react';
-import { formatLongText } from '@waldur/table-react/utils';
+import { useTitle } from '@waldur/navigation/title';
+import { Table, connectTable, createFetcher } from '@waldur/table';
+import { formatLongText } from '@waldur/table/utils';
 import { getCustomer } from '@waldur/workspace/selectors';
 
 import { ProjectCreateButton } from './ProjectCreateButton';
@@ -31,8 +32,9 @@ const ProjectActionsField = ({ row }) => (
   </div>
 );
 
-export const TableComponent = props => {
+export const TableComponent = (props) => {
   const { translate, filterColumns } = props;
+  useTitle(translate('Projects'));
   const columns = filterColumns([
     {
       title: translate('Name'),
@@ -78,11 +80,11 @@ const TableOptions = {
   table: 'ProjectsList',
   fetchData: createFetcher('projects'),
   queryField: 'query',
-  getDefaultFilter: state => ({
+  getDefaultFilter: (state) => ({
     customer: getCustomer(state).uuid,
     o: 'name',
   }),
-  exportRow: row => [row.name, row.description, formatDateTime(row.created)],
+  exportRow: (row) => [row.name, row.description, formatDateTime(row.created)],
   exportFields: ['Name', 'Description', 'Created'],
 };
 

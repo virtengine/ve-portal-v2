@@ -1,3 +1,8 @@
+import { createSelector } from 'reselect';
+
+import { getCustomer } from '@waldur/workspace/selectors';
+import { PaymentProfile } from '@waldur/workspace/types';
+
 import { InvoiceItem } from '../types';
 
 export function getItemName(item: InvoiceItem) {
@@ -22,7 +27,7 @@ export function getItemName(item: InvoiceItem) {
 }
 
 const groupInvoiceSubItems = (items: InvoiceItem[], projects) => {
-  items.forEach(item => {
+  items.forEach((item) => {
     if (!item.project_uuid) {
       projects.default.items.push(item);
     } else {
@@ -46,7 +51,7 @@ export const groupInvoiceItems = (items: InvoiceItem[]) => {
   };
   groupInvoiceSubItems(items, projects);
   return Object.keys(projects)
-    .map(key => projects[key])
+    .map((key) => projects[key])
     .sort((a, b) => a.name.localeCompare(b.name));
 };
 
@@ -76,3 +81,16 @@ export function formatPhone(value) {
 
   return `(+${value.country_code})-${nationalNumber}`;
 }
+
+export const getActiveFixedPricePaymentProfile = (profiles: PaymentProfile[]) =>
+  profiles?.find(
+    (profile) => profile.is_active && profile.payment_type === 'fixed_price',
+  );
+
+export const getActivePaymentProfile = (profiles: PaymentProfile[]) =>
+  profiles?.find((profile) => profile.is_active);
+
+export const showPriceSelector = createSelector(
+  getCustomer,
+  (customer) => !getActiveFixedPricePaymentProfile(customer.payment_profiles),
+);

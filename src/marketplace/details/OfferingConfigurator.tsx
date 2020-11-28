@@ -1,14 +1,18 @@
 import * as React from 'react';
-import { useEffect } from 'react';
 import { connect } from 'react-redux';
 import { compose } from 'redux';
 import { reduxForm, InjectedFormProps } from 'redux-form';
 
 import { translate } from '@waldur/i18n';
-import { getFormComponent } from '@waldur/marketplace/common/registry';
+import {
+  getFormComponent,
+  getFormValidator,
+} from '@waldur/marketplace/common/registry';
 import { Offering, Plan } from '@waldur/marketplace/types';
 import { getProject } from '@waldur/workspace/selectors';
 import { Project, OuterState } from '@waldur/workspace/types';
+
+import { getDefaultLimits } from '../offerings/utils';
 
 import { FORM_ID } from './constants';
 import { OfferingFormData } from './types';
@@ -27,19 +31,6 @@ export const PureOfferingConfigurator = (
   if (!FormComponent) {
     return null;
   }
-  useEffect(() => {
-    const initializePlanField = () => {
-      const initialData: any = {};
-      if (props.plan) {
-        initialData.plan = props.plan;
-      } else if (props.offering.plans.length === 1) {
-        initialData.plan = props.offering.plans[0];
-      }
-      props.initialize(initialData);
-    };
-
-    initializePlanField();
-  }, []);
   return <FormComponent {...props} />;
 };
 
@@ -48,7 +39,12 @@ const storeConnector = connect<
   {},
   { offering: Offering; limits: string[] },
   OuterState
->(state => ({ project: getProject(state) }));
+>((state, ownProps) => ({
+  project: getProject(state),
+  initialValues: {
+    limits: { ...getDefaultLimits(ownProps.offering), ...ownProps.limits },
+  },
+}));
 
 export const validate = (_, props) => {
   const errors: any = {};
@@ -57,6 +53,10 @@ export const validate = (_, props) => {
   }
   if (props.values.plan && !props.values.plan.is_active) {
     errors.plan = translate('Plan capacity is full.');
+  }
+  const formValidator = getFormValidator(props.offering.type);
+  if (formValidator) {
+    Object.assign(errors, formValidator(props));
   }
   return errors;
 };

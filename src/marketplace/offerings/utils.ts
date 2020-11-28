@@ -1,9 +1,9 @@
-import { ngInjector } from '@waldur/core/services';
 import { translate } from '@waldur/i18n';
+import { Offering } from '@waldur/marketplace/types';
+import { BreadcrumbItem } from '@waldur/navigation/breadcrumbs/types';
 
-export function setStateBreadcrumbs(): void {
-  const BreadcrumbsService = ngInjector.get('BreadcrumbsService');
-  BreadcrumbsService.items = [
+export function getBreadcrumbs(): BreadcrumbItem[] {
+  return [
     {
       label: translate('Organization workspace'),
       state: 'organization.details',
@@ -30,3 +30,15 @@ export const articleCodeValidator = (value: string) => {
     return translate('Code should consist of latin symbols or numbers.');
   }
 };
+
+export const getDefaultLimits = (offering: Offering): Record<string, number> =>
+  offering.components.reduce(
+    (acc, component) =>
+      component.default_limit
+        ? {
+            ...acc,
+            [component.type]: component.default_limit,
+          }
+        : acc,
+    {},
+  );

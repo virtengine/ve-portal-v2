@@ -20,6 +20,7 @@ export class OpenstackInstanceDataVolume extends React.Component<
   OpenstackInstanceDataVolumeProps
 > {
   toggleField = () => {
+    this.props.input.onChange(undefined);
     this.props.setActive(!this.props.isActive);
   };
 
@@ -62,6 +63,7 @@ export class OpenstackInstanceDataVolume extends React.Component<
                     {...props.input}
                     type="number"
                     className="form-control"
+                    style={{ zIndex: 'unset' }}
                     min={props.min}
                     max={props.max}
                     step={props.step}

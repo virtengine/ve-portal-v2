@@ -5,39 +5,57 @@ import * as Row from 'react-bootstrap/lib/Row';
 import useAsync from 'react-use/lib/useAsync';
 
 import { LoadingSpinner } from '@waldur/core/LoadingSpinner';
-import { ngInjector } from '@waldur/core/services';
 import { translate } from '@waldur/i18n';
+import { useBreadcrumbsFn } from '@waldur/navigation/breadcrumbs/store';
+import { BreadcrumbItem } from '@waldur/navigation/breadcrumbs/types';
+import { useTitle } from '@waldur/navigation/title';
+import { Customer } from '@waldur/workspace/types';
 
 import { getResource } from '../common/api';
+import { OrderItemResponse } from '../orders/types';
 
 import { ResourceSummary } from './ResourceSummary';
 import { ResourceTabs } from './ResourceTabs';
 
-async function fetchResource(uuid) {
-  const BreadcrumbsService = ngInjector.get('BreadcrumbsService');
-  const resource = await getResource(uuid);
-  BreadcrumbsService.activeItem = resource.name;
-  BreadcrumbsService.items = [
-    {
-      label: translate('Organization workspace'),
-      state: 'organization.details',
-      params: {
-        uuid: resource.customer_uuid,
-      },
-    },
-    {
-      label: translate('Public resources'),
-    },
-  ];
-  return resource;
+interface GetBreadcrumbsProps {
+  customer: Customer;
+  resource: OrderItemResponse;
 }
 
-export const ResourceDetailsPage = () => {
+const getBreadcrumbs = ({
+  customer,
+  resource,
+}: GetBreadcrumbsProps): BreadcrumbItem[] => [
+  {
+    label: translate('Organization workspace'),
+    state: 'organization.details',
+    params: {
+      uuid: customer ? customer.uuid : resource.customer_uuid,
+    },
+  },
+  {
+    label: translate('Public resources'),
+  },
+];
+
+interface ResourceDetailsPageProps {
+  customer?: Customer;
+}
+
+export const ResourceDetailsPage = ({ customer }: ResourceDetailsPageProps) => {
   const {
     params: { resource_uuid },
   } = useCurrentStateAndParams();
 
-  const state = useAsync(() => fetchResource(resource_uuid), [resource_uuid]);
+  const state = useAsync(() => getResource(resource_uuid), [resource_uuid]);
+
+  useTitle(state.value ? state.value.name : translate('Resource details'));
+
+  useBreadcrumbsFn(
+    () =>
+      state.value ? getBreadcrumbs({ customer, resource: state.value }) : [],
+    [state.value, customer],
+  );
 
   const router = useRouter();
 

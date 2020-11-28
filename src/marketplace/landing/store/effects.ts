@@ -7,7 +7,7 @@ import {
   getCustomer,
   getProject,
 } from '@waldur/workspace/selectors';
-import { WorkspaceType } from '@waldur/workspace/types';
+import { WorkspaceType, ORGANIZATION_WORKSPACE } from '@waldur/workspace/types';
 
 import * as api from '../../common/api';
 
@@ -19,7 +19,7 @@ function* getCategories() {
   const project = yield select(getProject);
   const options = {
     params: {
-      allowed_customer_uuid: customer.uuid,
+      allowed_customer_uuid: customer?.uuid,
       project_uuid: project && project.uuid,
     },
   };
@@ -68,14 +68,14 @@ function* gotoOffering(action) {
   const offeringId = action.payload.offeringId;
   const params = { offering_uuid: offeringId };
   const workspace: WorkspaceType = yield select(getWorkspace);
-  if (workspace === 'organization') {
+  if (workspace === ORGANIZATION_WORKSPACE) {
     yield put(stateGo('marketplace-offering-customer', params));
   } else {
     yield put(stateGo('marketplace-offering', params));
   }
 }
 
-export default function*() {
+export default function* () {
   yield takeEvery(constants.CATEGORIES_FETCH_START, getCategories);
   yield takeEvery(constants.OFFERINGS_FETCH_START, getOfferings);
   yield takeEvery(constants.GOTO_OFFERING, gotoOffering);

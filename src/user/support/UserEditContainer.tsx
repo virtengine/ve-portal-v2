@@ -6,7 +6,6 @@ import { compose } from 'redux';
 import { ENV } from '@waldur/core/services';
 import { translate, withTranslation } from '@waldur/i18n';
 import { getNativeNameVisible, getConfig } from '@waldur/store/config';
-import { connectAngularComponent } from '@waldur/store/connect';
 import {
   fieldIsVisible,
   isRequired,
@@ -26,7 +25,7 @@ interface UserUpdateComponentProps {
   user: UserDetails;
 }
 
-const UserUpdateComponent: React.FC<UserUpdateComponentProps> = props => {
+const UserUpdateComponent: React.FC<UserUpdateComponentProps> = (props) => {
   if (!props.user.email) {
     return <EmailChangeForm user={props.user} />;
   }
@@ -82,13 +81,13 @@ const mapStateToProps = (state, ownProps) => ({
 const mapDispatchToProps = (dispatch, ownProps) => {
   let updateUser;
   if (ownProps.onSave) {
-    updateUser = data =>
+    updateUser = (data) =>
       ownProps.onSave({
         ...data,
         agree_with_policy: true,
       });
   } else {
-    updateUser = data =>
+    updateUser = (data) =>
       actions.updateUser(
         {
           ...data,
@@ -102,7 +101,7 @@ const mapDispatchToProps = (dispatch, ownProps) => {
   return {
     updateUser,
     dispatchRemoval: () => dispatch(actions.showUserRemoval()),
-    dispatchMessage: resolve =>
+    dispatchMessage: (resolve) =>
       dispatch(actions.showUserRemovalMessage(resolve)),
   };
 };
@@ -137,9 +136,3 @@ const enhance = compose(
 );
 
 export const UserEditContainer = enhance(UserUpdateComponent);
-
-export default connectAngularComponent(UserEditContainer, [
-  'user',
-  'initial',
-  'onSave',
-]);

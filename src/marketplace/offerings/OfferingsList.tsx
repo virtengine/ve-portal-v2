@@ -7,9 +7,12 @@ import { createSelector } from 'reselect';
 
 import { formatDateTime } from '@waldur/core/dateUtils';
 import { withTranslation } from '@waldur/i18n';
+import { SUPPORT_OFFERINGS_FILTER_FORM_ID } from '@waldur/marketplace/offerings/customers/constants';
+import { OfferingsListExpandableRow } from '@waldur/marketplace/offerings/customers/OfferingsListExpandableRow';
 import { PreviewOfferingButton } from '@waldur/marketplace/offerings/PreviewOfferingButton';
 import { TABLE_NAME } from '@waldur/marketplace/offerings/store/constants';
-import { Table, connectTable, createFetcher } from '@waldur/table-react';
+import { Table, connectTable, createFetcher } from '@waldur/table';
+import { renderFieldOrDash } from '@waldur/table/utils';
 import { getCustomer, isOwnerOrStaff } from '@waldur/workspace/selectors';
 
 import { Offering } from '../types';
@@ -19,16 +22,23 @@ import { OfferingCreateButton } from './actions/OfferingCreateButton';
 import { OfferingDetailsLink } from './details/OfferingDetailsLink';
 import { OfferingsListTablePlaceholder } from './OfferingsListTablePlaceholder';
 
-export const TableComponent = props => {
-  const { translate } = props;
+const OfferingNameColumn = ({ isReporting, row }) =>
+  !isReporting ? (
+    <OfferingDetailsLink offering_uuid={row.uuid}>
+      {row.name}
+    </OfferingDetailsLink>
+  ) : (
+    <>{row.name}</>
+  );
+
+export const TableComponent = (props) => {
+  const { translate, isReporting } = props;
 
   const columns = [
     {
       title: translate('Name'),
       render: ({ row }) => (
-        <OfferingDetailsLink offering_uuid={row.uuid}>
-          {row.name}
-        </OfferingDetailsLink>
+        <OfferingNameColumn isReporting={isReporting} row={row} />
       ),
       orderField: 'name',
     },
@@ -46,6 +56,13 @@ export const TableComponent = props => {
       render: ({ row }) => row.state,
     },
   ];
+
+  if (isReporting) {
+    columns.splice(1, 0, {
+      title: translate('Service provider'),
+      render: ({ row }) => renderFieldOrDash(row.customer_name),
+    });
+  }
 
   if (!props.actionsDisabled) {
     columns.push({
@@ -70,21 +87,25 @@ export const TableComponent = props => {
       actions={props.showOfferingCreateButton && <OfferingCreateButton />}
       initialSorting={{ field: 'created', mode: 'desc' }}
       enableExport={true}
+      expandableRow={OfferingsListExpandableRow}
     />
   );
 };
 
-const mapPropsToFilter = props => {
+const mapPropsToFilter = (props) => {
   const filter: Record<string, string | boolean> = {
     billable: true,
     shared: true,
   };
-  if (props.customer) {
+  if (props.customer && !props.isReporting) {
     filter.customer_uuid = props.customer.uuid;
   }
   if (props.filter) {
     if (props.filter.state) {
-      filter.state = props.filter.state.map(option => option.value);
+      filter.state = props.filter.state.map((option) => option.value);
+    }
+    if (props.filter.organization) {
+      filter.customer_uuid = props.filter.organization.uuid;
     }
   }
   return filter;
@@ -96,12 +117,11 @@ export const TableOptions = {
   mapPropsToFilter,
   exportRow: (row: Offering) => [
     row.name,
-    row.native_name,
     formatDateTime(row.created),
     row.category_title,
     row.state,
   ],
-  exportFields: ['Name', 'Native name', 'Created', 'Category', 'State'],
+  exportFields: ['Name', 'Created', 'Category', 'State'],
 };
 
 const showOfferingCreateButton = createSelector(
@@ -111,11 +131,14 @@ const showOfferingCreateButton = createSelector(
     customer && customer.is_service_provider && ownerOrStaff,
 );
 
-const mapStateToProps = state => ({
+const mapStateToProps = (state, ownProps) => ({
   customer: getCustomer(state),
-  actionsDisabled: !isOwnerOrStaff(state),
-  showOfferingCreateButton: showOfferingCreateButton(state),
-  filter: getFormValues('OfferingsFilter')(state),
+  actionsDisabled: !isOwnerOrStaff(state) || ownProps.isReporting,
+  showOfferingCreateButton:
+    showOfferingCreateButton(state) && !ownProps.isReporting,
+  filter: getFormValues(
+    ownProps.isReporting ? SUPPORT_OFFERINGS_FILTER_FORM_ID : 'OfferingsFilter',
+  )(state),
 });
 
 const enhance = compose(

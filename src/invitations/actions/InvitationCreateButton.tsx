@@ -3,12 +3,14 @@ import { useDispatch, useSelector } from 'react-redux';
 
 import { translate } from '@waldur/i18n';
 import { openModalDialog } from '@waldur/modal/actions';
-import { ActionButton } from '@waldur/table-react/ActionButton';
+import { ActionButton } from '@waldur/table/ActionButton';
 import {
   getUser,
   isOwnerOrStaff as isOwnerOrStaffSelector,
   getCustomer,
 } from '@waldur/workspace/selectors';
+
+import { InvitationCreateDialog } from './InvitationCreateDialog';
 
 export const InvitationCreateButton = () => {
   const user = useSelector(getUser);
@@ -17,7 +19,7 @@ export const InvitationCreateButton = () => {
   const dispatch = useDispatch();
   const callback = () =>
     dispatch(
-      openModalDialog('invitationDialog', {
+      openModalDialog(InvitationCreateDialog, {
         resolve: {
           context: {
             customer,

@@ -1,53 +1,39 @@
-import { withStore } from '@waldur/store/connect';
+import { FreeIpaAccount } from '@waldur/freeipa/FreeIPAAccount';
 
 import { HooksList } from './hooks/HooksList';
 import { KeysList } from './keys/KeysList';
 import { UserDashboard } from './list/UserDashboard';
+import { UserEventsWrapper } from './list/UserEventsWrapper';
 import { UserManage } from './UserManage';
 
 export const tabs = {
   dashboard: {
     url: '',
-    component: withStore(UserDashboard),
+    component: UserDashboard,
     data: {
-      pageTitle: gettext('User dashboard'),
       pageClass: 'gray-bg',
-      hideBreadcrumbs: true,
     },
   },
   events: {
     url: 'events/',
-    template: '<user-events user="currentUser"></user-events>',
-    data: {
-      pageTitle: gettext('Audit logs'),
-    },
+    component: UserEventsWrapper,
   },
   keys: {
     url: 'keys/',
-    component: withStore(KeysList),
-    data: {
-      pageTitle: gettext('SSH keys'),
-    },
+    component: KeysList,
   },
   notifications: {
     url: 'notifications/',
-    component: withStore(HooksList),
-    data: {
-      pageTitle: gettext('Notifications'),
-    },
+    component: HooksList,
   },
   manage: {
     url: 'manage/',
-    component: withStore(UserManage),
-    data: {
-      pageTitle: gettext('Manage'),
-    },
+    component: UserManage,
   },
   freeipa: {
     url: 'freeipa-account/',
-    template: '<freeipa-account></freeipa-account>',
+    component: FreeIpaAccount,
     data: {
-      pageTitle: gettext('FreeIPA account'),
       feature: 'freeipa',
     },
   },

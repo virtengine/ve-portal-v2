@@ -1,8 +1,6 @@
 import * as React from 'react';
 import Select from 'react-select';
 
-import { connectAngularComponent } from '@waldur/store/connect';
-
 import { translate } from './translate';
 import { useLanguageSelector } from './useLanguageSelector';
 import './LanguageList.scss';
@@ -21,7 +19,7 @@ export const LanguageList = () => {
   } else if (len <= 3) {
     return (
       <ul className="list-inline language-list m-t-md text-center">
-        {languageChoices.map(language => (
+        {languageChoices.map((language) => (
           <li
             key={language.code}
             onClick={() => setLanguage(language)}
@@ -41,12 +39,10 @@ export const LanguageList = () => {
         options={languageChoices}
         value={currentLanguage}
         onChange={setLanguage}
-        clearable={false}
-        labelKey="label"
-        valueKey="code"
+        isClearable={false}
+        getOptionValue={(option) => option.code}
+        getOptionLabel={(option) => option.label}
       />
     );
   }
 };
-
-export default connectAngularComponent(LanguageList);

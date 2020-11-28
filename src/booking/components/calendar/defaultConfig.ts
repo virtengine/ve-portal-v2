@@ -4,7 +4,16 @@ export const defaultConfig = {
   defaultView: 'dayGridMonth',
   themeSystem: 'bootstrap',
   height: 'auto',
-  titleFormat: 'MMMM YYYY',
+  titleFormat: {
+    month: 'short',
+    year: 'numeric',
+    day: 'numeric',
+  },
+  views: {
+    week: {
+      columnHeaderFormat: 'ddd D/M',
+    },
+  },
   timeZone: 'local', //'UTC',
   firstDay: 1,
   editable: false,

@@ -1,12 +1,11 @@
 import * as React from 'react';
 
-import { ngInjector } from '@waldur/core/services';
 import { translate } from '@waldur/i18n';
+import { useTitle } from '@waldur/navigation/title';
+import { goBack } from '@waldur/navigation/utils';
 
 export const InvalidQuotaPage = () => {
-  const goBack = () => {
-    ngInjector.get('NavigationUtilsService').goBack();
-  };
+  useTitle(translate('Quota has been reached.'));
   return (
     <div className="middle-box text-center">
       <h1>403</h1>

@@ -13,14 +13,15 @@ import { AsyncSelectField } from './AsyncSelectField';
 import { ISSUE_REGISTRATION_FORM_ID } from './constants';
 import { projectSelector } from './selectors';
 
-const filterOptions = options => options;
+const filterOption = (options) => options;
 
 export const ResourceGroup = ({ disabled }) => {
   const dispatch = useDispatch();
   const project = useSelector(projectSelector);
-  const loadData = React.useCallback(name => refreshResources(name, project), [
-    project,
-  ]);
+  const loadData = React.useCallback(
+    (name) => refreshResources(name, project),
+    [project],
+  );
 
   React.useEffect(() => {
     dispatch(change(ISSUE_REGISTRATION_FORM_ID, 'resource', undefined));
@@ -37,17 +38,18 @@ export const ResourceGroup = ({ disabled }) => {
             name="resource"
             component={AsyncSelectField}
             placeholder={translate('Select affected resource...')}
-            clearable={true}
+            isClearable={true}
+            defaultOptions
             loadOptions={loadData}
-            valueKey="name"
-            labelKey="name"
-            disabled={disabled}
-            filterOptions={filterOptions}
+            getOptionValue={(option) => option.name}
+            getOptionLabel={(option) => option.name}
+            isDisabled={disabled}
+            filterOption={filterOption}
           />
         ) : (
           <Select
             options={[]}
-            disabled={true}
+            isDisabled={true}
             placeholder={translate('Select affected resource...')}
           />
         )}

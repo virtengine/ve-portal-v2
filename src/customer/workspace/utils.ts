@@ -1,9 +1,9 @@
 import { get } from '@waldur/core/api';
-import { ngInjector } from '@waldur/core/services';
 import { translate } from '@waldur/i18n';
 import { getTabTitle } from '@waldur/invoices/utils';
+import { SidebarExtensionService } from '@waldur/navigation/sidebar/SidebarExtensionService';
 import { MenuItemType } from '@waldur/navigation/sidebar/types';
-import { Customer } from '@waldur/workspace/types';
+import { Customer, ORGANIZATION_WORKSPACE } from '@waldur/workspace/types';
 
 export const getSidebarItems = (customer: Customer): MenuItemType[] => [
   {
@@ -66,7 +66,7 @@ export const getSidebarItems = (customer: Customer): MenuItemType[] => [
     key: 'billing',
     label: getTabTitle(),
     icon: 'fa-file-text-o',
-    state: 'organization.billing.tabs',
+    state: 'organization.billing',
     params: {
       uuid: customer.uuid,
     },
@@ -87,10 +87,9 @@ export const getSidebarItems = (customer: Customer): MenuItemType[] => [
 
 export const getCustomerCounters = (customer: Customer, fields: string[]) =>
   get(`/customers/${customer.uuid}/counters/`, { params: { fields } }).then(
-    response => response.data,
+    (response) => response.data,
   );
 
 export const getExtraSidebarItems = (): Promise<MenuItemType[]> => {
-  const SidebarExtensionService = ngInjector.get('SidebarExtensionService');
-  return SidebarExtensionService.getItems('customer');
+  return SidebarExtensionService.getItems(ORGANIZATION_WORKSPACE);
 };

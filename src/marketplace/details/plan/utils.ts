@@ -13,22 +13,34 @@ import { Component, PricesData } from './types';
 export const combinePrices = (
   plan: Plan,
   limits: Limits,
+  usages: Limits,
   offering: Offering,
 ): PricesData => {
   if (plan && offering) {
     const { periods, multipliers } = getBillingPeriods(plan.unit);
     const offeringLimits = parseOfferingLimits(offering);
     const offeringComponents = filterOfferingComponents(offering);
-    const components: Component[] = offeringComponents.map(component => {
+    const components: Component[] = offeringComponents.map((component) => {
       let amount = 0;
-      if (limits && limits[component.type]) {
+      if (component.is_boolean && limits && limits[component.type]) {
+        amount = limits[component.type];
+      } else if (
+        component.billing_type === 'usage' &&
+        !component.disable_quotas &&
+        limits &&
+        limits[component.type]
+      ) {
+        amount = limits[component.type];
+      } else if (component.billing_type === 'usage') {
+        amount = usages[component.type] || 0;
+      } else if (limits && limits[component.type]) {
         amount = limits[component.type] || 0;
       } else if (component.billing_type === 'fixed') {
         amount = plan.quotas[component.type] || 0;
       }
       const price = plan.prices[component.type] || 0;
       const subTotal = price * amount;
-      const prices = multipliers.map(mult => mult * subTotal);
+      const prices = multipliers.map((mult) => mult * subTotal);
       return {
         ...component,
         amount,
@@ -41,7 +53,7 @@ export const combinePrices = (
     });
 
     const usageComponents = components.filter(
-      component => component.billing_type === 'usage',
+      (component) => component.billing_type === 'usage',
     );
     const usageSubTotal = usageComponents.reduce(
       (result, item) => result + item.subTotal,
@@ -49,7 +61,7 @@ export const combinePrices = (
     );
 
     const fixedComponents = components.filter(
-      component => component.billing_type === 'fixed',
+      (component) => component.billing_type === 'fixed',
     );
     const fixedSubTotal = fixedComponents.reduce(
       (result, item) => result + item.subTotal,
@@ -57,8 +69,8 @@ export const combinePrices = (
     );
 
     const subscriptionSubTotal = usageSubTotal + fixedSubTotal;
-    const subscriptionSubTotalPeriods = multipliers.map(
-      mult => mult * subscriptionSubTotal || 0,
+    const totalPeriods = multipliers.map(
+      (mult) => mult * subscriptionSubTotal || 0,
     );
 
     const initPrice =
@@ -66,9 +78,6 @@ export const combinePrices = (
         ? parseFloat(plan.init_price)
         : plan.init_price;
     const total = subscriptionSubTotal + initPrice;
-    const totalPeriods = subscriptionSubTotalPeriods.map(
-      val => val + initPrice,
-    );
 
     return { components, periods, total, totalPeriods };
   } else {
@@ -80,7 +89,7 @@ const getPlan = (state, props) => {
   if (props.viewMode && props.orderItem) {
     if (props.orderItem.plan_uuid) {
       return props.offering.plans.find(
-        plan => plan.uuid === props.orderItem.plan_uuid,
+        (plan) => plan.uuid === props.orderItem.plan_uuid,
       );
     } else {
       return props.offering.plans[0];
@@ -102,5 +111,5 @@ const getLimits = (state, props) => {
 export const pricesSelector = (state, props): PricesData => {
   const plan: Plan = getPlan(state, props);
   const limits: Limits = getLimits(state, props);
-  return combinePrices(plan, limits, props.offering);
+  return combinePrices(plan, limits, {}, props.offering);
 };

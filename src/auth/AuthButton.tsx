@@ -2,15 +2,7 @@ import * as React from 'react';
 import { useDispatch } from 'react-redux';
 import { Dispatch } from 'redux';
 
-import { ngInjector } from '@waldur/core/services';
 import { translate } from '@waldur/i18n';
-
-const authenticate = (provider: string) => {
-  const authService = ngInjector.get('authService');
-  return authService
-    .authenticate(provider)
-    .then(response => authService.redirectOnSuccess(response));
-};
 
 export interface AuthButtonProps {
   providerKey: string;
@@ -18,11 +10,10 @@ export interface AuthButtonProps {
   iconClass: string;
   label: string;
   mode: string;
-  onClick?(dispatch: Dispatch): void;
+  onClick(dispatch: Dispatch): void;
 }
 
 export const AuthButton: React.FC<AuthButtonProps> = ({
-  providerKey,
   btnClass,
   iconClass,
   label,
@@ -30,20 +21,17 @@ export const AuthButton: React.FC<AuthButtonProps> = ({
   onClick,
 }) => {
   const dispatch = useDispatch();
-  const prefix =
+  const caption =
     mode === 'register'
-      ? translate('Register with')
-      : translate('Sign in with');
+      ? translate('Register with {label}', { label })
+      : translate('Sign in with {label}', { label });
   return (
     <div className="m-b-sm">
       <button
-        onClick={
-          onClick ? () => onClick(dispatch) : () => authenticate(providerKey)
-        }
+        onClick={() => onClick(dispatch)}
         className={`btn ${btnClass} btn-block`}
       >
-        <i className={`fa ${iconClass}`} aria-hidden="true" />{' '}
-        {`${prefix} ${label}`}
+        <i className={`fa ${iconClass}`} aria-hidden="true" /> {caption}
       </button>
     </div>
   );

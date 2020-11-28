@@ -17,7 +17,7 @@ const SelectResourceButton = ({ value, onChange }) => (
   </a>
 );
 
-const serializeResource = resource => ({
+const serializeResource = (resource) => ({
   name: resource.name,
   uuid: resource.backend_id,
   resource_type: resource.type,
@@ -91,12 +91,12 @@ export const ResourceRow = ({
           <td>
             <Select
               placeholder={translate('Select plan')}
-              labelKey="name"
-              valueKey="uuid"
+              getOptionValue={(option) => option.uuid}
+              getOptionLabel={(option) => option.name}
               options={offering.plans}
               value={plans[resource.backend_id]}
-              onChange={plan => assignPlan(resource, plan)}
-              clearable={false}
+              onChange={(plan) => assignPlan(resource, plan)}
+              isClearable={false}
             />
           </td>
         )}

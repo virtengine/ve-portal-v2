@@ -1,7 +1,6 @@
 import * as classNames from 'classnames';
 import * as React from 'react';
 import { connect } from 'react-redux';
-import { Option } from 'react-select';
 import { compose } from 'redux';
 import { getFormValues } from 'redux-form';
 
@@ -9,19 +8,17 @@ import { formatDateTime } from '@waldur/core/dateUtils';
 import { translate } from '@waldur/i18n';
 import { ResourceShowUsageButton } from '@waldur/marketplace/resources/usage/ResourceShowUsageButton';
 import { Category } from '@waldur/marketplace/types';
-import { Table, connectTable, createFetcher } from '@waldur/table-react';
-import { wrapTooltip } from '@waldur/table-react/ActionButton';
+import { Table, connectTable, createFetcher } from '@waldur/table';
+import { wrapTooltip } from '@waldur/table/ActionButton';
 import { getCustomer } from '@waldur/workspace/selectors';
 import { Customer, Project } from '@waldur/workspace/types';
-
-import { ResourceState } from '../types';
 
 import { CustomerResourcesListPlaceholder } from './CustomerResourcesListPlaceholder';
 import { ResourceNameField } from './ResourceNameField';
 import { ResourceStateField } from './ResourceStateField';
 
 interface ResourceFilter {
-  state?: Option<ResourceState>;
+  state?: any;
   project?: Project;
   category?: Category;
 }
@@ -31,7 +28,7 @@ interface StateProps {
   filter: ResourceFilter;
 }
 
-export const TableComponent = props => {
+export const TableComponent = (props) => {
   const columns = [
     {
       title: translate('Name'),
@@ -114,7 +111,7 @@ const mapPropsToFilter = (props: StateProps) => {
   return filter;
 };
 
-const exportRow = row => [
+const exportRow = (row) => [
   row.name,
   row.project_name,
   row.category_title,
@@ -133,7 +130,7 @@ const TableOptions = {
   queryField: 'name',
 };
 
-const mapStateToProps = state => ({
+const mapStateToProps = (state) => ({
   customer: getCustomer(state),
   filter: getFormValues('CustomerResourcesFilter')(state),
 });

@@ -10,11 +10,14 @@ import { format } from '@waldur/core/ErrorMessageFormatter';
 import { FormattedMarkdown } from '@waldur/core/FormattedMarkdown';
 import { LoadingSpinner } from '@waldur/core/LoadingSpinner';
 import { translate } from '@waldur/i18n';
+import { useBreadcrumbsFn } from '@waldur/navigation/breadcrumbs/store';
+import { useTitle } from '@waldur/navigation/title';
 import { TemplateQuestions } from '@waldur/rancher/template/TemplateQuestions';
 import { showError, showSuccess } from '@waldur/store/coreSaga';
 
 import { createApp } from '../api';
 
+import { getBreadcrumbs } from './breadcrumbs';
 import { FORM_ID } from './constants';
 import { TemplateHeader } from './TemplateHeader';
 import { FormData } from './types';
@@ -32,13 +35,25 @@ export const TemplateDetail = () => {
     clusterUuid,
   ]);
 
-  const project = useSelector(state =>
+  useBreadcrumbsFn(
+    () =>
+      state.value
+        ? getBreadcrumbs(state.value.cluster, state.value.template)
+        : [],
+    [state.value],
+  );
+
+  useTitle(
+    state.value ? state.value.template.name : translate('Template details'),
+  );
+
+  const project = useSelector((state) =>
     formValueSelector(FORM_ID)(state, 'project'),
   );
 
   const namespaces = React.useMemo(() => project?.namespaces || [], [project]);
 
-  const answers = useSelector(state =>
+  const answers = useSelector((state) =>
     formValueSelector(FORM_ID)(state, 'answers'),
   );
 
@@ -58,10 +73,11 @@ export const TemplateDetail = () => {
           serializeApplication(
             formData,
             state.value.template,
+            state.value.cluster.service_project_link,
             visibleQuestions,
           ),
         );
-        router.stateService.go('resources.details', {
+        router.stateService.go('resource-details', {
           uuid: clusterUuid,
           resource_type: 'Rancher.Cluster',
           tab: 'applications',

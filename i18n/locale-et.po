@@ -1,4 +1,4 @@
-msgid ""
+Teemsgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "POT-Creation-Date: \n"
@@ -13,7 +13,7 @@ msgstr ""
 
 #: src/billing/billing-record-details.html
 msgid "(VAT is not included)"
-msgstr "(ei sisalda KM)"
+msgstr "(ei sisalda käibemaksu)"
 
 #: src/openstack/openstack-tenant/openstack-template.js
 #: src/openstack/openstack-tenant/openstack-tenant-prices.js
@@ -113,31 +113,31 @@ msgstr "Konto eemaldamine"
 #: src/billing/billing-utils.js src/billing/routes.js
 #: src/marketplace/offerings/create/AccountingSummary.tsx
 msgid "Accounting"
-msgstr "Raamatupidamine"
+msgstr "Arveldus"
 
 #: src/customer/AccountingPeriodFilter.tsx
 msgid "Accounting period"
-msgstr "Raamatupidamise periood"
+msgstr "Arvelduse periood"
 
 #: src/marketplace/offerings/plan/PlansList.tsx
 msgid "Accounting plans"
-msgstr "Raamatupidamise plaanid"
+msgstr "Arvelduse plaanid"
 
 #: src/billing/billing-record-header.html
 msgid "Accounting record"
-msgstr "Raamatupidamise sissekanne"
+msgstr "Arvelduskirje"
 
 #: src/billing/billing-record-header.js src/billing/billing-tabs.html
 msgid "Accounting records"
-msgstr "Raamatupidamise sissekanded"
+msgstr "Arvelduskirjed"
 
 #: src/customer/details/CustomerDetails.tsx
 msgid "Accounting start date"
-msgstr "Arvestuse alguskuupäev"
+msgstr "Arvelduse alguskuupäev"
 
 #: src/marketplace/offerings/create/ComponentAccountingTypeField.tsx
 msgid "Accounting type"
-msgstr "Raamatupidamise tüüp"
+msgstr "Arvelduse tüüp"
 
 #: src/cost-planning/cost-plan-items.html
 #: src/cost-planning/cost-plan-optimizer.html src/events/BaseEventsList.tsx
@@ -618,7 +618,7 @@ msgstr "Kas oled kindel? Seda toimingut ei saa tagasi võtta."
 
 #: src/marketplace/offerings/ArticleCodeField.tsx
 msgid "Article code"
-msgstr "KM kood"
+msgstr "Artikli kood"
 
 #: src/openstack/openstack-tenant/actions/assign-package-dialog.html
 msgid "Assign"
@@ -1829,11 +1829,11 @@ msgstr "Lase vabaks"
 
 #: src/marketplace/offerings/DisplayNameField.tsx
 msgid "Display name"
-msgstr "Plaani nimi"
+msgstr "Kuvatav nimi"
 
 #: src/marketplace/offerings/create/ComponentDisableQuotaField.tsx
 msgid "Do not allow user to specify quotas when offering is provisioned."
-msgstr "Ära lase kasutajal määrata kvooti hetkel mil pakkumine on täitmisel"
+msgstr "Ära lase kasutajal määrata limiiti teenust tellides"
 
 #: src/openstack/openstack-network/module.js
 #: src/openstack/openstack-subnet/actions.js
@@ -2230,11 +2230,11 @@ msgstr "Fail"
 
 #: src/core/DownloadLink/effects.tsx
 msgid "File download has been started."
-msgstr "Faili tõmbamine on alanud"
+msgstr "Faili allalaadimine on alanud"
 
 #: src/core/DownloadLink/effects.tsx
 msgid "File has been downloaded."
-msgstr "Fail on tõmmatud"
+msgstr "Fail on allalaaditud"
 
 #: src/marketplace/offerings/create/OverviewStep.tsx
 msgid "Filename"
@@ -4448,7 +4448,7 @@ msgstr "Tellimuse objekti  tühistamine on planeeritud."
 #: src/marketplace/orders/item/list/OrderItemsList.tsx
 #: src/offering/OfferingTabs.tsx src/resource/tabs/constants.js
 msgid "Order items"
-msgstr "Telli objektid"
+msgstr "Tellimused"
 
 #: src/marketplace/cart/ShoppingCartItemUpdate.tsx
 #: src/marketplace/details/OfferingDetails.tsx
@@ -4877,7 +4877,7 @@ msgstr ""
 #, fuzzy
 #| msgid "Please provide a reason"
 msgid "Please create a new one:"
-msgstr "Palun põhjendada"
+msgstr "Palun looge uus:"
 
 #: src/marketplace/details/plan/ComponentEditRow.tsx
 msgid "Please enter estimated maximum usage in the rows below:"
@@ -4893,7 +4893,7 @@ msgstr ""
 
 #: src/invitations/invitation-confirm-dialog.html
 msgid "Please give us a moment to validate your invitation."
-msgstr "Palun anna meile hetkel kutse kinnitamiseks."
+msgstr "Palun anna meile hetk kutse kinnitamiseks."
 
 #: src/user/support/TokenLifetimeField.tsx
 msgid ""
@@ -5054,7 +5054,7 @@ msgstr "Hind"
 
 #: src/billing/PriceEstimateDialog.tsx
 msgid "Price estimate details"
-msgstr "Hind on arvestuslikud üksikasjad"
+msgstr "Hinna arvestuslikud üksikasjad"
 
 #: src/openstack/openstack-tenant/openstack-tenant-prices.html
 msgid "Price for 1 GB of RAM per day"
@@ -5434,9 +5434,12 @@ msgstr "Avalik võti"
 
 #: src/marketplace/offerings/details/OfferingContainer.tsx
 #: src/marketplace/offerings/utils.ts src/marketplace/routes.js
-#: src/marketplace/sidebar.js
 msgid "Public offerings"
 msgstr "Avalikud pakkumised"
+
+#: src/marketplace/sidebar.js
+msgid "Public services"
+msgstr "Avalikud teenused"
 
 #: src/marketplace/routes.js src/marketplace/sidebar.js
 msgid "Public orders"
@@ -5502,13 +5505,13 @@ msgstr "Pythoni versioon"
 #: src/marketplace/details/plan/PlanDetailsTable.tsx
 #: src/offering/actions/CompleteAction.ts
 msgid "Quantity"
-msgstr "Hulk"
+msgstr "Kogus"
 
 #: src/error/routes.js src/project/ProjectCreateButton.tsx
 #: src/providers/provider-list.js src/resource-import/utils.js
 #: src/resource/resource-provision-policy.js
 msgid "Quota has been reached."
-msgstr "Kvoot on täis."
+msgstr "Limiit on täis."
 
 #: src/providers/details/provider-project-link-quota.html
 msgid "Quota usage exceeds limit."
@@ -5634,8 +5637,8 @@ msgid "Register to"
 msgstr "Registreeru"
 
 #: src/auth/auth-button-text.js
-msgid "Register with"
-msgstr "Registreeru koos"
+msgid "Register with {label}"
+msgstr "{label}"
 
 #: src/auth/auth-login.html
 #, fuzzy
@@ -6302,8 +6305,8 @@ msgstr "Otsi nime järgi"
 
 #: src/marketplace/category/filters/FilterBar.tsx
 #: src/marketplace/landing/LandingPage.tsx
-msgid "Search for apps and services..."
-msgstr "Otsi rakendustest ja teenustest"
+msgid "Search for offerings..."
+msgstr "Otsi teenust"
 
 #: src/ansible/python-management/effects.ts
 msgid ""
@@ -6390,7 +6393,7 @@ msgstr "Valige komponent"
 
 #: src/customer/AccountingPeriodField.tsx
 msgid "Select accounting period"
-msgstr "Vali raamatupidamise periood"
+msgstr "Vali arveldamise periood"
 
 #: src/issues/create/issue-quick-create.html
 #: src/issues/create/issue-registration.html
@@ -6515,11 +6518,11 @@ msgstr "Vali suurus..."
 #, fuzzy
 #| msgid "Select size..."
 msgid "Select some files"
-msgstr "Vali suurus..."
+msgstr "Vali mõni fail"
 
 #: src/resource/list/resource-global-list-filtered.html
 msgid "Select state"
-msgstr "Vali okej"
+msgstr "Vali olek"
 
 #: src/marketplace/offerings/OfferingStateFilter.tsx
 #: src/marketplace/orders/item/list/OrderStateFilter.tsx
@@ -6817,8 +6820,8 @@ msgid "Sign in"
 msgstr "Logi sisse"
 
 #: src/auth/auth-button-text.js
-msgid "Sign in with"
-msgstr "Logi sisse koos"
+msgid "Sign in with {label}"
+msgstr "{label}"
 
 #: src/auth/auth-login.html
 msgid "Sign in with trusted identity"
@@ -7238,7 +7241,7 @@ msgstr "Tenanti kirjeldus"
 
 #: src/openstack/openstack-tenant/actions/assign-package-dialog.js
 msgid "Tenant has been assigned to the package."
-msgstr ""
+msgstr "Tenant on paketile määratud"
 
 #: src/openstack/openstack-tenant/actions/EditAction.ts
 msgid "Tenant has been updated."
@@ -7840,7 +7843,7 @@ msgstr "Tellotid objekti ei õnnestunud hankida"
 
 #: src/marketplace/service-providers/store/effects.ts
 msgid "Unable to get service provider API secret code."
-msgstr "Unable to get service provider API secret code."
+msgstr "Teenusepakkuja API salakoodi ei õnnestu hankida."
 
 #: src/marketplace/cart/store/effects.ts
 msgid "Unable to initialize shopping cart."
@@ -8161,7 +8164,7 @@ msgstr "Uuenda"
 
 #: src/openstack/openstack-instance/actions/UpdateFloatingIpsAction.ts
 msgid "Update floating IPs"
-msgstr "Uuenda ´liikuvaid IP aadresse"
+msgstr "Uuenda liikuvaid IP aadresse"
 
 #: src/user/hooks/hook-details.html
 msgid "Update notification"
@@ -8371,16 +8374,8 @@ msgid "User {user_link} authenticated successfully with Facebook."
 msgstr "Kasutaja {user_link} edukalt autentinud ennast Facebook kaudu."
 
 #: src/auth/events.ts
-msgid "User {user_link} authenticated successfully with Google."
-msgstr "Kasutaja {user_link} on edukalt autentinud ennast Google kaudu."
-
-#: src/auth/events.ts
 msgid "User {user_link} authenticated successfully with OpenID."
 msgstr "Kasutaja {user_link} on edukalt autentinud ennast OpenID kaudu."
-
-#: src/auth/events.ts
-msgid "User {user_link} authenticated successfully with SAML2."
-msgstr "Kasutaja {user_link} on edukalt autentinud ennast Google kaudu."
 
 #: src/auth/events.ts
 msgid "User {user_link} authenticated successfully with Smart ID EE."
@@ -8517,7 +8512,7 @@ msgstr "KM kood"
 #, fuzzy
 #| msgid "VAT is not included."
 msgid "VAT is included"
-msgstr "Käibemaksu ei sisalda."
+msgstr "Sisaldab käibemaksu."
 
 #: src/customer/CustomerList.tsx
 #, fuzzy
@@ -8634,7 +8629,7 @@ msgstr "Teenusepakkuja"
 
 #: src/marketplace/details/plan/PlanDetailsTable.tsx
 msgid "Service provider can charge for usage of the following components"
-msgstr "Teenusepakkuja võib kosida tasu järgmiste komponentide kasutamise eest"
+msgstr "Teenusepakkuja võib küsida tasu järgmiste komponentide kasutamise eest"
 
 #: src/marketplace/details/OverviewTab.tsx
 msgid "Service provider details"
@@ -9877,3 +9872,11 @@ msgstr "Vali palun roll"
 
 #~ msgid "You have no SLAs yet."
 #~ msgstr "Sul ei ole veel SLA-sid."
+
+#: src/marketplace/offerings/create/ComponentUseLimitForBillingField.tsx
+msgid "Charge for usage-based component is based on user-requested limit."
+msgstr "Kasutuspõhise komponendi tasu põhineb kasutaja taotletud limiidil."
+
+#: src/marketplace/details/plan/PlanDetailsTable.tsx
+msgid "Please enter desired values in the rows below:"
+msgstr "Palun sisestage soovitud kogused all olevatele ridadele"

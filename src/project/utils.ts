@@ -1,8 +1,8 @@
 import { createSelector } from 'reselect';
 
 import { get } from '@waldur/core/api';
-import { ngInjector } from '@waldur/core/services';
 import { translate } from '@waldur/i18n';
+import { SidebarExtensionService } from '@waldur/navigation/sidebar/SidebarExtensionService';
 import { MenuItemType } from '@waldur/navigation/sidebar/types';
 import {
   getUser,
@@ -10,9 +10,15 @@ import {
   isOwnerOrStaff,
   getProject,
 } from '@waldur/workspace/selectors';
-import { Project, OuterState, Customer, User } from '@waldur/workspace/types';
+import {
+  Project,
+  OuterState,
+  Customer,
+  User,
+  PROJECT_WORKSPACE,
+} from '@waldur/workspace/types';
 
-const getDefaultItems = project => [
+const getDefaultItems = (project) => [
   {
     key: 'dashboard',
     icon: 'fa-th-large',
@@ -94,10 +100,9 @@ export const getSidebarItems = createSelector<
 
 export const getProjectCounters = (project: Project, fields: string[]) =>
   get(`/projects/${project.uuid}/counters/`, { params: { fields } }).then(
-    response => response.data,
+    (response) => response.data,
   );
 
 export const getExtraSidebarItems = (): Promise<MenuItemType[]> => {
-  const SidebarExtensionService = ngInjector.get('SidebarExtensionService');
-  return SidebarExtensionService.getItems('project');
+  return SidebarExtensionService.getItems(PROJECT_WORKSPACE);
 };

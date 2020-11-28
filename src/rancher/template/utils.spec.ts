@@ -3,6 +3,7 @@ import { Question } from '../types';
 import { groupQuestions, parseQuestions, parseVisibleQuestions } from './utils';
 
 const DataDog: Question[] = require('./DataDog.json');
+const JFrog: Question[] = require('./JFrog.json');
 const MySQL: Question[] = require('./MySQL.json');
 
 describe('Rancher application provision utils', () => {
@@ -17,7 +18,7 @@ describe('Rancher application provision utils', () => {
       const parsed = parseQuestions(MySQL);
       const visible = parseVisibleQuestions(parsed, { defaultImage: false });
       expect(
-        visible.find(question => question.variable === 'image'),
+        visible.find((question) => question.variable === 'image'),
       ).toBeTruthy();
     });
 
@@ -25,8 +26,13 @@ describe('Rancher application provision utils', () => {
       const parsed = parseQuestions(MySQL);
       const visible = parseVisibleQuestions(parsed, { defaultImage: true });
       expect(
-        visible.find(question => question.variable === 'image'),
+        visible.find((question) => question.variable === 'image'),
       ).toBeFalsy();
+    });
+
+    it('parses subquestion types', () => {
+      const parsed = parseQuestions(JFrog);
+      expect(parsed).toMatchSnapshot();
     });
   });
 });

@@ -2,13 +2,13 @@ import eventsRegistry from '@waldur/events/registry';
 import { getLink } from '@waldur/events/utils';
 import { gettext } from '@waldur/i18n';
 
-const getOpenStackContext = event => {
+const getOpenStackContext = (event) => {
   const ctx = {
     resource_type: event.resource_type,
     uuid: event.tenant_uuid,
   };
   return {
-    tenant_link: getLink('resources.details', ctx, event.tenant_name),
+    tenant_link: getLink('resource-details', ctx, event.tenant_name),
   };
 };
 

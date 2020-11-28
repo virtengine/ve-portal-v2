@@ -9,15 +9,17 @@ import {
   DELETE_REQUEST,
   DELETE_FAILURE,
 } from './constants';
+import { ZabbixHostCreateDialog } from './ZabbixHostCreateDialog';
+import { ZabbixHostDetailsDialog } from './ZabbixHostDetailsDialog';
 
-export const fetchZabbixHost = uuid => ({
+export const fetchZabbixHost = (uuid) => ({
   type: FETCH_REQUEST,
   payload: {
     uuid,
   },
 });
 
-export const fetchSuccess = host => ({
+export const fetchSuccess = (host) => ({
   type: FETCH_SUCCESS,
   payload: {
     host,
@@ -28,7 +30,7 @@ export const fetchFailure = () => ({
   type: FETCH_FAILURE,
 });
 
-export const deleteRequest = uuid => ({
+export const deleteRequest = (uuid) => ({
   type: DELETE_REQUEST,
   payload: {
     uuid,
@@ -39,14 +41,14 @@ export const deleteFailure = () => ({
   type: DELETE_FAILURE,
 });
 
-export const openDetailsDialog = resource =>
-  openModalDialog('monitoringDetailsDialog', {
+export const openDetailsDialog = (resource) =>
+  openModalDialog(ZabbixHostDetailsDialog, {
     resolve: { resource },
     size: 'lg',
   });
 
-export const openCreateDialog = resource =>
-  openModalDialog('monitoringCreateDialog', { resolve: { resource } });
+export const openCreateDialog = (resource) =>
+  openModalDialog(ZabbixHostCreateDialog, { resolve: { resource } });
 
 export const loadLinks = createFormAction('waldur/monitoring/LOAD_LINKS');
 

@@ -1,8 +1,9 @@
 import * as React from 'react';
-import { Option, OptionValues } from 'react-select';
 
 import { OpenstackInstanceSecurityGroups } from '@waldur/openstack/openstack-instance/OpenstackInstanceSecurityGroups';
 import { connectAngularComponent } from '@waldur/store/connect';
+
+import { SecurityGroup } from '../openstack-security-groups/types';
 
 import { securityGroups } from './storyFixtures';
 
@@ -11,7 +12,7 @@ export class OpenstackInstanceSecurityGroupsStory extends React.Component {
     selectedSecurityGroups: [],
   };
 
-  setSelectedSecurityGroups = (values: Array<Option<OptionValues>>) => {
+  setSelectedSecurityGroups = (values) => {
     this.setState({ selectedSecurityGroups: values });
   };
 
@@ -22,7 +23,7 @@ export class OpenstackInstanceSecurityGroupsStory extends React.Component {
           value: this.state.selectedSecurityGroups,
           onChange: this.setSelectedSecurityGroups,
         }}
-        securityGroups={securityGroups}
+        securityGroups={securityGroups as SecurityGroup[]}
       />
     );
   }

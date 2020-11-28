@@ -7,19 +7,19 @@ import { translate } from '@waldur/i18n';
 export const getOptions = () => [
   { value: true, label: translate('Running accounting') },
   { value: false, label: translate('Not running accounting') },
-  { value: null, label: translate('All') },
+  { value: undefined, label: translate('All') },
 ];
 
 export const AccountingRunningField = () => (
   <Field
     name="accounting_is_running"
-    component={prop => (
+    component={(prop) => (
       <Select
         placeholder={translate('Show with running accounting')}
         value={prop.input.value}
-        onChange={value => prop.input.onChange(value)}
+        onChange={(value) => prop.input.onChange(value)}
         options={getOptions()}
-        clearable={false}
+        isClearable={false}
       />
     )}
   />

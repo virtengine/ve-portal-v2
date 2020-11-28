@@ -11,10 +11,11 @@ import {
   getAnswers,
   postAnswers,
   getStats,
+  getCategory,
 } from './api';
 import { Checklist, Answer, ChecklistStats } from './types';
 
-const useChecklistSelector = (categoryId: string) => {
+const useChecklistSelector = (categoryId?: string) => {
   const [checklistOptions, setChecklistOptions] = useState([]);
   const [checklistLoading, setChecklistLoading] = useState(true);
   const [checklistErred, setChecklistErred] = useState(false);
@@ -27,7 +28,7 @@ const useChecklistSelector = (categoryId: string) => {
       setChecklistLoading(true);
       setChecklistErred(false);
       try {
-        const checklists = (await getChecklists(categoryId)).map(item => ({
+        const checklists = (await getChecklists(categoryId)).map((item) => ({
           ...item,
           name: translate('{name} ({questions_count} questions)', item),
         }));
@@ -57,12 +58,13 @@ const useChecklistSelector = (categoryId: string) => {
   };
 };
 
-export const useProjectChecklist = (project, categoryId) => {
+export const useUserChecklist = (userId, categoryId?) => {
   const { checklist, ...checklistLoader } = useChecklistSelector(categoryId);
 
   const [questionsList, setQuestionsList] = useState([]);
   const [questionsLoading, setQuestionsLoading] = useState(true);
   const [questionsErred, setQuestionsErred] = useState(true);
+  const [categoryInfo, setCategoryInfo] = useState(null);
 
   const [answers, setAnswers] = useState<{}>();
   const [submitting, setSubmitting] = useState(false);
@@ -75,7 +77,12 @@ export const useProjectChecklist = (project, categoryId) => {
       setQuestionsErred(false);
       try {
         const questions = await getQuestions(checklist.uuid);
-        const answersList = await getAnswers(checklist.uuid, project.uuid);
+        const answersList = await getAnswers(userId, checklist.uuid);
+        if (categoryId) {
+          const category = await getCategory(categoryId);
+          setCategoryInfo(category);
+        }
+
         setQuestionsList(questions);
         setAnswers(
           answersList.reduce(
@@ -105,11 +112,11 @@ export const useProjectChecklist = (project, categoryId) => {
   const submit = useCallback(async () => {
     setSubmitting(true);
     try {
-      const payload = Object.keys(answers).map(question_uuid => ({
+      const payload = Object.keys(answers).map((question_uuid) => ({
         question_uuid,
         value: answers[question_uuid],
       }));
-      await postAnswers(checklist.uuid, project.uuid, payload);
+      await postAnswers(checklist.uuid, payload);
     } catch (error) {
       setSubmitting(false);
       const errorMessage = `${translate('Unable to submit answers.')} ${format(
@@ -128,6 +135,7 @@ export const useProjectChecklist = (project, categoryId) => {
     questionsLoading,
     questionsErred,
     questionsList,
+    categoryInfo,
     answers,
     setAnswers,
     submit,

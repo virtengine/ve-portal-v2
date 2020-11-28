@@ -11,24 +11,38 @@ import {
   SET_CURRENT_CUSTOMER,
 } from '@waldur/workspace/constants';
 import { getProject, getWorkspace } from '@waldur/workspace/selectors';
-import { WorkspaceType } from '@waldur/workspace/types';
+import { WorkspaceType, ORGANIZATION_WORKSPACE } from '@waldur/workspace/types';
 
 import * as actions from './actions';
 import * as constants from './constants';
 
-const formatItem = item => ({
+const flattenAttributes = (attributes) => {
+  let newAttributes = {};
+  for (const [key, value] of Object.entries(attributes)) {
+    newAttributes = {
+      ...newAttributes,
+      [key]:
+        typeof value === 'object' && !Array.isArray(value)
+          ? value['value']
+          : value,
+    };
+  }
+  return newAttributes;
+};
+
+const formatItem = (item) => ({
   plan: item.plan ? item.plan.url : undefined,
   project: item.project,
-  attributes: item.attributes,
+  attributes: flattenAttributes(item.attributes),
   limits: item.limits,
 });
 
-const formatItemToCreate = item => ({
+const formatItemToCreate = (item) => ({
   offering: item.offering.url,
   ...formatItem(item),
 });
 
-const formatItemToUpdate = item => ({
+const formatItemToUpdate = (item) => ({
   uuid: item.shoppingCartItemUuid,
   ...formatItem(item),
 });
@@ -135,7 +149,7 @@ function* createOrder() {
     yield put(showSuccess(translate('Order has been submitted.')));
     yield put(actions.createOrderSuccess());
     const workspace: WorkspaceType = yield select(getWorkspace);
-    if (workspace === 'organization') {
+    if (workspace === ORGANIZATION_WORKSPACE) {
       yield put(
         stateGo('marketplace-order-details-customer', {
           order_uuid: order.uuid,
@@ -155,7 +169,7 @@ function* createOrder() {
   }
 }
 
-export default function*() {
+export default function* () {
   yield takeLatest([SET_CURRENT_PROJECT, SET_CURRENT_CUSTOMER], initCart);
   yield takeEvery(constants.ADD_ITEM_REQUEST, addItem);
   yield takeEvery(constants.UPDATE_ITEM_REQUEST, updateItem);

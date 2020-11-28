@@ -1,26 +1,20 @@
-export class invitationUtilsService {
+import { AuthService } from '@waldur/auth/AuthService';
+import { translate } from '@waldur/i18n';
+import { openModalDialog } from '@waldur/modal/actions';
+import { showError, showSuccess } from '@waldur/store/coreSaga';
+import store from '@waldur/store/store';
+import { UsersService } from '@waldur/user/UsersService';
+
+import { InvitationConfirmDialog } from './InvitationConfirmDialog';
+import { InvitationService } from './InvitationService';
+
+export class InvitationUtilsService {
   // @ngInject
-  constructor(
-    invitationService,
-    usersService,
-    ncUtilsFlash,
-    $q,
-    $auth,
-    $state,
-    $rootScope,
-    $timeout,
-    $uibModal,
-    ENV,
-  ) {
-    this.invitationService = invitationService;
-    this.usersService = usersService;
-    this.ncUtilsFlash = ncUtilsFlash;
+  constructor($q, $state, $rootScope, $timeout, ENV) {
     this.$q = $q;
-    this.$auth = $auth;
     this.$state = $state;
     this.$rootScope = $rootScope;
     this.$timeout = $timeout;
-    this.$uibModal = $uibModal;
     this.validateInvitationEmail =
       ENV.plugins.WALDUR_CORE.VALIDATE_INVITATION_EMAIL;
   }
@@ -37,20 +31,20 @@ export class invitationUtilsService {
      */
     this.$rootScope.$on('$stateChangeSuccess', (_, toState) => {
       if (
-        this.$auth.isAuthenticated() &&
+        AuthService.isAuthenticated() &&
         toState.name !== 'marketplace-public-offering.details'
       ) {
-        this.usersService.getCurrentUser().then(user => {
-          const token = this.invitationService.getInvitationToken();
-          if (token && !this.usersService.mandatoryFieldsMissing(user)) {
+        UsersService.getCurrentUser().then((user) => {
+          const token = InvitationService.getInvitationToken();
+          if (token && !UsersService.mandatoryFieldsMissing(user)) {
             this.confirmInvitation(token)
-              .then(replaceEmail => {
+              .then((replaceEmail) => {
                 this.acceptInvitation(token, replaceEmail);
               })
               .catch(() => {
-                this.invitationService.clearInvitationToken();
-                this.ncUtilsFlash.error(
-                  gettext('Invitation could not be accepted'),
+                InvitationService.clearInvitationToken();
+                store.dispatch(
+                  showError(translate('Invitation could not be accepted')),
                 );
               });
           }
@@ -65,30 +59,31 @@ export class invitationUtilsService {
      If user is not logged in - set token and redirect user to registration.
      If user is logged in and token is not valid - clear the token and redirect to user profile with the error message.
      */
-    if (this.$auth.isAuthenticated()) {
+    if (AuthService.isAuthenticated()) {
       return this.confirmInvitation(token)
-        .then(replaceEmail => {
+        .then((replaceEmail) => {
           this.acceptInvitation(token, replaceEmail).then(() => {
             this.$state.go('profile.details');
           });
         })
         .catch(() => {
-          this.invitationService.clearInvitationToken();
-          this.ncUtilsFlash.error(gettext('Invitation is not valid anymore.'));
+          InvitationService.clearInvitationToken();
+          store.dispatch(
+            showError(translate('Invitation is not valid anymore.')),
+          );
           this.$state.go('profile.details');
         });
     } else {
-      this.invitationService.setInvitationToken(token);
+      InvitationService.setInvitationToken(token);
       this.$state.go('register');
     }
   }
 
   acceptInvitation(token, replaceEmail) {
-    return this.invitationService
-      .accept(token, replaceEmail)
+    return InvitationService.accept(token, replaceEmail)
       .then(() => {
-        this.ncUtilsFlash.success(gettext('Your invitation was accepted.'));
-        this.invitationService.clearInvitationToken();
+        store.dispatch(showSuccess(translate('Your invitation was accepted.')));
+        InvitationService.clearInvitationToken();
         this.$rootScope.$broadcast('refreshCustomerList', {
           updateSignal: true,
         });
@@ -97,30 +92,30 @@ export class invitationUtilsService {
   }
 
   confirmInvitation(token) {
-    const dialog = this.$uibModal.open({
-      component: 'invitationConfirmDialog',
-      resolve: {
-        token: () => token,
-        acceptNewEmail: () => true,
-        rejectNewEmail: () => false,
-      },
-    });
     const deferred = this.$q.defer();
-    dialog.result.then(result => deferred.resolve(result));
-    dialog.closed.then(() => deferred.reject());
+    store.dispatch(
+      openModalDialog(InvitationConfirmDialog, {
+        resolve: {
+          token,
+          deferred,
+        },
+      }),
+    );
     return deferred.promise;
   }
 
   showError(response) {
     if (response.status === 404) {
-      this.ncUtilsFlash.error(gettext('Invitation is not found.'));
+      store.dispatch(showError(translate('Invitation is not found.')));
     } else if (response.status === 400) {
-      this.invitationService.clearInvitationToken();
-      this.ncUtilsFlash.error(gettext('Invitation is not valid.'));
+      InvitationService.clearInvitationToken();
+      store.dispatch(showError(translate('Invitation is not valid.')));
     } else if (response.status === 500) {
-      this.ncUtilsFlash.error(
-        gettext(
-          'Internal server error occurred. Please try again or contact support.',
+      store.dispatch(
+        showError(
+          translate(
+            'Internal server error occurred. Please try again or contact support.',
+          ),
         ),
       );
     }

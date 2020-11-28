@@ -1,22 +1,20 @@
 import Axios from 'axios';
+import Qs from 'qs';
 
-import { toKeyValue } from '@waldur/core/utils';
+import { translate } from '@waldur/i18n';
+import { showErrorResponse } from '@waldur/store/coreSaga';
+import store from '@waldur/store/store';
+
+import { getSelectList, formatChoices } from '../action-resource-loader';
+import { handleActionSuccess } from '../action-utils-service';
+import { defaultFieldOptions } from '../constants';
 
 import template from './action-dialog.html';
 
 // @ngInject
-function ActionDialogController(
-  $scope,
-  $q,
-  $state,
-  $rootScope,
-  actionUtilsService,
-  ncUtilsFlash,
-  ActionResourceLoader,
-  DEFAULT_FIELD_OPTIONS,
-) {
-  angular.extend($scope, {
-    init: function() {
+function ActionDialogController($scope, $q, $state, $rootScope) {
+  Object.assign($scope, {
+    init: function () {
       $scope.errors = {};
       $scope.form = {};
       $scope.loading = true;
@@ -27,12 +25,14 @@ function ActionDialogController(
           $scope.form,
           $scope.action,
         );
+      } else if ($scope.action.fields) {
+        promise = getSelectList($scope.action.fields);
       } else {
-        promise = ActionResourceLoader.getSelectList($scope.action.fields);
+        promise = $q.when(true);
       }
       promise
-        .then(function() {
-          angular.forEach($scope.action.fields, function(field, name) {
+        .then(function () {
+          angular.forEach($scope.action.fields, function (field, name) {
             if (field.init) {
               field.init(field, $scope.resource, $scope.form, $scope.action);
             }
@@ -49,10 +49,7 @@ function ActionDialogController(
               $scope.form[name] = field.modelParser(field, $scope.form[name]);
             }
             if (field.type === 'multiselect' && !$scope.action.init) {
-              $scope.form[name] = ActionResourceLoader.formatChoices(
-                field,
-                $scope.form[name],
-              );
+              $scope.form[name] = formatChoices(field, $scope.form[name]);
             }
             if ($scope.action.name === 'edit') {
               $scope.form[name] = $scope.resource[name];
@@ -60,8 +57,8 @@ function ActionDialogController(
                 $scope.form[name] = new Date($scope.resource[name]);
               }
             }
-            if (DEFAULT_FIELD_OPTIONS[field.type]) {
-              field.options = DEFAULT_FIELD_OPTIONS[field.type];
+            if (defaultFieldOptions[field.type]) {
+              field.options = defaultFieldOptions[field.type];
             }
           });
           if ($scope.action.order) {
@@ -73,20 +70,20 @@ function ActionDialogController(
             $scope.fields = $scope.action.fields;
           }
         })
-        .finally(function() {
+        .finally(function () {
           $scope.loading = false;
           // Trigger digest for async/await
           $rootScope.$applyAsync();
         });
     },
-    submitActive: function() {
+    submitActive: function () {
       return (
         $scope.ActionForm.$dirty ||
         $scope.action.method === 'DELETE' ||
         !$scope.action.fields
       );
     },
-    submitForm: function() {
+    submitForm: function () {
       if ($scope.ActionForm.$invalid) {
         return $q.reject();
       }
@@ -110,7 +107,7 @@ function ActionDialogController(
       let promise;
       let url;
       if ($scope.action.method === 'DELETE') {
-        url = $scope.action.url + '?' + toKeyValue($scope.form);
+        url = $scope.action.url + '?' + Qs.stringify($scope.form);
         promise = Axios.delete(url);
       } else if ($scope.action.method === 'PUT') {
         url = $scope.resource.url;
@@ -120,13 +117,13 @@ function ActionDialogController(
       }
 
       return promise.then(
-        function(response) {
+        function (response) {
           $scope.errors = {};
-          actionUtilsService.handleActionSuccess($scope.action);
+          handleActionSuccess($scope.action);
 
           if (response.status === 201 && $scope.action.followRedirect) {
             const resource = response.data;
-            return $state.go('resources.details', {
+            return $state.go('resource-details', {
               resource_type: resource.resource_type,
               uuid: resource.uuid,
             });
@@ -135,16 +132,15 @@ function ActionDialogController(
           $scope.controller.reInitResource($scope.resource);
           $scope.$close();
         },
-        function(response) {
+        function (response) {
           $scope.errors = response.data;
-          ncUtilsFlash.errorFromResponse(
-            response,
-            gettext('Unable to perform action'),
+          store.dispatch(
+            showErrorResponse(response, translate('Unable to perform action')),
           );
         },
       );
     },
-    cancel: function() {
+    cancel: function () {
       $scope.$dismiss();
     },
   });

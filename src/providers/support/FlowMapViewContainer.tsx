@@ -1,6 +1,9 @@
 import * as React from 'react';
 import { connect } from 'react-redux';
 
+import { translate } from '@waldur/i18n';
+import { setTitle } from '@waldur/navigation/title';
+
 import {
   fetchServiceUsageStart,
   serviceProviderSelect,
@@ -14,27 +17,30 @@ import {
   selectInfoPanelStatus,
   selectServiceProviderConsumers,
 } from './selectors';
+import { UsageData } from './types';
 
 interface FlowMapViewComponentProps {
-  serviceUsage: any;
+  serviceUsage: UsageData;
   selectedServiceProvider: any;
   infoPanelIsVisible: boolean;
   fetchServiceUsageStart: () => void;
   serviceProviderSelect(uuid: string): void;
   showInfoPanel: () => void;
   hideInfoPanel: () => void;
+  setTitle: typeof setTitle;
 }
 
 class FlowMapViewComponent extends React.Component<FlowMapViewComponentProps> {
   componentDidMount() {
     this.props.fetchServiceUsageStart();
+    this.props.setTitle(translate('Flowmap'));
   }
   render() {
     return <FlowMapView {...this.props} />;
   }
 }
 
-const mapStateToProps = state => ({
+const mapStateToProps = (state) => ({
   serviceUsage: selectServiceUsage(state),
   selectedServiceProvider: {
     ...selectServiceProvider(state),
@@ -48,6 +54,7 @@ const mapDispatchToProps = {
   serviceProviderSelect,
   showInfoPanel,
   hideInfoPanel,
+  setTitle,
 };
 
 const enhance = connect(mapStateToProps, mapDispatchToProps);

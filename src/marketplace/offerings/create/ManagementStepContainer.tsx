@@ -17,8 +17,9 @@ import { findProvider } from '@waldur/providers/registry';
 import { getOffering, getType, getTypeLabel } from '../store/selectors';
 
 import { ManagementStep, ManagementStepProps } from './ManagementStep';
+import { ServiceSettingsDetailsDialog } from './ServiceSettingsDetailsDialog';
 
-const mapStateToProps = state => {
+const mapStateToProps = (state) => {
   const offering: Offering = getOffering(state).offering;
   const props: Partial<ManagementStepProps> = {
     offeringTypes: getOfferingTypes(),
@@ -40,9 +41,9 @@ const mapStateToProps = state => {
   return props;
 };
 
-const mapDispatchToProps = dispatch => ({
+const mapDispatchToProps = (dispatch) => ({
   openServiceSettingsDetails: () =>
-    dispatch(openModalDialog('serviceSettingsDetailsDialog', { size: 'lg' })),
+    dispatch(openModalDialog(ServiceSettingsDetailsDialog, { size: 'lg' })),
 });
 
 const connector = compose(

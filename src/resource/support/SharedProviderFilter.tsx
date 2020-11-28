@@ -1,19 +1,32 @@
 import * as React from 'react';
-import { Async } from 'react-select';
+import { AsyncPaginate } from 'react-select-async-paginate';
 import { Field, reduxForm, formValueSelector } from 'redux-form';
 
-import { getList } from '@waldur/core/api';
+import { getSelectData } from '@waldur/core/api';
+import { ENV } from '@waldur/core/services';
+import { returnReactSelectAsyncPaginateObject } from '@waldur/core/utils';
 import { translate } from '@waldur/i18n';
 
-const providerAutocomplete = (query: string) => {
+const providerAutocomplete = async (
+  query: string,
+  prevOptions,
+  currentPage: number,
+) => {
   const params = {
     name: query,
     type: 'OpenStack',
     shared: true,
     field: ['name', 'uuid'],
     o: 'name',
+    page: currentPage,
+    page_size: ENV.pageSize,
   };
-  return getList('/service-settings/', params).then(options => ({ options }));
+  const response = await getSelectData('/service-settings/', params);
+  return returnReactSelectAsyncPaginateObject(
+    response,
+    prevOptions,
+    currentPage,
+  );
 };
 
 export const SharedProviderFilter = () => (
@@ -24,14 +37,22 @@ export const SharedProviderFilter = () => (
           <label className="control-label">{translate('Provider')}</label>
           <Field
             name="provider"
-            component={fieldProps => (
-              <Async
+            component={(fieldProps) => (
+              <AsyncPaginate
                 placeholder={translate('Select provider...')}
-                loadOptions={providerAutocomplete}
-                valueKey="uuid"
-                labelKey="name"
+                defaultOptions
+                loadOptions={(query, prevOptions, { page }) =>
+                  providerAutocomplete(query, prevOptions, page)
+                }
+                getOptionValue={(option) => option.uuid}
+                getOptionLabel={(option) => option.name}
                 value={fieldProps.input.value}
-                onChange={value => fieldProps.input.onChange(value)}
+                onChange={(value) => fieldProps.input.onChange(value)}
+                noOptionsMessage={() => translate('No providers')}
+                isClearable={true}
+                additional={{
+                  page: 1,
+                }}
               />
             )}
           />
@@ -43,7 +64,7 @@ export const SharedProviderFilter = () => (
 
 const FORM_ID = 'SharedProviderFilter';
 
-export const providerSelector = state =>
+export const providerSelector = (state) =>
   formValueSelector(FORM_ID)(state, 'provider');
 
 const enhance = reduxForm({ form: FORM_ID });

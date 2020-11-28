@@ -1,24 +1,20 @@
 import * as React from 'react';
 
 import * as ResourceSummaryRegistry from '@waldur/resource/summary/registry';
-import { connectAngularComponent } from '@waldur/store/connect';
 
-import './resource-summary.scss';
 import { ResourceSummaryBase } from './ResourceSummaryBase';
+import './resource-summary.scss';
 
 interface ResourceSummaryProps {
   resource: any;
 }
 
 export const ResourceSummary = (props: ResourceSummaryProps) => {
-  const SummaryComponent =
-    ResourceSummaryRegistry.get(props.resource.resource_type) ||
-    ResourceSummaryBase;
+  const { component: SummaryComponent = ResourceSummaryBase, className } =
+    ResourceSummaryRegistry.get(props.resource.resource_type) || {};
   return (
-    <dl className="dl-horizontal resource-details-table col-sm-12">
+    <dl className={`dl-horizontal col-sm-12 ${className}`}>
       <SummaryComponent resource={props.resource} />
     </dl>
   );
 };
-
-export default connectAngularComponent(ResourceSummary, ['resource']);

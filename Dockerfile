@@ -1,5 +1,5 @@
 # build environment
-FROM node:12.4.0-alpine as build
+FROM node:lts-alpine as build
 WORKDIR /app
 ENV PATH /app/node_modules/.bin:$PATH
 COPY package.json yarn.lock /app/
@@ -13,7 +13,7 @@ RUN apk add --no-cache --virtual python make g++ \
 
 COPY . /app
 ARG VERSION=latest
-RUN sed -i "s/buildId: 'develop'/buildId: '$VERSION'/" src/configs/base-config.js
+RUN sed -i "s/buildId: 'develop'/buildId: '$VERSION'/" src/configs/base-config.ts
 RUN yarn build
 
 # production environment

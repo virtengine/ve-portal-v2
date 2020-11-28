@@ -17,6 +17,7 @@ export interface Customer {
   accounting_start_date?: string;
   address?: string;
   agreement_number?: string;
+  sponsor_number?: string;
   bank_account?: string;
   bank_name?: string;
   contact_details?: string;
@@ -29,9 +30,13 @@ export interface Customer {
   registration_code?: string;
   domain?: string;
   homepage?: string;
-  type?: string;
   vat_code?: string;
   image?: string;
   is_service_provider?: boolean;
   created?: string;
+  division?: string;
+  division_name?: string;
+  division_parent_name?: string;
+  latitude?: number;
+  longitude?: number;
 }

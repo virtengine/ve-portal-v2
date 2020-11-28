@@ -4,9 +4,8 @@ import * as Row from 'react-bootstrap/lib/Row';
 
 import { FormattedHtml } from '@waldur/core/FormattedHtml';
 import { translate } from '@waldur/i18n';
+import { LeafletMap } from '@waldur/map/LeafletMap';
 import { Offering } from '@waldur/marketplace/types';
-
-import { LeafletMap } from './LeafletMap';
 
 const DemoButton = () => (
   <button className="btn btn-outline btn-success btn-sm">
@@ -35,14 +34,17 @@ export const OverviewTab = (props: OverviewTabProps) => (
         </>
       )}
 
-      {props.offering.geolocations && props.offering.geolocations.length > 0 && (
+      {props.offering.latitude && props.offering.longitude ? (
         <>
           <h4 className="header-bottom-border">
             {translate('Provider location')}
           </h4>
-          <LeafletMap positions={props.offering.geolocations} />
+          <LeafletMap
+            latitude={props.offering.latitude}
+            longitude={props.offering.longitude}
+          />
         </>
-      )}
+      ) : null}
     </Col>
   </Row>
 );

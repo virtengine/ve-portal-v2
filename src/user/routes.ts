@@ -1,12 +1,10 @@
 import { StateDeclaration } from '@waldur/core/types';
-import { gettext } from '@waldur/i18n';
-import { withStore } from '@waldur/store/connect';
-
-import { WOKSPACE_NAMES } from '../navigation/workspace/constants';
+import { USER_WORKSPACE } from '@waldur/workspace/types';
 
 import { KeyCreateForm } from './keys/KeyCreateForm';
 import { UserEmailChangeCallback } from './support/UserEmailChangeCallback';
 import { tabs, requireIdParam } from './tabs';
+import { UserDetails } from './UserDetails';
 
 export const states: StateDeclaration[] = [
   {
@@ -15,9 +13,9 @@ export const states: StateDeclaration[] = [
     abstract: true,
     data: {
       auth: true,
-      workspace: WOKSPACE_NAMES.user,
+      workspace: USER_WORKSPACE,
     },
-    template: '<user-details></user-details>',
+    component: UserDetails,
   },
 
   { name: 'profile.details', ...tabs.dashboard },
@@ -33,9 +31,9 @@ export const states: StateDeclaration[] = [
     abstract: true,
     data: {
       auth: true,
-      workspace: WOKSPACE_NAMES.user,
+      workspace: USER_WORKSPACE,
     },
-    template: '<user-details></user-details>',
+    component: UserDetails,
     resolve: {
       requireIdParam,
     },
@@ -50,7 +48,7 @@ export const states: StateDeclaration[] = [
   {
     name: 'user-email-change',
     url: '/user_email_change/:token/',
-    component: withStore(UserEmailChangeCallback),
+    component: UserEmailChangeCallback,
     data: {
       bodyClass: 'old',
     },
@@ -60,18 +58,12 @@ export const states: StateDeclaration[] = [
     name: 'keys',
     url: '/keys/',
     abstract: true,
-    template: '<user-details></user-details>',
+    component: UserDetails,
     data: {
       auth: true,
-      pageTitle: gettext('Add SSH key'),
-      workspace: WOKSPACE_NAMES.user,
+      workspace: USER_WORKSPACE,
     },
   },
 
-  { name: 'keys.create', url: 'add/', component: withStore(KeyCreateForm) },
+  { name: 'keys.create', url: 'add/', component: KeyCreateForm },
 ];
-
-export default function registerRoutes($stateProvider) {
-  states.forEach(({ name, ...rest }) => $stateProvider.state(name, rest));
-}
-registerRoutes.$inject = ['$stateProvider'];

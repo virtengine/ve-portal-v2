@@ -1,11 +1,11 @@
 import { gettext } from '@waldur/i18n';
 import { ResourceBreadcrumbsRegistry } from '@waldur/resource/breadcrumbs/ResourceBreadcrumbsRegistry';
 
-ResourceBreadcrumbsRegistry.register('VMware.Disk', resource => {
+ResourceBreadcrumbsRegistry.register('VMware.Disk', (resource) => {
   return [
     {
       label: resource.vm_name,
-      state: 'resources.details',
+      state: 'resource-details',
       params: {
         uuid: resource.vm_uuid,
         resource_type: 'VMware.VirtualMachine',
@@ -13,7 +13,7 @@ ResourceBreadcrumbsRegistry.register('VMware.Disk', resource => {
     },
     {
       label: gettext('Disks'),
-      state: 'resources.details',
+      state: 'resource-details',
       params: {
         uuid: resource.vm_uuid,
         resource_type: 'VMware.VirtualMachine',
@@ -23,11 +23,11 @@ ResourceBreadcrumbsRegistry.register('VMware.Disk', resource => {
   ];
 });
 
-ResourceBreadcrumbsRegistry.register('VMware.Port', resource => {
+ResourceBreadcrumbsRegistry.register('VMware.Port', (resource) => {
   return [
     {
       label: resource.vm_name,
-      state: 'resources.details',
+      state: 'resource-details',
       params: {
         uuid: resource.vm_uuid,
         resource_type: 'VMware.VirtualMachine',
@@ -35,7 +35,7 @@ ResourceBreadcrumbsRegistry.register('VMware.Port', resource => {
     },
     {
       label: gettext('Network adapters'),
-      state: 'resources.details',
+      state: 'resource-details',
       params: {
         uuid: resource.vm_uuid,
         resource_type: 'VMware.VirtualMachine',

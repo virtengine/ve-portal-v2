@@ -7,36 +7,37 @@ import { ShoppingCartIndicator } from '@waldur/marketplace/cart/ShoppingCartIndi
 import { ComparisonIndicator } from '@waldur/marketplace/compare/ComparisonIndicator';
 import { PendingOrderIndicator } from '@waldur/marketplace/orders/PendingOrderIndicator';
 import { SidebarToggle } from '@waldur/navigation/sidebar/SidebarToggle';
-import { angular2react } from '@waldur/shims/angular2react';
+import { WorkspaceLabel } from '@waldur/navigation/workspace/WorkspaceLabel';
+
+import { SelectWorkspaceToggle } from '../workspace/SelectWorkspaceToggle';
 
 import { DocsLink } from './DocsLink';
 import { ExternalLinks } from './ExternalLinks';
-import { IntroButton } from './IntroButton';
 import { LogoutLink } from './LogoutLink';
 import { MainSearch } from './MainSearch';
 import { SupportLink } from './SupportLink';
 
-const SelectWorkspaceToggle = angular2react('selectWorkspaceToggle');
-
 export const AppHeader = () => (
   <Row className="border-bottom">
     <Navbar staticTop bsStyle="inverse" fluid className="m-b-none">
-      <Navbar.Header className="m-b-sm">
-        <SidebarToggle />
-        <SelectWorkspaceToggle />
-        <MainSearch />
-      </Navbar.Header>
-      <ul className="nav navbar-top-links navbar-right hidden-xs-stable">
-        <IntroButton />
-        <ExternalLinks />
-        <SupportLink />
-        <DocsLink />
-        <ComparisonIndicator />
-        <PendingOrderIndicator />
-        <ShoppingCartIndicator />
-        <LanguageSelector />
-        <LogoutLink />
-      </ul>
+      <div style={{ display: 'flex' }}>
+        <Navbar.Header className="m-b-sm">
+          <SidebarToggle />
+          <SelectWorkspaceToggle />
+          <MainSearch />
+        </Navbar.Header>
+        <WorkspaceLabel />
+        <ul className="nav navbar-top-links navbar-right hidden-xs-stable">
+          <ExternalLinks />
+          <SupportLink />
+          <DocsLink />
+          <ComparisonIndicator />
+          <PendingOrderIndicator />
+          <ShoppingCartIndicator />
+          <LanguageSelector />
+          <LogoutLink />
+        </ul>
+      </div>
     </Navbar>
   </Row>
 );

@@ -1,5 +1,15 @@
 import { translate } from '@waldur/i18n';
+import { SidebarExtensionService } from '@waldur/navigation/sidebar/SidebarExtensionService';
 import { filterItems } from '@waldur/navigation/sidebar/utils';
+import store from '@waldur/store/store';
+import { UsersService } from '@waldur/user/UsersService';
+import { isOwnerOrStaff } from '@waldur/workspace/selectors';
+import {
+  ORGANIZATION_WORKSPACE,
+  PROJECT_WORKSPACE,
+  SUPPORT_WORKSPACE,
+  USER_WORKSPACE,
+} from '@waldur/workspace/types';
 
 const getHelpdeskItems = () => [
   {
@@ -30,36 +40,69 @@ const getReportItems = () => [
     feature: 'support.users',
   },
   {
-    label: translate('Financial overview'),
-    icon: 'fa-university',
-    state: 'support.organizations',
+    label: translate('Organizations'),
+    icon: 'fa-building',
+    state: 'support.customers',
     feature: 'support.organizations',
   },
   {
-    label: translate('Orders'),
+    label: translate('Notifications'),
+    icon: 'fa-bell',
+    state: 'support.notifications',
+  },
+  {
+    label: translate('Reporting'),
     icon: 'fa-files-o',
-    state: 'marketplace-support-order-items',
+    children: [
+      {
+        label: translate('Capacity'),
+        icon: 'fa-puzzle-piece',
+        state: 'marketplace-support-plan-usages',
+      },
+      {
+        label: translate('Financial'),
+        icon: 'fa-university',
+        state: 'support.organizations',
+        feature: 'support.organizations',
+      },
+      {
+        label: translate('Growth'),
+        icon: 'fa-line-chart',
+        state: 'invoicesGrowth',
+      },
+      {
+        label: translate('Offerings'),
+        icon: 'fa-files-o',
+        state: 'marketplace-support-offerings',
+      },
+      {
+        label: translate('Organizations'),
+        icon: 'fa-building',
+        state: 'support.organizations-divisions',
+        feature: 'support.organizations',
+      },
+      {
+        label: translate('Ordering'),
+        icon: 'fa-files-o',
+        state: 'marketplace-support-order-items',
+      },
+      {
+        label: translate('Resources usage'),
+        icon: 'fa-map',
+        state: 'support.resources-treemap',
+        feature: 'support.resources-treemap',
+      },
+      {
+        label: translate('Usage reports'),
+        icon: 'fa-puzzle-piece',
+        state: 'marketplace-support-usage-reports',
+      },
+    ],
   },
   {
     label: translate('Resources'),
     icon: 'fa-files-o',
     state: 'marketplace-support-resources',
-  },
-  {
-    label: translate('Plan capacity'),
-    icon: 'fa-puzzle-piece',
-    state: 'marketplace-support-plan-usages',
-  },
-  {
-    label: translate('Usage reports'),
-    icon: 'fa-puzzle-piece',
-    state: 'marketplace-support-usage-reports',
-  },
-  {
-    label: translate('Resources usage'),
-    icon: 'fa-map',
-    state: 'support.resources-treemap',
-    feature: 'support.resources-treemap',
   },
   {
     label: translate('Shared providers'),
@@ -104,26 +147,16 @@ const getReportItems = () => [
 // This service checks users status and returns different sidebar items and router state
 export default class IssueNavigationService {
   // @ngInject
-  constructor(
-    $state,
-    usersService,
-    currentStateService,
-    features,
-    SidebarExtensionService,
-  ) {
+  constructor($state, features) {
     this.$state = $state;
-    this.usersService = usersService;
-    this.currentStateService = currentStateService;
     this.features = features;
-    this.sidebarExtensionService = SidebarExtensionService;
   }
 
   get isVisible() {
     if (this.features.isVisible('support')) {
       return true;
     }
-    const user = this.usersService.currentUser;
-    return user && (user.is_staff || user.is_support);
+    return isOwnerOrStaff(store.getState());
   }
 
   gotoDashboard() {
@@ -134,7 +167,7 @@ export default class IssueNavigationService {
         return this.$state.go('support.resources');
       }
     }
-    return this.usersService.getCurrentUser().then(user => {
+    return UsersService.getCurrentUser().then((user) => {
       if (user.is_staff || user.is_support) {
         this.$state.go('support.helpdesk');
       } else {
@@ -144,9 +177,8 @@ export default class IssueNavigationService {
   }
 
   getSidebarItems() {
-    return this.usersService
-      .getCurrentUser()
-      .then(user => {
+    return UsersService.getCurrentUser()
+      .then((user) => {
         this.currentUser = user;
         if (!this.features.isVisible('support')) {
           return [];
@@ -161,19 +193,20 @@ export default class IssueNavigationService {
           return dashboardItems;
         }
       })
-      .then(items => {
+      .then((items) => {
         items = angular.copy(items);
         if (this.getBackItemLabel()) {
           items.unshift(this.getBackItem());
         }
         return items;
       })
-      .then(items =>
-        this.sidebarExtensionService
-          .getItems('support')
-          .then(extra => [...items, ...extra]),
+      .then((items) =>
+        SidebarExtensionService.getItems(SUPPORT_WORKSPACE).then((extra) => [
+          ...items,
+          ...extra,
+        ]),
       )
-      .then(items => {
+      .then((items) => {
         if (this.currentUser.is_support || this.currentUser.is_staff) {
           return [...items, ...filterItems(getReportItems())];
         }
@@ -185,7 +218,7 @@ export default class IssueNavigationService {
     if (
       state.data &&
       state.data.workspace &&
-      state.data.workspace !== 'support'
+      state.data.workspace !== SUPPORT_WORKSPACE
     ) {
       this.prevState = state;
       this.prevParams = params;
@@ -203,15 +236,14 @@ export default class IssueNavigationService {
 
   getBackItemLabel() {
     const prevWorkspace = this.prevWorkspace;
-    if (prevWorkspace === 'project') {
+    if (prevWorkspace === PROJECT_WORKSPACE) {
       return translate('Back to project');
     } else if (
-      prevWorkspace === 'organization' &&
-      (this.currentStateService.getOwnerOrStaff() ||
-        this.currentUser.is_support)
+      prevWorkspace === ORGANIZATION_WORKSPACE &&
+      (isOwnerOrStaff(store.getState()) || this.currentUser.is_support)
     ) {
       return translate('Back to organization');
-    } else if (prevWorkspace === 'user') {
+    } else if (prevWorkspace === USER_WORKSPACE) {
       return translate('Back to personal dashboard');
     }
   }
@@ -219,7 +251,7 @@ export default class IssueNavigationService {
 
 // @ngInject
 export function attachStateUtils($rootScope, IssueNavigationService) {
-  $rootScope.$on('$stateChangeSuccess', function(
+  $rootScope.$on('$stateChangeSuccess', function (
     event,
     toState,
     toParams,

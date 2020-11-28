@@ -1,4 +1,6 @@
 import * as React from 'react';
+import { connect } from 'react-redux';
+import { compose } from 'redux';
 import { InjectedFormProps, reduxForm } from 'redux-form';
 
 import { dateTime } from '@waldur/core/utils';
@@ -9,7 +11,7 @@ import {
   SelectField,
   StringField,
   SubmitButton,
-} from '@waldur/form-react';
+} from '@waldur/form';
 import { translate, TranslateProps } from '@waldur/i18n';
 import { StaticField } from '@waldur/user/support/StaticField';
 import {
@@ -162,8 +164,7 @@ export const PureUserEditForm = (props: UserEditFormProps) => (
           options={tokenOptions}
           name="token_lifetime"
           label={tokenLifetimeTooltip}
-          labelKey="name"
-          valueKey="value"
+          getOptionLabel={(option) => option.name}
         />
       )}
       {props.userTokenIsVisible && <TokenLifetimeWarning />}
@@ -202,4 +203,20 @@ export const PureUserEditForm = (props: UserEditFormProps) => (
   </form>
 );
 
-export const UserEditForm = reduxForm({ form: 'userEdit' })(PureUserEditForm);
+const mapStateToProps = (_state, ownProps) => ({
+  initialValues: {
+    ...ownProps.initialValues,
+    token_lifetime: tokenOptions.find(
+      (option) => option.value === ownProps.initialValues.token_lifetime,
+    ),
+  },
+});
+
+const enhance = compose(
+  connect(mapStateToProps),
+  reduxForm({
+    form: 'userEdit',
+  }),
+);
+
+export const UserEditForm = enhance(PureUserEditForm);

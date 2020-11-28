@@ -12,7 +12,7 @@ import { SelectField } from './SelectField';
 
 export const PriorityGroup = ({ priorities, disabled }) => {
   const user = useSelector(getUser);
-  if (!user.is_staff && !user.is_support) {
+  if (!user || (!user.is_staff && !user.is_support)) {
     return null;
   }
   return (
@@ -26,9 +26,10 @@ export const PriorityGroup = ({ priorities, disabled }) => {
           component={SelectField}
           placeholder={translate('Select priority...')}
           options={priorities}
-          disabled={disabled}
-          valueKey="name"
-          labelKey="name"
+          isDisabled={disabled}
+          getOptionValue={(option) => option.name}
+          getOptionLabel={(option) => option.name}
+          isClearable={true}
         />
       </Col>
     </FormGroup>

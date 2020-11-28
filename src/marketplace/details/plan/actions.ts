@@ -1,13 +1,16 @@
 import { openModalDialog } from '@waldur/modal/actions';
 
-export const showOfferingPlanDescription = planDescription =>
-  openModalDialog('marketplaceOfferingPlanDescription', {
+import { PlanDescription } from './PlanDescription';
+import { PlanDetailsDialog } from './PlanDetailsDialog';
+
+export const showOfferingPlanDescription = (planDescription) =>
+  openModalDialog(PlanDescription, {
     resolve: { plan_description: planDescription },
-    size: 'md',
+    size: 'lg',
   });
 
-export const showPlanDetailsDialog = resourceId =>
-  openModalDialog('marketplacePlanDetailsDialog', {
+export const showPlanDetailsDialog = (resourceId) =>
+  openModalDialog(PlanDetailsDialog, {
     resolve: { resourceId },
     size: 'lg',
   });

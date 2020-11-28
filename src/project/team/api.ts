@@ -1,7 +1,8 @@
 import { getList } from '@waldur/core/api';
+import { PROJECT_MANAGER_ROLE } from '@waldur/core/constants';
 import { ENV } from '@waldur/core/services';
-import { parseResponse } from '@waldur/table-react/api';
-import { Fetcher, TableRequest } from '@waldur/table-react/types';
+import { parseResponse } from '@waldur/table/api';
+import { Fetcher, TableRequest } from '@waldur/table/types';
 
 export const fetchProjectUsers: Fetcher = (request: TableRequest) => {
   const { project_uuid, ...rest } = request.filter;
@@ -18,5 +19,5 @@ export const fetchProjectManagers = (user, project) =>
   getList('/project-permissions/', {
     user_url: user.url,
     project: project.uuid,
-    role: 'manager',
+    role: PROJECT_MANAGER_ROLE,
   });

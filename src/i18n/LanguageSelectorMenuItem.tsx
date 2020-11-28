@@ -1,7 +1,5 @@
 import * as React from 'react';
 
-import { connectAngularComponent } from '@waldur/store/connect';
-
 import { useLanguageSelector } from './useLanguageSelector';
 import './LanguageSelectorMenuItem.scss';
 
@@ -12,9 +10,9 @@ export const LanguageSelectorMenuItem = () => {
     setLanguage,
   } = useLanguageSelector();
 
-  const handleChange = event => {
+  const handleChange = (event) => {
     setLanguage(
-      languageChoices.find(language => language.code === event.target.value),
+      languageChoices.find((language) => language.code === event.target.value),
     );
   };
 
@@ -31,5 +29,3 @@ export const LanguageSelectorMenuItem = () => {
     </li>
   );
 };
-
-export default connectAngularComponent(LanguageSelectorMenuItem);

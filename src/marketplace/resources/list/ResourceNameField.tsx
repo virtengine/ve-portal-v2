@@ -1,5 +1,8 @@
 import * as React from 'react';
 
+import { Tooltip } from '@waldur/core/Tooltip';
+import { Customer } from '@waldur/workspace/types';
+
 import { ResourceDetailsLink } from '../ResourceDetailsLink';
 import { Resource } from '../types';
 
@@ -7,13 +10,35 @@ import { PublicResourceLink } from './PublicResourceLink';
 
 interface ResourceNameFieldProps {
   row: Resource;
+  customer?: Customer;
 }
 
-export const ResourceNameField = ({ row }: ResourceNameFieldProps) => {
+const TooltipWrapper = (component, tooltip) => (
+  <>
+    {component}
+    {tooltip && (
+      <>
+        {' '}
+        <Tooltip id="backend-id" label={tooltip}>
+          <i className="fa fa-question-circle" />
+        </Tooltip>
+      </>
+    )}
+  </>
+);
+
+export const ResourceNameField = ({
+  row,
+  customer,
+}: ResourceNameFieldProps) => {
   const label = row.name || row.offering_name;
+  let LinkComponent;
   if (row.resource_type && row.resource_uuid) {
-    return <ResourceDetailsLink item={row}>{label}</ResourceDetailsLink>;
+    LinkComponent = (
+      <ResourceDetailsLink item={row}>{label}</ResourceDetailsLink>
+    );
   } else {
-    return <PublicResourceLink row={row} />;
+    LinkComponent = <PublicResourceLink row={row} customer={customer} />;
   }
+  return TooltipWrapper(LinkComponent, row.backend_id);
 };

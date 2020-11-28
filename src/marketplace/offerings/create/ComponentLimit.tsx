@@ -3,8 +3,11 @@ import { formValues } from 'redux-form';
 
 import { BillingType } from '@waldur/marketplace/types';
 
+import { ComponentBooleanDefaultLimitField } from './ComponentBooleanDefaultLimitField';
+import { ComponentBooleanLimitField } from './ComponentBooleanLimitField';
 import { ComponentDisableQuotaField } from './ComponentDisableQuotaField';
 import { ComponentLimitAmountField } from './ComponentLimitAmountField';
+import { ComponentLimitEnableField } from './ComponentLimitEnableField';
 import {
   ComponentLimitPeriodField,
   LimitPeriodOption,
@@ -19,27 +22,50 @@ interface Values {
   };
   limitPeriod: LimitPeriodOption;
   disableQuotas: boolean;
+  isBoolean: boolean;
+  limitAmount?: number;
 }
 
 const enhance = formValues(() => ({
   billingType: 'billing_type',
   limitPeriod: 'limit_period',
   disableQuotas: 'disable_quotas',
+  isBoolean: 'is_boolean',
+  limitAmount: 'limit_amount',
 }));
 
-export const ComponentLimit = enhance((props: Values) =>
-  props.billingType && props.billingType.value === 'usage' ? (
+export const ComponentLimit = enhance((props: Values) => {
+  if (props.billingType?.value !== 'usage') {
+    return null;
+  }
+
+  if (props.isBoolean) {
+    return (
+      <>
+        <ComponentBooleanLimitField />
+        <ComponentBooleanDefaultLimitField />
+      </>
+    );
+  }
+
+  return (
     <>
-      <ComponentLimitPeriodField limitPeriod={props.limitPeriod} />
-      <ComponentLimitAmountField />
+      <ComponentBooleanLimitField />
+      <ComponentLimitEnableField />
+      {props.limitAmount !== null && (
+        <>
+          <ComponentLimitPeriodField limitPeriod={props.limitPeriod} />
+          <ComponentLimitAmountField />
+        </>
+      )}
       <ComponentDisableQuotaField />
       {!props.disableQuotas && (
         <>
           <ComponentMinValueField />
           <ComponentMaxValueField />
+          <ComponentUseLimitForBillingField />
         </>
       )}
-      <ComponentUseLimitForBillingField />
     </>
-  ) : null,
-) as React.ComponentType<{}>;
+  );
+}) as React.ComponentType<{}>;

@@ -5,20 +5,27 @@ import ModalBody from 'react-bootstrap/lib/ModalBody';
 import ModalFooter from 'react-bootstrap/lib/ModalFooter';
 import ModalHeader from 'react-bootstrap/lib/ModalHeader';
 import ModalTitle from 'react-bootstrap/lib/ModalTitle';
+import { connect, useSelector } from 'react-redux';
 import { AsyncState } from 'react-use/lib/useAsync';
-import { Field, reduxForm } from 'redux-form';
+import { compose } from 'redux';
+import { Field, formValueSelector, reduxForm } from 'redux-form';
 
 import { SubmitButton } from '@waldur/auth/SubmitButton';
 import { LoadingSpinner } from '@waldur/core/LoadingSpinner';
+import { InputField } from '@waldur/form/InputField';
 import { translate } from '@waldur/i18n';
+import {
+  ProjectGroup,
+  ResourceGroup,
+} from '@waldur/issues/create/IssueQuickCreate';
 import { CloseDialogButton } from '@waldur/modal/CloseDialogButton';
+import { getCustomer } from '@waldur/workspace/selectors';
 
 import { IssueTemplate, IssueTemplateAttachment } from '../api';
 
 import { AttachmentsList } from './AttachmentsList';
 import { ISSUE_CREATION_FORM_ID } from './constants';
 import { FileField } from './FileField';
-import { InputField } from './InputField';
 import { IssueHeader } from './IssueHeader';
 import { SelectField } from './SelectField';
 import { TypeField } from './TypeField';
@@ -32,11 +39,32 @@ interface OwnProps {
   templateState: AsyncState<IssueTemplate[]>;
   filteredTemplates: IssueTemplate[];
   attachments: IssueTemplateAttachment[];
+  initialValues: any;
 }
 
-export const IssueCreateForm = reduxForm<IssueFormData, OwnProps>({
-  form: ISSUE_CREATION_FORM_ID,
-})(
+export const issueCreateProjectSelector = (state) =>
+  formValueSelector(ISSUE_CREATION_FORM_ID)(state, 'project');
+
+const mapStateToProps = (_, ownProps: OwnProps) => {
+  if (ownProps.issue.description) {
+    return {
+      initialValues: {
+        description: ownProps.issue.description,
+        type: ownProps.issue.type,
+      },
+    };
+  }
+  return {};
+};
+
+const enhance = compose(
+  connect<{}, {}, OwnProps>(mapStateToProps),
+  reduxForm<IssueFormData, OwnProps>({
+    form: ISSUE_CREATION_FORM_ID,
+  }),
+);
+
+export const IssueCreateForm = enhance(
   ({
     issue,
     issueTypes,
@@ -63,7 +91,7 @@ export const IssueCreateForm = reduxForm<IssueFormData, OwnProps>({
             {!issue.type && (
               <FormGroup>
                 <ControlLabel>{translate('Request type')}</ControlLabel>
-                <TypeField issueTypes={issueTypes} disabled={submitting} />
+                <TypeField issueTypes={issueTypes} isDisabled={submitting} />
               </FormGroup>
             )}
             {filteredTemplates.length > 0 && (
@@ -74,9 +102,10 @@ export const IssueCreateForm = reduxForm<IssueFormData, OwnProps>({
                   component={SelectField}
                   placeholder={translate('Select issue template...')}
                   options={filteredTemplates}
-                  disabled={submitting}
-                  valueKey="uuid"
-                  labelKey="name"
+                  isDisabled={submitting}
+                  getOptionValue={(option) => option.uuid}
+                  getOptionLabel={(option) => option.name}
+                  isClearable={true}
                 />
               </FormGroup>
             )}
@@ -105,6 +134,14 @@ export const IssueCreateForm = reduxForm<IssueFormData, OwnProps>({
                 disabled={submitting}
               />
             </FormGroup>
+            <ProjectGroup
+              disabled={submitting}
+              customer={useSelector(getCustomer)}
+            />
+            <ResourceGroup
+              disabled={submitting}
+              project={useSelector(issueCreateProjectSelector)}
+            />
             {attachments.length > 0 && (
               <FormGroup>
                 <ControlLabel>{translate('Template files')}</ControlLabel>

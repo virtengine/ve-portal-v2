@@ -4,43 +4,39 @@ import useAsync from 'react-use/lib/useAsync';
 
 import { OFFERING_TYPE_BOOKING } from '@waldur/booking/constants';
 import { LoadingSpinner } from '@waldur/core/LoadingSpinner';
-import { ngInjector } from '@waldur/core/services';
 import { translate } from '@waldur/i18n';
 import { getOffering, getCategory } from '@waldur/marketplace/common/api';
+import { OfferingResourcesFilter } from '@waldur/marketplace/details/OfferingResourcesFilter';
+import { OfferingResourcesList } from '@waldur/marketplace/details/OfferingResourcesList';
 import { getTabs } from '@waldur/marketplace/details/OfferingTabs';
 import { Offering } from '@waldur/marketplace/types';
+import { useBreadcrumbsFn } from '@waldur/navigation/breadcrumbs/store';
+import { BreadcrumbItem } from '@waldur/navigation/breadcrumbs/types';
+import { useTitle } from '@waldur/navigation/title';
 
 import { OfferingBookingTab } from './OfferingBookingTab';
 import { OfferingDetails } from './OfferingDetails';
 import { PlanUsageList } from './PlanUsageList';
 
-function updateBreadcrumbs(offering: Offering) {
-  const $timeout = ngInjector.get('$timeout');
-  const BreadcrumbsService = ngInjector.get('BreadcrumbsService');
-  const titleService = ngInjector.get('titleService');
-
-  $timeout(() => {
-    BreadcrumbsService.activeItem = offering.name;
-    BreadcrumbsService.items = [
-      {
-        label: translate('Organization workspace'),
-        state: 'organization.details',
-      },
-      {
-        label: translate('My services'),
-      },
-      offering.shared
-        ? {
-            label: translate('Public offerings'),
-            state: 'marketplace-vendor-offerings',
-          }
-        : {
-            label: translate('My offerings'),
-            state: 'marketplace-my-offerings',
-          },
-    ];
-    titleService.setTitle(offering.name);
-  });
+function getBreadcrumbs(offering: Offering): BreadcrumbItem[] {
+  return [
+    {
+      label: translate('Organization workspace'),
+      state: 'organization.details',
+    },
+    {
+      label: translate('My services'),
+    },
+    offering.shared
+      ? {
+          label: translate('Public offerings'),
+          state: 'marketplace-vendor-offerings',
+        }
+      : {
+          label: translate('My offerings'),
+          state: 'marketplace-my-offerings',
+        },
+  ];
 }
 
 async function loadData(offering_uuid: string) {
@@ -57,11 +53,20 @@ async function loadData(offering_uuid: string) {
     },
     {
       title: translate('Bookings'),
-      component: () => <OfferingBookingTab offering={offering} />,
+      component: () => <OfferingBookingTab offeringUuid={offering.uuid} />,
       visible: offering.type === OFFERING_TYPE_BOOKING,
     },
-  ].filter(tab => tab.visible);
-  updateBreadcrumbs(offering);
+    {
+      visible: true,
+      title: translate('Resources'),
+      component: () => (
+        <>
+          <OfferingResourcesFilter />
+          <OfferingResourcesList offering={offering} />
+        </>
+      ),
+    },
+  ].filter((tab) => tab.visible);
   return { offering, tabs };
 }
 
@@ -73,6 +78,12 @@ export const OfferingContainer = () => {
   const { loading, value, error } = useAsync(() => loadData(offering_uuid), [
     offering_uuid,
   ]);
+
+  useBreadcrumbsFn(() => (value ? getBreadcrumbs(value.offering) : []), [
+    value,
+  ]);
+
+  useTitle(value ? value.offering.name : translate('Offering details'));
 
   if (loading) {
     return <LoadingSpinner />;

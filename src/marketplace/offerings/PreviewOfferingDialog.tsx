@@ -14,18 +14,22 @@ import {
 } from '@waldur/marketplace/types';
 import { CloseDialogButton } from '@waldur/modal/CloseDialogButton';
 import { ModalDialog } from '@waldur/modal/ModalDialog';
-import { connectAngularComponent } from '@waldur/store/connect';
 import { getProject } from '@waldur/workspace/selectors';
 import { OuterState, Project } from '@waldur/workspace/types';
 
-interface PurePreviewOfferingDialogProps
-  extends OfferingConfigurationFormProps {
+import { getDefaultLimits } from './utils';
+
+interface PreviewOfferingOwnProps {
   resolve: {
     offering: Offering;
   };
 }
 
-const PurePreviewOfferingDialog = (props: PurePreviewOfferingDialogProps) => {
+interface PreviewOfferingDialogProps
+  extends OfferingConfigurationFormProps,
+    PreviewOfferingOwnProps {}
+
+const PurePreviewOfferingDialog = (props: PreviewOfferingDialogProps) => {
   const FormComponent = getFormComponent(props.resolve.offering.type);
   return (
     <ModalDialog
@@ -44,9 +48,14 @@ const PurePreviewOfferingDialog = (props: PurePreviewOfferingDialogProps) => {
 const storeConnector = connect<
   { project: Project },
   {},
-  { offering: Offering },
+  PreviewOfferingOwnProps,
   OuterState
->(state => ({ project: getProject(state) }));
+>((state, ownProps) => ({
+  project: getProject(state),
+  initialValues: {
+    limits: getDefaultLimits(ownProps.resolve.offering),
+  },
+}));
 
 const formConnector = reduxForm<
   OfferingFormData,
@@ -55,6 +64,4 @@ const formConnector = reduxForm<
 
 const enhance = compose(storeConnector, formConnector);
 
-const PreviewOfferingDialog = enhance(PurePreviewOfferingDialog);
-
-export default connectAngularComponent(PreviewOfferingDialog, ['resolve']);
+export const PreviewOfferingDialog = enhance(PurePreviewOfferingDialog);

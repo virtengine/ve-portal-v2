@@ -9,7 +9,7 @@ import * as api from '@waldur/marketplace/common/api';
 import { Category } from '@waldur/marketplace/types';
 import { closeModalDialog } from '@waldur/modal/actions';
 import { showError, showSuccess, stateGo } from '@waldur/store/coreSaga';
-import { updateEntity } from '@waldur/table-react/actions';
+import { updateEntity } from '@waldur/table/actions';
 import { getCustomer } from '@waldur/workspace/selectors';
 
 import {
@@ -48,7 +48,7 @@ function* loadData() {
 
 function* removeOfferingComponent(action) {
   const plans = yield select(getPlans);
-  const newPlans = plans.map(plan =>
+  const newPlans = plans.map((plan) =>
     planWithoutComponent(plan, action.payload.component),
   );
   yield put(change(constants.FORM_ID, 'plans', newPlans));
@@ -56,7 +56,7 @@ function* removeOfferingComponent(action) {
 
 function* removeOfferingQuotas(action) {
   const plans = yield select(getPlans);
-  const newPlans = plans.map(plan =>
+  const newPlans = plans.map((plan) =>
     planWithoutQuotas(plan, action.payload.component),
   );
   yield put(change(constants.FORM_ID, 'plans', newPlans));
@@ -215,7 +215,23 @@ function* removeOfferingScreenshot(action: Action<any>) {
   }
 }
 
-export default function*() {
+function* addOfferingLocation(action: Action<any>) {
+  try {
+    const { offering } = action.payload;
+    const response = yield call(api.updateOffering, offering.uuid, offering);
+    yield put(showSuccess(translate('Location has been saved successfully.')));
+    if (response.status === 201) {
+      yield put(closeModalDialog());
+    }
+  } catch (error) {
+    const errorMessage = `${translate('Unable to save location.')} ${format(
+      error,
+    )}`;
+    yield put(showError(errorMessage));
+  }
+}
+
+export default function* () {
   yield takeEvery(constants.REMOVE_OFFERING_COMPONENT, removeOfferingComponent);
   yield takeEvery(constants.REMOVE_OFFERING_QUOTAS, removeOfferingQuotas);
   yield takeEvery(constants.CATEGORY_CHANGED, handleCategoryChange);
@@ -229,4 +245,5 @@ export default function*() {
     constants.REMOVE_OFFERING_SCREENSHOT,
     removeOfferingScreenshot,
   );
+  yield takeEvery(constants.ADD_OFFERING_LOCATION, addOfferingLocation);
 }

@@ -1,33 +1,41 @@
 import Axios from 'axios';
 import Qs from 'qs';
 
-import { ngInjector } from '@waldur/core/services';
+import { ENV, ngInjector } from '@waldur/core/services';
+import { closeModalDialog } from '@waldur/modal/actions';
+import store from '@waldur/store/store';
+import { UsersService } from '@waldur/user/UsersService';
+
+import { AuthService } from './AuthService';
 
 // @ngInject
-function initAuthToken($auth, $http) {
+function initAuthToken() {
   // When application starts up, we need to inject auth token if it exists
-  const token = $auth.getToken();
+  const token = localStorage['AUTH_TOKEN'];
   if (token) {
     Axios.defaults.headers.common['Authorization'] = 'Token ' + token;
-    $http.defaults.headers.common['Authorization'] = 'Token ' + token;
   }
 }
 
-Axios.defaults.paramsSerializer = params =>
+Axios.defaults.paramsSerializer = (params) =>
   Qs.stringify(params, { arrayFormat: 'repeat' });
 
 // On 401 error received, user session has expired and he should logged out
 Axios.interceptors.response.use(
-  function(response) {
+  function (response) {
     return response;
   },
   function invalidTokenInterceptor(error) {
-    if (error.response && error.response.status === 401 && ngInjector) {
-      const authService = ngInjector.get('authService');
+    if (
+      error.response &&
+      error.response.status === 401 &&
+      ngInjector &&
+      error.config.url !== ENV.apiEndpoint + 'api-auth/password/'
+    ) {
       const $state = ngInjector.get('$state');
       const $stateParams = ngInjector.get('$stateParams');
 
-      authService.localLogout(
+      AuthService.localLogout(
         $state.current.name
           ? {
               toState: $state.current.name,
@@ -35,38 +43,30 @@ Axios.interceptors.response.use(
             }
           : undefined,
       );
-    } else {
-      // See also: https://github.com/axios/axios/issues/960
-      return Promise.reject(error.response);
     }
+    return Promise.reject(error.response);
   },
 );
 
 // @ngInject
-function requireAuth(
-  $transitions,
-  $auth,
-  $rootScope,
-  $uibModalStack,
-  features,
-  usersService,
-) {
+function requireAuth($transitions, $rootScope, features) {
   $transitions.onStart(
     {
-      to: state => state.data && state.data.auth && $auth.isAuthenticated(),
+      to: (state) =>
+        state.data && state.data.auth && AuthService.isAuthenticated(),
     },
-    transition =>
-      usersService.isCurrentUserValid().then(result => {
+    (transition) =>
+      UsersService.isCurrentUserValid().then((result) => {
         if (result) {
-          if (transition.to().name == 'initialdata.view') {
+          if (transition.to().name == 'initialdata') {
             return transition.router.stateService.target('profile.details');
           }
           return;
         }
-        if (transition.to().name == 'initialdata.view') {
+        if (transition.to().name == 'initialdata') {
           return;
         }
-        return transition.router.stateService.target('initialdata.view');
+        return transition.router.stateService.target('initialdata');
       }),
   );
 
@@ -74,9 +74,10 @@ function requireAuth(
   // he should be redirected to login page.
   $transitions.onStart(
     {
-      to: state => state.data && state.data.auth && !$auth.isAuthenticated(),
+      to: (state) =>
+        state.data && state.data.auth && !AuthService.isAuthenticated(),
     },
-    transition =>
+    (transition) =>
       transition.router.stateService.target('login', {
         toState: transition.to().name,
         toParams: JSON.parse(JSON.stringify(transition.params())),
@@ -87,25 +88,25 @@ function requireAuth(
   // he is redirected to dashboard.
   $transitions.onStart(
     {
-      to: state =>
-        state.data && state.data.anonymous && $auth.isAuthenticated(),
+      to: (state) =>
+        state.data && state.data.anonymous && AuthService.isAuthenticated(),
     },
-    transition => transition.router.stateService.target('profile.details'),
+    (transition) => transition.router.stateService.target('profile.details'),
   );
 
   // If state data has `feature` field and this feature is disabled,
   // user is redirected to 404 error page.
   $transitions.onStart(
     {
-      to: state =>
+      to: (state) =>
         state.data &&
         state.data.feature &&
         !features.isVisible(state.data.feature),
     },
-    transition => transition.router.stateService.target('errorPage.notFound'),
+    (transition) => transition.router.stateService.target('errorPage.notFound'),
   );
 
-  $transitions.onStart({}, transition => {
+  $transitions.onStart({}, (transition) => {
     const fromName = transition.from().name;
     if (fromName) {
       $rootScope.prevPreviousState = fromName;
@@ -115,12 +116,12 @@ function requireAuth(
     }
   });
 
-  $transitions.onSuccess({}, function() {
-    $uibModalStack.dismissAll();
+  $transitions.onSuccess({}, function () {
+    store.dispatch(closeModalDialog());
   });
 }
 
-export default module => {
+export default (module) => {
   module.run(requireAuth);
   module.run(initAuthToken);
 };

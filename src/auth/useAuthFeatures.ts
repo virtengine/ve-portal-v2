@@ -3,8 +3,9 @@ import * as React from 'react';
 import { useDispatch } from 'react-redux';
 import useAsync from 'react-use/lib/useAsync';
 
-import { ENV, ngInjector } from '@waldur/core/services';
+import { ENV } from '@waldur/core/services';
 import { translate } from '@waldur/i18n';
+import { InvitationService } from '@waldur/invitations/InvitationService';
 import { showError } from '@waldur/store/coreSaga';
 
 const checkRegistrationMethods = async (mode, router, dispatch) => {
@@ -28,8 +29,7 @@ const checkRegistrationMethods = async (mode, router, dispatch) => {
     return;
   }
 
-  const invitationService = ngInjector.get('invitationService');
-  const token = invitationService.getInvitationToken();
+  const token = InvitationService.getInvitationToken();
   if (!token) {
     dispatch(showError(translate('Invitation token is not found.')));
     router.stateService.go('errorPage.notFound');
@@ -37,7 +37,7 @@ const checkRegistrationMethods = async (mode, router, dispatch) => {
   }
 
   try {
-    const result = await invitationService.check(token);
+    const result: any = await InvitationService.check(token);
     if (result.data.civil_number_required) {
       return true;
     }
@@ -81,9 +81,6 @@ export const useAuthFeatures = () => {
 
   const showSocialSignup = methods.SOCIAL_SIGNUP && !civilNumberRequired;
 
-  const showGoogle =
-    showSocialSignup && !!ENV.plugins.WALDUR_AUTH_SOCIAL.GOOGLE_CLIENT_ID;
-
   const showFacebook =
     showSocialSignup && !!ENV.plugins.WALDUR_AUTH_SOCIAL.FACEBOOK_CLIENT_ID;
 
@@ -92,6 +89,12 @@ export const useAuthFeatures = () => {
 
   const showTARA =
     showSocialSignup && !!ENV.plugins.WALDUR_AUTH_SOCIAL.TARA_CLIENT_ID;
+
+  const showKeycloak =
+    showSocialSignup && !!ENV.plugins.WALDUR_AUTH_SOCIAL.KEYCLOAK_CLIENT_ID;
+
+  const showEduteams =
+    showSocialSignup && !!ENV.plugins.WALDUR_AUTH_SOCIAL.EDUTEAMS_CLIENT_ID;
 
   const showValimo = methods.VALIMO && state.name === 'login';
 
@@ -110,12 +113,13 @@ export const useAuthFeatures = () => {
     SignupButton: showSignupButton,
     SignupForm: showSignupForm,
     SocialSignup: showSocialSignup,
-    google: showGoogle,
     facebook: showFacebook,
     smartid: showSmartId,
     tara: showTARA,
     valimo: showValimo,
     saml2: showSaml2,
     saml2providers: showSaml2Providers,
+    keycloak: showKeycloak,
+    eduteams: showEduteams,
   };
 };

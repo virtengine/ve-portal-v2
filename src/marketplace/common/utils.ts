@@ -1,17 +1,20 @@
 import { translate } from '@waldur/i18n';
 
+import { OrderItemResponse } from '../orders/types';
+import { BillingPeriod } from '../types';
+
 // See also: https://github.com/erikras/redux-form/issues/1852
-export const parseIntField = value => parseInt(value, 10) || 0;
-export const formatIntField = value => (value ? value.toString() : 0);
-export const validateNonNegative = value =>
+export const parseIntField = (value) => parseInt(value, 10) || 0;
+export const formatIntField = (value) => (value ? value.toString() : 0);
+export const validateNonNegative = (value) =>
   value < 0 ? translate('Value should not be negative.') : undefined;
 
-export const maxAmount = limit => value =>
+export const maxAmount = (limit) => (value) =>
   parseInt(value, 10) > parseInt(limit, 10)
     ? translate('Value should not be greater than {limit}.', { limit })
     : undefined;
 
-export const minAmount = limit => value =>
+export const minAmount = (limit) => (value) =>
   parseInt(value, 10) < parseInt(limit, 10)
     ? translate('Value should not be lesser than {limit}.', { limit })
     : undefined;
@@ -67,3 +70,27 @@ export function getBillingPeriods(unit: string): BillingPeriodDescription {
       };
   }
 }
+
+export const getMaxUnit = (items: OrderItemResponse[]): BillingPeriod => {
+  const units: string[] = items
+    .filter((item) => item.plan)
+    .map((item) => item.plan_unit);
+
+  if (units.length === 0) {
+    return null;
+  }
+
+  if (units.includes('month')) {
+    return 'month';
+  }
+
+  if (units.includes('half_month')) {
+    return 'month';
+  }
+
+  if (units.includes('day')) {
+    return 'day';
+  }
+
+  return 'hour';
+};

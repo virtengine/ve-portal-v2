@@ -3,16 +3,15 @@ import { connect } from 'react-redux';
 import { compose } from 'redux';
 import { reduxForm, formValues } from 'redux-form';
 
-import { SelectAsyncField } from '@waldur/form-react';
+import { SelectAsyncField } from '@waldur/form';
 import { withTranslation } from '@waldur/i18n';
 import { ActionDialog } from '@waldur/modal/ActionDialog';
-import { connectAngularComponent } from '@waldur/store/connect';
 
 import * as actions from './actions';
 import { MonitoringGuide } from './MonitoringGuide';
 import { ZabbixTemplateRequest } from './types';
 
-const ZabbixHostCreateDialog = props => (
+const PureZabbixHostCreateDialog = (props) => (
   <ActionDialog
     title={props.translate('Create Zabbix host')}
     submitLabel={props.translate('Create Zabbix host')}
@@ -24,9 +23,10 @@ const ZabbixHostCreateDialog = props => (
       name="service_project_link"
       label={props.translate('Zabbix provider')}
       required={true}
-      clearable={false}
-      labelKey="service_name"
-      valueKey="url"
+      isClearable={false}
+      getOptionValue={(option) => option.url}
+      getOptionLabel={(option) => option.service_name}
+      defaultOptions
       loadOptions={props.loadLinks}
     />
     {props.link && (
@@ -34,10 +34,11 @@ const ZabbixHostCreateDialog = props => (
         name="templates"
         label={props.translate('Templates')}
         required={true}
-        clearable={false}
-        multi={true}
-        labelKey="name"
-        valueKey="url"
+        isClearable={false}
+        isMulti={true}
+        getOptionValue={(option) => option.url}
+        getOptionLabel={(option) => option.name}
+        defaultOptions
         loadOptions={props.loadTemplates}
       />
     )}
@@ -55,7 +56,7 @@ const mapDispatchToProps = (dispatch, ownProps) => ({
   loadLinks: () =>
     actions.loadLinks({ resource: ownProps.resolve.resource.url }, dispatch),
 
-  loadTemplates: query => {
+  loadTemplates: (query) => {
     const request: ZabbixTemplateRequest = {
       settings_uuid: ownProps.link.service_settings_uuid,
     };
@@ -65,7 +66,7 @@ const mapDispatchToProps = (dispatch, ownProps) => ({
     return actions.loadTemplates(request, dispatch);
   },
 
-  createHost: data =>
+  createHost: (data) =>
     actions.createHost(
       { ...data, resource: ownProps.resolve.resource },
       dispatch,
@@ -79,6 +80,4 @@ const enhance = compose(
   withTranslation,
 );
 
-export default connectAngularComponent(enhance(ZabbixHostCreateDialog), [
-  'resolve',
-]);
+export const ZabbixHostCreateDialog = enhance(PureZabbixHostCreateDialog);

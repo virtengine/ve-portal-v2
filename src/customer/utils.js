@@ -1,33 +1,28 @@
-import { WOKSPACE_NAMES } from '../navigation/workspace/constants';
+import store from '@waldur/store/store';
+import { UsersService } from '@waldur/user/UsersService';
+import {
+  setCurrentCustomer,
+  setCurrentProject,
+  setCurrentWorkspace,
+} from '@waldur/workspace/actions';
+import { getCustomer } from '@waldur/workspace/selectors';
+import { ORGANIZATION_WORKSPACE } from '@waldur/workspace/types';
+
+import { CustomersService } from './services/CustomersService';
 
 // @ngInject
-export function loadCustomer(
-  $q,
-  $stateParams,
-  $state,
-  customersService,
-  currentStateService,
-  WorkspaceService,
-) {
+export function loadCustomer($q, $stateParams, $state) {
   if (!$stateParams.uuid) {
     return $q.reject();
   }
-  return customersService
-    .$get($stateParams.uuid)
-    .then(customer => {
-      currentStateService.setCustomer(customer);
+  return CustomersService.get($stateParams.uuid)
+    .then((customer) => {
+      store.dispatch(setCurrentCustomer(customer));
+      store.dispatch(setCurrentProject(null));
+      store.dispatch(setCurrentWorkspace(ORGANIZATION_WORKSPACE));
       return customer;
     })
-    .then(customer => {
-      WorkspaceService.setWorkspace({
-        customer: customer,
-        project: null,
-        hasCustomer: true,
-        workspace: WOKSPACE_NAMES.organization,
-      });
-      return customer;
-    })
-    .catch(error => {
+    .catch((error) => {
       if (error.status === 404) {
         $state.go('errorPage.notFound');
       }
@@ -35,27 +30,17 @@ export function loadCustomer(
 }
 
 // @ngInject
-export function CustomerController(
-  $scope,
-  $state,
-  usersService,
-  currentStateService,
-  customersService,
-) {
-  usersService.getCurrentUser().then(currentUser => {
-    currentStateService.getCustomer().then(currentCustomer => {
-      $scope.currentCustomer = currentCustomer;
-      $scope.currentUser = currentUser;
+export function CustomerController($scope, $state) {
+  UsersService.getCurrentUser().then((currentUser) => {
+    const currentCustomer = getCustomer(store.getState());
+    $scope.currentCustomer = currentCustomer;
+    $scope.currentUser = currentUser;
 
-      if (
-        customersService.checkCustomerUser(currentCustomer, currentUser) ||
-        currentUser.is_support
-      ) {
-        currentStateService.setOwnerOrStaff(true);
-      } else {
-        currentStateService.setOwnerOrStaff(false);
-        $state.go('profile.details');
-      }
-    });
+    if (
+      !CustomersService.checkCustomerUser(currentCustomer, currentUser) &&
+      !currentUser.is_support
+    ) {
+      $state.go('profile.details');
+    }
   });
 }

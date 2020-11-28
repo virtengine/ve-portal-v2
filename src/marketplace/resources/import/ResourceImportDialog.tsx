@@ -7,7 +7,6 @@ import { Panel } from '@waldur/core/Panel';
 import { translate } from '@waldur/i18n';
 import { CloseDialogButton } from '@waldur/modal/CloseDialogButton';
 import { ModalDialog } from '@waldur/modal/ModalDialog';
-import { connectAngularComponent } from '@waldur/store/connect';
 
 import { ImportButton } from './ImportButton';
 import { OfferingsList } from './OfferingsList';
@@ -15,7 +14,7 @@ import { ResourcesList } from './ResourcesList';
 import { ImportDialogProps } from './types';
 import { useImportDialog } from './useImportDialog';
 
-export const ResourceImportDialog: React.FC<ImportDialogProps> = props => {
+export const ResourceImportDialog: React.FC<ImportDialogProps> = (props) => {
   const {
     offering,
     selectOffering,
@@ -46,11 +45,11 @@ export const ResourceImportDialog: React.FC<ImportDialogProps> = props => {
     >
       {offeringsProps.loading ? (
         <LoadingSpinner />
-      ) : offeringsProps.erred ? (
+      ) : offeringsProps.error ? (
         <h3>{translate('Unable to load data.')}</h3>
       ) : (
-        offeringsProps.loaded &&
-        (offeringsProps.data.length === 0 ? (
+        offeringsProps.value &&
+        (offeringsProps.value.length === 0 ? (
           translate('There are no offerings available.')
         ) : (
           <Row>
@@ -60,7 +59,7 @@ export const ResourceImportDialog: React.FC<ImportDialogProps> = props => {
                 title={translate('Step 1. Select offering')}
               >
                 <OfferingsList
-                  choices={offeringsProps.data}
+                  choices={offeringsProps.value}
                   value={offering}
                   onChange={selectOffering}
                 />
@@ -74,15 +73,15 @@ export const ResourceImportDialog: React.FC<ImportDialogProps> = props => {
                 >
                   {resourceProps.loading ? (
                     <LoadingSpinner />
-                  ) : resourceProps.erred ? (
+                  ) : resourceProps.error ? (
                     <h3>{translate('Unable to load data.')}</h3>
                   ) : (
-                    resourceProps.loaded &&
-                    (resourceProps.data.length === 0 ? (
+                    resourceProps.value &&
+                    (resourceProps.value.length === 0 ? (
                       translate('There are no resources available.')
                     ) : (
                       <ResourcesList
-                        resources={resourceProps.data}
+                        resources={resourceProps.value}
                         offering={offering}
                         value={resources}
                         toggleResource={toggleResource}
@@ -100,5 +99,3 @@ export const ResourceImportDialog: React.FC<ImportDialogProps> = props => {
     </ModalDialog>
   );
 };
-
-export default connectAngularComponent(ResourceImportDialog, ['resolve']);

@@ -1,0 +1,107 @@
+include:
+  - project: "waldur/waldur-pipelines"
+    file: "/templates/stages.yml"
+  - project: "waldur/waldur-pipelines"
+    file: "/templates/release/publish.yml"
+  - project: "waldur/waldur-pipelines"
+    file: "/templates/release/sync-to-github.yml"
+  - project: "waldur/waldur-pipelines"
+    file: "/templates/validate/docker-compose-trigger.yml"
+  - project: "waldur/waldur-pipelines"
+    file: "/templates/test/lint-docker-image.yaml"
+
+variables:
+  COMPONENT_VERSION: "latest"
+  GITHUB_OPENNODE_REPO_URL: "git@github.com:opennode/waldur-homeport.git"
+  GITHUB_WALDUR_REPO_URL: "git@github.com:waldur/waldur-homeport.git"
+
+image: $CI_REGISTRY/waldur/waldur-pipelines/node:lts-alpine
+
+cache:
+  key: "$CI_COMMIT_REF_NAME"
+  policy: pull
+  paths:
+    - .yarn
+    - node_modules/
+
+before_script:
+  - yarn config set cache-folder .yarn
+  - yarn install --frozen-lockfile
+
+Run linters:
+  stage: test
+  interruptible: true
+  rules:
+    - if: '$SKIP_TESTS == "true" || $SKIP_TESTS == "yes"'
+      when: never
+    - if: '$CI_COMMIT_BRANCH == "develop"'
+    - if: '$CI_COMMIT_BRANCH == "master"'
+    # If event is related to a created merge request
+    - if: '$CI_PIPELINE_SOURCE == "merge_request_event"'
+  script:
+    - yarn format:check
+    - yarn lint:check
+
+Run jest tests:
+  stage: test
+  interruptible: true
+  rules:
+    - if: '$SKIP_TESTS == "true" || $SKIP_TESTS == "yes"'
+      when: never
+    - if: '$CI_COMMIT_BRANCH == "develop"'
+    - if: '$CI_COMMIT_BRANCH == "master"'
+    # If event is related to a created merge request
+    - if: '$CI_PIPELINE_SOURCE == "merge_request_event"'
+  script:
+    - npm install -g jest
+    - jest --verbose --runInBand --coverage
+  coverage: /All\sfiles.*?\s+(\d+.\d+)/
+
+Run E2E tests:
+  image:
+    name: $CI_REGISTRY/waldur/waldur-pipelines/cypress:4.8.0
+    entrypoint: [""]
+  stage: test
+  interruptible: true
+  rules:
+    - if: '$SKIP_TESTS == "true" || $SKIP_TESTS == "yes"'
+      when: never
+    - if: '$CI_COMMIT_BRANCH == "develop"'
+    - if: '$CI_COMMIT_BRANCH == "master"'
+    # If event is related to a created merge request
+    - if: '$CI_PIPELINE_SOURCE == "merge_request_event"'
+  script:
+    - npm install -g yarn
+    - yarn config set cache-folder .yarn
+    - yarn install --frozen-lockfile
+    - NO_COLOR=1 yarn ci:test
+  artifacts:
+    expire_in: 1 week
+    when: always
+    paths:
+      - cypress/screenshots
+      - cypress/videos
+    reports:
+      junit:
+        - results/TEST-*.xml
+
+Build artifact:
+  stage: build
+  interruptible: true
+  rules:
+    - if: '$SKIP_TESTS == "true" || $SKIP_TESTS == "yes"'
+      when: never
+    - if: '$CI_COMMIT_BRANCH == "develop"'
+    - if: '$CI_COMMIT_BRANCH == "master"'
+  script:
+    - yarn build
+  artifacts:
+    paths:
+      - build/
+    expire_in: 1 week
+
+Lint docker image:
+  extends: .Lint docker image template
+  variables:
+    IMAGE: opennode/waldur-homeport:latest
+  before_script: []

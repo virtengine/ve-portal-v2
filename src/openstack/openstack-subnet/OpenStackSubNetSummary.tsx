@@ -11,7 +11,7 @@ import {
 } from '@waldur/resource/summary';
 import { formatDefault } from '@waldur/resource/utils';
 
-const formatNetwork = props => (
+const formatNetwork = (props) => (
   <ResourceLink
     type="OpenStack.Network"
     uuid={getUUID(props.network)}
@@ -19,7 +19,7 @@ const formatNetwork = props => (
   />
 );
 
-const formatTenant = props => (
+const formatTenant = (props) => (
   <ResourceLink
     type="OpenStack.Tenant"
     uuid={getUUID(props.tenant)}
@@ -50,6 +50,10 @@ const PureOpenStackSubNetSummary = (props: ResourceSummaryProps) => {
       <Field
         label={translate('Gateway IP')}
         value={formatDefault(resource.gateway_ip)}
+      />
+      <Field
+        label={translate('Enabled default gateway')}
+        value={resource.is_connected ? translate('Yes') : translate('No')}
       />
       <Field
         label={translate('IP version')}

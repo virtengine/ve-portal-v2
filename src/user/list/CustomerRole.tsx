@@ -1,6 +1,7 @@
 import * as React from 'react';
 
-import { BooleanField } from '@waldur/table-react/BooleanField';
+import { CUSTOMER_OWNER_ROLE } from '@waldur/core/constants';
+import { BooleanField } from '@waldur/table/BooleanField';
 
 interface Props {
   row: {
@@ -8,8 +9,6 @@ interface Props {
   };
 }
 
-const CustomerRole = ({ row }: Props) => (
-  <BooleanField value={row.role === 'owner'} />
+export const CustomerRole = ({ row }: Props) => (
+  <BooleanField value={row.role === CUSTOMER_OWNER_ROLE} />
 );
-
-export default CustomerRole;

@@ -40,13 +40,15 @@ export const ResourceSummary = ({ resource }) => (
         )
       }
     />
-    <Field
-      label={translate('Resource')}
-      value={
-        <ResourceDetailsLink item={resource}>
-          {translate('Resource link')}
-        </ResourceDetailsLink>
-      }
-    />
+    {resource.resource_uuid ? (
+      <Field
+        label={translate('Resource')}
+        value={
+          <ResourceDetailsLink item={resource}>
+            {translate('Resource link')}
+          </ResourceDetailsLink>
+        }
+      />
+    ) : null}
   </dl>
 );

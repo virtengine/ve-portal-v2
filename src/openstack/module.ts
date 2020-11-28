@@ -1,4 +1,3 @@
-import routes from './analytics/routes';
 import openstackBackupScheduleModule from './openstack-backup-schedule/module';
 import openstackBackupModule from './openstack-backup/module';
 import './openstack-floating-ips/module';
@@ -13,17 +12,17 @@ import openstackVolumeModule from './openstack-volume/module';
 import './provider';
 import './events';
 import './marketplace';
+import './router-breadcrumbs';
 
-export default module => {
-  module.config(routes);
-  openstackTenantModule(module);
+export default (module) => {
+  openstackTenantModule();
   openstackInstanceModule(module);
-  openstackVolumeModule(module);
+  openstackVolumeModule();
   openstackBackupModule(module);
-  openstackBackupScheduleModule(module);
-  openstackNetworkModule(module);
-  openstackSubnetModule(module);
+  openstackBackupScheduleModule();
+  openstackNetworkModule();
+  openstackSubnetModule();
   openstackSecurityGroupsModule(module);
-  openstackSnapshotModule(module);
-  openstackSnapshotScheduleModule(module);
+  openstackSnapshotModule();
+  openstackSnapshotScheduleModule();
 };

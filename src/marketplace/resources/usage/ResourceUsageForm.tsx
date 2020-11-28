@@ -1,5 +1,4 @@
 import * as React from 'react';
-import { Options } from 'react-select';
 import { InjectedFormProps, Field } from 'redux-form';
 
 import { required } from '@waldur/core/validators';
@@ -8,8 +7,8 @@ import {
   NumberField,
   TextField,
   SelectField,
-} from '@waldur/form-react';
-import { AwesomeCheckboxField } from '@waldur/form-react/AwesomeCheckboxField';
+} from '@waldur/form';
+import { AwesomeCheckboxField } from '@waldur/form/AwesomeCheckboxField';
 import { translate } from '@waldur/i18n';
 import { OfferingComponent } from '@waldur/marketplace/types';
 
@@ -17,7 +16,7 @@ import { UsageReportContext } from './types';
 
 export interface ResourceUsageFormProps extends InjectedFormProps {
   components: OfferingComponent[];
-  periods: Options;
+  periods: any;
   params: UsageReportContext;
   submitReport(): void;
   onPeriodChange(): void;
@@ -26,12 +25,18 @@ export interface ResourceUsageFormProps extends InjectedFormProps {
 const StaticPlanField = () => (
   <Field
     name="period"
-    component={fieldProps => (
+    component={(fieldProps) => (
       <p>
         <strong>{translate('Period')}</strong>: {fieldProps.input.value.label}
       </p>
     )}
   />
+);
+
+const SummaryField = ({ label, value }) => (
+  <p>
+    <strong>{label}</strong>: {value}
+  </p>
 );
 
 export const ResourceUsageForm = (props: ResourceUsageFormProps) => {
@@ -71,6 +76,20 @@ export const ResourceUsageForm = (props: ResourceUsageFormProps) => {
   return (
     <form onSubmit={props.handleSubmit(props.submitReport)}>
       <FormContainer submitting={props.submitting} layout="vertical">
+        <SummaryField
+          label={translate('Client organization')}
+          value={props.params.customer_name}
+        />
+        <SummaryField
+          label={translate('Client project')}
+          value={props.params.project_name}
+        />
+        {props.params.backend_id && (
+          <SummaryField
+            label={translate('Backend ID')}
+            value={props.params.backend_id}
+          />
+        )}
         {props.periods.length > 1 ? (
           <SelectField
             name="period"
@@ -80,7 +99,7 @@ export const ResourceUsageForm = (props: ResourceUsageFormProps) => {
             )}
             options={props.periods}
             onChange={props.onPeriodChange}
-            clearable={false}
+            isClearable={false}
           />
         ) : (
           <StaticPlanField />

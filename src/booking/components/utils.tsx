@@ -1,27 +1,44 @@
-import { EventApi } from '@fullcalendar/core';
+import type { EventApi } from '@fullcalendar/core';
 import * as classNames from 'classnames';
 import * as React from 'react';
 import * as OverlayTrigger from 'react-bootstrap/lib/OverlayTrigger';
 import * as BootstrapTooltip from 'react-bootstrap/lib/Tooltip';
 import * as ReactDOM from 'react-dom';
 
+import { bookingStateAliases } from '@waldur/booking/BookingStateField';
 import { formatShortDateTime, formatTime } from '@waldur/core/dateUtils';
+import { translate } from '@waldur/i18n';
 
-export const bookingDataTemplate = event => {
+export const bookingDataTemplate = (event) => {
   const getLabels = Object.keys(event);
-  const getLabelValues = getLabels.map(label => ({
+  const getLabelValues = getLabels.map((label) => ({
     label,
     value: event[label],
   }));
-  return getLabelValues.map(item => (
-    <>
+  return getLabelValues.map((item, index) => (
+    <div key={index} style={{ width: '280px' }}>
       <div className="form-group">
-        <label className="control-label col-xs-4">{item.label}</label>
-        <span>{item.value === ('' || undefined) ? 'N/A' : item.value}</span>
+        <label className="control-label col-xs-4" style={{ marginTop: '-7px' }}>
+          {item.label}
+        </label>
+        <span>{item.value ? item.value : 'N/A'}</span>
       </div>
-    </>
+    </div>
   ));
 };
+
+const getTooltipInformation = (event) => ({
+  [translate('Start')]: formatShortDateTime(event.start),
+  [translate('End')]: formatShortDateTime(event.end),
+  [translate('Name')]: event.extendedProps.name,
+  [translate('Offering')]: event.extendedProps.offering_name,
+  [translate('Project')]: event.extendedProps.project_name,
+  [translate('Organization')]: event.extendedProps.customer_name,
+  [translate('Created by')]: event.extendedProps.created_by_full_name,
+  [translate('Approved by')]: event.extendedProps.approved_by_full_name,
+  [translate('Created')]: event.extendedProps.created,
+  [translate('State')]: bookingStateAliases(event.extendedProps.state),
+});
 
 const renderEventWithTooltip = ({
   event,
@@ -37,12 +54,7 @@ const renderEventWithTooltip = ({
         <BootstrapTooltip id={event.id}>
           <div className="container-fluid form-horizontal">
             <h4 className="fc-title">{event.title}</h4>
-            {bookingDataTemplate({
-              'All day': event.allDay ? 'Yes' : 'No',
-              Start: formatShortDateTime(event.start),
-              End: formatShortDateTime(event.end),
-              State: event.extendedProps.state,
-            })}
+            {bookingDataTemplate(getTooltipInformation(event))}
           </div>
         </BootstrapTooltip>
       }

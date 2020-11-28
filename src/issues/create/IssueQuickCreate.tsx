@@ -21,15 +21,15 @@ import { TypeGroup } from './TypeGroup';
 import { IssueRequestPayload, IssueTypeOption } from './types';
 import { sendIssueCreateRequest } from './utils';
 
-const filterOptions = options => options;
+const filterOption = (options) => options;
 
 const ISSUE_QUICK_CREATE_FORM_ID = 'IssueQuickCreate';
 
 const formSelector = formValueSelector(ISSUE_QUICK_CREATE_FORM_ID);
 
-const projectSelector = state => formSelector(state, 'project');
+const projectSelector = (state) => formSelector(state, 'project');
 
-const customerSelector = state => formSelector(state, 'customer');
+const customerSelector = (state) => formSelector(state, 'customer');
 
 const refreshCustomers = async (name: string) => {
   const params: Record<string, string> = {};
@@ -47,12 +47,13 @@ const OrganizationGroup = ({ disabled }) => (
       name="customer"
       component={AsyncSelectField}
       placeholder={translate('Select organization...')}
-      clearable={true}
+      isClearable={true}
+      defaultOptions
       loadOptions={refreshCustomers}
-      labelKey="name"
-      valueKey="name"
-      filterOptions={filterOptions}
-      disabled={disabled}
+      getOptionValue={(option) => option.name}
+      getOptionLabel={(option) => option.name}
+      filterOption={filterOption}
+      isDisabled={disabled}
     />
   </FormGroup>
 );
@@ -73,18 +74,17 @@ const projectRequiredSelector = createSelector(
     }
 
     return (
-      customer.owners.find(owner => owner.uuid === user.uuid) === undefined
+      customer.owners.find((owner) => owner.uuid === user.uuid) === undefined
     );
   },
 );
 
-const ProjectGroup = ({ disabled }) => {
+export const ProjectGroup = ({ disabled, customer }) => {
   const dispatch = useDispatch();
-  const customer = useSelector(customerSelector);
   const projectRequired = useSelector(projectRequiredSelector);
 
   const loadOptions = React.useCallback(
-    name => refreshProjects(name, customer),
+    (name) => refreshProjects(name, customer),
     [customer],
   );
 
@@ -103,18 +103,19 @@ const ProjectGroup = ({ disabled }) => {
           name="project"
           component={AsyncSelectField}
           placeholder={translate('Select project...')}
-          clearable={true}
+          isClearable={true}
+          defaultOptions
           loadOptions={loadOptions}
-          labelKey="name"
-          valueKey="name"
-          filterOptions={filterOptions}
-          disabled={disabled}
+          getOptionValue={(option) => option.name}
+          getOptionLabel={(option) => option.name}
+          filterOption={filterOption}
+          isDisabled={disabled}
           required={projectRequired}
         />
       ) : (
         <Select
           options={[]}
-          disabled={true}
+          isDisabled={true}
           placeholder={translate('Select project...')}
         />
       )}
@@ -122,12 +123,12 @@ const ProjectGroup = ({ disabled }) => {
   );
 };
 
-const ResourceGroup = ({ disabled }) => {
+export const ResourceGroup = ({ disabled, project }) => {
   const dispatch = useDispatch();
-  const project = useSelector(projectSelector);
-  const loadData = React.useCallback(name => refreshResources(name, project), [
-    project,
-  ]);
+  const loadData = React.useCallback(
+    (name) => refreshResources(name, project),
+    [project],
+  );
 
   React.useEffect(() => {
     dispatch(change(ISSUE_QUICK_CREATE_FORM_ID, 'resource', undefined));
@@ -141,17 +142,18 @@ const ResourceGroup = ({ disabled }) => {
           name="resource"
           component={AsyncSelectField}
           placeholder={translate('Select affected resource...')}
-          clearable={true}
+          isClearable={true}
+          defaultOptions
           loadOptions={loadData}
-          labelKey="name"
-          valueKey="name"
-          filterOptions={filterOptions}
-          disabled={disabled}
+          getOptionValue={(option) => option.name}
+          getOptionLabel={(option) => option.name}
+          filterOption={filterOption}
+          isDisabled={disabled}
         />
       ) : (
         <Select
           options={[]}
-          disabled={true}
+          isDisabled={true}
           placeholder={translate('Select affected resource...')}
         />
       )}
@@ -204,8 +206,14 @@ export const IssueQuickCreate = reduxForm<IssueFormData>({
         <SummaryGroup layout="vertical" disabled={submitting} />
         <DescriptionGroup layout="vertical" disabled={submitting} />
         <OrganizationGroup disabled={submitting} />
-        <ProjectGroup disabled={submitting} />
-        <ResourceGroup disabled={submitting} />
+        <ProjectGroup
+          disabled={submitting}
+          customer={useSelector(customerSelector)}
+        />
+        <ResourceGroup
+          disabled={submitting}
+          project={useSelector(projectSelector)}
+        />
         <div className="text-right">
           <SubmitButton submitting={submitting} block={false}>
             {translate('Create request')}

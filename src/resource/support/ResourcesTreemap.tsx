@@ -1,12 +1,14 @@
 import * as React from 'react';
 import { connect } from 'react-redux';
+import useAsync from 'react-use/lib/useAsync';
 import { compose } from 'redux';
 
 import { LoadingSpinner } from '@waldur/core/LoadingSpinner';
-import { Query } from '@waldur/core/Query';
-import { $filter } from '@waldur/core/services';
+import { defaultCurrency } from '@waldur/core/services';
 import { formatFilesize } from '@waldur/core/utils';
 import { TranslateProps, withTranslation, translate } from '@waldur/i18n';
+import { useReportingBreadcrumbs } from '@waldur/issues/workspace/SupportWorkspace';
+import { useTitle } from '@waldur/navigation/title';
 
 import { loadData, parseProjects } from './api';
 import { treemapFilterSelector } from './selectors';
@@ -22,12 +24,12 @@ const getQuotas = (): QuotaList => [
   {
     key: 'current_price',
     title: translate('Current price per month'),
-    tooltipValueFormatter: value => $filter('defaultCurrency')(value),
+    tooltipValueFormatter: (value) => defaultCurrency(value),
   },
   {
     key: 'estimated_price',
     title: translate('Esimated price per month'),
-    tooltipValueFormatter: value => $filter('defaultCurrency')(value),
+    tooltipValueFormatter: (value) => defaultCurrency(value),
   },
   {
     key: 'vpc_cpu_count',
@@ -81,7 +83,7 @@ const getQuotas = (): QuotaList => [
   },
 ];
 
-const calculateTotal = data =>
+const calculateTotal = (data) =>
   parseInt(
     data.reduce((t, entry) => t + (isNaN(entry.value) ? 0 : entry.value), 0),
     10,
@@ -93,49 +95,48 @@ interface StateProps {
 }
 
 const TreemapContainer = (props: StateProps & TranslateProps) => {
+  useTitle(translate('Resources usage'));
+  useReportingBreadcrumbs();
+
   const quotas = getQuotas();
-  const keys = quotas.map(q => q.key);
+  const keys = quotas.map((q) => q.key);
   let tooltipValueFormatter;
 
   if (props.quota) {
-    const quota = quotas.find(item => item.key === props.quota.key);
+    const quota = quotas.find((item) => item.key === props.quota.key);
     tooltipValueFormatter = quota.tooltipValueFormatter;
   }
 
+  const { loading, error, value: data } = useAsync(
+    () => loadData(props.accounting_is_running),
+    [props.accounting_is_running],
+  );
+  const chartData = data ? parseProjects(data, keys) : {};
+  let total = 0;
+  if (props.quota && data) {
+    total = calculateTotal(chartData[props.quota.key]);
+  }
   return (
-    <Query loader={loadData} variables={props.accounting_is_running}>
-      {({ loading, error, data }) => {
-        const chartData = data ? parseProjects(data, keys) : {};
-        let total = 0;
-        if (props.quota && data) {
-          total = calculateTotal(chartData[props.quota.key]);
-        }
-        return (
-          <>
-            <TreemapChartFilter
-              quotas={quotas}
-              loading={loading}
-              total={total}
-            />
-            {loading && <LoadingSpinner />}
-            {error && <span>{translate('Unable to load locations.')}</span>}
-            {data && !loading && !error && (
-              <TreemapChart
-                title={props.translate('Resource usage')}
-                width="100%"
-                height={500}
-                data={chartData[props.quota.key]}
-                tooltipValueFormatter={tooltipValueFormatter}
-              />
-            )}
-          </>
-        );
-      }}
-    </Query>
+    <>
+      <TreemapChartFilter quotas={quotas} loading={loading} total={total} />
+      {loading ? (
+        <LoadingSpinner />
+      ) : error ? (
+        <>{translate('Unable to load locations.')}</>
+      ) : (
+        <TreemapChart
+          title={props.translate('Resource usage')}
+          width="100%"
+          height={500}
+          data={chartData[props.quota.key]}
+          tooltipValueFormatter={tooltipValueFormatter}
+        />
+      )}
+    </>
   );
 };
 
-const mapStateToProps = state => ({
+const mapStateToProps = (state) => ({
   accounting_is_running: treemapFilterSelector(state, 'accounting_is_running'),
   quota: treemapFilterSelector(state, 'quota'),
 });

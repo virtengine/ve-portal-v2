@@ -1,17 +1,15 @@
 import * as React from 'react';
 import { connect } from 'react-redux';
-import { Option } from 'react-select';
 import { compose } from 'redux';
 import { getFormValues } from 'redux-form';
 
 import { formatDateTime } from '@waldur/core/dateUtils';
 import { translate } from '@waldur/i18n';
 import { Category, Offering } from '@waldur/marketplace/types';
-import { Table, connectTable, createFetcher } from '@waldur/table-react';
+import { Table, connectTable, createFetcher } from '@waldur/table';
 import { getCustomer } from '@waldur/workspace/selectors';
 import { Customer } from '@waldur/workspace/types';
 
-import { ResourceState } from '../types';
 import { ResourceUsageButton } from '../usage/ResourceUsageButton';
 
 import { TABLE_PUBLIC_RESOURCE } from './constants';
@@ -20,7 +18,7 @@ import { PublicResourcesListPlaceholder } from './PublicResourcesListPlaceholder
 import { ResourceStateField } from './ResourceStateField';
 
 interface ResourceFilter {
-  state?: Option<ResourceState>;
+  state?: any;
   organization?: Customer;
   category?: Category;
   offering?: Offering;
@@ -31,11 +29,16 @@ interface StateProps {
   filter: ResourceFilter;
 }
 
-export const TableComponent = props => {
+export const TableComponent = (props) => {
+  React.useEffect(() => {
+    props.resetPagination();
+  }, [props.filter]);
   const columns = [
     {
       title: translate('Name'),
-      render: PublicResourceLink,
+      render: ({ row }) => (
+        <PublicResourceLink row={row} customer={props.customer} />
+      ),
       orderField: 'name',
     },
     {
@@ -45,6 +48,10 @@ export const TableComponent = props => {
     {
       title: translate('Client organization'),
       render: ({ row }) => <span>{row.customer_name}</span>,
+    },
+    {
+      title: translate('Project'),
+      render: ({ row }) => <span>{row.project_name}</span>,
     },
     {
       title: translate('Category'),
@@ -109,7 +116,7 @@ const mapPropsToFilter = (props: StateProps) => {
   return filter;
 };
 
-const exportRow = row => [
+const exportRow = (row) => [
   row.name,
   row.uuid,
   row.offering_name,
@@ -138,7 +145,7 @@ export const TableOptions = {
   queryField: 'query',
 };
 
-const mapStateToProps = state => ({
+const mapStateToProps = (state) => ({
   customer: getCustomer(state),
   filter: getFormValues('PublicResourcesFilter')(state),
 });

@@ -1,23 +1,16 @@
-export const SERVICE_USAGE_FETCH_START =
-  'waldur/appstore/providers/support/FETCH_START';
-export const SERVICE_USAGE_FETCH_DONE =
-  'waldur/appstore/providers/support/FETCH_DONE';
-export const SERVICE_USAGE_FETCH_ERROR =
-  'waldur/appstore/providers/support/FETCH_ERROR';
-export const SERVICE_SELECT =
-  'waldur/appstore/providers/support/SERVICE_SELECT';
-export const INFO_PANEL_SHOW =
-  'waldur/appstore/providers/support/INFO_PANEL_SHOW';
-export const INFO_PANEL_HIDE =
-  'waldur/appstore/providers/support/INFO_PANEL_HIDE';
-export const USAGE_DATA_CLEAN =
-  'waldur/appstore/providers/support/USAGE_DATA_CLEAN';
+export const SERVICE_USAGE_FETCH_START = 'waldur/providers/support/FETCH_START';
+export const SERVICE_USAGE_FETCH_DONE = 'waldur/providers/support/FETCH_DONE';
+export const SERVICE_USAGE_FETCH_ERROR = 'waldur/providers/support/FETCH_ERROR';
+export const SERVICE_SELECT = 'waldur/providers/support/SERVICE_SELECT';
+export const INFO_PANEL_SHOW = 'waldur/providers/support/INFO_PANEL_SHOW';
+export const INFO_PANEL_HIDE = 'waldur/providers/support/INFO_PANEL_HIDE';
+export const USAGE_DATA_CLEAN = 'waldur/providers/support/USAGE_DATA_CLEAN';
 
 export const fetchServiceUsageStart = () => ({
   type: SERVICE_USAGE_FETCH_START,
 });
 
-export const fetchServiceUsageDone = data => {
+export const fetchServiceUsageDone = (data) => {
   return {
     type: SERVICE_USAGE_FETCH_DONE,
     payload: { data },
