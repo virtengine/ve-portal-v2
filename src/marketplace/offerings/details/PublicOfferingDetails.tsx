@@ -1,8 +1,7 @@
 import { useCurrentStateAndParams } from '@uirouter/react';
-import * as React from 'react';
-import * as Col from 'react-bootstrap/lib/Col';
-import * as Row from 'react-bootstrap/lib/Row';
-import useAsync from 'react-use/lib/useAsync';
+import { FunctionComponent } from 'react';
+import { Col, Row } from 'react-bootstrap';
+import { useAsync } from 'react-use';
 
 import { LoadingSpinner } from '@waldur/core/LoadingSpinner';
 import { translate } from '@waldur/i18n';
@@ -15,7 +14,7 @@ import { ANONYMOUS_CONFIG } from '@waldur/table/api';
 
 import { OfferingHeader } from './OfferingHeader';
 
-export const PublicOfferingDetails = () => {
+export const PublicOfferingDetails: FunctionComponent = () => {
   const {
     params: { uuid },
   } = useCurrentStateAndParams();

@@ -1,9 +1,9 @@
-import * as React from 'react';
 import { connect } from 'react-redux';
 import { compose } from 'redux';
 
 import { Tooltip } from '@waldur/core/Tooltip';
 import { TranslateProps, withTranslation, translate } from '@waldur/i18n';
+import { RootState } from '@waldur/store/reducers';
 import { ActionButton } from '@waldur/table/ActionButton';
 import { getUser } from '@waldur/workspace/selectors';
 import { UserDetails, User } from '@waldur/workspace/types';
@@ -39,7 +39,7 @@ const PureUserActivateButton = (props: UserActivateButtonProps) =>
     </Tooltip>
   ) : null;
 
-const mapStatToProps = (state) => ({
+const mapStatToProps = (state: RootState) => ({
   user: getUser(state),
 });
 

@@ -1,9 +1,8 @@
 import { useCurrentStateAndParams, useRouter } from '@uirouter/react';
-import * as React from 'react';
-import * as Panel from 'react-bootstrap/lib/Panel';
-import * as PanelGroup from 'react-bootstrap/lib/PanelGroup';
+import { useMemo, useCallback, FunctionComponent } from 'react';
+import { Panel, PanelGroup } from 'react-bootstrap';
 import { useSelector, useDispatch } from 'react-redux';
-import useAsync from 'react-use/lib/useAsync';
+import { useAsync } from 'react-use';
 import { formValueSelector } from 'redux-form';
 
 import { format } from '@waldur/core/ErrorMessageFormatter';
@@ -13,7 +12,8 @@ import { translate } from '@waldur/i18n';
 import { useBreadcrumbsFn } from '@waldur/navigation/breadcrumbs/store';
 import { useTitle } from '@waldur/navigation/title';
 import { TemplateQuestions } from '@waldur/rancher/template/TemplateQuestions';
-import { showError, showSuccess } from '@waldur/store/coreSaga';
+import { showError, showSuccess } from '@waldur/store/notify';
+import { RootState } from '@waldur/store/reducers';
 
 import { createApp } from '../api';
 
@@ -23,7 +23,7 @@ import { TemplateHeader } from './TemplateHeader';
 import { FormData } from './types';
 import { serializeApplication, parseVisibleQuestions, loadData } from './utils';
 
-export const TemplateDetail = () => {
+export const TemplateDetail: FunctionComponent = () => {
   const {
     params: { templateUuid, clusterUuid },
   } = useCurrentStateAndParams();
@@ -47,26 +47,26 @@ export const TemplateDetail = () => {
     state.value ? state.value.template.name : translate('Template details'),
   );
 
-  const project = useSelector((state) =>
+  const project = useSelector((state: RootState) =>
     formValueSelector(FORM_ID)(state, 'project'),
   );
 
-  const namespaces = React.useMemo(() => project?.namespaces || [], [project]);
+  const namespaces = useMemo(() => project?.namespaces || [], [project]);
 
-  const answers = useSelector((state) =>
+  const answers = useSelector((state: RootState) =>
     formValueSelector(FORM_ID)(state, 'answers'),
   );
 
   const questions = state.value?.questions;
 
-  const visibleQuestions = React.useMemo(
+  const visibleQuestions = useMemo(
     () => parseVisibleQuestions(questions, answers),
     [questions, answers],
   );
 
   const dispatch = useDispatch();
 
-  const createApplication = React.useCallback(
+  const createApplication = useCallback(
     async (formData: FormData) => {
       try {
         await createApp(

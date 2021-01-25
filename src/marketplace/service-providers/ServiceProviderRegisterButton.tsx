@@ -1,7 +1,7 @@
-import * as React from 'react';
+import { FunctionComponent } from 'react';
 
+import { formatDateTime } from '@waldur/core/dateUtils';
 import { LoadingSpinner } from '@waldur/core/LoadingSpinner';
-import { dateTime } from '@waldur/core/utils';
 import { TranslateProps } from '@waldur/i18n';
 import { ServiceProvider } from '@waldur/marketplace/types';
 import { ActionButton } from '@waldur/table/ActionButton';
@@ -14,14 +14,14 @@ interface ServiceProviderRegisterButtonProps extends TranslateProps {
   registerServiceProvider?(): void;
 }
 
-export const ServiceProviderRegisterButton = (
-  props: ServiceProviderRegisterButtonProps,
+export const ServiceProviderRegisterButton: FunctionComponent<ServiceProviderRegisterButtonProps> = (
+  props,
 ) => {
   if (props.loading) {
     return <LoadingSpinner />;
   } else if (props.serviceProvider) {
     return (
-      <>{`${props.translate('Registered at:')} ${dateTime(
+      <>{`${props.translate('Registered at:')} ${formatDateTime(
         props.serviceProvider.created,
       )}`}</>
     );

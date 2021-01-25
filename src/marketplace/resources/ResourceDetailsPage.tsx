@@ -1,8 +1,7 @@
 import { useCurrentStateAndParams, useRouter } from '@uirouter/react';
-import * as React from 'react';
-import * as Col from 'react-bootstrap/lib/Col';
-import * as Row from 'react-bootstrap/lib/Row';
-import useAsync from 'react-use/lib/useAsync';
+import { FunctionComponent } from 'react';
+import { Col, Row } from 'react-bootstrap';
+import { useAsync } from 'react-use';
 
 import { LoadingSpinner } from '@waldur/core/LoadingSpinner';
 import { translate } from '@waldur/i18n';
@@ -12,14 +11,14 @@ import { useTitle } from '@waldur/navigation/title';
 import { Customer } from '@waldur/workspace/types';
 
 import { getResource } from '../common/api';
-import { OrderItemResponse } from '../orders/types';
 
 import { ResourceSummary } from './ResourceSummary';
 import { ResourceTabs } from './ResourceTabs';
+import { Resource } from './types';
 
 interface GetBreadcrumbsProps {
   customer: Customer;
-  resource: OrderItemResponse;
+  resource: Resource;
 }
 
 const getBreadcrumbs = ({
@@ -42,7 +41,9 @@ interface ResourceDetailsPageProps {
   customer?: Customer;
 }
 
-export const ResourceDetailsPage = ({ customer }: ResourceDetailsPageProps) => {
+export const ResourceDetailsPage: FunctionComponent<ResourceDetailsPageProps> = ({
+  customer,
+}) => {
   const {
     params: { resource_uuid },
   } = useCurrentStateAndParams();

@@ -1,4 +1,4 @@
-import * as React from 'react';
+import { FunctionComponent } from 'react';
 import { Field } from 'redux-form';
 
 import { required } from '@waldur/core/validators';
@@ -8,7 +8,7 @@ import { CreateResourceFormGroup } from '../CreateResourceFormGroup';
 
 import { SimpleSelectField } from './SimpleSelectField';
 
-export const DataVolumeTypeGroup = (props) =>
+export const DataVolumeTypeGroup: FunctionComponent<any> = (props) =>
   props.volumeTypes.length > 0 ? (
     <CreateResourceFormGroup>
       <label>{translate('Data volume type')}</label>

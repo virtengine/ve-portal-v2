@@ -1,14 +1,15 @@
-import * as React from 'react';
-import * as Tab from 'react-bootstrap/lib/Tab';
-import * as Tabs from 'react-bootstrap/lib/Tabs';
+import React from 'react';
+import { Col, Tab, Tabs } from 'react-bootstrap';
 import { connect } from 'react-redux';
-import useEffectOnce from 'react-use/lib/useEffectOnce';
+import { useEffectOnce } from 'react-use';
 import { compose } from 'redux';
 
 import { LoadingSpinner } from '@waldur/core/LoadingSpinner';
 import { withTranslation, TranslateProps } from '@waldur/i18n';
 import { CloseDialogButton } from '@waldur/modal/CloseDialogButton';
 import { ModalDialog } from '@waldur/modal/ModalDialog';
+
+import { ResourceDetailsTable } from '../summary/ResourceDetailsTable';
 
 import { fetchZabbixHost } from './actions';
 import { getMonitoringState } from './selectors';
@@ -44,9 +45,11 @@ export const DialogBody = (props) => {
       <Tabs defaultActiveKey={defaultTab} id="monitoringDetails">
         <Tab eventKey={1} title={props.translate('Details')}>
           <div className="row m-t-md">
-            <dl className="dl-horizontal resource-details-table col-sm-12">
-              <ZabbixHostSummary resource={props.host} />
-            </dl>
+            <Col sm={12}>
+              <ResourceDetailsTable>
+                <ZabbixHostSummary resource={props.host} />
+              </ResourceDetailsTable>
+            </Col>
           </div>
         </Tab>
         <Tab eventKey={2} title={props.translate('Charts')}>

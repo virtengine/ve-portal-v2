@@ -1,4 +1,4 @@
-import * as React from 'react';
+import { FunctionComponent } from 'react';
 import { useSelector } from 'react-redux';
 
 import { LoadingSpinner } from '@waldur/core/LoadingSpinner';
@@ -8,7 +8,7 @@ import { getUser } from '@waldur/workspace/selectors';
 
 import { UserEditContainer } from './support/UserEditContainer';
 
-export const UserManage = () => {
+export const UserManage: FunctionComponent = () => {
   useTitle(translate('Manage'));
   const user = useSelector(getUser);
   if (!user) {

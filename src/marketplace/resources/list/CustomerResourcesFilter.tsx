@@ -1,9 +1,10 @@
-import * as React from 'react';
-import * as Row from 'react-bootstrap/lib/Row';
+import React from 'react';
+import { Row } from 'react-bootstrap';
 import { connect } from 'react-redux';
 import { compose } from 'redux';
 import { reduxForm } from 'redux-form';
 
+import { RootState } from '@waldur/store/reducers';
 import { getCustomer } from '@waldur/workspace/selectors';
 import { Customer } from '@waldur/workspace/types';
 
@@ -25,7 +26,7 @@ const PureCustomerResourcesFilter: React.FC<CustomerResourcesFilterProps> = (
   </Row>
 );
 
-const mapStateToProps = (state) => ({
+const mapStateToProps = (state: RootState) => ({
   customer: getCustomer(state),
 });
 
@@ -33,12 +34,10 @@ const enhance = compose(
   reduxForm({
     form: 'CustomerResourcesFilter',
     initialValues: {
-      state: [getStates()[1]],
+      state: getStates()[1],
     },
   }),
   connect(mapStateToProps),
 );
 
-export const CustomerResourcesFilter = enhance(
-  PureCustomerResourcesFilter,
-) as React.ComponentType<{}>;
+export const CustomerResourcesFilter = enhance(PureCustomerResourcesFilter);

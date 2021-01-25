@@ -1,14 +1,20 @@
-import * as React from 'react';
+import { FunctionComponent } from 'react';
 import { connect } from 'react-redux';
 import { compose } from 'redux';
 import { getFormValues } from 'redux-form';
 
 import { formatDateTime } from '@waldur/core/dateUtils';
-import { defaultCurrency } from '@waldur/core/services';
 import { translate } from '@waldur/i18n';
+import { Offering, ServiceProvider } from '@waldur/marketplace/types';
+import { RootState } from '@waldur/store/reducers';
 import { Table, connectTable, createFetcher } from '@waldur/table';
 import { renderFieldOrDash } from '@waldur/table/utils';
-import { getCustomer } from '@waldur/workspace/selectors';
+import {
+  getCustomer,
+  getUser,
+  isServiceManagerSelector,
+} from '@waldur/workspace/selectors';
+import { Customer } from '@waldur/workspace/types';
 
 import { TABLE_PUBLIC_ORDERS } from './constants';
 import { OrderItemApproveButton } from './OrderItemApproveButton';
@@ -17,7 +23,7 @@ import { OrderItemslistTablePlaceholder } from './OrderItemsListPlaceholder';
 import { ResourceNameField } from './ResourceNameField';
 import { RowNameField } from './RowNameField';
 
-export const TableComponent = (props) => {
+export const TableComponent: FunctionComponent<any> = (props) => {
   const columns = [
     {
       title: translate('Offering'),
@@ -49,10 +55,6 @@ export const TableComponent = (props) => {
       render: ({ row }) => renderFieldOrDash(row.plan_name),
     },
     {
-      title: translate('Cost'),
-      render: ({ row }) => defaultCurrency(row.cost),
-    },
-    {
       title: translate('Actions'),
       render: ({ row }) =>
         row.state === 'done' ? null : (
@@ -82,7 +84,7 @@ export const TableComponent = (props) => {
 const OrderItemsListTableOptions = {
   table: TABLE_PUBLIC_ORDERS,
   fetchData: createFetcher('marketplace-order-items'),
-  mapPropsToFilter: (props) => {
+  mapPropsToFilter: (props: StateProps) => {
     const filter: Record<string, string> = {
       provider_uuid: props.customer.uuid,
     };
@@ -103,13 +105,28 @@ const OrderItemsListTableOptions = {
         filter.type = props.filter.type.value;
       }
     }
+    if (props.isServiceManager) {
+      filter.service_manager_uuid = props.user.uuid;
+    }
     return filter;
   },
 };
 
-const mapStateToProps = (state) => ({
-  filter: getFormValues('OrderItemFilter')(state),
+interface FormData {
+  offering?: Offering;
+  organization?: Customer;
+  provider?: ServiceProvider;
+  state?: { value: string };
+  type?: { value: string };
+}
+
+type StateProps = Readonly<ReturnType<typeof mapStateToProps>>;
+
+const mapStateToProps = (state: RootState) => ({
+  filter: getFormValues('OrderItemFilter')(state) as FormData,
   customer: getCustomer(state),
+  user: getUser(state),
+  isServiceManager: isServiceManagerSelector(state),
 });
 
 const enhance = compose(

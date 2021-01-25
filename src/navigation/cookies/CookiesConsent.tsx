@@ -1,11 +1,10 @@
-import * as React from 'react';
-import * as Col from 'react-bootstrap/lib/Col';
-import * as Row from 'react-bootstrap/lib/Row';
+import { useState, FunctionComponent } from 'react';
+import { Col, Row } from 'react-bootstrap';
 
 import { translate } from '@waldur/i18n';
 
-export const CookiesConsent = () => {
-  const [accepted, setAccepted] = React.useState(
+export const CookiesConsent: FunctionComponent = () => {
+  const [accepted, setAccepted] = useState(
     localStorage['hideCookiesConsent'] === 'true',
   );
 

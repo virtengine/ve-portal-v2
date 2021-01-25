@@ -1,11 +1,11 @@
-import * as React from 'react';
+import { FunctionComponent } from 'react';
 
 import { CUSTOMER_OWNER_ROLE } from '@waldur/core/constants';
 import { ProjectLink } from '@waldur/project/ProjectLink';
 import { Table, connectTable, createFetcher } from '@waldur/table';
 import { filterByUser } from '@waldur/workspace/selectors';
 
-const TableComponent = (props) => {
+const TableComponent: FunctionComponent<any> = (props) => {
   const { translate } = props;
   return (
     <Table
@@ -17,11 +17,11 @@ const TableComponent = (props) => {
         },
         {
           title: translate('Organization'),
-          render: ({ row }) => <span>{row.customer_name}</span>,
+          render: ({ row }) => <>{row.customer_name}</>,
         },
         {
           title: translate('Role'),
-          render: ({ row }) => <span>{translate(row.role)}</span>,
+          render: ({ row }) => <>{translate(row.role)}</>,
         },
       ]}
       verboseName={translate('projects')}

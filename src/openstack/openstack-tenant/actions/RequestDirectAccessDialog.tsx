@@ -1,37 +1,39 @@
-import * as React from 'react';
-import ModalBody from 'react-bootstrap/lib/ModalBody';
-import ModalFooter from 'react-bootstrap/lib/ModalFooter';
-import ModalHeader from 'react-bootstrap/lib/ModalHeader';
-import ModalTitle from 'react-bootstrap/lib/ModalTitle';
+import { useEffect, FunctionComponent } from 'react';
+import {
+  ModalBody,
+  ModalFooter,
+  ModalHeader,
+  ModalTitle,
+} from 'react-bootstrap';
 import { useDispatch } from 'react-redux';
 
-import { ENV } from '@waldur/core/services';
+import { ENV } from '@waldur/configs/default';
 import { isFeatureVisible } from '@waldur/features/connect';
 import { translate } from '@waldur/i18n';
-import { IssueCreateDialog } from '@waldur/issues/create/IssueCreateDialog';
+import { openIssueCreateDialog } from '@waldur/issues/create/actions';
 import { ISSUE_IDS } from '@waldur/issues/types/constants';
-import { openModalDialog } from '@waldur/modal/actions';
 import { CloseDialogButton } from '@waldur/modal/CloseDialogButton';
 
-export const RequestDirectAccessDialog = ({ resolve: { resource }, close }) => {
+export const RequestDirectAccessDialog: FunctionComponent<{
+  resolve: { resource };
+  close;
+}> = ({ resolve: { resource }, close }) => {
   const dispatch = useDispatch();
-  React.useEffect(() => {
+  useEffect(() => {
     if (isFeatureVisible('support')) {
       close();
       dispatch(
-        openModalDialog(IssueCreateDialog, {
-          resolve: {
-            issue: {
-              type: ISSUE_IDS.SERVICE_REQUEST,
-              summary: translate('Request direct access to OpenStack Tenant'),
-              resource,
-            },
-            options: {
-              title: translate('Request direct access to OpenStack Tenant'),
-              descriptionPlaceholder: translate('Please provide a reason'),
-              descriptionLabel: translate('Description'),
-              hideTitle: true,
-            },
+        openIssueCreateDialog({
+          issue: {
+            type: ISSUE_IDS.SERVICE_REQUEST,
+            summary: translate('Request direct access to OpenStack Tenant'),
+            resource,
+          },
+          options: {
+            title: translate('Request direct access to OpenStack Tenant'),
+            descriptionPlaceholder: translate('Please provide a reason'),
+            descriptionLabel: translate('Description'),
+            hideTitle: true,
           },
         }),
       );

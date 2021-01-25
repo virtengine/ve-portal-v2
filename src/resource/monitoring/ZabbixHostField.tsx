@@ -1,8 +1,9 @@
-import * as React from 'react';
+import { FunctionComponent } from 'react';
 import { connect } from 'react-redux';
 
 import { withTranslation } from '@waldur/i18n';
 import { Field, ResourceSummaryProps } from '@waldur/resource/summary';
+import { RootState } from '@waldur/store/reducers';
 
 import { monitoringIsVisible } from './selectors';
 import { ZabbixHost } from './types';
@@ -17,7 +18,9 @@ interface ZabbixHostFieldProps extends ResourceSummaryProps {
   };
 }
 
-export const PureZabbixHostField = (props: ZabbixHostFieldProps) => {
+export const PureZabbixHostField: FunctionComponent<ZabbixHostFieldProps> = (
+  props,
+) => {
   if (!props.isVisible) {
     return null;
   }
@@ -30,7 +33,7 @@ export const PureZabbixHostField = (props: ZabbixHostFieldProps) => {
   return <Field label={props.translate('Monitoring')} value={value} />;
 };
 
-const mapStateToProps = (state) => ({
+const mapStateToProps = (state: RootState) => ({
   isVisible: monitoringIsVisible(state),
 });
 

@@ -1,13 +1,14 @@
-import * as React from 'react';
+import { FunctionComponent } from 'react';
 
-import { NestedListActions } from '@waldur/resource/actions/NestedListActions';
 import { ResourceRowActions } from '@waldur/resource/actions/ResourceRowActions';
 import { ResourceName } from '@waldur/resource/ResourceName';
 import { ResourceState } from '@waldur/resource/state/ResourceState';
 import { Table, connectTable, createFetcher } from '@waldur/table';
 import { BooleanField } from '@waldur/table/BooleanField';
 
-const TableComponent = (props) => {
+import { CreateNetworkAction } from '../openstack-tenant/actions/CreateNetworkAction';
+
+const TableComponent: FunctionComponent<any> = (props) => {
   const { translate } = props;
   return (
     <Table
@@ -38,7 +39,7 @@ const TableComponent = (props) => {
         },
       ]}
       verboseName={translate('networks')}
-      actions={<NestedListActions resource={props.resource} tab="networks" />}
+      actions={<CreateNetworkAction resource={props.resource} />}
     />
   );
 };

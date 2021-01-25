@@ -1,4 +1,3 @@
-import * as React from 'react';
 import { connect, useDispatch } from 'react-redux';
 import { compose } from 'redux';
 import { FieldArray, reduxForm } from 'redux-form';
@@ -9,7 +8,7 @@ import { translate } from '@waldur/i18n';
 import { closeModalDialog } from '@waldur/modal/actions';
 import { CloseDialogButton } from '@waldur/modal/CloseDialogButton';
 import { ModalDialog } from '@waldur/modal/ModalDialog';
-import { showError, showSuccess } from '@waldur/store/coreSaga';
+import { showError, showSuccess } from '@waldur/store/notify';
 
 import { StaticRoute, StaticRoutesTable } from './StaticRoutesTable';
 

@@ -1,4 +1,4 @@
-import * as React from 'react';
+import { FunctionComponent } from 'react';
 
 import { translate } from '@waldur/i18n';
 import { wrapTooltip } from '@waldur/table/ActionButton';
@@ -9,11 +9,11 @@ interface RejectButtonProps {
   tooltip?: string;
 }
 
-export const RejectButton = ({
+export const RejectButton: FunctionComponent<RejectButtonProps> = ({
   onClick,
   submitting,
   tooltip,
-}: RejectButtonProps) =>
+}) =>
   wrapTooltip(
     tooltip,
     <button

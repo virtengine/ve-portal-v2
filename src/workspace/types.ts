@@ -24,7 +24,6 @@ export interface UserDetails extends User {
   date_joined: string;
   organization: string;
   job_title: string;
-  is_support: boolean;
   token: string;
   agreement_date: string;
   is_active: boolean;
@@ -64,6 +63,7 @@ export interface Customer {
   uuid: string;
   url: string;
   owners: User[];
+  service_managers?: User[];
   projects?: Project[];
   is_service_provider?: boolean;
   abbreviation?: string;
@@ -96,6 +96,8 @@ export interface Project {
   quotas: Quota[];
   billing_price_estimate?: BillingPriceEstimate;
   customer_uuid?: string;
+  customer_name?: string;
+  customer_abbreviation?: string;
 }
 
 export const ORGANIZATION_WORKSPACE = 'WORKSPACE/ORGANIZATION';
@@ -112,13 +114,9 @@ export type WorkspaceType =
   | typeof PROJECT_WORKSPACE
   | typeof USER_WORKSPACE;
 
-export interface Workspace {
+export interface WorkspaceState {
   user: User;
   customer?: Customer;
   project?: Project;
   workspace?: WorkspaceType;
-}
-
-export interface OuterState {
-  workspace: Workspace;
 }

@@ -1,6 +1,5 @@
-import * as React from 'react';
-import * as Col from 'react-bootstrap/lib/Col';
-import * as Row from 'react-bootstrap/lib/Row';
+import React from 'react';
+import { Col, Row } from 'react-bootstrap';
 
 import {
   OfferingTabsComponent,
@@ -24,7 +23,7 @@ export const OfferingDetails: React.FC<OfferingDetailsProps> = (props) => (
         className="pull-right m-r-md"
         style={{ position: 'relative', zIndex: 100 }}
       >
-        <OfferingActions row={props.offering} />
+        <OfferingActions offering={props.offering} />
       </div>
     )}
     <OfferingHeader offering={props.offering} />

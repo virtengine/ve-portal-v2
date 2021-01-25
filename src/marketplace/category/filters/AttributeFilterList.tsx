@@ -1,4 +1,4 @@
-import * as React from 'react';
+import { FunctionComponent } from 'react';
 
 import { LoadingSpinner } from '@waldur/core/LoadingSpinner';
 import { translate } from '@waldur/i18n';
@@ -25,8 +25,8 @@ interface AttributeFilterListContainerState {
   loaded: boolean;
 }
 
-export const AttributeFilterList = (
-  props: AttributeFilterListContainerState,
+export const AttributeFilterList: FunctionComponent<AttributeFilterListContainerState> = (
+  props,
 ) => {
   if (props.loading) {
     return <LoadingSpinner />;

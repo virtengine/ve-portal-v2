@@ -1,13 +1,19 @@
-import * as React from 'react';
+import React, { FunctionComponent } from 'react';
 import { connect } from 'react-redux';
 import { compose } from 'redux';
 import { getFormValues } from 'redux-form';
 
 import { formatDateTime } from '@waldur/core/dateUtils';
 import { translate } from '@waldur/i18n';
+import { ResourceOpenDetail } from '@waldur/marketplace/resources/list/ResourceOpenDetail';
 import { Category, Offering } from '@waldur/marketplace/types';
+import { RootState } from '@waldur/store/reducers';
 import { Table, connectTable, createFetcher } from '@waldur/table';
-import { getCustomer } from '@waldur/workspace/selectors';
+import {
+  getCustomer,
+  getUser,
+  isServiceManagerSelector,
+} from '@waldur/workspace/selectors';
 import { Customer } from '@waldur/workspace/types';
 
 import { ResourceUsageButton } from '../usage/ResourceUsageButton';
@@ -24,12 +30,9 @@ interface ResourceFilter {
   offering?: Offering;
 }
 
-interface StateProps {
-  customer: Customer;
-  filter: ResourceFilter;
-}
+type StateProps = Readonly<ReturnType<typeof mapStateToProps>>;
 
-export const TableComponent = (props) => {
+export const TableComponent: FunctionComponent<any> = (props) => {
   React.useEffect(() => {
     props.resetPagination();
   }, [props.filter]);
@@ -43,23 +46,23 @@ export const TableComponent = (props) => {
     },
     {
       title: translate('Offering type'),
-      render: ({ row }) => <span>{row.offering_name}</span>,
+      render: ({ row }) => <>{row.offering_name}</>,
     },
     {
       title: translate('Client organization'),
-      render: ({ row }) => <span>{row.customer_name}</span>,
+      render: ({ row }) => <>{row.customer_name}</>,
     },
     {
       title: translate('Project'),
-      render: ({ row }) => <span>{row.project_name}</span>,
+      render: ({ row }) => <>{row.project_name}</>,
     },
     {
       title: translate('Category'),
-      render: ({ row }) => <span>{row.category_title}</span>,
+      render: ({ row }) => <>{row.category_title}</>,
     },
     {
       title: translate('Plan'),
-      render: ({ row }) => <span>{row.plan_name || 'N/A'}</span>,
+      render: ({ row }) => <>{row.plan_name || 'N/A'}</>,
     },
     {
       title: translate('Created at'),
@@ -86,6 +89,7 @@ export const TableComponent = (props) => {
       initialSorting={{ field: 'created', mode: 'desc' }}
       hasQuery={true}
       showPageSizeSelector={true}
+      expandableRow={ResourceOpenDetail}
     />
   );
 };
@@ -112,6 +116,9 @@ const mapPropsToFilter = (props: StateProps) => {
     if (props.filter.category) {
       filter.category_uuid = props.filter.category.uuid;
     }
+  }
+  if (props.isServiceManager) {
+    filter.service_manager_uuid = props.user.uuid;
   }
   return filter;
 };
@@ -145,9 +152,11 @@ export const TableOptions = {
   queryField: 'query',
 };
 
-const mapStateToProps = (state) => ({
+const mapStateToProps = (state: RootState) => ({
   customer: getCustomer(state),
-  filter: getFormValues('PublicResourcesFilter')(state),
+  filter: getFormValues('PublicResourcesFilter')(state) as ResourceFilter,
+  user: getUser(state),
+  isServiceManager: isServiceManagerSelector(state),
 });
 
 const enhance = compose(
@@ -155,6 +164,4 @@ const enhance = compose(
   connectTable(TableOptions),
 );
 
-export const PublicResourcesList = enhance(
-  TableComponent,
-) as React.ComponentType<{}>;
+export const PublicResourcesList = enhance(TableComponent);

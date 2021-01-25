@@ -1,4 +1,4 @@
-import * as React from 'react';
+import { FunctionComponent } from 'react';
 
 import { translate } from '@waldur/i18n';
 import { OfferingButton } from '@waldur/marketplace/common/OfferingButton';
@@ -15,7 +15,9 @@ interface ShoppingCartButtonProps {
   isAddingItem?: boolean;
 }
 
-export const ShoppingCartButton = (props: ShoppingCartButtonProps) => (
+export const ShoppingCartButton: FunctionComponent<ShoppingCartButtonProps> = (
+  props,
+) => (
   <OfferingButton
     icon={props.icon || 'fa fa-shopping-cart'}
     isActive={true}

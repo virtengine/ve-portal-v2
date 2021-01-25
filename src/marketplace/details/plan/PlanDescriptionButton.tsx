@@ -1,10 +1,10 @@
-import * as React from 'react';
 import { connect } from 'react-redux';
 import { getFormValues } from 'redux-form';
 
 import { withTranslation, TranslateProps } from '@waldur/i18n';
 import { FORM_ID } from '@waldur/marketplace/details/constants';
 import { showOfferingPlanDescription } from '@waldur/marketplace/details/plan/actions';
+import { RootState } from '@waldur/store/reducers';
 import { ActionButton } from '@waldur/table/ActionButton';
 
 interface PlanDescriptionButtonProps extends TranslateProps {
@@ -41,7 +41,7 @@ export const PurePlanDescriptionButton = withTranslation(
   },
 );
 
-const mapStateToProps = (state) => ({
+const mapStateToProps = (state: RootState) => ({
   formData: getFormValues(FORM_ID)(state),
 });
 

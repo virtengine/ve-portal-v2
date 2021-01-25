@@ -1,10 +1,12 @@
-import * as React from 'react';
+import { ErrorBoundary } from '@sentry/react';
+import React, { FunctionComponent } from 'react';
 import { Modal } from 'react-bootstrap';
 import { useSelector, useDispatch } from 'react-redux';
 import { isDirty } from 'redux-form';
 
+import { ErrorMessage } from '@waldur/ErrorMessage';
 import { translate } from '@waldur/i18n';
-import { angular2react } from '@waldur/shims/angular2react';
+import { RootState } from '@waldur/store/reducers';
 
 import { closeModalDialog } from './actions';
 
@@ -15,15 +17,15 @@ interface TState {
   modalProps: any;
 }
 
-export default () => {
+export const ModalRoot: FunctionComponent = () => {
   const { modalComponent, modalProps } = useSelector<
     {
       modal: TState;
     },
     TState
-  >((state) => state.modal);
+  >((state: RootState) => state.modal);
   const dispatch = useDispatch();
-  const isDirtyForm = useSelector((state) =>
+  const isDirtyForm = useSelector((state: RootState) =>
     modalProps?.formId ? isDirty(modalProps.formId)(state) : false,
   );
   const onHide = () => {
@@ -45,17 +47,14 @@ export default () => {
       onHide={onHide}
       bsSize={modalProps?.size}
     >
-      {modalComponent
-        ? typeof modalComponent === 'string'
-          ? React.createElement(angular2react(modalComponent, ['resolve']), {
+      <ErrorBoundary fallback={ErrorMessage}>
+        {modalComponent
+          ? React.createElement(modalComponent, {
               ...modalProps,
               close: onHide,
             })
-          : React.createElement(modalComponent, {
-              ...modalProps,
-              close: onHide,
-            })
-        : null}
+          : null}
+      </ErrorBoundary>
     </Modal>
   );
 };

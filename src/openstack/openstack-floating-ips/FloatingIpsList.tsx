@@ -1,13 +1,16 @@
-import * as React from 'react';
+import { FunctionComponent } from 'react';
+import { ButtonGroup } from 'react-bootstrap';
 
 import { Link } from '@waldur/core/Link';
-import { NestedListActions } from '@waldur/resource/actions/NestedListActions';
 import { ResourceRowActions } from '@waldur/resource/actions/ResourceRowActions';
 import { ResourceName } from '@waldur/resource/ResourceName';
 import { ResourceState } from '@waldur/resource/state/ResourceState';
 import { Table, connectTable, createFetcher } from '@waldur/table';
 
-const TableComponent = (props) => {
+import { CreateFloatingIpAction } from '../openstack-tenant/actions/CreateFloatingIpAction';
+import { PullFloatingIpsAction } from '../openstack-tenant/actions/PullFloatingIpsAction';
+
+const TableComponent: FunctionComponent<any> = (props) => {
   const { translate } = props;
   return (
     <Table
@@ -46,7 +49,10 @@ const TableComponent = (props) => {
       ]}
       verboseName={translate('floating IPs')}
       actions={
-        <NestedListActions resource={props.resource} tab="floating_ips" />
+        <ButtonGroup>
+          <PullFloatingIpsAction resource={props.resource} />
+          <CreateFloatingIpAction resource={props.resource} />
+        </ButtonGroup>
       }
     />
   );

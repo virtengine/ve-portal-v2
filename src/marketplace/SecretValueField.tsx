@@ -1,6 +1,6 @@
-import * as classNames from 'classnames';
-import * as React from 'react';
-import useToggle from 'react-use/lib/useToggle';
+import classNames from 'classnames';
+import React from 'react';
+import { useToggle } from 'react-use';
 
 interface SecretValueFieldProps {
   value: string;

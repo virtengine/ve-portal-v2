@@ -1,16 +1,17 @@
-import * as React from 'react';
-import Button from 'react-bootstrap/lib/Button';
-import ButtonGroup from 'react-bootstrap/lib/ButtonGroup';
-import Col from 'react-bootstrap/lib/Col';
-import ControlLabel from 'react-bootstrap/lib/ControlLabel';
-import FormGroup from 'react-bootstrap/lib/FormGroup';
+import { FunctionComponent } from 'react';
+import {
+  Button,
+  ButtonGroup,
+  Col,
+  ControlLabel,
+  FormGroup,
+} from 'react-bootstrap';
 import { useDispatch, useSelector } from 'react-redux';
 import { AsyncPaginate } from 'react-select-async-paginate';
 import { Field } from 'redux-form';
 
 import { translate } from '@waldur/i18n';
-import { openModalDialog } from '@waldur/modal/actions';
-import { UserPopover } from '@waldur/user/UserPopover';
+import { openUserPopover } from '@waldur/user/actions';
 
 import { refreshUsers } from './api';
 import { callerSelector } from './selectors';
@@ -20,8 +21,7 @@ const renderer = (option) => option.full_name || option.username;
 const CallerActions = ({ onSearch }) => {
   const dispatch = useDispatch();
   const caller = useSelector(callerSelector);
-  const openUserDialog = () =>
-    dispatch(openModalDialog(UserPopover, { resolve: { user: caller } }));
+  const onClick = () => dispatch(openUserPopover({ user: caller }));
   const filterByCaller = () => onSearch({ caller });
   if (!caller) {
     return null;
@@ -29,7 +29,7 @@ const CallerActions = ({ onSearch }) => {
   return (
     <Col sm={3}>
       <ButtonGroup>
-        <Button onClick={openUserDialog}>
+        <Button onClick={onClick}>
           <i className="fa fa-eye" /> {translate('Details')}
         </Button>
         <Button onClick={filterByCaller}>
@@ -42,7 +42,7 @@ const CallerActions = ({ onSearch }) => {
 
 const filterOption = (options) => options;
 
-export const CallerGroup = ({ onSearch }) => (
+export const CallerGroup: FunctionComponent<{ onSearch }> = ({ onSearch }) => (
   <FormGroup>
     <Col sm={3} componentClass={ControlLabel}>
       {translate('Caller')}

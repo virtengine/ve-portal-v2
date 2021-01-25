@@ -1,4 +1,4 @@
-import * as React from 'react';
+import { FunctionComponent } from 'react';
 
 import {
   TextField,
@@ -10,7 +10,7 @@ import {
 
 import { ProjectNameField } from './ProjectNameField';
 
-export const ProjectCreateForm = (props) => (
+export const ProjectCreateForm: FunctionComponent<any> = (props) => (
   <form
     onSubmit={props.handleSubmit(props.createProject)}
     className="form-horizontal"
@@ -32,21 +32,6 @@ export const ProjectCreateForm = (props) => (
           options={props.projectTypes}
           getOptionValue={(option) => option.url}
           getOptionLabel={(option) => option.name}
-          isClearable={true}
-        />
-      )}
-      {props.certifications.length >= 1 && (
-        <SelectField
-          label={props.translate('Certifications')}
-          name="certifications"
-          description={props.translate(
-            'Provider certification required by this project.',
-          )}
-          placeholder={props.translate('Select certifications')}
-          options={props.certifications}
-          getOptionValue={(option) => option.url}
-          getOptionLabel={(option) => option.name}
-          isMulti={true}
           isClearable={true}
         />
       )}

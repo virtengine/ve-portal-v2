@@ -1,8 +1,6 @@
-import * as React from 'react';
-import * as PanelBody from 'react-bootstrap/lib/PanelBody';
-import * as Tab from 'react-bootstrap/lib/Tab';
-import * as Tabs from 'react-bootstrap/lib/Tabs';
-import useAsync from 'react-use/lib/useAsync';
+import { FunctionComponent } from 'react';
+import { PanelBody, Tab, Tabs } from 'react-bootstrap';
+import { useAsync } from 'react-use';
 
 import { LoadingSpinner } from '@waldur/core/LoadingSpinner';
 import { translate } from '@waldur/i18n';
@@ -13,7 +11,9 @@ import { ModalDialog } from '@waldur/modal/ModalDialog';
 import { CustomerSummary } from './CustomerSummary';
 import { CustomerUsersList } from './CustomerUsersList';
 
-export const CustomerPopover = ({ resolve: { customer_uuid } }) => {
+export const CustomerPopover: FunctionComponent<{
+  resolve: { customer_uuid };
+}> = ({ resolve: { customer_uuid } }) => {
   const { loading, error, value } = useAsync(
     async () => await getCustomer(customer_uuid),
     [],

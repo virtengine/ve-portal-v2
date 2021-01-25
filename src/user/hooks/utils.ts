@@ -1,10 +1,10 @@
-import * as React from 'react';
+import { useCallback } from 'react';
 import { useDispatch } from 'react-redux';
 
 import { titleCase } from '@waldur/core/utils';
 import { translate } from '@waldur/i18n';
 import { closeModalDialog } from '@waldur/modal/actions';
-import { showSuccess, showError } from '@waldur/store/coreSaga';
+import { showSuccess, showError } from '@waldur/store/notify';
 import { updateEntity, createEntity } from '@waldur/table/actions';
 
 import { getEventGroups, updateHook, createHook } from './api';
@@ -78,7 +78,7 @@ const serializeHook = (hookType: HookType, formData: HookFormData) => {
 
 export const useHookForm = (hook?: HookResponse) => {
   const dispatch = useDispatch();
-  return React.useCallback(
+  return useCallback(
     async (formData: HookFormData) => {
       const hookType = hook ? hook.hook_type : formData.hook_type;
       if (hook) {

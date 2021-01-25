@@ -39,10 +39,14 @@ export const PAUSED = 'Paused';
 
 export const ARCHIVED = 'Archived';
 
-export const TABLE_NAME = 'marketplace-offerings';
+export const OFFERING_TABLE_NAME = 'marketplace-offerings';
 
 export const SCREENSHOTS_TABLE_NAME = 'marketplace-offering-screenshots';
 
 export const FORM_ID = 'marketplaceOfferingCreate';
 
 export const OFFERING_SCREENSHOTS_FORM_ID = 'marketplaceOfferingScreenshots';
+
+export const GOOGLE_CALENDAR_SYNC = 'GoogleCalendarSync';
+export const GOOGLE_CALENDAR_PUBLISH = 'GoogleCalendarPublish';
+export const GOOGLE_CALENDAR_UNPUBLISH = 'GoogleCalendarUnpublish';

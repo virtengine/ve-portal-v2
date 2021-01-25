@@ -1,4 +1,4 @@
-import * as React from 'react';
+import React from 'react';
 
 import { CustomComponentInputProps, FilterOptions } from '@waldur/form/types';
 import { TranslateProps, withTranslation } from '@waldur/i18n';
@@ -65,7 +65,7 @@ export class SelectDialogFieldComponent extends React.Component<
     if (props.choices && props.choices.length === 0) {
       return (
         <div className="form-control-static">
-          {props.emptyMessage ? props.emptyMessage : <span>&mdash;</span>}
+          {props.emptyMessage ? props.emptyMessage : <>&mdash;</>}
         </div>
       );
     }

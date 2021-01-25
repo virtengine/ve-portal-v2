@@ -1,4 +1,4 @@
-import * as React from 'react';
+import { FunctionComponent } from 'react';
 
 import { formatDateTime } from '@waldur/core/dateUtils';
 import { Panel } from '@waldur/core/Panel';
@@ -10,7 +10,7 @@ import { TableOptionsType } from '@waldur/table/types';
 import { NotificationCreateButton } from './NotificationCreateButton';
 import { NotificationExpandableRow } from './NotificationExpandableRow';
 
-const TableComponent = (props) => {
+const TableComponent: FunctionComponent<any> = (props) => {
   return (
     <Table
       {...props}
@@ -45,7 +45,7 @@ const TableOptions: TableOptionsType = {
 
 const NotificationsListComponent = connectTable(TableOptions)(TableComponent);
 
-export const NotificationsList = () => {
+export const NotificationsList: FunctionComponent = () => {
   useTitle(translate('Notifications'));
   return (
     <Panel>

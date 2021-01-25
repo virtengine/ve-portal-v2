@@ -1,6 +1,6 @@
 import { useCurrentStateAndParams } from '@uirouter/react';
-import * as React from 'react';
-import * as Button from 'react-bootstrap/lib/Button';
+import React from 'react';
+import { Button } from 'react-bootstrap';
 import { useSelector } from 'react-redux';
 import Select from 'react-select';
 
@@ -68,8 +68,8 @@ export const UserChecklist: React.FC<UserChecklistProps> = (props) => {
             />
             <AnswersTable
               questions={state.questionsList}
-              answers={state.answers}
-              setAnswers={state.setAnswers}
+              answers={state.answersTable}
+              setAnswers={state.setAnswersTable}
               readOnly={props.readOnly}
             />
             {!props.readOnly && (

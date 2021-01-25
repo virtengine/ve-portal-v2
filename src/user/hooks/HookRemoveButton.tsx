@@ -1,9 +1,9 @@
-import * as React from 'react';
+import { Component } from 'react';
 import { connect } from 'react-redux';
 import { compose } from 'redux';
 
 import { withTranslation, TranslateProps } from '@waldur/i18n';
-import { showError, showSuccess } from '@waldur/store/coreSaga';
+import { showError, showSuccess } from '@waldur/store/notify';
 import { ActionButton } from '@waldur/table/ActionButton';
 import { deleteEntity } from '@waldur/table/actions';
 
@@ -36,7 +36,7 @@ interface HookRemoveButtonState {
   removing: boolean;
 }
 
-class HookRemoveButtonComponent extends React.Component<
+class HookRemoveButtonComponent extends Component<
   OwnProps & DispatchProps & TranslateProps,
   HookRemoveButtonState
 > {

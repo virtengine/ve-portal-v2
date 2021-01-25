@@ -1,4 +1,4 @@
-import * as React from 'react';
+import { FunctionComponent } from 'react';
 import { connect } from 'react-redux';
 import { compose } from 'redux';
 import { reduxForm, formValueSelector } from 'redux-form';
@@ -20,8 +20,9 @@ import { OFFERING_SCREENSHOTS_FORM_ID } from '@waldur/marketplace/offerings/stor
 import { getOffering } from '@waldur/marketplace/offerings/store/selectors';
 import { CloseDialogButton } from '@waldur/modal/CloseDialogButton';
 import { ModalDialog } from '@waldur/modal/ModalDialog';
+import { RootState } from '@waldur/store/reducers';
 
-const AddOfferingScreenshotDialog = (props) => (
+const AddOfferingScreenshotDialog: FunctionComponent<any> = (props) => (
   <form
     onSubmit={props.handleSubmit(props.submitRequest)}
     className="form-horizontal"
@@ -73,7 +74,8 @@ const AddOfferingScreenshotDialog = (props) => (
 );
 
 const selector = formValueSelector(OFFERING_SCREENSHOTS_FORM_ID);
-const mapStateToProps = (state) => ({
+
+const mapStateToProps = (state: RootState) => ({
   isSubmittingScreenshot: getOffering(state).isAddingScreenshot,
   screenshotsField: selector(state, 'screenshots'),
 });

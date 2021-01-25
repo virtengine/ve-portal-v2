@@ -1,4 +1,4 @@
-import * as React from 'react';
+import { FunctionComponent } from 'react';
 
 import { TranslateProps, withTranslation } from '@waldur/i18n';
 
@@ -10,21 +10,24 @@ interface PureIssueCommentsListProps extends TranslateProps {
   erred?: boolean;
 }
 
-export const PureIssueCommentsList = (props: PureIssueCommentsListProps) => {
+export const PureIssueCommentsList: FunctionComponent<PureIssueCommentsListProps> = (
+  props,
+) => {
   const { comments, erred, translate } = props;
-  const body =
-    comments.length &&
-    comments.map((comment: any) => (
-      <IssueCommentItem key={comment.uuid} comment={comment} />
-    ));
 
   if (erred) {
     return <div>{translate('Unable to load comments.')}</div>;
   }
-  if (!body.length) {
+  if (!comments.length) {
     return <div>{translate('There are no comments yet.')}</div>;
   }
-  return <div className="vertical-container dark-timeline">{body}</div>;
+  return (
+    <div className="vertical-container dark-timeline">
+      {comments.map((comment) => (
+        <IssueCommentItem key={comment.uuid} comment={comment} />
+      ))}
+    </div>
+  );
 };
 
 export const IssueCommentsList = withTranslation(PureIssueCommentsList);

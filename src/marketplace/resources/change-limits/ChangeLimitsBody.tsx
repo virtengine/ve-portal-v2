@@ -1,4 +1,3 @@
-import * as React from 'react';
 import { InjectedFormProps } from 'redux-form';
 
 import { LoadingSpinner } from '@waldur/core/LoadingSpinner';

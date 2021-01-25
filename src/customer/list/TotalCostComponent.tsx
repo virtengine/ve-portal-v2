@@ -1,10 +1,11 @@
-import * as React from 'react';
+import React from 'react';
 import { connect } from 'react-redux';
-import useAsync from 'react-use/lib/useAsync';
+import { useAsync } from 'react-use';
 import { getFormValues } from 'redux-form';
 
-import { ENV } from '@waldur/core/services';
+import { ENV } from '@waldur/configs/default';
 import { translate } from '@waldur/i18n';
+import { RootState } from '@waldur/store/reducers';
 
 import * as api from './api';
 import { TotalCostField } from './TotalCostField';
@@ -61,10 +62,8 @@ const TotalCostComponent: React.FC<CustomerListComponentProps> = (props) => {
   return <TotalCostField total={value.total} />;
 };
 
-const mapStateToProps = (state) => ({
+const mapStateToProps = (state: RootState) => ({
   customerListFilter: getFormValues('customerListFilter')(state),
 });
 
-export const TotalCostContainer = connect(mapStateToProps)(
-  TotalCostComponent,
-) as React.ComponentType<{}>;
+export const TotalCostContainer = connect(mapStateToProps)(TotalCostComponent);

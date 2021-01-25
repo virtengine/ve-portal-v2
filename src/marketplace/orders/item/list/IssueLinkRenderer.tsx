@@ -1,9 +1,9 @@
-import * as React from 'react';
+import { FunctionComponent } from 'react';
 
 import { Link } from '@waldur/core/Link';
 import { DASH_ESCAPE_CODE } from '@waldur/table/constants';
 
-export const IssueLinkRenderer = ({ row }) =>
+export const IssueLinkRenderer: FunctionComponent<{ row }> = ({ row }) =>
   row.issue ? (
     <Link
       state="support.detail"

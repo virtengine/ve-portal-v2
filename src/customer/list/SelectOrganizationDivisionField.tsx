@@ -1,4 +1,4 @@
-import * as React from 'react';
+import { FunctionComponent } from 'react';
 import { components } from 'react-select';
 import { AsyncPaginate } from 'react-select-async-paginate';
 import { Field } from 'redux-form';
@@ -12,7 +12,7 @@ interface SelectOrganizationDivisionFieldProps {
 
 const RIGHT_ARROW_HTML = <>&rarr;</>;
 
-const Option = (props) => (
+const Option: FunctionComponent<any> = (props) => (
   <components.Option {...props}>
     {props.data.parent_name ? (
       <>
@@ -23,7 +23,7 @@ const Option = (props) => (
   </components.Option>
 );
 
-const SingleValue = (props) => (
+const SingleValue: FunctionComponent<any> = (props) => (
   <components.SingleValue {...props}>
     {props.data.parent_name ? (
       <>
@@ -34,8 +34,8 @@ const SingleValue = (props) => (
   </components.SingleValue>
 );
 
-export const SelectOrganizationDivisionField = (
-  props: SelectOrganizationDivisionFieldProps,
+export const SelectOrganizationDivisionField: FunctionComponent<SelectOrganizationDivisionFieldProps> = (
+  props,
 ) => (
   <div className={`form-group${props.isFilterForm ? ' col-sm-3' : ''}`}>
     <label className={`control-label${props.isFilterForm ? '' : ' col-sm-2'}`}>

@@ -1,5 +1,5 @@
-import * as React from 'react';
-import * as ButtonGroup from 'react-bootstrap/lib/ButtonGroup';
+import { FunctionComponent } from 'react';
+import { ButtonGroup } from 'react-bootstrap';
 
 import { formatDate } from '@waldur/core/dateUtils';
 import { Table, connectTable, createFetcher } from '@waldur/table';
@@ -8,7 +8,7 @@ import { TableOptionsType } from '@waldur/table/types';
 import { ApplicationDeleteButton } from './ApplicationDeleteButton';
 import { ApplicationDetailsButton } from './ApplicationDetailsButton';
 
-const TableComponent = (props) => {
+const TableComponent: FunctionComponent<any> = (props) => {
   const { translate } = props;
   return (
     <Table
@@ -16,27 +16,27 @@ const TableComponent = (props) => {
       columns={[
         {
           title: translate('Name'),
-          render: ({ row }) => <span>{row.name}</span>,
+          render: ({ row }) => <>{row.name}</>,
         },
         {
           title: translate('Project'),
-          render: ({ row }) => <span>{row.project_name}</span>,
+          render: ({ row }) => <>{row.project_name}</>,
         },
         {
           title: translate('Catalog'),
-          render: ({ row }) => <span>{row.catalog_name}</span>,
+          render: ({ row }) => <>{row.catalog_name}</>,
         },
         {
           title: translate('Template'),
-          render: ({ row }) => <span>{row.template_name}</span>,
+          render: ({ row }) => <>{row.template_name}</>,
         },
         {
           title: translate('Created'),
-          render: ({ row }) => <span>{formatDate(row.created)}</span>,
+          render: ({ row }) => <>{formatDate(row.created)}</>,
         },
         {
           title: translate('State'),
-          render: ({ row }) => <span>{row.runtime_state}</span>,
+          render: ({ row }) => <>{row.runtime_state}</>,
         },
         {
           title: translate('Actions'),

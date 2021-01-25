@@ -1,4 +1,4 @@
-import * as React from 'react';
+import { FunctionComponent } from 'react';
 
 import { CUSTOMER_OWNER_ROLE } from '@waldur/core/constants';
 import { BooleanField } from '@waldur/table/BooleanField';
@@ -9,6 +9,6 @@ interface Props {
   };
 }
 
-export const CustomerRole = ({ row }: Props) => (
+export const CustomerRole: FunctionComponent<Props> = ({ row }) => (
   <BooleanField value={row.role === CUSTOMER_OWNER_ROLE} />
 );

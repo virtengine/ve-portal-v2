@@ -1,4 +1,4 @@
-import * as moment from 'moment-timezone';
+import moment from 'moment-timezone';
 
 type DateFormatter = (date?: moment.MomentInput) => string;
 
@@ -22,4 +22,7 @@ export const formatMediumDateTime: DateFormatter = (date) =>
   moment(date).format('MMM D, Y h:mm:ss A');
 
 export const formatShortDateTime: DateFormatter = (date) =>
-  moment.utc(date).format('MMM D, HH:mm');
+  moment(date).format('MMM D, HH:mm');
+
+export const convertDateTimeToUTCString = (time: string): string =>
+  moment(time).utc().format();

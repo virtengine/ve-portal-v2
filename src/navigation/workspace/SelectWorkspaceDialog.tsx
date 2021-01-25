@@ -1,10 +1,8 @@
 import { useRouter } from '@uirouter/react';
-import * as React from 'react';
-import * as Button from 'react-bootstrap/lib/Button';
-import * as Modal from 'react-bootstrap/lib/Modal';
-import * as Row from 'react-bootstrap/lib/Row';
+import { useState, FunctionComponent } from 'react';
+import { Button, Modal, Row } from 'react-bootstrap';
 import { useSelector } from 'react-redux';
-import useAsync from 'react-use/lib/useAsync';
+import { useAsync } from 'react-use';
 
 import { LoadingSpinner } from '@waldur/core/LoadingSpinner';
 import { translate } from '@waldur/i18n';
@@ -18,9 +16,9 @@ import { EmptyOrganizationsPlaceholder } from './EmptyOrganizationsPlaceholder';
 import { OrganizationsPanel } from './OrganizationsPanel';
 import { ProjectsPanel } from './ProjectsPanel';
 
-export const SelectWorkspaceDialog = () => {
+export const SelectWorkspaceDialog: FunctionComponent = () => {
   const currentCustomer = useSelector(getCustomer);
-  const [selectedOrganization, selectOrganization] = React.useState<Customer>(
+  const [selectedOrganization, selectOrganization] = useState<Customer>(
     currentCustomer,
   );
 

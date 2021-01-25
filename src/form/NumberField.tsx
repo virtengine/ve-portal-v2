@@ -1,4 +1,4 @@
-import * as React from 'react';
+import { FunctionComponent } from 'react';
 
 import { FormField } from './types';
 
@@ -10,7 +10,7 @@ interface NumberFieldProps extends FormField {
   placeholder?: string;
 }
 
-export const NumberField = (props: NumberFieldProps) => {
+export const NumberField: FunctionComponent<NumberFieldProps> = (props) => {
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const { input, label, validate, parse, format, ...rest } = props;
   const control = (
@@ -18,7 +18,7 @@ export const NumberField = (props: NumberFieldProps) => {
   );
   if (props.unit) {
     return (
-      <div className="input-group" style={{ maxWidth: '15em' }}>
+      <div className="input-group" style={{ maxWidth: '15em', zIndex: 0 }}>
         {control}
         <span className="input-group-addon">{props.unit}</span>
       </div>

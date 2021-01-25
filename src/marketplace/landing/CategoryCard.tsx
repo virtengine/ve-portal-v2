@@ -1,17 +1,16 @@
-import * as React from 'react';
+import { FunctionComponent } from 'react';
 
 import { translate } from '@waldur/i18n';
 import { OfferingLogo } from '@waldur/marketplace/common/OfferingLogo';
 import { CategoryLink } from '@waldur/marketplace/links/CategoryLink';
 import { Category } from '@waldur/marketplace/types';
-
 import './CategoryCard.scss';
 
 interface CategoryCardProps {
   category: Category;
 }
 
-export const CategoryCard = (props: CategoryCardProps) => (
+export const CategoryCard: FunctionComponent<CategoryCardProps> = (props) => (
   <div className="category-card">
     <CategoryLink
       className="category-thumb"
@@ -27,8 +26,8 @@ export const CategoryCard = (props: CategoryCardProps) => (
       </h3>
       {props.category.offering_count}{' '}
       {props.category.offering_count === 1
-        ? translate('item')
-        : translate('items')}
+        ? translate('offering')
+        : translate('offerings')}
     </div>
   </div>
 );

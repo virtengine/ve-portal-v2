@@ -1,4 +1,4 @@
-import * as React from 'react';
+import { FunctionComponent } from 'react';
 
 import { Table, connectTable, createFetcher } from '@waldur/table';
 import { DASH_ESCAPE_CODE } from '@waldur/table/constants';
@@ -6,7 +6,7 @@ import { DASH_ESCAPE_CODE } from '@waldur/table/constants';
 import { RolesRenderer } from './RolesRenderer';
 import { UserDetailsButton } from './UserDetailsButton';
 
-const TableComponent = (props) => {
+const TableComponent: FunctionComponent<any> = (props) => {
   const { translate } = props;
   return (
     <Table
@@ -14,11 +14,11 @@ const TableComponent = (props) => {
       columns={[
         {
           title: translate('Full name'),
-          render: ({ row }) => <span>{row.full_name}</span>,
+          render: ({ row }) => <>{row.full_name}</>,
         },
         {
           title: translate('Username'),
-          render: ({ row }) => <span>{row.user_name}</span>,
+          render: ({ row }) => <>{row.user_name}</>,
         },
         {
           title: translate('Cluster roles'),

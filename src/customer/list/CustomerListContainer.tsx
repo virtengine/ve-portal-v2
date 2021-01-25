@@ -1,6 +1,6 @@
-import * as moment from 'moment-timezone';
-import * as React from 'react';
-import useAsync from 'react-use/lib/useAsync';
+import moment from 'moment-timezone';
+import { FunctionComponent } from 'react';
+import { useAsync } from 'react-use';
 
 import { getList } from '@waldur/core/api';
 import { LoadingSpinner } from '@waldur/core/LoadingSpinner';
@@ -40,7 +40,7 @@ const getInvoices = (params) => getList<Invoice>('/invoices/', params);
 async function oldestInvoice() {
   const params = {
     page_size: 1,
-    o: ['year', 'month'],
+    o: ['year', 'month'].join(','),
     field: ['year', 'month'],
   };
   const response = await getInvoices(params);
@@ -62,7 +62,7 @@ async function loadData() {
   return { initialValues, accountingPeriods };
 }
 
-export const CustomerListContainer = () => {
+export const CustomerListContainer: FunctionComponent = () => {
   useTitle(translate('Financial overview'));
   useReportingBreadcrumbs();
   const { loading, error, value: data } = useAsync(loadData);

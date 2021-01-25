@@ -1,10 +1,9 @@
-import * as React from 'react';
-import * as DropdownButton from 'react-bootstrap/lib/DropdownButton';
-import * as MenuItem from 'react-bootstrap/lib/MenuItem';
+import { DropdownButton, MenuItem } from 'react-bootstrap';
 import { connect } from 'react-redux';
 
 import { translate } from '@waldur/i18n';
 import { getConfig } from '@waldur/store/config';
+import { RootState } from '@waldur/store/reducers';
 
 interface ExternalLink {
   label: string;
@@ -32,7 +31,7 @@ const ExternalLinksComponent = (props: Props) =>
     </DropdownButton>
   );
 
-const mapStateToProps = (state) => {
+const mapStateToProps = (state: RootState) => {
   const externalLinks = getConfig(state).externalLinks;
   return {
     externalLinks,

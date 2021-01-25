@@ -1,4 +1,3 @@
-import * as React from 'react';
 import { reduxForm, SubmissionError } from 'redux-form';
 
 import { format } from '@waldur/core/ErrorMessageFormatter';
@@ -44,7 +43,7 @@ export const SigninForm = reduxForm<FormData>({ form: FORM_ID })(
         type="password"
       />
       <SubmitButton label={translate('Login')} submitting={submitting} />
-      {error && <p className="text-danger">{error}</p>}
+      {error && <p className="text-danger">{JSON.stringify(error)}</p>}
     </form>
   ),
 );

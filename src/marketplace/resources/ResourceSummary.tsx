@@ -1,16 +1,19 @@
-import * as React from 'react';
+import { FunctionComponent } from 'react';
 
 import { translate } from '@waldur/i18n';
 import { Field } from '@waldur/resource/summary';
 import { CreatedField } from '@waldur/resource/summary/CreatedField';
+import { ResourceDetailsTable } from '@waldur/resource/summary/ResourceDetailsTable';
 
 import { KeyValueButton } from './KeyValueButton';
 import { MarketplaceResourceStateField } from './list/MarketplaceResourceStateField';
 import { ResourceDetailsLink } from './ResourceDetailsLink';
 import { Resource } from './types';
 
-export const ResourceSummary = ({ resource }) => (
-  <dl className="dl-horizontal resource-details-table">
+export const ResourceSummary: FunctionComponent<{ resource: Resource }> = ({
+  resource,
+}) => (
+  <ResourceDetailsTable>
     <Field label={translate('Offering type')} value={resource.offering_name} />
     <Field
       label={translate('Client organization')}
@@ -21,7 +24,7 @@ export const ResourceSummary = ({ resource }) => (
     <Field label={translate('Plan')} value={resource.plan_name || 'N/A'} />
     <Field
       label={translate('State')}
-      value={<MarketplaceResourceStateField resource={resource as Resource} />}
+      value={<MarketplaceResourceStateField resource={resource} />}
     />
     <Field
       label={translate('Created')}
@@ -50,5 +53,5 @@ export const ResourceSummary = ({ resource }) => (
         }
       />
     ) : null}
-  </dl>
+  </ResourceDetailsTable>
 );

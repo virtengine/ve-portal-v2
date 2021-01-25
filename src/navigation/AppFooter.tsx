@@ -1,11 +1,11 @@
-import * as React from 'react';
+import { FunctionComponent } from 'react';
 import { useSelector } from 'react-redux';
 
 import { Link } from '@waldur/core/Link';
 import { translate } from '@waldur/i18n';
 import { getConfig } from '@waldur/store/config';
 
-export const AppFooter = () => {
+export const AppFooter: FunctionComponent = () => {
   const {
     buildId,
     companyName,
@@ -33,7 +33,7 @@ export const AppFooter = () => {
         </ul>
       </div>
       <div>
-        <span>{translate('Version')}</span>: {buildId}
+        <>{translate('Version')}</>: {buildId}
       </div>
     </footer>
   );

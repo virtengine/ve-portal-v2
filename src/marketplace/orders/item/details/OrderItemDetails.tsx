@@ -1,9 +1,5 @@
-import * as React from 'react';
-import * as Col from 'react-bootstrap/lib/Col';
-import * as Panel from 'react-bootstrap/lib/Panel';
-import * as PanelGroup from 'react-bootstrap/lib/PanelGroup';
-import * as Row from 'react-bootstrap/lib/Row';
-import useInterval from 'react-use/lib/useInterval';
+import { memo } from 'react';
+import { Col, Panel, PanelGroup, Row } from 'react-bootstrap';
 
 import { titleCase } from '@waldur/core/utils';
 import { translate } from '@waldur/i18n';
@@ -20,15 +16,10 @@ import { OrderItemSummary } from './OrderItemSummary';
 import { OrderItemTerminateButton } from './OrderItemTerminateButton';
 import { OrderItemTypeIndicator } from './OrderItemTypeIndicator';
 
-export const OrderItemDetails = (
+let OrderItemDetails = (
   props: OrderItemDetailsProps & { loadData(): void },
 ) => {
   const DetailsComponent = getDetailsComponent(props.orderItem.offering_type);
-  // Refresh order item details each 20 seconds until it is switched from pending state to terminal state
-  const pollingDelay = ['pending', 'executing'].includes(props.orderItem.state)
-    ? 20000
-    : null;
-  useInterval(props.loadData, pollingDelay);
   return (
     <Row>
       <Col md={9}>
@@ -121,3 +112,6 @@ export const OrderItemDetails = (
     </Row>
   );
 };
+
+OrderItemDetails = memo(OrderItemDetails);
+export { OrderItemDetails };

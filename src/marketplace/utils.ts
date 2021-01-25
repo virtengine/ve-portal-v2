@@ -1,7 +1,6 @@
-import { ngInjector } from '@waldur/core/services';
+import { getFormValues } from 'redux-form';
 
-export const marketplaceIsVisible = () =>
-  ngInjector.get('features').isVisible('marketplace');
+import { RootState } from '@waldur/store/reducers';
 
 export const getCategoryLink = (projectId, categoryId) => ({
   state: 'marketplace-project-resources',
@@ -10,3 +9,6 @@ export const getCategoryLink = (projectId, categoryId) => ({
     category_uuid: categoryId,
   },
 });
+
+export const formDataSelector = (state: RootState) =>
+  (getFormValues('marketplaceOffering')(state) || {}) as any;

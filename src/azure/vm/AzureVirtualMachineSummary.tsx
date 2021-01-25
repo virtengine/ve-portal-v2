@@ -1,5 +1,3 @@
-import * as React from 'react';
-
 import { AzureVirtualMachine } from '@waldur/azure/common/types';
 import { withTranslation } from '@waldur/i18n';
 import { Field, ResourceSummaryProps } from '@waldur/resource/summary';

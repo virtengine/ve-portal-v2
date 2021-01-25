@@ -1,38 +1,40 @@
-import * as React from 'react';
-import Button from 'react-bootstrap/lib/Button';
-import ModalBody from 'react-bootstrap/lib/ModalBody';
-import ModalFooter from 'react-bootstrap/lib/ModalFooter';
-import ModalHeader from 'react-bootstrap/lib/ModalHeader';
-import ModalTitle from 'react-bootstrap/lib/ModalTitle';
+import { useCallback, useEffect, FunctionComponent } from 'react';
+import {
+  Button,
+  ModalBody,
+  ModalFooter,
+  ModalHeader,
+  ModalTitle,
+} from 'react-bootstrap';
 import { useDispatch, useSelector } from 'react-redux';
-import useAsync from 'react-use/lib/useAsync';
+import { useAsync } from 'react-use';
 
+import { ENV } from '@waldur/configs/default';
 import { LoadingSpinner } from '@waldur/core/LoadingSpinner';
-import { ENV } from '@waldur/core/services';
 import { translate } from '@waldur/i18n';
 import { closeModalDialog } from '@waldur/modal/actions';
 import { getUser } from '@waldur/workspace/selectors';
 
 import { InvitationService } from './InvitationService';
 
-export const InvitationConfirmDialog = ({ resolve: { token, deferred } }) => {
+export const InvitationConfirmDialog: FunctionComponent<{
+  resolve: { token; deferred };
+}> = ({ resolve: { token, deferred } }) => {
   const dispatch = useDispatch();
 
-  const close = React.useCallback(() => dispatch(closeModalDialog()), [
-    dispatch,
-  ]);
+  const close = useCallback(() => dispatch(closeModalDialog()), [dispatch]);
 
-  const dismiss = React.useCallback(() => {
+  const dismiss = useCallback(() => {
     deferred.reject();
     close();
   }, [close, deferred]);
 
-  const closeAcceptingNewEmail = React.useCallback(() => {
+  const closeAcceptingNewEmail = useCallback(() => {
     close();
     deferred.resolve(true);
   }, [close, deferred]);
 
-  const closeDecliningNewEmail = React.useCallback(() => {
+  const closeDecliningNewEmail = useCallback(() => {
     close();
     deferred.resolve(false);
   }, [close, deferred]);
@@ -43,13 +45,13 @@ export const InvitationConfirmDialog = ({ resolve: { token, deferred } }) => {
   );
   const invitation = asyncResult.value;
 
-  React.useEffect(() => {
+  useEffect(() => {
     if (asyncResult.error) {
       dismiss();
     }
   }, [asyncResult.error, dismiss]);
 
-  React.useEffect(() => {
+  useEffect(() => {
     if (!user || !invitation) {
       return;
     }

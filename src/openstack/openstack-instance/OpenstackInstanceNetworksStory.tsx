@@ -1,13 +1,12 @@
-import * as React from 'react';
+import { Component } from 'react';
 
 import { OpenstackInstanceNetworks } from '@waldur/openstack/openstack-instance/OpenstackInstanceNetworks';
 import {
   subnets,
   floatingIps,
 } from '@waldur/openstack/openstack-instance/storyFixtures';
-import { connectAngularComponent } from '@waldur/store/connect';
 
-export class OpenstackInstanceNetworksStory extends React.Component {
+export class OpenstackInstanceNetworksStory extends Component {
   state = {
     selectedValue: [],
   };
@@ -36,5 +35,3 @@ export class OpenstackInstanceNetworksStory extends React.Component {
     );
   }
 }
-
-export default connectAngularComponent(OpenstackInstanceNetworksStory);

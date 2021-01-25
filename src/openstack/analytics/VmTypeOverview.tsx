@@ -1,16 +1,16 @@
-import * as React from 'react';
-import * as Tab from 'react-bootstrap/lib/Tab';
-import * as Tabs from 'react-bootstrap/lib/Tabs';
+import React from 'react';
+import { Tab, Tabs } from 'react-bootstrap';
 import { connect } from 'react-redux';
 import { getFormValues } from 'redux-form';
 
 import { Panel } from '@waldur/core/Panel';
 import { translate } from '@waldur/i18n';
+import { RootState } from '@waldur/store/reducers';
 
 import { FlavorsList } from './FlavorsList';
 import { ImagesList } from './ImagesList';
 
-export const VmTypeOverview = connect((state) =>
+export const VmTypeOverview = connect((state: RootState) =>
   getFormValues('vmOverviewFilter')(state),
 )((formValues: { service_provider: any[] }) => {
   if (
@@ -41,4 +41,4 @@ export const VmTypeOverview = connect((state) =>
       </Tabs>
     </Panel>
   );
-}) as React.ComponentType<{}>;
+}) as React.ComponentType;

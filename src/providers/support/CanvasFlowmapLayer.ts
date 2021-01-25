@@ -2,10 +2,12 @@
 import TWEEN from '@tweenjs/tween.js';
 import L from 'leaflet';
 
+import { cleanObject } from '@waldur/core/utils';
+
 // layer source code
 const canvasRenderer = L.canvas();
 
-export const CanvasFlowmapLayer = L.GeoJSON.extend({
+export const CanvasFlowmapLayer: any = L.GeoJSON.extend({
   options: {
     // this is only a default option example,
     // developers will most likely need to provide this
@@ -170,7 +172,7 @@ export const CanvasFlowmapLayer = L.GeoJSON.extend({
           ];
 
           // destination feature -- clone, modify, and push to feature collection
-          const destinationFeature = JSON.parse(JSON.stringify(feature));
+          const destinationFeature = cleanObject(feature);
 
           destinationFeature.properties.isOrigin = false;
           destinationFeature.properties._isSelectedForPathDisplay = false;

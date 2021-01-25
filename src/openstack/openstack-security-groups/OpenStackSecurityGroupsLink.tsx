@@ -1,9 +1,15 @@
-import * as React from 'react';
 import { connect } from 'react-redux';
 
+import { lazyComponent } from '@waldur/core/lazyComponent';
 import { openModalDialog } from '@waldur/modal/actions';
 
-import { OpenStackSecurityGroupsDialog } from './OpenStackSecurityGroupsDialog';
+const OpenStackSecurityGroupsDialog = lazyComponent(
+  () =>
+    import(
+      /* webpackChunkName: "OpenStackSecurityGroupsDialog" */ './OpenStackSecurityGroupsDialog'
+    ),
+  'OpenStackSecurityGroupsDialog',
+);
 
 export const PureOpenStackSecurityGroupsLink = (props) =>
   props.items && props.items.length > 0 ? (
@@ -12,7 +18,7 @@ export const PureOpenStackSecurityGroupsLink = (props) =>
       <i className="fa fa-info-circle m-l-xs" aria-hidden="true" />
     </span>
   ) : (
-    <span>&mdash;</span>
+    <>&mdash;</>
   );
 
 export const openDetailsDialog = (securityGroups) =>

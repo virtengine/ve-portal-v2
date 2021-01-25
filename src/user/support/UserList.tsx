@@ -1,11 +1,12 @@
-import * as React from 'react';
-import * as ButtonGroup from 'react-bootstrap/lib/ButtonGroup';
+import { FunctionComponent } from 'react';
+import { ButtonGroup } from 'react-bootstrap';
 import { connect } from 'react-redux';
 import { compose } from 'redux';
 import { getFormValues } from 'redux-form';
 
 import { CUSTOMER_OWNER_ROLE } from '@waldur/core/constants';
 import { Tooltip } from '@waldur/core/Tooltip';
+import { RootState } from '@waldur/store/reducers';
 import { BooleanField } from '@waldur/table/BooleanField';
 import { DASH_ESCAPE_CODE } from '@waldur/table/constants';
 import { Table, connectTable, createFetcher } from '@waldur/table/index';
@@ -13,7 +14,7 @@ import { Table, connectTable, createFetcher } from '@waldur/table/index';
 import { UserActivateButton } from './UserActivateButton';
 import { UserDetailsButton } from './UserDetailsButton';
 
-const UserActionsButton = (props) => (
+const UserActionsButton: FunctionComponent<any> = (props) => (
   <ButtonGroup>
     <UserDetailsButton {...props} />
     <UserActivateButton {...props} />
@@ -25,17 +26,15 @@ const renderFieldOrDash = (field) => {
 };
 
 const PhoneNumberField = ({ row }) => (
-  <span>{renderFieldOrDash(row.phone_number)}</span>
+  <>{renderFieldOrDash(row.phone_number)}</>
 );
 
-const EmailField = ({ row }) => <span>{renderFieldOrDash(row.email)}</span>;
+const EmailField = ({ row }) => <>{renderFieldOrDash(row.email)}</>;
 
-const FullNameField = ({ row }) => (
-  <span>{renderFieldOrDash(row.full_name)}</span>
-);
+const FullNameField = ({ row }) => <>{renderFieldOrDash(row.full_name)}</>;
 
 const OrganizationField = ({ row }) => (
-  <span>{renderFieldOrDash(row.organization)}</span>
+  <>{renderFieldOrDash(row.organization)}</>
 );
 
 const StaffStatusField = ({ row }) => {
@@ -88,7 +87,7 @@ const SupportStatusField = ({ row }) => {
   return <BooleanField value={row.is_support} />;
 };
 
-const TableComponent = (props) => {
+const TableComponent: FunctionComponent<any> = (props) => {
   const { translate } = props;
   return (
     <Table
@@ -217,7 +216,7 @@ const TableOptions = {
   ],
 };
 
-const mapStateToProps = (state) => ({
+const mapStateToProps = (state: RootState) => ({
   userFilter: getFormValues('userFilter')(state),
 });
 

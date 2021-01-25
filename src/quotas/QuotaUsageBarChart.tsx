@@ -1,5 +1,5 @@
-import * as React from 'react';
-import * as ProgressBar from 'react-bootstrap/lib/ProgressBar';
+import { FunctionComponent, Fragment } from 'react';
+import { ProgressBar } from 'react-bootstrap';
 
 import { Tooltip } from '@waldur/core/Tooltip';
 import { translate } from '@waldur/i18n';
@@ -66,12 +66,14 @@ export const QuotaUsageBarChartDescription = ({ quota }) => (
   </>
 );
 
-export const QuotaUsageBarChart = (props: QuotaUsageBarChartProps) => (
+export const QuotaUsageBarChart: FunctionComponent<QuotaUsageBarChartProps> = (
+  props,
+) => (
   <>
     {props.quotas.map((quota, index) => {
       if (quota.limit !== -1) {
         return (
-          <React.Fragment key={index}>
+          <Fragment key={index}>
             <div className="m-b-sm clearfix">
               <QuotaUsageBarChartDescription quota={quota} />
             </div>
@@ -92,7 +94,7 @@ export const QuotaUsageBarChart = (props: QuotaUsageBarChartProps) => (
                 />
               </ProgressBar>
             </Tooltip>
-          </React.Fragment>
+          </Fragment>
         );
       }
     })}

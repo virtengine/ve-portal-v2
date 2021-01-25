@@ -1,12 +1,13 @@
-import * as React from 'react';
+import { FunctionComponent } from 'react';
 import { connect } from 'react-redux';
 import { compose } from 'redux';
 import { getFormValues } from 'redux-form';
 
+import { ENV } from '@waldur/configs/default';
 import { formatDate } from '@waldur/core/dateUtils';
-import { ENV } from '@waldur/core/services';
 import { withTranslation, translate } from '@waldur/i18n';
 import { PriceTooltip } from '@waldur/price/PriceTooltip';
+import { RootState } from '@waldur/store/reducers';
 import { Table, connectTable, createFetcher } from '@waldur/table';
 import { renderFieldOrDash } from '@waldur/table/utils';
 
@@ -19,23 +20,23 @@ import {
 import { OrganizationLink } from './OrganizationLink';
 
 const AbbreviationField = ({ row }) => (
-  <span>{renderFieldOrDash(row.abbreviation)}</span>
+  <>{renderFieldOrDash(row.abbreviation)}</>
 );
 
 const CreatedDateField = ({ row }) => (
-  <span>{renderFieldOrDash(formatDate(row.created))}</span>
+  <>{renderFieldOrDash(formatDate(row.created))}</>
 );
 
 const AccountingStartDateField = ({ row }) => (
-  <span>{renderFieldOrDash(formatDate(row.accounting_start_date))}</span>
+  <>{renderFieldOrDash(formatDate(row.accounting_start_date))}</>
 );
 
 const RegistrationCodeField = ({ row }) => (
-  <span>{renderFieldOrDash(row.registration_code)}</span>
+  <>{renderFieldOrDash(row.registration_code)}</>
 );
 
 const AgreementNumberField = ({ row }) => (
-  <span>{renderFieldOrDash(row.agreement_number)}</span>
+  <>{renderFieldOrDash(row.agreement_number)}</>
 );
 
 const renderTitleWithPriceTooltip = (title) => (
@@ -44,7 +45,7 @@ const renderTitleWithPriceTooltip = (title) => (
   </>
 );
 
-export const TableComponent = (props) => {
+export const TableComponent: FunctionComponent<any> = (props) => {
   const { filterColumns, customerListFilter } = props;
   const accountingPeriodIsCurrent =
     customerListFilter.accounting_period &&
@@ -176,7 +177,7 @@ const TableOptions = {
   exportFields,
 };
 
-const mapStateToProps = (state) => ({
+const mapStateToProps = (state: RootState) => ({
   customerListFilter: getFormValues('customerListFilter')(state),
 });
 

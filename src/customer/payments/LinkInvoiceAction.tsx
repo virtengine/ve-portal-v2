@@ -1,7 +1,6 @@
-import * as React from 'react';
+import { FunctionComponent, useCallback, useEffect } from 'react';
 import { useSelector } from 'react-redux';
-import { useBoolean } from 'react-use';
-import useAsyncFn from 'react-use/lib/useAsyncFn';
+import { useAsyncFn, useBoolean } from 'react-use';
 
 import { getAll } from '@waldur/core/api';
 import { InvoicesDropdown } from '@waldur/customer/payments/InvoicesDropdown';
@@ -19,7 +18,9 @@ const loadInvoices = (customer: Customer) =>
     params: { customer: customer.url, state: 'paid' },
   });
 
-export const LinkInvoiceAction = (props: LinkInvoiceActionProps) => {
+export const LinkInvoiceAction: FunctionComponent<LinkInvoiceActionProps> = (
+  props,
+) => {
   const customer = useSelector(getCustomer);
 
   const [{ loading, error, value }, getInvoices] = useAsyncFn(
@@ -29,11 +30,11 @@ export const LinkInvoiceAction = (props: LinkInvoiceActionProps) => {
 
   const [open, onToggle] = useBoolean(false);
 
-  const loadInvoicesIfOpen = React.useCallback(() => {
+  const loadInvoicesIfOpen = useCallback(() => {
     open && getInvoices();
   }, [open, getInvoices]);
 
-  React.useEffect(loadInvoicesIfOpen, [open]);
+  useEffect(loadInvoicesIfOpen, [open]);
 
   const triggerAction = (selectedInvoice: Invoice) => {
     if (props.disabled) {

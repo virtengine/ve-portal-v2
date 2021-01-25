@@ -1,6 +1,7 @@
 import { connect } from 'react-redux';
 import { compose } from 'redux';
 
+import { lazyComponent } from '@waldur/core/lazyComponent';
 import { withTranslation } from '@waldur/i18n';
 import {
   getOfferingTypes,
@@ -10,17 +11,24 @@ import {
   getPluginOptionsForm,
   getSecretOptionsForm,
 } from '@waldur/marketplace/common/registry';
-import { Offering } from '@waldur/marketplace/types';
 import { openModalDialog } from '@waldur/modal/actions';
 import { findProvider } from '@waldur/providers/registry';
+import { RootState } from '@waldur/store/reducers';
 
 import { getOffering, getType, getTypeLabel } from '../store/selectors';
 
 import { ManagementStep, ManagementStepProps } from './ManagementStep';
-import { ServiceSettingsDetailsDialog } from './ServiceSettingsDetailsDialog';
 
-const mapStateToProps = (state) => {
-  const offering: Offering = getOffering(state).offering;
+const ServiceSettingsDetailsDialog = lazyComponent(
+  () =>
+    import(
+      /* webpackChunkName: "ServiceSettingsDetailsDialog" */ './ServiceSettingsDetailsDialog'
+    ),
+  'ServiceSettingsDetailsDialog',
+);
+
+const mapStateToProps = (state: RootState) => {
+  const offering = getOffering(state).offering;
   const props: Partial<ManagementStepProps> = {
     offeringTypes: getOfferingTypes(),
     editable: !offering,

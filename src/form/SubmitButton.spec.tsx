@@ -1,5 +1,4 @@
 import { mount, ReactWrapper } from 'enzyme';
-import * as React from 'react';
 
 import { SubmitButton } from './SubmitButton';
 

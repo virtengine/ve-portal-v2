@@ -1,6 +1,6 @@
 import { useCurrentStateAndParams } from '@uirouter/react';
-import * as React from 'react';
-import useAsync from 'react-use/lib/useAsync';
+import { FunctionComponent } from 'react';
+import { useAsync } from 'react-use';
 
 import { OFFERING_TYPE_BOOKING } from '@waldur/booking/constants';
 import { LoadingSpinner } from '@waldur/core/LoadingSpinner';
@@ -70,7 +70,7 @@ async function loadData(offering_uuid: string) {
   return { offering, tabs };
 }
 
-export const OfferingContainer = () => {
+export const OfferingContainer: FunctionComponent = () => {
   const {
     params: { offering_uuid },
   } = useCurrentStateAndParams();

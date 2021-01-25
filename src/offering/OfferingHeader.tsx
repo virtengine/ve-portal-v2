@@ -1,11 +1,11 @@
-import * as React from 'react';
+import { FunctionComponent } from 'react';
 import { connect } from 'react-redux';
 import { compose } from 'redux';
 
 import { formatDateTime } from '@waldur/core/dateUtils';
-import { defaultCurrency } from '@waldur/core/services';
 import { TranslateProps, withTranslation } from '@waldur/i18n';
-import { PriceTooltip } from '@waldur/price/PriceTooltip';
+import { ResourceDetailsTable } from '@waldur/resource/summary/ResourceDetailsTable';
+import { RootState } from '@waldur/store/reducers';
 import { getUser } from '@waldur/workspace/selectors';
 
 import { Field } from './Field';
@@ -13,14 +13,19 @@ import { OfferingRuntimeState } from './OfferingRuntimeState';
 import { OfferingState } from './OfferingState';
 import { Offering } from './types';
 
-interface OfferingHeaderProps extends TranslateProps {
+interface OfferingHeaderOwnProps {
   offering: Offering;
   summary?: string;
+}
+
+interface OfferingHeaderProps extends OfferingHeaderOwnProps, TranslateProps {
   showIssueLink: boolean;
 }
 
-export const PureOfferingHeader = (props: OfferingHeaderProps) => (
-  <dl className="dl-horizontal resource-details-table col-sm-12">
+export const PureOfferingHeader: FunctionComponent<OfferingHeaderProps> = (
+  props,
+) => (
+  <ResourceDetailsTable>
     <Field label={props.translate('Name')}>{props.offering.name}</Field>
 
     <Field label={props.translate('Created')}>
@@ -41,16 +46,6 @@ export const PureOfferingHeader = (props: OfferingHeaderProps) => (
 
     <Field label={props.translate('Type')}>
       {props.offering.type_label || props.offering.type}
-    </Field>
-
-    <Field
-      label={
-        <>
-          <PriceTooltip /> {props.translate('Price')}
-        </>
-      }
-    >
-      {defaultCurrency(props.offering.unit_price)}
     </Field>
 
     {props.offering.issue_key && (
@@ -89,10 +84,10 @@ export const PureOfferingHeader = (props: OfferingHeaderProps) => (
         {props.offering.backend_id}
       </Field>
     )}
-  </dl>
+  </ResourceDetailsTable>
 );
 
-const mapStateToProps = (state, ownProps) => {
+const mapStateToProps = (state: RootState, ownProps) => {
   const offering: Offering = ownProps.offering;
   const currentUser = getUser(state);
   const showIssueLink =
@@ -104,4 +99,6 @@ const mapStateToProps = (state, ownProps) => {
 
 const enhance = compose(connect(mapStateToProps), withTranslation);
 
-export const OfferingHeader = enhance(PureOfferingHeader);
+export const OfferingHeader = enhance(
+  PureOfferingHeader,
+) as FunctionComponent<OfferingHeaderOwnProps>;

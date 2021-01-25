@@ -1,6 +1,6 @@
-import * as React from 'react';
+import { FunctionComponent } from 'react';
 import Select from 'react-select';
-import useAsync from 'react-use/lib/useAsync';
+import { useAsync } from 'react-use';
 import { Field } from 'redux-form';
 
 import { getAll } from '@waldur/core/api';
@@ -9,7 +9,7 @@ import { required } from '@waldur/core/validators';
 import { translate } from '@waldur/i18n';
 import { FormGroup } from '@waldur/marketplace/offerings/FormGroup';
 
-const SelectTenantField = (props) => (
+const SelectTenantField: FunctionComponent<any> = (props) => (
   <Select
     value={props.options.filter(
       ({ settings }) => settings === props.input.value,
@@ -27,7 +27,7 @@ const loadData = (projectId) =>
     params: { project_uuid: projectId },
   });
 
-export const TenantSelector = (props) => {
+export const TenantSelector: FunctionComponent<any> = (props) => {
   const resourceProps = useAsync(() => loadData(props.project.uuid), [
     props.project,
   ]);

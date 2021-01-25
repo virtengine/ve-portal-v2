@@ -1,6 +1,4 @@
-import * as React from 'react';
-
-import { defaultCurrency } from '@waldur/core/services';
+import { defaultCurrency } from '@waldur/core/formatCurrency';
 
 import { connectPlanComponents } from './utils';
 

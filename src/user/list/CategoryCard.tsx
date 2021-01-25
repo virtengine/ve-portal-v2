@@ -1,24 +1,30 @@
-import * as React from 'react';
+import { triggerTransition } from '@uirouter/redux';
+import { FunctionComponent } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 
+import { lazyComponent } from '@waldur/core/lazyComponent';
 import { OfferingLogo } from '@waldur/marketplace/common/OfferingLogo';
-import { CategoryLink } from '@waldur/marketplace/links/CategoryLink';
-import { Category } from '@waldur/marketplace/types';
 import '@waldur/marketplace/landing/CategoryCard.scss';
+import { Category } from '@waldur/marketplace/types';
 import { openModalDialog } from '@waldur/modal/actions';
-import { stateGo } from '@waldur/store/coreSaga';
 import { ORGANIZATION_ROUTE, PROJECT_ROUTE } from '@waldur/user/constants';
-import { SelectAffiliationDialog } from '@waldur/user/SelectAffiliationDialog';
 import {
   getUserCustomerPermissions,
   getUserProjectPermissions,
 } from '@waldur/workspace/selectors';
 
+const SelectAffiliationDialog = lazyComponent(
+  () =>
+    import(
+      /* webpackChunkName: "SelectAffiliationDialog" */ '@waldur/user/SelectAffiliationDialog'
+    ),
+  'SelectAffiliationDialog',
+);
 interface CategoryCardProps {
   category: Category;
 }
 
-export const CategoryCard = (props: CategoryCardProps) => {
+export const CategoryCard: FunctionComponent<CategoryCardProps> = (props) => {
   const dispatch = useDispatch();
   const customerPermissions: any[] = useSelector(getUserCustomerPermissions);
   const projectPermissions: any[] = useSelector(getUserProjectPermissions);
@@ -28,7 +34,7 @@ export const CategoryCard = (props: CategoryCardProps) => {
       (customerPermissions.length === 0 && projectPermissions.length === 1)
     ) {
       dispatch(
-        stateGo(
+        triggerTransition(
           customerPermissions.length ? ORGANIZATION_ROUTE : PROJECT_ROUTE,
           {
             uuid: customerPermissions.length
@@ -53,23 +59,18 @@ export const CategoryCard = (props: CategoryCardProps) => {
   };
   return (
     <div className="category-card" style={{ height: '122px' }}>
-      <CategoryLink
-        className="category-thumb"
-        category_uuid={props.category.uuid}
-      >
+      <div className="category-thumb">
         <OfferingLogo
           src={props.category.icon}
           onClick={() => changeWorkspace(props.category.uuid)}
         />
-      </CategoryLink>
+      </div>
       <div className="category-card-body">
         <h3
           className="category-title"
           onClick={() => changeWorkspace(props.category.uuid)}
         >
-          <CategoryLink category_uuid={props.category.uuid}>
-            {props.category.title}
-          </CategoryLink>
+          {props.category.title}
         </h3>
       </div>
     </div>

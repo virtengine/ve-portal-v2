@@ -1,6 +1,5 @@
-import * as React from 'react';
-import ControlLabel from 'react-bootstrap/lib/ControlLabel';
-import FormGroup from 'react-bootstrap/lib/FormGroup';
+import { useCallback, useEffect } from 'react';
+import { ControlLabel, FormGroup } from 'react-bootstrap';
 import { useSelector, useDispatch } from 'react-redux';
 import Select from 'react-select';
 import { Field, reduxForm, formValueSelector, change } from 'redux-form';
@@ -10,6 +9,7 @@ import { SubmitButton } from '@waldur/auth/SubmitButton';
 import { getList } from '@waldur/core/api';
 import { translate } from '@waldur/i18n';
 import { BaseResource } from '@waldur/resource/types';
+import { RootState } from '@waldur/store/reducers';
 import { getUser } from '@waldur/workspace/selectors';
 import { Customer, Project } from '@waldur/workspace/types';
 
@@ -23,13 +23,13 @@ import { sendIssueCreateRequest } from './utils';
 
 const filterOption = (options) => options;
 
-const ISSUE_QUICK_CREATE_FORM_ID = 'IssueQuickCreate';
+export const ISSUE_QUICK_CREATE_FORM_ID = 'IssueQuickCreate';
 
 const formSelector = formValueSelector(ISSUE_QUICK_CREATE_FORM_ID);
 
-const projectSelector = (state) => formSelector(state, 'project');
+const projectSelector = (state: RootState) => formSelector(state, 'project');
 
-const customerSelector = (state) => formSelector(state, 'customer');
+const customerSelector = (state: RootState) => formSelector(state, 'customer');
 
 const refreshCustomers = async (name: string) => {
   const params: Record<string, string> = {};
@@ -79,17 +79,16 @@ const projectRequiredSelector = createSelector(
   },
 );
 
-export const ProjectGroup = ({ disabled, customer }) => {
+export const ProjectGroup = ({ disabled, customer, formId }) => {
   const dispatch = useDispatch();
   const projectRequired = useSelector(projectRequiredSelector);
 
-  const loadOptions = React.useCallback(
-    (name) => refreshProjects(name, customer),
-    [customer],
-  );
+  const loadOptions = useCallback((name) => refreshProjects(name, customer), [
+    customer,
+  ]);
 
-  React.useEffect(() => {
-    dispatch(change(ISSUE_QUICK_CREATE_FORM_ID, 'project', undefined));
+  useEffect(() => {
+    dispatch(change(formId, 'project', undefined));
   }, [dispatch, customer]);
 
   return (
@@ -123,15 +122,14 @@ export const ProjectGroup = ({ disabled, customer }) => {
   );
 };
 
-export const ResourceGroup = ({ disabled, project }) => {
+export const ResourceGroup = ({ disabled, project, formId }) => {
   const dispatch = useDispatch();
-  const loadData = React.useCallback(
-    (name) => refreshResources(name, project),
-    [project],
-  );
+  const loadData = useCallback((name) => refreshResources(name, project), [
+    project,
+  ]);
 
-  React.useEffect(() => {
-    dispatch(change(ISSUE_QUICK_CREATE_FORM_ID, 'resource', undefined));
+  useEffect(() => {
+    dispatch(change(formId, 'resource', undefined));
   }, [dispatch, project]);
 
   return (
@@ -175,7 +173,7 @@ export const IssueQuickCreate = reduxForm<IssueFormData>({
 })(({ handleSubmit, submitting }) => {
   const dispatch = useDispatch();
 
-  const createIssue = React.useCallback(
+  const createIssue = useCallback(
     async (formData: IssueFormData) => {
       const payload: IssueRequestPayload = {
         type: formData.type.id,
@@ -209,10 +207,12 @@ export const IssueQuickCreate = reduxForm<IssueFormData>({
         <ProjectGroup
           disabled={submitting}
           customer={useSelector(customerSelector)}
+          formId={ISSUE_QUICK_CREATE_FORM_ID}
         />
         <ResourceGroup
           disabled={submitting}
           project={useSelector(projectSelector)}
+          formId={ISSUE_QUICK_CREATE_FORM_ID}
         />
         <div className="text-right">
           <SubmitButton submitting={submitting} block={false}>

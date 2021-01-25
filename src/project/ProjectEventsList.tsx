@@ -1,9 +1,10 @@
-import * as React from 'react';
+import { FunctionComponent } from 'react';
 import { connect } from 'react-redux';
 import { getFormValues } from 'redux-form';
 
 import { isEmpty } from '@waldur/core/utils';
 import { getEventsList } from '@waldur/events/BaseEventsList';
+import { RootState } from '@waldur/store/reducers';
 import { getProject } from '@waldur/workspace/selectors';
 
 import { ProjectEventsFilter } from './ProjectEventsFilter';
@@ -23,14 +24,14 @@ export const PureProjectEvents = getEventsList({
   },
 });
 
-const mapStateToProps = (state) => ({
+const mapStateToProps = (state: RootState) => ({
   userFilter: getFormValues('projectEventsFilter')(state),
   project: getProject(state),
 });
 
 const ProjectEvents = connect(mapStateToProps)(PureProjectEvents);
 
-export const ProjectEventsView = (props) => (
+export const ProjectEventsView: FunctionComponent<any> = (props) => (
   <>
     <ProjectEventsFilter />
     <ProjectEvents {...props} />

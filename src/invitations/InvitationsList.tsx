@@ -1,11 +1,12 @@
-import * as React from 'react';
-import * as Gravatar from 'react-gravatar';
+import { FunctionComponent } from 'react';
+import Gravatar from 'react-gravatar';
 import { connect } from 'react-redux';
 import { compose } from 'redux';
 import { getFormValues } from 'redux-form';
 
 import { formatDate } from '@waldur/core/dateUtils';
 import { InvitationExpandableRow } from '@waldur/invitations/InvitationExpandableRow';
+import { RootState } from '@waldur/store/reducers';
 import { Table, connectTable, createFetcher } from '@waldur/table';
 import { TableOptionsType } from '@waldur/table/types';
 import { getCustomer } from '@waldur/workspace/selectors';
@@ -16,7 +17,7 @@ import { InvitationSendButton } from './actions/InvitationSendButton';
 import { InvitationsFilter } from './InvitationsFilter';
 import { RoleField } from './RoleField';
 
-const TableComponent = (props) => {
+const TableComponent: FunctionComponent<any> = (props) => {
   const { translate } = props;
   return (
     <Table
@@ -81,7 +82,7 @@ const TableOptions: TableOptionsType = {
   queryField: 'email',
 };
 
-const mapStateToProps = (state) => ({
+const mapStateToProps = (state: RootState) => ({
   customer: getCustomer(state),
   stateFilter: getFormValues('InvitationsFilter')(state),
 });
@@ -90,7 +91,7 @@ const enhance = compose(connect(mapStateToProps), connectTable(TableOptions));
 
 const InvitationsListComponent = enhance(TableComponent);
 
-export const InvitationsList = () => (
+export const InvitationsList: FunctionComponent = () => (
   <>
     <InvitationsFilter />
     <InvitationsListComponent />

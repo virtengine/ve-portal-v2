@@ -1,5 +1,4 @@
-import * as React from 'react';
-import * as Row from 'react-bootstrap/lib/Row';
+import { Row } from 'react-bootstrap';
 import { reduxForm } from 'redux-form';
 
 import { OfferingFilter } from './OfferingFilter';

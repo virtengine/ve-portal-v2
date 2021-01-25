@@ -1,5 +1,5 @@
-import * as classNames from 'classnames';
-import * as React from 'react';
+import classNames from 'classnames';
+import { useMemo, useState, FunctionComponent } from 'react';
 import Select from 'react-select';
 
 import { translate } from '@waldur/i18n';
@@ -49,16 +49,16 @@ const ExtraDataRow = ({ resource }) => (
   </tr>
 );
 
-export const ResourceRow = ({
-  resource,
-  value,
-  toggleResource,
-  offering,
-  plans,
-  assignPlan,
-}) => {
-  const payload = React.useMemo(() => serializeResource(resource), [resource]);
-  const [expanded, setExpanded] = React.useState(false);
+export const ResourceRow: FunctionComponent<{
+  resource;
+  value;
+  toggleResource;
+  offering;
+  plans;
+  assignPlan;
+}> = ({ resource, value, toggleResource, offering, plans, assignPlan }) => {
+  const payload = useMemo(() => serializeResource(resource), [resource]);
+  const [expanded, setExpanded] = useState(false);
 
   return (
     <>

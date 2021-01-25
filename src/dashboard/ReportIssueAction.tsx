@@ -1,10 +1,8 @@
-import * as React from 'react';
-
-import { FormattedHtml } from '@waldur/core/FormattedHtml';
+import { ENV } from '@waldur/configs/default';
 import { MessageDialog } from '@waldur/core/MessageDialog';
-import { ENV, ngInjector } from '@waldur/core/services';
-import { translate } from '@waldur/i18n';
-import { IssueCreateDialog } from '@waldur/issues/create/IssueCreateDialog';
+import { isFeatureVisible } from '@waldur/features/connect';
+import { translate, formatJsxTemplate } from '@waldur/i18n';
+import { openIssueCreateDialog } from '@waldur/issues/create/actions';
 import { openModalDialog } from '@waldur/modal/actions';
 import store from '@waldur/store/store';
 
@@ -17,26 +15,28 @@ export const getIssueAction = (props: ReportIssueActionProps) => {
   return {
     title: translate('Report an issue'),
     onClick() {
-      const features = ngInjector.get('features');
-      if (features.isVisible('support')) {
+      if (isFeatureVisible('support')) {
         store.dispatch(
-          openModalDialog(IssueCreateDialog, {
-            resolve: {
-              issue: props.issue,
-            },
+          openIssueCreateDialog({
+            issue: props.issue,
           }),
         );
       } else {
-        const context = { supportEmail: ENV.supportEmail };
-        const message = translate(
-          'To report an issue, please send an email to <a href="mailto:{supportEmail}">{supportEmail}</a>.',
-          context,
-        );
         store.dispatch(
           openModalDialog(MessageDialog, {
             resolve: {
               title: translate('Report an issue'),
-              message: <FormattedHtml html={message} />,
+              message: translate(
+                'To report an issue, please send an email to {supportEmail}.',
+                {
+                  supportEmail: (
+                    <a href={`mailto:${ENV.supportEmail}`}>
+                      {ENV.supportEmail}
+                    </a>
+                  ),
+                },
+                formatJsxTemplate,
+              ),
             },
           }),
         );

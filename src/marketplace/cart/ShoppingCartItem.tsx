@@ -1,12 +1,13 @@
-import * as classNames from 'classnames';
-import * as React from 'react';
+import classNames from 'classnames';
+import { FunctionComponent } from 'react';
 import { useSelector } from 'react-redux';
 
+import { defaultCurrency } from '@waldur/core/formatCurrency';
 import { FormattedHtml } from '@waldur/core/FormattedHtml';
-import { defaultCurrency } from '@waldur/core/services';
 import { Tooltip } from '@waldur/core/Tooltip';
 import { translate } from '@waldur/i18n';
 import { showPriceSelector } from '@waldur/invoices/details/utils';
+import { ShoppingCartTimeSlots } from '@waldur/marketplace/cart/ShoppingCartTimeSlots';
 import { OfferingLogo } from '@waldur/marketplace/common/OfferingLogo';
 import { OrderItemResponse } from '@waldur/marketplace/orders/types';
 
@@ -24,7 +25,7 @@ interface ShoppingCartItemProps {
   maxUnit: BillingPeriod;
 }
 
-const TosCell = (props: ShoppingCartItemProps) => (
+const TosCell: FunctionComponent<ShoppingCartItemProps> = (props) => (
   <td className="text-center">
     {props.item.offering_shared &&
     props.item.offering_billable &&
@@ -34,12 +35,14 @@ const TosCell = (props: ShoppingCartItemProps) => (
         offering_terms_of_service={props.item.offering_terms_of_service}
       />
     ) : (
-      <span>&mdash;</span>
+      <>&mdash;</>
     )}
   </td>
 );
 
-export const ShoppingCartItem = (props: ShoppingCartItemProps) => {
+export const ShoppingCartItem: FunctionComponent<ShoppingCartItemProps> = (
+  props,
+) => {
   const showPrice = useSelector(showPriceSelector);
   return (
     <tr>
@@ -55,7 +58,9 @@ export const ShoppingCartItem = (props: ShoppingCartItemProps) => {
           <div className="offering-info">
             <h5 className="offering-title">
               <ShoppingCartItemUpdateLink order_item_uuid={props.item.uuid}>
-                {props.item.attributes.name || props.item.offering_name}
+                {props.item.attributes.name ||
+                  props.item.resource_name ||
+                  props.item.offering_name}
               </ShoppingCartItemUpdateLink>
             </h5>
             <p>
@@ -63,6 +68,9 @@ export const ShoppingCartItem = (props: ShoppingCartItemProps) => {
                 <FormattedHtml html={props.item.offering_description} />
               )}
             </p>
+            <ShoppingCartTimeSlots
+              schedules={props.item.attributes.schedules}
+            />
           </div>
         </div>
       </td>

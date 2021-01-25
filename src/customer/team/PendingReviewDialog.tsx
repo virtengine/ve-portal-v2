@@ -1,24 +1,29 @@
-import * as React from 'react';
-import ModalBody from 'react-bootstrap/lib/ModalBody';
-import ModalFooter from 'react-bootstrap/lib/ModalFooter';
-import ModalHeader from 'react-bootstrap/lib/ModalHeader';
-import ModalTitle from 'react-bootstrap/lib/ModalTitle';
+import { triggerTransition } from '@uirouter/redux';
+import { useState, FunctionComponent } from 'react';
+import {
+  ModalBody,
+  ModalFooter,
+  ModalHeader,
+  ModalTitle,
+} from 'react-bootstrap';
 import { useDispatch } from 'react-redux';
 
 import { translate } from '@waldur/i18n';
 import { closeModalDialog } from '@waldur/modal/actions';
-import { showError, showSuccess, stateGo } from '@waldur/store/coreSaga';
+import { showError, showSuccess } from '@waldur/store/notify';
 
 import { closeReview } from './api';
 import { CustomerUsersList } from './CustomerUsersList';
 
-export const PendingReviewDialog = ({ resolve: { reviewId } }) => {
+export const PendingReviewDialog: FunctionComponent<{
+  resolve: { reviewId };
+}> = ({ resolve: { reviewId } }) => {
   const dispatch = useDispatch();
   const gotoTeam = () => {
-    dispatch(stateGo('organization.team'));
+    dispatch(triggerTransition('organization.team', {}));
     dispatch(closeModalDialog());
   };
-  const [submitting, setSubmitting] = React.useState(false);
+  const [submitting, setSubmitting] = useState(false);
   const closeReviewCallback = async () => {
     setSubmitting(true);
     try {

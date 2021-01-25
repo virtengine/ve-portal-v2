@@ -1,10 +1,10 @@
-import * as React from 'react';
-import * as Gravatar from 'react-gravatar';
+import { FunctionComponent } from 'react';
+import Gravatar from 'react-gravatar';
 import { useSelector } from 'react-redux';
-import useAsync from 'react-use/lib/useAsync';
+import { useAsync } from 'react-use';
 
+import { ENV } from '@waldur/configs/default';
 import { LoadingSpinner } from '@waldur/core/LoadingSpinner';
-import { ENV } from '@waldur/core/services';
 import { translate } from '@waldur/i18n';
 import { Table, connectTable } from '@waldur/table';
 import { TableOptionsType } from '@waldur/table/types';
@@ -20,7 +20,7 @@ import { fetchProjectUsers, fetchProjectManagers } from './api';
 import { UserDetailsButton } from './UserDetailsButton';
 import { UserRemoveButton } from './UserRemoveButton';
 
-const TableComponent = (props) => {
+const TableComponent: FunctionComponent<any> = (props) => {
   const { translate } = props;
   return (
     <Table
@@ -86,15 +86,18 @@ const TableOptions: TableOptionsType = {
   table: 'project-users',
   fetchData: fetchProjectUsers,
   queryField: 'full_name',
-  mapPropsToFilter: (props) => ({
-    project_uuid: props.project.uuid,
-    o: 'concatenated_name',
-  }),
+  mapPropsToFilter: (props) =>
+    props.project
+      ? {
+          project_uuid: props.project.uuid,
+          o: 'concatenated_name',
+        }
+      : {},
 };
 
 const ProjectUsersListComponent = connectTable(TableOptions)(TableComponent);
 
-export const ProjectUsersList = () => {
+export const ProjectUsersList: FunctionComponent = () => {
   const user = useSelector(getUser);
   const project = useSelector(getProject);
   const { loading, error, value } = useAsync(

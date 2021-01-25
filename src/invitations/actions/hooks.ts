@@ -1,9 +1,10 @@
 import { useRouter } from '@uirouter/react';
-import * as React from 'react';
+import { useMemo, useEffect, useCallback } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import useAsyncFn from 'react-use/lib/useAsyncFn';
+import { useAsyncFn } from 'react-use';
 import { change } from 'redux-form';
 
+import { ENV } from '@waldur/configs/default';
 import {
   CUSTOMER_OWNER_ROLE,
   PROJECT_ADMIN_ROLE,
@@ -11,10 +12,9 @@ import {
   PROJECT_MEMBER_ROLE,
   PROJECT_ROLES,
 } from '@waldur/core/constants';
-import { ENV } from '@waldur/core/services';
 import { isFeatureVisible } from '@waldur/features/connect';
 import { closeModalDialog } from '@waldur/modal/actions';
-import { showError, showSuccess } from '@waldur/store/coreSaga';
+import { showError, showSuccess } from '@waldur/store/notify';
 
 import { InvitationService } from '../InvitationService';
 
@@ -71,15 +71,15 @@ export const useInvitationCreateDialog = (context) => {
     taxNumber,
   ]);
 
-  const roles = React.useMemo(() => getRoles(context), [context]);
-  React.useEffect(() => {
+  const roles = useMemo(() => getRoles(context), [context]);
+  useEffect(() => {
     dispatch(change('InvitationCreateDialog', 'role', roles[0].value));
   }, [dispatch, roles]);
 
   const roleDisabled = ENV.invitationRequireUserDetails && !userDetails;
   const projectEnabled = PROJECT_ROLES.includes(role) && !roleDisabled;
 
-  const createInvitation = React.useCallback(
+  const createInvitation = useCallback(
     async (formData) => {
       try {
         const payload: Record<string, any> = {};
@@ -87,7 +87,7 @@ export const useInvitationCreateDialog = (context) => {
           uuid: 'TEMPLATE',
         });
         payload.link_template =
-          location.origin + '/' + path.replace('TEMPLATE', '{uuid}');
+          location.origin + path.replace('TEMPLATE', '{uuid}');
         payload.email = formData.email;
         payload.civil_number = formData.civil_number;
         payload.tax_number = formData.tax_number;

@@ -1,12 +1,10 @@
 import { useCurrentStateAndParams } from '@uirouter/react';
-import * as React from 'react';
-import * as Col from 'react-bootstrap/lib/Col';
-import * as Row from 'react-bootstrap/lib/Row';
-import useAsyncFn from 'react-use/lib/useAsyncFn';
-import useInterval from 'react-use/lib/useInterval';
+import React, { FunctionComponent } from 'react';
+import { Col, Row } from 'react-bootstrap';
+import { useAsyncFn, useInterval, useNetwork } from 'react-use';
 
+import { ENV } from '@waldur/configs/default';
 import { LoadingSpinner } from '@waldur/core/LoadingSpinner';
-import { getUUID } from '@waldur/core/utils';
 import { translate } from '@waldur/i18n';
 import { getOrderDetails } from '@waldur/marketplace/common/api';
 import { OrderSummary } from '@waldur/marketplace/orders/OrderSummary';
@@ -33,11 +31,12 @@ async function loadOrder(order_uuid) {
     items: order.items,
     total_cost: order.total_cost,
     file: order.file,
-    project_uuid: getUUID(order.project),
+    project_uuid: order.project_uuid,
+    customer_uuid: order.customer_uuid,
   };
 }
 
-const OrderRefreshButton = (props) => (
+const OrderRefreshButton: FunctionComponent<any> = (props) => (
   <button
     type="button"
     className="btn btn-default btn-sm m-r-sm"
@@ -68,8 +67,14 @@ export const OrderDetails: React.FC<OrderDetailsProps> = (props) => {
     oldValue.current = value;
   }, [value]);
 
-  // Refresh order details each 5 seconds until it is switched from pending state to terminal state
-  useInterval(loadData, value?.order?.state === 'executing' ? 5000 : null);
+  const { online } = useNetwork();
+
+  const pullInterval =
+    online && value?.order?.state === 'executing'
+      ? ENV.defaultPullInterval * 1000
+      : null;
+  // Refresh order details until it is switched from pending state to terminal state
+  useInterval(loadData, pullInterval);
 
   // Don't render loading indicator if order item is refreshing
   // since if it is in pending state it is refreshed via periodic polling
@@ -94,6 +99,7 @@ export const OrderDetails: React.FC<OrderDetailsProps> = (props) => {
           <Order
             items={data.items}
             project_uuid={data.project_uuid}
+            customer_uuid={data.customer_uuid}
             editable={false}
           />
           <div className="text-right">

@@ -1,6 +1,6 @@
-import * as React from 'react';
+import { useState, FunctionComponent } from 'react';
 import Select from 'react-select';
-import useAsync from 'react-use/lib/useAsync';
+import { useAsync } from 'react-use';
 
 import { LoadingSpinner } from '@waldur/core/LoadingSpinner';
 import { Panel } from '@waldur/core/Panel';
@@ -39,7 +39,7 @@ const loadData = async () => {
 };
 
 const CategoryPanel = ({ category, checklists, customer }) => {
-  const [checklist, setChecklist] = React.useState<Checklist>();
+  const [checklist, setChecklist] = useState<Checklist>();
   const statsState = useAsync(
     () =>
       checklist
@@ -72,7 +72,9 @@ const CategoryPanel = ({ category, checklists, customer }) => {
   );
 };
 
-export const CustomerChecklistOverview = ({ customer }) => {
+export const CustomerChecklistOverview: FunctionComponent<{ customer }> = ({
+  customer,
+}) => {
   const asyncState = useAsync(loadData, []);
 
   if (asyncState.loading) {

@@ -1,6 +1,6 @@
-import * as React from 'react';
+import { useState } from 'react';
 import Select from 'react-select';
-import useAsync from 'react-use/lib/useAsync';
+import { useAsync } from 'react-use';
 
 export const AsyncSelectField = ({
   input: { value: selectedValue, onChange },
@@ -9,7 +9,7 @@ export const AsyncSelectField = ({
   loadOptions,
   ...props
 }: any) => {
-  const [inputValue, setInputValue] = React.useState('');
+  const [inputValue, setInputValue] = useState('');
   const { loading: isLoading, value: asyncValue } = useAsync(
     () => loadOptions(inputValue),
     [inputValue, loadOptions],

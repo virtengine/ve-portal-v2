@@ -1,8 +1,8 @@
-import * as React from 'react';
+import { createElement, FunctionComponent } from 'react';
 import { connect } from 'react-redux';
-import { isValid, getFormValues } from 'redux-form';
+import { getFormValues, isValid } from 'redux-form';
 
-import { defaultCurrency } from '@waldur/core/services';
+import { defaultCurrency } from '@waldur/core/formatCurrency';
 import { translate } from '@waldur/i18n';
 import { getActiveFixedPricePaymentProfile } from '@waldur/invoices/details/utils';
 import { ShoppingCartButtonContainer } from '@waldur/marketplace/cart/ShoppingCartButtonContainer';
@@ -14,13 +14,13 @@ import { OfferingCompareButtonContainer } from '@waldur/marketplace/compare/Offe
 import { ProviderLink } from '@waldur/marketplace/links/ProviderLink';
 import { Offering } from '@waldur/marketplace/types';
 import { getCustomer, getProject } from '@waldur/workspace/selectors';
-import { Project, Customer } from '@waldur/workspace/types';
+import { Customer, Project } from '@waldur/workspace/types';
 
 import { pricesSelector } from './plan/utils';
-import { OrderSummaryProps, OfferingFormData } from './types';
-import { formatOrderItemForUpdate, formatOrderItemForCreate } from './utils';
+import { OfferingFormData, OrderSummaryProps } from './types';
+import { formatOrderItemForCreate, formatOrderItemForUpdate } from './utils';
 
-export const SummaryTable = (props: OrderSummaryProps) => (
+export const SummaryTable: FunctionComponent<OrderSummaryProps> = (props) => (
   <table className="table offering-details-section-table">
     <tbody>
       <tr>
@@ -63,9 +63,7 @@ export const SummaryTable = (props: OrderSummaryProps) => (
           <td>{props.project.name}</td>
         </tr>
       )}
-      {props.extraComponent
-        ? React.createElement(props.extraComponent, props)
-        : null}
+      {props.extraComponent ? createElement(props.extraComponent, props) : null}
       {!getActiveFixedPricePaymentProfile(props.customer.payment_profiles) &&
         props.formData &&
         props.formData.plan && (
@@ -80,7 +78,7 @@ export const SummaryTable = (props: OrderSummaryProps) => (
   </table>
 );
 
-const PureOrderSummary = (props: OrderSummaryProps) => (
+const PureOrderSummary: FunctionComponent<OrderSummaryProps> = (props) => (
   <>
     <OfferingLogo src={props.offering.thumbnail} size="small" />
     <SummaryTable {...props} />

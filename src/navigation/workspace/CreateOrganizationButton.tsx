@@ -1,10 +1,10 @@
-import * as React from 'react';
+import { FunctionComponent } from 'react';
 
 import { translate } from '@waldur/i18n';
 
 import { useCreateOrganization } from './utils';
 
-export const CreateOrganizationButton = () => {
+export const CreateOrganizationButton: FunctionComponent = () => {
   const [enabled, onClick] = useCreateOrganization();
   if (!enabled) {
     return null;
@@ -12,7 +12,7 @@ export const CreateOrganizationButton = () => {
   return (
     <a
       className="pull-right btn btn-sm btn-default"
-      onClick={onClick}
+      onClick={onClick as any}
       id="add-new-organization"
     >
       <i className="fa fa-plus" /> {translate('Add new')}{' '}

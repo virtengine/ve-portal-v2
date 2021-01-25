@@ -1,8 +1,8 @@
-import * as React from 'react';
 import { connect } from 'react-redux';
 import { getFormValues } from 'redux-form';
 
 import { translate } from '@waldur/i18n';
+import { RootState } from '@waldur/store/reducers';
 
 import { FORM_ID } from '../store/constants';
 
@@ -25,7 +25,7 @@ const PureReviewStep = (props) =>
     </>
   );
 
-const connector = connect((state) => {
+const connector = connect((state: RootState) => {
   const formData = getFormValues(FORM_ID)(state) as any;
   const hasData = formData && !!formData.type;
   return { hasData };

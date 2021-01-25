@@ -1,6 +1,6 @@
-import * as React from 'react';
+import React from 'react';
 import { connect } from 'react-redux';
-import useAsync from 'react-use/lib/useAsync';
+import { useAsync } from 'react-use';
 import { compose } from 'redux';
 import { reduxForm, InjectedFormProps } from 'redux-form';
 
@@ -8,6 +8,7 @@ import { LoadingSpinner } from '@waldur/core/LoadingSpinner';
 import { withTranslation, TranslateProps, translate } from '@waldur/i18n';
 import { useTitle } from '@waldur/navigation/title';
 import { getConfig } from '@waldur/store/config';
+import { RootState } from '@waldur/store/reducers';
 import { getCustomer } from '@waldur/workspace/selectors';
 
 import * as actions from './actions';
@@ -22,10 +23,8 @@ interface ProjectCreateProps extends InjectedFormProps, TranslateProps {
 
 const loadData = async () => {
   const projectTypes = await api.loadProjectTypes();
-  const certifications = await api.loadCertifications();
   return {
     projectTypes,
-    certifications,
   };
 };
 
@@ -41,21 +40,15 @@ const ProjectCreateComponent: React.FC<ProjectCreateProps> = (props) => {
   if (error) {
     return (
       <h3 className="text-center">
-        {props.translate('Unable to load project types or certifications.')}
+        {props.translate('Unable to load project types.')}
       </h3>
     );
   }
 
-  return (
-    <ProjectCreateForm
-      {...props}
-      projectTypes={value.projectTypes}
-      certifications={value.certifications}
-    />
-  );
+  return <ProjectCreateForm {...props} projectTypes={value.projectTypes} />;
 };
 
-const mapStateToProps = (state) => ({
+const mapStateToProps = (state: RootState) => ({
   customer: getCustomer(state),
   enforceLatinName: getConfig(state).enforceLatinName,
 });

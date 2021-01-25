@@ -1,10 +1,10 @@
-import * as React from 'react';
-import * as Tab from 'react-bootstrap/lib/Tab';
-import * as Tabs from 'react-bootstrap/lib/Tabs';
+import { FunctionComponent } from 'react';
+import { Tab, Tabs } from 'react-bootstrap';
 import { connect } from 'react-redux';
 import { compose } from 'redux';
 
 import { TranslateProps, withTranslation } from '@waldur/i18n';
+import { RootState } from '@waldur/store/reducers';
 import { UserEvents } from '@waldur/user/list/UserEvents';
 import {
   isVisibleForSupportOrStaff,
@@ -25,7 +25,9 @@ interface OwnProps {
 
 export type UserDetailsViewProps = TranslateProps & StateProps & OwnProps;
 
-export const PureUserDetailsView = (props: UserDetailsViewProps) => (
+export const PureUserDetailsView: FunctionComponent<UserDetailsViewProps> = (
+  props,
+) => (
   <Tabs defaultActiveKey={1} id="user-details" unmountOnExit={true}>
     {props.isVisibleForSupportOrStaff && (
       <Tab eventKey={1} title={props.translate('Details')}>
@@ -49,7 +51,7 @@ export const PureUserDetailsView = (props: UserDetailsViewProps) => (
   </Tabs>
 );
 
-const mapStateToProps = (state) => ({
+const mapStateToProps = (state: RootState) => ({
   userManageIsVisible: userManageIsVisible(state),
   isVisibleForSupportOrStaff: isVisibleForSupportOrStaff(state),
 });

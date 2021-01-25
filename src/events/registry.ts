@@ -1,4 +1,4 @@
-import { translate } from '@waldur/i18n';
+import { formatJsxTemplate, translate } from '@waldur/i18n';
 
 import { EventGroup } from './types';
 
@@ -14,7 +14,7 @@ export class EventRegistry {
         if (group.context) {
           context = { ...context, ...group.context(event) };
         }
-        return translate(type.title, context);
+        return translate(type.title, context, formatJsxTemplate);
       };
       this.formatters[type.key] = type.formatter || defaultFormatter;
     }
@@ -23,7 +23,7 @@ export class EventRegistry {
   formatEvent(event) {
     const formatter = this.formatters[event.event_type];
     if (formatter) {
-      return formatter(event.context);
+      return formatter(event.context) || event.message;
     } else {
       return event.message;
     }

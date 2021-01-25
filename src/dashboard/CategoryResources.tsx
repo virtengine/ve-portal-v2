@@ -1,8 +1,5 @@
-import * as React from 'react';
-import * as Col from 'react-bootstrap/lib/Col';
-import * as Row from 'react-bootstrap/lib/Row';
-import * as ToggleButton from 'react-bootstrap/lib/ToggleButton';
-import * as ToggleButtonGroup from 'react-bootstrap/lib/ToggleButtonGroup';
+import { Component } from 'react';
+import { Col, Row, ToggleButton, ToggleButtonGroup } from 'react-bootstrap';
 
 import { EChart } from '@waldur/core/EChart';
 import { Panel } from '@waldur/core/Panel';
@@ -22,7 +19,7 @@ interface CategoryResourcesProps {
   category: Category;
 }
 
-export class CategoryResources extends React.Component<CategoryResourcesProps> {
+export class CategoryResources extends Component<CategoryResourcesProps> {
   state = {
     choice: 0,
   };

@@ -1,8 +1,8 @@
-import * as React from 'react';
+import { Component } from 'react';
 import { connect } from 'react-redux';
 
 import { OFFERING_TYPE_BOOKING } from '@waldur/booking/constants';
-import { required, getLatinNameValidators } from '@waldur/core/validators';
+import { required, getNameFieldValidators } from '@waldur/core/validators';
 import {
   FormContainer,
   TextField,
@@ -26,13 +26,12 @@ import { ProjectField } from '@waldur/marketplace/details/ProjectField';
 import { getDefaultLimits } from '@waldur/marketplace/offerings/utils';
 import { OfferingConfigurationFormProps } from '@waldur/marketplace/types';
 import { SelectMultiCheckboxGroup } from '@waldur/offering/SelectMultiCheckboxGroup';
+import { RootState } from '@waldur/store/reducers';
 import { getCustomer } from '@waldur/workspace/selectors';
 
 import { fetchTenantOptions, fetchInstanceOptions } from './api';
 
-export class PureOfferingConfigurationForm extends React.Component<
-  OfferingConfigurationFormProps
-> {
+export class PureOfferingConfigurationForm extends Component<OfferingConfigurationFormProps> {
   componentDidMount() {
     const attributes = { ...this.props.initialAttributes };
     if (this.props.offering.options.order) {
@@ -74,7 +73,7 @@ export class PureOfferingConfigurationForm extends React.Component<
             description={translate(
               'This name will be visible in accounting data.',
             )}
-            validate={getLatinNameValidators()}
+            validate={getNameFieldValidators()}
           />
           <PlanField offering={props.offering} />
           <PlanDetailsTable offering={props.offering} />
@@ -188,6 +187,7 @@ export class PureOfferingConfigurationForm extends React.Component<
               name="attributes.schedules"
               excludedEvents={this.props.offering.attributes.schedules || []}
               label={translate('Select dates')}
+              offeringUuid={props.offering.uuid}
             />
           )}
         </FormContainer>
@@ -196,7 +196,7 @@ export class PureOfferingConfigurationForm extends React.Component<
   }
 }
 
-const mapStateToProps = (state) => ({
+const mapStateToProps = (state: RootState) => ({
   customer: getCustomer(state),
 });
 

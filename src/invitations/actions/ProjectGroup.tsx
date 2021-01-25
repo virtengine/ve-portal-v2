@@ -1,13 +1,15 @@
-import * as React from 'react';
-import ControlLabel from 'react-bootstrap/lib/ControlLabel';
-import FormGroup from 'react-bootstrap/lib/FormGroup';
+import { FunctionComponent } from 'react';
+import { ControlLabel, FormGroup } from 'react-bootstrap';
 import { Field } from 'redux-form';
 
 import { reactSelectMenuPortaling } from '@waldur/form/utils';
 import { translate } from '@waldur/i18n';
 import { SelectField } from '@waldur/issues/create/SelectField';
 
-export const ProjectGroup = ({ customer, disabled }) => (
+export const ProjectGroup: FunctionComponent<{ customer; disabled }> = ({
+  customer,
+  disabled,
+}) => (
   <FormGroup>
     <ControlLabel>
       {translate('Project')}

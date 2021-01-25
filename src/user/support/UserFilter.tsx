@@ -1,4 +1,4 @@
-import * as React from 'react';
+import { FunctionComponent } from 'react';
 import { connect } from 'react-redux';
 import { compose } from 'redux';
 import { reduxForm } from 'redux-form';
@@ -6,6 +6,7 @@ import { reduxForm } from 'redux-form';
 import { StringField, FormContainer, SelectField } from '@waldur/form';
 import { withTranslation, TranslateProps, translate } from '@waldur/i18n';
 import { getNativeNameVisible } from '@waldur/store/config';
+import { RootState } from '@waldur/store/reducers';
 
 import './UserFilter.scss';
 
@@ -14,7 +15,7 @@ interface UserFilterProps extends TranslateProps {
   nativeNameVisible: boolean;
 }
 
-const PureUserFilter = (props: UserFilterProps) => (
+const PureUserFilter: FunctionComponent<UserFilterProps> = (props) => (
   <form className="form-inline" id="user-filter">
     <FormContainer
       labelClass="m-r-md"
@@ -94,7 +95,7 @@ const PureUserFilter = (props: UserFilterProps) => (
   </form>
 );
 
-const mapStateToProps = (state) => ({
+const mapStateToProps = (state: RootState) => ({
   nativeNameVisible: getNativeNameVisible(state),
 });
 

@@ -1,25 +1,34 @@
-import * as React from 'react';
+import { FunctionComponent } from 'react';
 import { connect } from 'react-redux';
 import { compose } from 'redux';
 
 import { formatDateTime } from '@waldur/core/dateUtils';
+import { lazyComponent } from '@waldur/core/lazyComponent';
 import { SCREENSHOTS_TABLE_NAME } from '@waldur/marketplace/offerings/store/constants';
 import { getOffering } from '@waldur/marketplace/offerings/store/selectors';
 import { Offering, Screenshot } from '@waldur/marketplace/types';
 import { openModalDialog } from '@waldur/modal/actions';
+import { RootState } from '@waldur/store/reducers';
 import { connectTable, createFetcher, Table } from '@waldur/table';
 
-import { ScreenshotDetailsDialog } from './ScreenshotDetailsDialog';
 import { ScreenshotsActions } from './ScreenshotsActions';
 import { ScreenshotsListPlaceholder } from './ScreenshotsListPlaceholder';
 import { ScreenshotThumbnail } from './ScreenshotThumbnail';
+
+const ScreenshotDetailsDialog = lazyComponent(
+  () =>
+    import(
+      /* webpackChunkName: "ScreenshotDetailsDialog" */ './ScreenshotDetailsDialog'
+    ),
+  'ScreenshotDetailsDialog',
+);
 
 const openScreenshotDetailsDialog = (screenshot: Screenshot) =>
   openModalDialog(ScreenshotDetailsDialog, {
     resolve: screenshot,
   });
 
-export const TableComponent = (props) => {
+export const TableComponent: FunctionComponent<any> = (props) => {
   const { translate } = props;
 
   const columns = [
@@ -86,7 +95,7 @@ const TableOptions = {
   exportFields: ['Name', 'Description', 'Created'],
 };
 
-const mapStateToProps = (state) => ({
+const mapStateToProps = (state: RootState) => ({
   offering: getOffering(state).offering,
 });
 

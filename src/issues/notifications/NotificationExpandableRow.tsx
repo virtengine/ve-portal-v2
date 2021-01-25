@@ -1,6 +1,6 @@
-import * as React from 'react';
+import { FunctionComponent } from 'react';
 
-import { ENV } from '@waldur/core/services';
+import { ENV } from '@waldur/configs/default';
 import { translate } from '@waldur/i18n';
 
 const OptionsList = ({ label, list }) =>
@@ -20,7 +20,9 @@ const RolesList = ({ label, list }) => (
   />
 );
 
-export const NotificationExpandableRow = ({ row }) => (
+export const NotificationExpandableRow: FunctionComponent<{ row }> = ({
+  row,
+}) => (
   <>
     <p>
       <b>{translate('Message')}: </b>

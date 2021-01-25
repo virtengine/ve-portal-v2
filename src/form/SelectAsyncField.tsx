@@ -1,8 +1,9 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
-import * as React from 'react';
+import { createElement } from 'react';
+import { FunctionComponent } from 'react';
 import { AsyncPaginate } from 'react-select-async-paginate';
 
-export const SelectAsyncField = (props) => {
+export const SelectAsyncField: FunctionComponent<any> = (props) => {
   const {
     input,
     label,
@@ -15,7 +16,7 @@ export const SelectAsyncField = (props) => {
     normalize,
     ...rest
   } = props;
-  return React.createElement(AsyncPaginate, {
+  return createElement(AsyncPaginate, {
     ...rest,
     name: input.name,
     value: input.value,

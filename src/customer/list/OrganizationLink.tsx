@@ -1,8 +1,8 @@
-import * as React from 'react';
+import { FunctionComponent } from 'react';
 
 import { Link } from '@waldur/core/Link';
 
-export const OrganizationLink = ({ row }) => (
+export const OrganizationLink: FunctionComponent<{ row }> = ({ row }) => (
   <Link
     state="organization.dashboard"
     params={{ uuid: row.uuid }}

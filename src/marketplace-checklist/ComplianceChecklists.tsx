@@ -1,8 +1,7 @@
-import * as React from 'react';
-import * as Col from 'react-bootstrap/lib/Col';
-import * as Row from 'react-bootstrap/lib/Row';
+import { FunctionComponent } from 'react';
+import { Col, Row } from 'react-bootstrap';
 import { useSelector } from 'react-redux';
-import useAsync from 'react-use/lib/useAsync';
+import { useAsync } from 'react-use';
 
 import { LoadingSpinner } from '@waldur/core/LoadingSpinner';
 import { Panel } from '@waldur/core/Panel';
@@ -44,7 +43,7 @@ const ProjectChecklist = ({ project }) => {
   );
 };
 
-export const ComplianceChecklists = () => {
+export const ComplianceChecklists: FunctionComponent = () => {
   const project = useSelector(getProject);
   if (!project) {
     return null;

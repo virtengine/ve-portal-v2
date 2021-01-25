@@ -1,13 +1,11 @@
-import * as React from 'react';
-import ControlLabel from 'react-bootstrap/lib/ControlLabel';
-import FormGroup from 'react-bootstrap/lib/FormGroup';
-import ToggleButton from 'react-bootstrap/lib/ToggleButton';
+import { FunctionComponent } from 'react';
+import { ControlLabel, FormGroup, ToggleButton } from 'react-bootstrap';
 import { Field } from 'redux-form';
 
 import { ToggleButtonGroupInput } from '@waldur/form/ToggleButtonGroupInput';
 import { translate } from '@waldur/i18n';
 
-export const RoleGroup = ({ roles }) => (
+export const RoleGroup: FunctionComponent<{ roles }> = ({ roles }) => (
   <FormGroup>
     <ControlLabel>{translate('Role')}</ControlLabel>
     <div>

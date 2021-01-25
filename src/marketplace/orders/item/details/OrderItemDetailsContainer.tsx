@@ -1,9 +1,11 @@
 import { useCurrentStateAndParams } from '@uirouter/react';
-import * as React from 'react';
-import useAsyncFn from 'react-use/lib/useAsyncFn';
-import useEffectOnce from 'react-use/lib/useEffectOnce';
+import React, { useEffect, useState } from 'react';
+import { useAsyncFn, useEffectOnce, useNetwork } from 'react-use';
 
+import { ENV } from '@waldur/configs/default';
 import { LoadingSpinner } from '@waldur/core/LoadingSpinner';
+import { Await } from '@waldur/core/types';
+import { useRecursiveTimeout } from '@waldur/core/useRecursiveTimeout';
 import { translate } from '@waldur/i18n';
 import * as api from '@waldur/marketplace/common/api';
 import { getTabs } from '@waldur/marketplace/details/OfferingTabs';
@@ -83,7 +85,7 @@ async function loadOrderItem(order_item_uuid) {
   };
 }
 
-export const OrderItemDetailsContainer: React.FC<{}> = () => {
+export const OrderItemDetailsContainer: React.FC = () => {
   const {
     params: { order_item_uuid },
   } = useCurrentStateAndParams();
@@ -93,38 +95,59 @@ export const OrderItemDetailsContainer: React.FC<{}> = () => {
     [order_item_uuid],
   );
 
-  useBreadcrumbsFn(() => (value ? getBreadcrumbs(value.orderItem) : []), [
-    value,
-  ]);
-
-  useTitle(
-    value ? value.orderItem.offering_name : translate('Order item details'),
-  );
-
   useEffectOnce(() => {
     loadData();
   });
 
+  const [asyncValue, setAsyncValue] = useState<
+    Await<ReturnType<typeof loadData>>
+  >();
+
+  const { online } = useNetwork();
+
+  // Refresh order item details until it is switched from pending state to terminal state
+  const pullInterval =
+    online && ['pending', 'executing'].includes(asyncValue?.orderItem.state)
+      ? ENV.defaultPullInterval * 1000
+      : null;
+  useRecursiveTimeout(loadData, pullInterval);
+
+  useEffect(() => {
+    if (
+      value &&
+      (!asyncValue ||
+        asyncValue.orderItem.modified !== value.orderItem.modified)
+    ) {
+      setAsyncValue(value);
+    }
+  }, [value, asyncValue]);
+
+  useBreadcrumbsFn(
+    () => (asyncValue ? getBreadcrumbs(asyncValue.orderItem) : []),
+    [asyncValue],
+  );
+
+  useTitle(
+    asyncValue
+      ? asyncValue.orderItem.offering_name
+      : translate('Order item details'),
+  );
+
   // Don't render loading indicator if order item is refreshing
   // since if it is in pending state it is refreshed via periodic polling
+  if (asyncValue) {
+    return (
+      <>
+        <OrderItemDetails {...asyncValue} loadData={loadData} />
+        <OfferingTabsComponent tabs={asyncValue.tabs} />
+      </>
+    );
+  }
   if (loading) {
     return <LoadingSpinner />;
   }
   if (error) {
     return <h3>{translate('Unable to get order item.')}</h3>;
   }
-  if (!value) {
-    return null;
-  }
-  return (
-    <>
-      <OrderItemDetails
-        orderItem={value.orderItem}
-        offering={value.offering}
-        limits={value.limits}
-        loadData={loadData}
-      />
-      <OfferingTabsComponent tabs={value.tabs} />
-    </>
-  );
+  return null;
 };

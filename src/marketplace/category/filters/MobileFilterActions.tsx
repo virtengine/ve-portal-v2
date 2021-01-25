@@ -1,9 +1,10 @@
-import * as React from 'react';
+import React from 'react';
 import { connect } from 'react-redux';
 import { compose } from 'redux';
 import { getFormValues } from 'redux-form';
 
 import { withTranslation, TranslateProps } from '@waldur/i18n';
+import { RootState } from '@waldur/store/reducers';
 
 import * as actions from '../store/actions';
 import { MARKETPLACE_FILTER_FORM } from '../store/constants';
@@ -31,7 +32,7 @@ const mapDispatchToProps = (dispatch) => ({
   showAttributeFilterDialog: () => dispatch(actions.showAttributeFilter()),
 });
 
-const mapStateToProps = (state) => ({
+const mapStateToProps = (state: RootState) => ({
   filterValues: getFormValues(MARKETPLACE_FILTER_FORM)(state),
 });
 

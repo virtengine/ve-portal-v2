@@ -1,4 +1,4 @@
-import * as React from 'react';
+import { FunctionComponent } from 'react';
 
 import { translate } from '@waldur/i18n';
 import { OfferingButton } from '@waldur/marketplace/common/OfferingButton';
@@ -12,7 +12,9 @@ interface OfferingCompareButtonProps {
   flavor?: 'primary' | 'secondary' | 'ternary';
 }
 
-export const OfferingCompareButton = (props: OfferingCompareButtonProps) => (
+export const OfferingCompareButton: FunctionComponent<OfferingCompareButtonProps> = (
+  props,
+) => (
   <OfferingButton
     icon="fa fa-balance-scale"
     isActive={props.isCompared}

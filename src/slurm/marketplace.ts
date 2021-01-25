@@ -1,14 +1,17 @@
+import { lazyComponent } from '@waldur/core/lazyComponent';
 import { translate } from '@waldur/i18n';
 import { registerOfferingType } from '@waldur/marketplace/common/registry';
 import { Attribute } from '@waldur/marketplace/types';
-import { AllocationForm } from '@waldur/slurm/AllocationForm';
+
+const AllocationForm = lazyComponent(
+  () =>
+    import(
+      /* webpackChunkName: "AllocationForm" */ '@waldur/slurm/AllocationForm'
+    ),
+  'AllocationForm',
+);
 
 const ServiceSettingsAttributes = (): Attribute[] => [
-  {
-    key: 'batch_service',
-    title: translate('Batch service'),
-    type: 'string',
-  },
   {
     key: 'hostname',
     title: translate('Hostname'),

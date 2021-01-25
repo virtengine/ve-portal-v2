@@ -1,6 +1,6 @@
+import { ENV } from '@waldur/configs/default';
 import { get } from '@waldur/core/api';
 import { format } from '@waldur/core/ErrorMessageFormatter';
-import { ENV } from '@waldur/core/services';
 import { required } from '@waldur/core/validators';
 import { translate } from '@waldur/i18n';
 import { ActionContext } from '@waldur/resource/actions/types';
@@ -112,32 +112,6 @@ export const executeConsoleAction = (resource, moduleName: string) => {
       const ctx = { message: format(error) };
       const message = translate(
         'Unable to open console. Error message: {message}',
-        ctx,
-      );
-      alert(message);
-    });
-};
-
-const getConsoleOutput = (moduleName: string, id: string) =>
-  get(`/${moduleName}/${id}/console_log/`);
-
-export const executeConsoleLogAction = (resource, moduleName: string) => {
-  getConsoleOutput(moduleName, resource.uuid)
-    .then((response) => {
-      const win = window.open();
-      if (win == null) {
-        alert(translate('Unable to open console log'));
-        return;
-      }
-      const doc = win.document;
-      doc.open();
-      doc.write(`<pre>${response.data}</pre>`);
-      doc.close();
-    })
-    .catch((error) => {
-      const ctx = { message: format(error) };
-      const message = translate(
-        'Unable to show console log. Error message: {message}',
         ctx,
       );
       alert(message);

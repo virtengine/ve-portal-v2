@@ -1,16 +1,15 @@
-import * as React from 'react';
-import * as Gravatar from 'react-gravatar';
+import { FunctionComponent } from 'react';
+import Gravatar from 'react-gravatar';
 import { useDispatch } from 'react-redux';
-import useAsync from 'react-use/lib/useAsync';
+import { useAsync } from 'react-use';
 
 import { getList } from '@waldur/core/api';
 import { formatDateTime } from '@waldur/core/dateUtils';
 import { FormattedJira } from '@waldur/core/FormattedJira';
 import { Link } from '@waldur/core/Link';
 import { LoadingSpinner } from '@waldur/core/LoadingSpinner';
-import { translate } from '@waldur/i18n';
-import { openModalDialog } from '@waldur/modal/actions';
-import { UserPopover } from '@waldur/user/UserPopover';
+import { translate, formatJsxTemplate } from '@waldur/i18n';
+import { openUserPopover } from '@waldur/user/actions';
 
 interface Comment {
   issue_key: string;
@@ -21,7 +20,7 @@ interface Comment {
   created: string;
 }
 
-export const IssuesActivityStream = () => {
+export const IssuesActivityStream: FunctionComponent = () => {
   const { loading, error, value } = useAsync(
     async () => await getList<Comment>('/support-comments/'),
     [],
@@ -29,10 +28,8 @@ export const IssuesActivityStream = () => {
   const dispatch = useDispatch();
   const callback = (user_uuid) =>
     dispatch(
-      openModalDialog(UserPopover, {
-        resolve: {
-          user_uuid,
-        },
+      openUserPopover({
+        user_uuid,
       }),
     );
   return (
@@ -43,14 +40,14 @@ export const IssuesActivityStream = () => {
             <small>
               <i className="fa fa-list"></i>
             </small>{' '}
-            <span>{translate('See all')}</span>
+            <>{translate('See all')}</>
           </button>
 
           <button className="btn btn-default btn-xs">
             <small>
               <i className="fa fa-refresh"></i>
             </small>{' '}
-            <span>{translate('Refresh')}</span>
+            <>{translate('Refresh')}</>
           </button>
         </span>
 
@@ -81,20 +78,27 @@ export const IssuesActivityStream = () => {
                 </div>
                 <div className="vertical-timeline-content">
                   <p className="m-n">
-                    {item.author_uuid ? (
-                      <a onClick={() => callback(item.author_uuid)}>
-                        {item.author_name}
-                      </a>
-                    ) : (
-                      item.author_name
+                    {translate(
+                      '{user} commented on {issue}',
+                      {
+                        user: item.author_uuid ? (
+                          <a onClick={() => callback(item.author_uuid)}>
+                            {item.author_name}
+                          </a>
+                        ) : (
+                          item.author_name
+                        ),
+                        issue: (
+                          <Link
+                            state="issue.details"
+                            params={{ key: item.issue_key }}
+                          >
+                            {item.issue_key}
+                          </Link>
+                        ),
+                      },
+                      formatJsxTemplate,
                     )}{' '}
-                    <span>{translate('commented on')}</span>{' '}
-                    <Link
-                      state="issue.details"
-                      params={{ key: item.issue_key }}
-                    >
-                      {item.issue_key}
-                    </Link>{' '}
                   </p>
                   <FormattedJira text={item.description} />
                   <span className="vertical-date small text-muted">

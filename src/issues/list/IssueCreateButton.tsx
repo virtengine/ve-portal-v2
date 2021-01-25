@@ -1,14 +1,13 @@
-import * as React from 'react';
+import { FunctionComponent } from 'react';
 import { connect } from 'react-redux';
 
 import { translate } from '@waldur/i18n';
-import { openModalDialog } from '@waldur/modal/actions';
 import { ActionButton } from '@waldur/table/ActionButton';
 
+import { openIssueCreateDialog } from '../create/actions';
 import { ISSUE_CREATION_FORM_ID } from '../create/constants';
-import { IssueCreateDialog } from '../create/IssueCreateDialog';
 
-const PureIssueCreateButton = (props) => (
+const PureIssueCreateButton: FunctionComponent<any> = (props) => (
   <ActionButton
     title={translate('Create')}
     action={props.onClick}
@@ -17,10 +16,7 @@ const PureIssueCreateButton = (props) => (
 );
 
 const createRequestDialog = (scope) =>
-  openModalDialog(IssueCreateDialog, {
-    resolve: { issue: scope },
-    formId: ISSUE_CREATION_FORM_ID,
-  });
+  openIssueCreateDialog({ issue: scope }, ISSUE_CREATION_FORM_ID);
 
 const mapDispatchToProps = (dispatch, ownProps) => ({
   onClick: () => dispatch(createRequestDialog(ownProps.scope)),

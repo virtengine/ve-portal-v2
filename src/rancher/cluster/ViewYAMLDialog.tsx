@@ -1,8 +1,7 @@
-import * as React from 'react';
-import * as Button from 'react-bootstrap/lib/Button';
+import { useEffect, useCallback } from 'react';
+import { Button } from 'react-bootstrap';
 import { useDispatch } from 'react-redux';
-import useAsync from 'react-use/lib/useAsync';
-import useToggle from 'react-use/lib/useToggle';
+import { useAsync, useToggle } from 'react-use';
 import { reduxForm, change } from 'redux-form';
 
 import { CopyToClipboard } from '@waldur/core/CopyToClipboard';
@@ -10,7 +9,7 @@ import { MonacoField } from '@waldur/form/MonacoField';
 import { translate } from '@waldur/i18n';
 import { ActionDialog } from '@waldur/modal/ActionDialog';
 import { closeModalDialog } from '@waldur/modal/actions';
-import { showSuccess, showErrorResponse } from '@waldur/store/coreSaga';
+import { showSuccess, showErrorResponse } from '@waldur/store/notify';
 
 import { getYAML, putYAML } from '../api';
 
@@ -22,13 +21,13 @@ export const ViewYAMLDialog = reduxForm<
 
   const { loading, value } = useAsync(() => getYAML(resolve.resource.url));
 
-  React.useEffect(() => {
+  useEffect(() => {
     if (value) {
       dispatch(change('ViewYAMLDialog', 'yaml', value.yaml));
     }
   }, [dispatch, value]);
 
-  const updateYAML = React.useCallback(
+  const updateYAML = useCallback(
     async (formData) => {
       try {
         await putYAML(resolve.resource.url, formData.yaml);

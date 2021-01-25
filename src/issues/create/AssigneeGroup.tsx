@@ -1,7 +1,5 @@
-import * as React from 'react';
-import Col from 'react-bootstrap/lib/Col';
-import ControlLabel from 'react-bootstrap/lib/ControlLabel';
-import FormGroup from 'react-bootstrap/lib/FormGroup';
+import { FunctionComponent } from 'react';
+import { Col, ControlLabel, FormGroup } from 'react-bootstrap';
 import { Field } from 'redux-form';
 
 import { translate } from '@waldur/i18n';
@@ -11,7 +9,9 @@ import { AsyncSelectField } from './AsyncSelectField';
 
 const filterOption = (options) => options;
 
-export const AssigneeGroup = ({ disabled }) => (
+export const AssigneeGroup: FunctionComponent<{ disabled }> = ({
+  disabled,
+}) => (
   <FormGroup>
     <Col sm={3} componentClass={ControlLabel}>
       {translate('Assigned to')}

@@ -1,11 +1,11 @@
-import * as React from 'react';
+import { FunctionComponent } from 'react';
 import { connect } from 'react-redux';
 import { compose } from 'redux';
 import { getFormValues } from 'redux-form';
 
 import { formatDateTime } from '@waldur/core/dateUtils';
-import { defaultCurrency } from '@waldur/core/services';
 import { translate } from '@waldur/i18n';
+import { RootState } from '@waldur/store/reducers';
 import { connectTable, createFetcher, Table } from '@waldur/table';
 import { renderFieldOrDash } from '@waldur/table/utils';
 import { getCustomer } from '@waldur/workspace/selectors';
@@ -16,7 +16,7 @@ import { ResourceNameField } from './ResourceNameField';
 import { RowNameField } from './RowNameField';
 import { ShowRequestButton } from './ShowRequestButton';
 
-const TableComponent = (props) => {
+const TableComponent: FunctionComponent<any> = (props) => {
   const columns = [
     {
       title: translate('Offering'),
@@ -45,10 +45,6 @@ const TableComponent = (props) => {
     {
       title: translate('Plan'),
       render: ({ row }) => renderFieldOrDash(row.plan_name),
-    },
-    {
-      title: translate('Cost'),
-      render: ({ row }) => defaultCurrency(row.cost),
     },
     {
       title: translate('Actions'),
@@ -95,7 +91,6 @@ const exportRow = (row) => [
   row.type,
   row.state,
   renderFieldOrDash(row.plan_name),
-  defaultCurrency(row.cost || 0),
 ];
 
 const exportFields = [
@@ -116,7 +111,7 @@ const TableOptions = {
   exportFields,
 };
 
-const mapStateToProps = (state) => ({
+const mapStateToProps = (state: RootState) => ({
   filter: getFormValues('MyOrderItemsFilter')(state),
   customer: getCustomer(state),
 });

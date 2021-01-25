@@ -1,5 +1,5 @@
-import * as React from 'react';
-import * as Button from 'react-bootstrap/lib/Button';
+import React, { ReactNode } from 'react';
+import { Button } from 'react-bootstrap';
 import { useDispatch } from 'react-redux';
 
 import { translate } from '@waldur/i18n';
@@ -12,8 +12,8 @@ interface ConfirmationDialogProps {
       resolve: () => void;
       reject: () => void;
     };
-    title: string;
-    body: string;
+    title: ReactNode;
+    body: ReactNode;
   };
 }
 

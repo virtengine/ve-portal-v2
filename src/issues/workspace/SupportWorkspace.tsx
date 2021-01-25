@@ -1,8 +1,7 @@
 import { useCurrentStateAndParams } from '@uirouter/react';
-import * as React from 'react';
+import { useEffect, useState, FunctionComponent } from 'react';
 import { useDispatch } from 'react-redux';
 
-import { ngInjector } from '@waldur/core/services';
 import { translate } from '@waldur/i18n';
 import {
   setBreadcrumbs,
@@ -13,20 +12,21 @@ import { Layout } from '@waldur/navigation/Layout';
 import { setCurrentWorkspace } from '@waldur/workspace/actions';
 import { SUPPORT_WORKSPACE } from '@waldur/workspace/types';
 
+import { IssueNavigationService } from './IssueNavigationService';
 import { SupportSidebar } from './SupportSidebar';
 
 function getBreadcrumbs(): BreadcrumbItem[] {
   return [
     {
       label: translate('Support dashboard'),
-      action: () => ngInjector.get('IssueNavigationService').gotoDashboard(),
+      action: () => IssueNavigationService.gotoDashboard(),
     },
   ];
 }
 
 export function useReportingBreadcrumbs() {
   const dispatch = useDispatch();
-  React.useEffect(() => {
+  useEffect(() => {
     dispatch(
       setBreadcrumbs([
         ...getBreadcrumbs(),
@@ -41,9 +41,9 @@ export function useReportingBreadcrumbs() {
   });
 }
 
-export const SupportWorkspace = () => {
-  const [pageClass, setPageClass] = React.useState<string>();
-  const [hideBreadcrumbs, setHideBreadcrumbs] = React.useState<boolean>();
+export const SupportWorkspace: FunctionComponent = () => {
+  const [pageClass, setPageClass] = useState<string>();
+  const [hideBreadcrumbs, setHideBreadcrumbs] = useState<boolean>();
   const { state, params } = useCurrentStateAndParams();
   const dispatch = useDispatch();
 
@@ -55,11 +55,11 @@ export const SupportWorkspace = () => {
 
   useBreadcrumbsFn(getBreadcrumbs, []);
 
-  React.useEffect(() => {
+  useEffect(() => {
     dispatch(setCurrentWorkspace(SUPPORT_WORKSPACE));
   }, [dispatch]);
 
-  React.useEffect(refreshState, [state, params]);
+  useEffect(refreshState, [state, params]);
 
   return (
     <Layout

@@ -1,8 +1,8 @@
-import * as React from 'react';
+import { useMemo, FunctionComponent } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 
 import { translate } from '@waldur/i18n';
-import { showSuccess, showError } from '@waldur/store/coreSaga';
+import { showSuccess, showError } from '@waldur/store/notify';
 import { ActionButton } from '@waldur/table/ActionButton';
 import { getCustomer, getUser } from '@waldur/workspace/selectors';
 
@@ -12,7 +12,9 @@ import { InvitationPolicyService } from './InvitationPolicyService';
 
 const statesForResend = ['pending', 'expired'];
 
-export const InvitationSendButton = ({ invitation }) => {
+export const InvitationSendButton: FunctionComponent<{ invitation }> = ({
+  invitation,
+}) => {
   const dispatch = useDispatch();
   const user = useSelector(getUser);
   const customer = useSelector(getCustomer);
@@ -26,7 +28,7 @@ export const InvitationSendButton = ({ invitation }) => {
     }
   };
 
-  const isDisabled = React.useMemo(() => {
+  const isDisabled = useMemo(() => {
     if (
       !InvitationPolicyService.canManageInvitation(
         { user, customer },
@@ -41,7 +43,7 @@ export const InvitationSendButton = ({ invitation }) => {
     return false;
   }, [user, customer, invitation]);
 
-  const tooltip = React.useMemo(() => {
+  const tooltip = useMemo(() => {
     if (
       !InvitationPolicyService.canManageInvitation(
         { user, customer },

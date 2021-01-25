@@ -1,25 +1,24 @@
-import { ActionConfigurationRegistry } from '@waldur/resource/actions/action-configuration';
+import { lazyComponent } from '@waldur/core/lazyComponent';
+import { ActionRegistry } from '@waldur/resource/actions/registry';
 import { ResourceStateConfigurationProvider } from '@waldur/resource/state/ResourceStateConfiguration';
 import * as ResourceSummary from '@waldur/resource/summary/registry';
 
 import actions from './actions';
 import './breadcrumbs';
-import { OpenStackBackupScheduleSummary } from './OpenStackBackupScheduleSummary';
 import './tabs';
+const OpenStackBackupScheduleSummary = lazyComponent(
+  () =>
+    import(
+      /* webpackChunkName: "OpenStackBackupScheduleSummary" */ './OpenStackBackupScheduleSummary'
+    ),
+  'OpenStackBackupScheduleSummary',
+);
 
-export default () => {
-  ActionConfigurationRegistry.register(
-    'OpenStackTenant.BackupSchedule',
-    actions,
-  );
-  ResourceSummary.register(
-    'OpenStackTenant.BackupSchedule',
-    OpenStackBackupScheduleSummary,
-  );
-  ResourceStateConfigurationProvider.register(
-    'OpenStackTenant.BackupSchedule',
-    {
-      error_states: ['error'],
-    },
-  );
-};
+ActionRegistry.register('OpenStackTenant.BackupSchedule', actions);
+ResourceSummary.register(
+  'OpenStackTenant.BackupSchedule',
+  OpenStackBackupScheduleSummary,
+);
+ResourceStateConfigurationProvider.register('OpenStackTenant.BackupSchedule', {
+  error_states: ['error'],
+});

@@ -1,11 +1,12 @@
-import * as React from 'react';
-import * as Dropzone from 'react-dropzone';
+import { Component } from 'react';
+import Dropzone from 'react-dropzone';
 import { connect } from 'react-redux';
 import { compose } from 'redux';
 
 import { LoadingSpinner } from '@waldur/core/LoadingSpinner';
 import { TranslateProps, withTranslation } from '@waldur/i18n';
 import { IssueReload } from '@waldur/issues/IssueReload';
+import { RootState } from '@waldur/store/reducers';
 
 import * as actions from './actions';
 import './IssueAttachmentsContainer.scss';
@@ -22,9 +23,7 @@ interface PureIssueAttachmentsContainerProps extends TranslateProps {
   uploading: number;
 }
 
-export class PureIssueAttachmentsContainer extends React.Component<
-  PureIssueAttachmentsContainerProps
-> {
+export class PureIssueAttachmentsContainer extends Component<PureIssueAttachmentsContainerProps> {
   state = {
     dropzoneActive: false,
   };
@@ -100,7 +99,7 @@ export class PureIssueAttachmentsContainer extends React.Component<
   }
 }
 
-const mapStateToProps = (state) => ({
+const mapStateToProps = (state: RootState) => ({
   attachments: getAttachments(state),
   loading: getIsLoading(state),
   uploading: getUploading(state),

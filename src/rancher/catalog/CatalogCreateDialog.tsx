@@ -1,4 +1,4 @@
-import * as React from 'react';
+import { useState, useCallback } from 'react';
 import { useDispatch } from 'react-redux';
 import { reduxForm } from 'redux-form';
 
@@ -8,7 +8,7 @@ import { translate } from '@waldur/i18n';
 import { ActionDialog } from '@waldur/modal/ActionDialog';
 import { closeModalDialog } from '@waldur/modal/actions';
 import { Resource } from '@waldur/resource/types';
-import { showError, showSuccess } from '@waldur/store/coreSaga';
+import { showError, showSuccess } from '@waldur/store/notify';
 import { createEntity } from '@waldur/table/actions';
 
 import { createCatalog } from '../api';
@@ -29,9 +29,9 @@ interface OwnProps {
 }
 
 const useCatalogCreateDialog = (cluster) => {
-  const [submitting, setSubmitting] = React.useState(false);
+  const [submitting, setSubmitting] = useState(false);
   const dispatch = useDispatch();
-  const callback = React.useCallback(
+  const callback = useCallback(
     async (formData) => {
       try {
         setSubmitting(true);

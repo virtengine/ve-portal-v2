@@ -1,4 +1,4 @@
-import * as React from 'react';
+import { FunctionComponent } from 'react';
 
 import { Link } from '@waldur/core/Link';
 import { translate } from '@waldur/i18n';
@@ -8,9 +8,7 @@ import { CopyToClipboardButton } from '@waldur/slurm/CopyToClipboardButton';
 import './SlurmAllocationSummaryExtraDetails.scss';
 
 const formatSubmitDetails = (props) => {
-  const value = `${
-    props.resource.batch_service === 'MOAB' ? 'qsub' : 'sbatch'
-  } -A ${props.resource.backend_id}`;
+  const value = `sbatch -A ${props.resource.backend_id}`;
   return (
     <div className="pre-container">
       <pre>
@@ -55,7 +53,9 @@ const formatLoginDetails = (props) => {
   );
 };
 
-export const SlurmAllocationSummaryExtraDetails = (props) => (
+export const SlurmAllocationSummaryExtraDetails: FunctionComponent<any> = (
+  props,
+) => (
   <div className="slurm-allocation-summary-extra-details-container">
     <div className={props.resource.username ? 'field-container' : ''}>
       <Field

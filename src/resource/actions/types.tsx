@@ -24,7 +24,7 @@ interface SelectOption {
 
 interface SelectField<Resource> extends BaseField<Resource> {
   serializer?: (items: any[]) => any[];
-  formatter?: ($filter, item) => string;
+  formatter?: (item) => string;
   modelParser?: (field, items) => any[];
   display_name_field?: string;
   value_field?: string;
@@ -67,24 +67,21 @@ export interface ResourceAction<Resource = BaseResource> {
   name: string;
   title: string;
   dialogTitle?: string;
+  getDialogTitle?(resource: Resource): string;
   dialogSubtitle?: string;
   tab?: string;
   iconClass?: string;
-  fields?: Array<ActionField<Resource>>;
-  type: ActionType;
+  type?: ActionType;
   successMessage?: string;
   onSuccess?: () => void;
   method?: ActionMethod;
   destructive?: boolean;
   validators?: Array<ActionValidator<Resource>>;
   dialogSize?: 'lg' | 'xl';
-  component?: string | React.ComponentType<any>;
-  useResolve?: boolean;
+  component?: React.ComponentType<any>;
   isVisible?: boolean;
-  init?(resource, form, action): void;
   serializer?(form): object;
   execute?(resource): void;
-  getInitialValues?(): any;
   submitForm?(dispatch: Dispatch<any>, formData: any);
   formId?: string;
 }

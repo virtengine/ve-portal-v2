@@ -1,10 +1,12 @@
-import * as React from 'react';
-import ModalBody from 'react-bootstrap/lib/ModalBody';
-import ModalFooter from 'react-bootstrap/lib/ModalFooter';
-import ModalHeader from 'react-bootstrap/lib/ModalHeader';
-import ModalTitle from 'react-bootstrap/lib/ModalTitle';
+import { useCallback, useEffect } from 'react';
+import {
+  ModalBody,
+  ModalFooter,
+  ModalHeader,
+  ModalTitle,
+} from 'react-bootstrap';
 import { useDispatch } from 'react-redux';
-import useAsyncFn from 'react-use/lib/useAsyncFn';
+import { useAsyncFn } from 'react-use';
 import { reduxForm, change } from 'redux-form';
 
 import { SubmitButton } from '@waldur/auth/SubmitButton';
@@ -15,7 +17,7 @@ import { ProjectPermissionsService } from '@waldur/customer/services/ProjectPerm
 import { translate } from '@waldur/i18n';
 import { closeModalDialog } from '@waldur/modal/actions';
 import { CloseDialogButton } from '@waldur/modal/CloseDialogButton';
-import { showErrorResponse } from '@waldur/store/coreSaga';
+import { showErrorResponse } from '@waldur/store/notify';
 
 import { ExpirationTimeGroup } from './ExpirationTimeGroup';
 import { RoleGroup } from './RoleGroup';
@@ -89,7 +91,7 @@ export const AddProjectMemberDialog = reduxForm<
 
   const dispatch = useDispatch();
 
-  const saveUser = React.useCallback(
+  const saveUser = useCallback(
     async (formData) => {
       try {
         await savePermissions(formData, resolve);
@@ -101,7 +103,7 @@ export const AddProjectMemberDialog = reduxForm<
     [dispatch, resolve],
   );
 
-  React.useEffect(() => {
+  useEffect(() => {
     if (resolve.editUser) {
       dispatch(change(FORM_ID, 'user', resolve.editUser));
       dispatch(change(FORM_ID, 'role', resolve.editUser.role));
@@ -113,7 +115,7 @@ export const AddProjectMemberDialog = reduxForm<
     }
   }, [dispatch, resolve.editUser, callback]);
 
-  React.useEffect(() => {
+  useEffect(() => {
     if (users) {
       dispatch(change(FORM_ID, 'role', PROJECT_ADMIN_ROLE));
     }

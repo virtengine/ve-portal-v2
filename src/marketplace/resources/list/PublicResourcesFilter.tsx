@@ -1,5 +1,5 @@
-import * as React from 'react';
-import * as Row from 'react-bootstrap/lib/Row';
+import React, { FunctionComponent } from 'react';
+import { Row } from 'react-bootstrap';
 import { connect } from 'react-redux';
 import { compose } from 'redux';
 import { reduxForm } from 'redux-form';
@@ -7,12 +7,19 @@ import { createSelector } from 'reselect';
 
 import { OfferingAutocomplete } from '@waldur/marketplace/offerings/details/OfferingAutocomplete';
 import { OrganizationAutocomplete } from '@waldur/marketplace/orders/OrganizationAutocomplete';
-import { getCustomer } from '@waldur/workspace/selectors';
+import { RootState } from '@waldur/store/reducers';
+import {
+  getCustomer,
+  getUser,
+  isServiceManagerSelector,
+} from '@waldur/workspace/selectors';
 
 import { CategoryFilter } from './CategoryFilter';
 import { getStates, ResourceStateFilter } from './ResourceStateFilter';
 
-const PurePublicResourcesFilter = (props) => (
+type StateProps = ReturnType<typeof mapStateToProps>;
+
+const PurePublicResourcesFilter: FunctionComponent<StateProps> = (props) => (
   <Row>
     <OfferingAutocomplete offeringFilter={props.offeringFilter} />
     <OrganizationAutocomplete />
@@ -21,11 +28,19 @@ const PurePublicResourcesFilter = (props) => (
   </Row>
 );
 
-const filterSelector = createSelector(getCustomer, (customer) => ({
-  customer_uuid: customer.uuid,
-}));
+const filterSelector = createSelector(
+  getCustomer,
+  getUser,
+  isServiceManagerSelector,
+  (customer, user, isServiceManager) =>
+    isServiceManager
+      ? { customer_uuid: customer.uuid, service_manager_uuid: user.uuid }
+      : {
+          customer_uuid: customer.uuid,
+        },
+);
 
-const mapStateToProps = (state) => ({
+const mapStateToProps = (state: RootState) => ({
   offeringFilter: filterSelector(state),
 });
 
@@ -39,6 +54,4 @@ const enhance = compose(
   connect(mapStateToProps),
 );
 
-export const PublicResourcesFilter = enhance(
-  PurePublicResourcesFilter,
-) as React.ComponentType<{}>;
+export const PublicResourcesFilter = enhance(PurePublicResourcesFilter);

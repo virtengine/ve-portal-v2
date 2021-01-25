@@ -1,11 +1,11 @@
-import * as React from 'react';
-import * as Table from 'react-bootstrap/lib/Table';
+import { Component } from 'react';
+import { Table } from 'react-bootstrap';
 import Select from 'react-select';
 
 import { Tooltip } from '@waldur/core/Tooltip';
 import { translate } from '@waldur/i18n';
-import { internalIpFormatter } from '@waldur/openstack/openstack-instance/openstack-instance-config';
 import { Subnet, FloatingIp } from '@waldur/openstack/openstack-instance/types';
+import { formatSubnet } from '@waldur/openstack/openstack-instance/utils';
 
 interface NetworkItem {
   subnet?;
@@ -32,9 +32,7 @@ export const getDefaultFloatingIps = () => [
   },
 ];
 
-export class OpenstackInstanceNetworks extends React.Component<
-  OpenstackInstanceNetworksComponentProps
-> {
+export class OpenstackInstanceNetworks extends Component<OpenstackInstanceNetworksComponentProps> {
   addItem = () => {
     if (this.hasFreeSubnets()) {
       if (this.props.input.value) {
@@ -97,7 +95,7 @@ export class OpenstackInstanceNetworks extends React.Component<
       .filter(this.getAvailableNetworkItems('subnet'))
       .map((subnet) => ({
         ...subnet,
-        label: internalIpFormatter(subnet),
+        label: formatSubnet(subnet),
       }));
 
   getFreeFloatingIps = () => [

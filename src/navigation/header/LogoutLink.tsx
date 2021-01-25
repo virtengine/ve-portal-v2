@@ -1,9 +1,9 @@
-import * as React from 'react';
+import { FunctionComponent } from 'react';
 
 import { AuthService } from '@waldur/auth/AuthService';
 import { translate } from '@waldur/i18n';
 
-export const LogoutLink = () => {
+export const LogoutLink: FunctionComponent = () => {
   return (
     <li>
       <a onClick={AuthService.logout}>

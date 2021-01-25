@@ -1,5 +1,3 @@
-import * as React from 'react';
-
 import { FieldError } from '@waldur/form';
 
 import { FormGroup } from './FormGroup';

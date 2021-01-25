@@ -1,13 +1,14 @@
-import * as React from 'react';
+import { FunctionComponent } from 'react';
 import { connect } from 'react-redux';
 import { compose } from 'redux';
 import { getFormValues } from 'redux-form';
 
+import { defaultCurrency } from '@waldur/core/formatCurrency';
 import { Link } from '@waldur/core/Link';
-import { defaultCurrency } from '@waldur/core/services';
 import { INVOICES_TABLE } from '@waldur/invoices/constants';
 import { getActiveFixedPricePaymentProfile } from '@waldur/invoices/details/utils';
 import { MarkAsPaidButton } from '@waldur/invoices/list/MarkAsPaidButton';
+import { RootState } from '@waldur/store/reducers';
 import { Table, connectTable, createFetcher } from '@waldur/table';
 import { TableOptionsType } from '@waldur/table/types';
 import { getCustomer } from '@waldur/workspace/selectors';
@@ -15,7 +16,7 @@ import { getCustomer } from '@waldur/workspace/selectors';
 import { InvoicesFilter } from './InvoicesFilter';
 import { SendNotificationButton } from './SendNotificationButton';
 
-const TableComponent = (props) => {
+const TableComponent: FunctionComponent<any> = (props) => {
   const { translate } = props;
   const columns = [
     {
@@ -84,7 +85,7 @@ const TableOptions: TableOptionsType = {
   queryField: 'number',
 };
 
-const mapsStateToProps = (state) => ({
+const mapsStateToProps = (state: RootState) => ({
   customer: getCustomer(state),
   stateFilter: getFormValues('InvoicesFilter')(state),
 });
@@ -93,7 +94,7 @@ const enhance = compose(connect(mapsStateToProps), connectTable(TableOptions));
 
 const InvoicesListComponent = enhance(TableComponent);
 
-export const InvoicesList = () => (
+export const InvoicesList: FunctionComponent = () => (
   <>
     <InvoicesFilter />
     <InvoicesListComponent />

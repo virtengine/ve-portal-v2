@@ -1,6 +1,6 @@
 import { useCurrentStateAndParams } from '@uirouter/react';
-import * as React from 'react';
-import useAsync from 'react-use/lib/useAsync';
+import { FunctionComponent } from 'react';
+import { useAsync } from 'react-use';
 
 import { LoadingSpinner } from '@waldur/core/LoadingSpinner';
 import { translate } from '@waldur/i18n';
@@ -20,7 +20,7 @@ async function loadData(customerId) {
   return { provider, offerings };
 }
 
-export const ProviderDetails = () => {
+export const ProviderDetails: FunctionComponent = () => {
   const {
     params: { customer_uuid },
   } = useCurrentStateAndParams();
@@ -36,7 +36,7 @@ export const ProviderDetails = () => {
   }
 
   if (error) {
-    return <span>{translate('Unable to load service provider.')}</span>;
+    return <>{translate('Unable to load service provider.')}</>;
   }
   return <ProviderDetailsBody {...value} />;
 };

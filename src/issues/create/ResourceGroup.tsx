@@ -1,7 +1,5 @@
-import * as React from 'react';
-import Col from 'react-bootstrap/lib/Col';
-import ControlLabel from 'react-bootstrap/lib/ControlLabel';
-import FormGroup from 'react-bootstrap/lib/FormGroup';
+import { useCallback, useEffect, FunctionComponent } from 'react';
+import { Col, ControlLabel, FormGroup } from 'react-bootstrap';
 import { useSelector, useDispatch } from 'react-redux';
 import Select from 'react-select';
 import { Field, change } from 'redux-form';
@@ -15,15 +13,16 @@ import { projectSelector } from './selectors';
 
 const filterOption = (options) => options;
 
-export const ResourceGroup = ({ disabled }) => {
+export const ResourceGroup: FunctionComponent<{ disabled }> = ({
+  disabled,
+}) => {
   const dispatch = useDispatch();
   const project = useSelector(projectSelector);
-  const loadData = React.useCallback(
-    (name) => refreshResources(name, project),
-    [project],
-  );
+  const loadData = useCallback((name) => refreshResources(name, project), [
+    project,
+  ]);
 
-  React.useEffect(() => {
+  useEffect(() => {
     dispatch(change(ISSUE_REGISTRATION_FORM_ID, 'resource', undefined));
   }, [dispatch, project]);
 

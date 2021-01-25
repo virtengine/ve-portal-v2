@@ -1,7 +1,8 @@
-import * as React from 'react';
-import * as ButtonGroup from 'react-bootstrap/lib/ButtonGroup';
+import { FunctionComponent } from 'react';
+import { ButtonGroup } from 'react-bootstrap';
 import { connect } from 'react-redux';
 
+import { lazyComponent } from '@waldur/core/lazyComponent';
 import {
   enablePaymentProfile,
   removePaymentProfile,
@@ -11,7 +12,13 @@ import { openModalDialog, waitForConfirmation } from '@waldur/modal/actions';
 import { ActionButton } from '@waldur/table/ActionButton';
 import { PaymentProfile } from '@waldur/workspace/types';
 
-import { PaymentProfileUpdateDialogContainer } from './PaymentProfileUpdateDialog';
+const PaymentProfileUpdateDialogContainer = lazyComponent(
+  () =>
+    import(
+      /* webpackChunkName: "PaymentProfileUpdateDialog" */ './PaymentProfileUpdateDialog'
+    ),
+  'PaymentProfileUpdateDialogContainer',
+);
 
 const openDialog = async (dispatch, profile: PaymentProfile) => {
   try {
@@ -32,7 +39,7 @@ const openPaymentProfileUpdateDialog = (profile: PaymentProfile) =>
     size: 'lg',
   });
 
-const Actions = (props) => (
+const Actions: FunctionComponent<any> = (props) => (
   <ButtonGroup>
     {!props.profile.is_active ? (
       <ActionButton

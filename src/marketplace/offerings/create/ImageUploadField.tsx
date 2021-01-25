@@ -1,6 +1,5 @@
-import * as React from 'react';
-import * as Col from 'react-bootstrap/lib/Col';
-import * as Row from 'react-bootstrap/lib/Row';
+import { FunctionComponent } from 'react';
+import { Col, Row } from 'react-bootstrap';
 
 import { FileUploadField } from '@waldur/form';
 import { FileUploadFieldProps } from '@waldur/form/FileUploadField';
@@ -17,7 +16,9 @@ const getImageUrl = (image) => {
   return '';
 };
 
-export const ImageUploadField = (props: FileUploadFieldProps) => {
+export const ImageUploadField: FunctionComponent<FileUploadFieldProps> = (
+  props,
+) => {
   if (!props.input.value) {
     return <FileUploadField {...props} />;
   }

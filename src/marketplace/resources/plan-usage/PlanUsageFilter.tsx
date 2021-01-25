@@ -1,5 +1,5 @@
-import * as React from 'react';
-import * as Row from 'react-bootstrap/lib/Row';
+import { FunctionComponent } from 'react';
+import { Row } from 'react-bootstrap';
 import { reduxForm } from 'redux-form';
 
 import { OfferingAutocomplete } from '@waldur/marketplace/offerings/details/OfferingAutocomplete';
@@ -11,7 +11,7 @@ const offeringProps = {
   },
 };
 
-const PurePlanUsageFilter = () => (
+const PurePlanUsageFilter: FunctionComponent = () => (
   <Row>
     <ProviderAutocomplete className="col-sm-6" />
     <OfferingAutocomplete {...offeringProps} className="col-sm-6" />

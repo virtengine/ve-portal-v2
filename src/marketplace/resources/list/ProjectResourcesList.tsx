@@ -1,4 +1,4 @@
-import * as React from 'react';
+import { FunctionComponent } from 'react';
 import { connect } from 'react-redux';
 import { compose } from 'redux';
 import { getFormValues } from 'redux-form';
@@ -7,6 +7,7 @@ import { formatDateTime } from '@waldur/core/dateUtils';
 import { translate } from '@waldur/i18n';
 import { CategoryColumn } from '@waldur/marketplace/types';
 import { isVisible } from '@waldur/store/config';
+import { RootState } from '@waldur/store/reducers';
 import { Table, connectTable, createFetcher } from '@waldur/table';
 import { getProject } from '@waldur/workspace/selectors';
 import { Project } from '@waldur/workspace/types';
@@ -19,6 +20,7 @@ import { CreateResourceButton } from './CreateResourceButton';
 import { EmptyResourcesListPlaceholder } from './EmptyResourcesListPlaceholder';
 import { ResourceActionsButton } from './ResourceActionsButton';
 import { ResourceNameField } from './ResourceNameField';
+import { ResourceOpenDetail } from './ResourceOpenDetail';
 import { ResourceStateField } from './ResourceStateField';
 
 interface FieldProps {
@@ -36,7 +38,7 @@ interface OwnProps {
   columns: CategoryColumn[];
 }
 
-export const TableComponent = (props) => {
+export const TableComponent: FunctionComponent<any> = (props) => {
   const columns = [
     {
       title: translate('Name'),
@@ -92,6 +94,7 @@ export const TableComponent = (props) => {
       initialSorting={{ field: 'created', mode: 'desc' }}
       hasQuery={true}
       showPageSizeSelector={true}
+      expandableRow={ResourceOpenDetail}
     />
   );
 };
@@ -120,7 +123,7 @@ const TableOptions = {
   queryField: 'name',
 };
 
-const mapStateToProps = (state) => ({
+const mapStateToProps = (state: RootState) => ({
   project: getProject(state),
   importVisible: isVisible(state, 'import'),
   filter: getFormValues('ProjectResourcesFilter')(state),

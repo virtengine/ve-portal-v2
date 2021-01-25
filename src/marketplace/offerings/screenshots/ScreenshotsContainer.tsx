@@ -1,8 +1,6 @@
 import { useCurrentStateAndParams } from '@uirouter/react';
-import * as React from 'react';
-import { useEffect } from 'react';
-import * as Col from 'react-bootstrap/lib/Col';
-import * as Row from 'react-bootstrap/lib/Row';
+import { useEffect, FunctionComponent } from 'react';
+import { Col, Row } from 'react-bootstrap';
 import { useSelector, useDispatch } from 'react-redux';
 
 import { LoadingSpinner } from '@waldur/core/LoadingSpinner';
@@ -14,6 +12,7 @@ import { Offering } from '@waldur/marketplace/types';
 import { useBreadcrumbsFn } from '@waldur/navigation/breadcrumbs/store';
 import { BreadcrumbItem } from '@waldur/navigation/breadcrumbs/types';
 import { useTitle } from '@waldur/navigation/title';
+import { RootState } from '@waldur/store/reducers';
 
 import { CreateScreenshotButton } from './CreateScreenshotButton';
 import { OfferingScreenshotsList } from './OfferingScreenshotsList';
@@ -39,7 +38,7 @@ const getBreadcrumbs = (offering: Offering): BreadcrumbItem[] => {
   ];
 };
 
-export const ScreenshotsContainer = () => {
+export const ScreenshotsContainer: FunctionComponent = () => {
   const {
     params: { offering_uuid },
   } = useCurrentStateAndParams();
@@ -52,7 +51,9 @@ export const ScreenshotsContainer = () => {
     }
   }, [dispatch, offering_uuid]);
 
-  const offering = useSelector((state) => getOffering(state).offering);
+  const offering = useSelector(
+    (state: RootState) => getOffering(state).offering,
+  );
 
   useBreadcrumbsFn(() => (offering ? getBreadcrumbs(offering) : []), [
     offering,

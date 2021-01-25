@@ -1,4 +1,4 @@
-import * as React from 'react';
+import { FunctionComponent } from 'react';
 
 import { StateIndicator } from '@waldur/core/StateIndicator';
 import { Resource } from '@waldur/resource/types';
@@ -10,7 +10,7 @@ interface ResourceStateProps {
 }
 
 // TODO: remove extra check after resources list is migrated to ReactJS
-export const ResourceState = (props: ResourceStateProps) =>
+export const ResourceState: FunctionComponent<ResourceStateProps> = (props) =>
   props.resource ? (
     <StateIndicator {...getResourceState(props.resource)} />
   ) : null;

@@ -1,5 +1,5 @@
-import * as React from 'react';
-import * as Button from 'react-bootstrap/lib/Button';
+import { useCallback, FunctionComponent } from 'react';
+import { Button } from 'react-bootstrap';
 import { useDispatch } from 'react-redux';
 
 import { translate } from '@waldur/i18n';
@@ -8,12 +8,14 @@ import { ModalDialog } from '@waldur/modal/ModalDialog';
 
 import { useEmailChange } from './useEmailChange';
 
-export const UserEmailChangeDialog = ({ resolve: { user } }) => {
+export const UserEmailChangeDialog: FunctionComponent<{
+  resolve: { user };
+}> = ({ resolve: { user } }) => {
   const dispatch = useDispatch();
 
   const { handleSubmit, submitting, email, setEmail } = useEmailChange(user);
 
-  const handleClose = React.useCallback(() => {
+  const handleClose = useCallback(() => {
     dispatch(closeModalDialog());
   }, []);
 

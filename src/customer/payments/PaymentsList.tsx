@@ -1,20 +1,29 @@
-import * as React from 'react';
+import { FunctionComponent } from 'react';
 import { connect } from 'react-redux';
 import { compose } from 'redux';
 
 import { formatDateTime } from '@waldur/core/dateUtils';
+import { lazyComponent } from '@waldur/core/lazyComponent';
 import { PAYMENTS_TABLE } from '@waldur/customer/details/constants';
-import { PaymentCreateDialogContainer } from '@waldur/customer/payments/PaymentCreateDialog';
 import { PaymentInvoiceRenderer } from '@waldur/customer/payments/PaymentInvoiceRenderer';
 import { PaymentProofRenderer } from '@waldur/customer/payments/PaymentProofRenderer';
 import { translate } from '@waldur/i18n';
 import { getActivePaymentProfile } from '@waldur/invoices/details/utils';
 import { openModalDialog } from '@waldur/modal/actions';
+import { RootState } from '@waldur/store/reducers';
 import { connectTable, createFetcher, Table } from '@waldur/table';
 import { ActionButton } from '@waldur/table/ActionButton';
 import { getCustomer, isStaff, isSupport } from '@waldur/workspace/selectors';
 
 import { PaymentActions } from './PaymentActions';
+
+const PaymentCreateDialogContainer = lazyComponent(
+  () =>
+    import(
+      /* webpackChunkName: "PaymentCreateDialog" */ '@waldur/customer/payments/PaymentCreateDialog'
+    ),
+  'PaymentCreateDialogContainer',
+);
 
 const openPaymentCreateDialog = (profileUrl: string) =>
   openModalDialog(PaymentCreateDialogContainer, {
@@ -24,7 +33,7 @@ const openPaymentCreateDialog = (profileUrl: string) =>
     size: 'lg',
   });
 
-export const TableComponent = (props) => {
+export const TableComponent: FunctionComponent<any> = (props) => {
   const activePaymentProfile = getActivePaymentProfile(
     props.customer.payment_profiles,
   );
@@ -101,7 +110,7 @@ const TableOptions = {
   }),
 };
 
-const mapStateToProps = (state) => ({
+const mapStateToProps = (state: RootState) => ({
   customer: getCustomer(state),
   isStaff: isStaff(state),
   isSupport: isSupport(state),

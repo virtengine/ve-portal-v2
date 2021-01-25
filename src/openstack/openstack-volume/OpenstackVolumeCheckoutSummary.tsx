@@ -1,10 +1,10 @@
-import * as React from 'react';
-import * as Table from 'react-bootstrap/lib/Table';
+import React from 'react';
+import { Table } from 'react-bootstrap';
 import { useSelector } from 'react-redux';
-import { getFormValues, isValid } from 'redux-form';
+import { isValid } from 'redux-form';
 
+import { defaultCurrency } from '@waldur/core/formatCurrency';
 import { Panel } from '@waldur/core/Panel';
-import { defaultCurrency } from '@waldur/core/services';
 import { formatFilesize } from '@waldur/core/utils';
 import { isFeatureVisible } from '@waldur/features/connect';
 import { translate } from '@waldur/i18n';
@@ -12,14 +12,16 @@ import { ShoppingCartButtonContainer } from '@waldur/marketplace/cart/ShoppingCa
 import { OfferingLogo } from '@waldur/marketplace/common/OfferingLogo';
 import { RatingStars } from '@waldur/marketplace/common/RatingStars';
 import { OfferingCompareButtonContainer } from '@waldur/marketplace/compare/OfferingCompareButtonContainer';
+import { OfferingDetailsProps } from '@waldur/marketplace/details/OfferingDetails';
 import { pricesSelector } from '@waldur/marketplace/details/plan/utils';
 import { formatOrderItemForCreate } from '@waldur/marketplace/details/utils';
 import { ProviderLink } from '@waldur/marketplace/links/ProviderLink';
-import { Offering } from '@waldur/marketplace/types';
+import { formDataSelector } from '@waldur/marketplace/utils';
 import { Quota } from '@waldur/openstack/types';
 import { parseQuotas, parseQuotasUsage } from '@waldur/openstack/utils';
 import { PriceTooltip } from '@waldur/price/PriceTooltip';
 import { QuotaUsageBarChart } from '@waldur/quotas/QuotaUsageBarChart';
+import { RootState } from '@waldur/store/reducers';
 import { getCustomer, getProject } from '@waldur/workspace/selectors';
 
 const getDailyPrice = (formData, components) => {
@@ -79,29 +81,24 @@ const getQuotas = ({ formData, usages, limits, project, components }) => {
   return quotas;
 };
 
-interface OwnProps {
-  offering: Offering;
-}
+const formIsValidSelector = (state: RootState) =>
+  isValid('marketplaceOffering')(state);
 
-const formDataSelector = (state) =>
-  (getFormValues('marketplaceOffering')(state) || {}) as any;
-
-const formIsValidSelector = (state) => isValid('marketplaceOffering')(state);
-
-const formAttributesSelector = (state) => {
+const formAttributesSelector = (state: RootState) => {
   const formData = formDataSelector(state);
   return formData.attributes || {};
 };
 
-export const OpenstackVolumeCheckoutSummary: React.FC<OwnProps> = ({
+export const OpenstackVolumeCheckoutSummary: React.FC<OfferingDetailsProps> = ({
   offering,
 }) => {
   const customer = useSelector(getCustomer);
   const project = useSelector(getProject);
   const formData = useSelector(formAttributesSelector);
   const formIsValid = useSelector(formIsValidSelector);
-  const total = useSelector((state) => pricesSelector(state, { offering }))
-    .total;
+  const total = useSelector((state: RootState) =>
+    pricesSelector(state, { offering }),
+  ).total;
   const components = React.useMemo(
     () => (offering.plans.length > 0 ? offering.plans[0].prices : {}),
     [offering],
@@ -210,7 +207,7 @@ export const OpenstackVolumeCheckoutSummary: React.FC<OwnProps> = ({
               <td>
                 <strong>{translate('Project')}</strong>
               </td>
-              <td>{project ? project.name : <span>&mdash;</span>}</td>
+              <td>{project ? project.name : <>&mdash;</>}</td>
             </tr>
           </tbody>
         </Table>

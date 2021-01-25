@@ -1,7 +1,7 @@
-import * as React from 'react';
-import * as Col from 'react-bootstrap/lib/Col';
+import { useState, useCallback, FunctionComponent } from 'react';
+import { Col } from 'react-bootstrap';
 
-import { ENV } from '@waldur/core/services';
+import { ENV } from '@waldur/configs/default';
 import { translate } from '@waldur/i18n';
 
 import { getCustomersPage } from './api';
@@ -18,19 +18,19 @@ const OrganizationsHeader = ({ organizationsCount }) => (
   </h3>
 );
 
-const EmptyOrganizationListPlaceholder = () => (
+const EmptyOrganizationListPlaceholder: FunctionComponent = () => (
   <span className="ellipsis">
     {translate('There are no organizations matching filter.')}
   </span>
 );
 
-export const OrganizationsPanel = ({
-  selectedOrganization,
-  selectOrganization,
-  organizationsCount,
-}) => {
-  const [filter, setFilter] = React.useState('');
-  const getPage = React.useCallback((page) => getCustomersPage(filter, page), [
+export const OrganizationsPanel: FunctionComponent<{
+  selectedOrganization;
+  selectOrganization;
+  organizationsCount;
+}> = ({ selectedOrganization, selectOrganization, organizationsCount }) => {
+  const [filter, setFilter] = useState('');
+  const getPage = useCallback((page) => getCustomersPage(filter, page), [
     filter,
   ]);
 

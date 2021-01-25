@@ -1,12 +1,12 @@
 import { useCurrentStateAndParams, useRouter } from '@uirouter/react';
-import * as React from 'react';
+import { useMemo } from 'react';
 import { useDispatch } from 'react-redux';
-import useAsync from 'react-use/lib/useAsync';
+import { useAsync } from 'react-use';
 
-import { ENV } from '@waldur/core/services';
+import { ENV } from '@waldur/configs/default';
 import { translate } from '@waldur/i18n';
 import { InvitationService } from '@waldur/invitations/InvitationService';
-import { showError } from '@waldur/store/coreSaga';
+import { showError } from '@waldur/store/notify';
 
 const checkRegistrationMethods = async (mode, router, dispatch) => {
   /*
@@ -57,7 +57,7 @@ export const useAuthFeatures = () => {
     [state.name, router.stateService, dispatch],
   );
 
-  const methods = React.useMemo(
+  const methods = useMemo<Record<string, boolean>>(
     () =>
       ENV.plugins.WALDUR_CORE.AUTHENTICATION_METHODS.reduce((result, item) => {
         result[item] = true;
@@ -105,6 +105,11 @@ export const useAuthFeatures = () => {
     methods.SAML2 &&
     ENV.plugins.WALDUR_AUTH_SAML2.ALLOW_TO_SELECT_IDENTITY_PROVIDER;
 
+  const showSaml2Discovery =
+    methods.SAML2 &&
+    ENV.plugins.WALDUR_AUTH_SAML2.DISCOVERY_SERVICE_URL &&
+    ENV.plugins.WALDUR_AUTH_SAML2.DISCOVERY_SERVICE_LABEL;
+
   return {
     loading,
     mode: state.name,
@@ -119,6 +124,7 @@ export const useAuthFeatures = () => {
     valimo: showValimo,
     saml2: showSaml2,
     saml2providers: showSaml2Providers,
+    saml2discovery: showSaml2Discovery,
     keycloak: showKeycloak,
     eduteams: showEduteams,
   };

@@ -1,13 +1,14 @@
-import * as React from 'react';
+import { FunctionComponent } from 'react';
 
 import { formatDateTime } from '@waldur/core/dateUtils';
-import { NestedListActions } from '@waldur/resource/actions/NestedListActions';
 import { ResourceRowActions } from '@waldur/resource/actions/ResourceRowActions';
 import { ResourceName } from '@waldur/resource/ResourceName';
 import { ResourceState } from '@waldur/resource/state/ResourceState';
 import { Table, connectTable, createFetcher } from '@waldur/table';
 
-const TableComponent = (props) => {
+import { CreateBackupAction } from '../openstack-instance/actions/CreateBackupAction';
+
+const TableComponent: FunctionComponent<any> = (props) => {
   const { translate } = props;
   return (
     <Table
@@ -24,7 +25,10 @@ const TableComponent = (props) => {
         },
         {
           title: translate('Keep until'),
-          render: ({ row }) => formatDateTime(row.kept_until),
+          render: ({ row }) =>
+            row.kept_until
+              ? formatDateTime(row.kept_until)
+              : translate('Keep forever'),
         },
         {
           title: translate('State'),
@@ -37,7 +41,7 @@ const TableComponent = (props) => {
       ]}
       verboseName={translate('VM snapshots')}
       hasQuery={false}
-      actions={<NestedListActions resource={props.resource} tab="backups" />}
+      actions={<CreateBackupAction resource={props.resource} />}
     />
   );
 };

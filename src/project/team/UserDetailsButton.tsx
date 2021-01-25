@@ -1,10 +1,9 @@
-import * as React from 'react';
+import React from 'react';
 import { useDispatch } from 'react-redux';
 
 import { translate } from '@waldur/i18n';
-import { openModalDialog } from '@waldur/modal/actions';
 import { ActionButton } from '@waldur/table/ActionButton';
-import { UserPopover } from '@waldur/user/UserPopover';
+import { openUserPopover } from '@waldur/user/actions';
 import { User } from '@waldur/workspace/types';
 
 interface UserDetailsButtonProps {
@@ -17,10 +16,8 @@ export const UserDetailsButton: React.FC<UserDetailsButtonProps> = ({
   const dispatch = useDispatch();
   const callback = () =>
     dispatch(
-      openModalDialog(UserPopover, {
-        resolve: {
-          user_uuid: user.uuid,
-        },
+      openUserPopover({
+        user_uuid: user.uuid,
       }),
     );
   return (

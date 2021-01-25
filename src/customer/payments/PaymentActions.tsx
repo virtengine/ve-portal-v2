@@ -1,9 +1,9 @@
-import * as React from 'react';
-import * as ButtonGroup from 'react-bootstrap/lib/ButtonGroup';
+import { FunctionComponent } from 'react';
+import { ButtonGroup } from 'react-bootstrap';
 import { connect } from 'react-redux';
 
+import { lazyComponent } from '@waldur/core/lazyComponent';
 import { LinkInvoiceAction } from '@waldur/customer/payments/LinkInvoiceAction';
-import { PaymentUpdateDialogContainer } from '@waldur/customer/payments/PaymentUpdateDialog';
 import {
   deletePayment,
   linkInvoice,
@@ -14,6 +14,14 @@ import { Invoice } from '@waldur/invoices/types';
 import { openModalDialog, waitForConfirmation } from '@waldur/modal/actions';
 import { ActionButton } from '@waldur/table/ActionButton';
 import { Payment } from '@waldur/workspace/types';
+
+const PaymentUpdateDialogContainer = lazyComponent(
+  () =>
+    import(
+      /* webpackChunkName: "PaymentUpdateDialog" */ '@waldur/customer/payments/PaymentUpdateDialog'
+    ),
+  'PaymentUpdateDialogContainer',
+);
 
 const openDialog = async (dispatch, payment: Payment) => {
   try {
@@ -34,7 +42,7 @@ const openPaymentUpdateDialog = (payment: Payment) =>
     size: 'lg',
   });
 
-const Actions = (props) => (
+const Actions: FunctionComponent<any> = (props) => (
   <ButtonGroup>
     <ActionButton
       title={translate('Edit')}

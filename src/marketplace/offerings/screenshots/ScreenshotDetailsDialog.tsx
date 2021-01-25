@@ -1,4 +1,4 @@
-import * as React from 'react';
+import { FunctionComponent } from 'react';
 
 import { translate } from '@waldur/i18n';
 import { Screenshot } from '@waldur/marketplace/types';
@@ -9,8 +9,8 @@ interface ScreenshotDetailsDialogProps {
   resolve: Screenshot;
 }
 
-export const ScreenshotDetailsDialog = (
-  props: ScreenshotDetailsDialogProps,
+export const ScreenshotDetailsDialog: FunctionComponent<ScreenshotDetailsDialogProps> = (
+  props,
 ) => (
   <ModalDialog
     title={translate('Viewing screenshot')}

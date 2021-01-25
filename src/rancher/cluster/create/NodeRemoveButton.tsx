@@ -1,4 +1,4 @@
-import * as React from 'react';
+import { FunctionComponent } from 'react';
 
 import { translate } from '@waldur/i18n';
 
@@ -6,7 +6,9 @@ interface NodeRemoveButtonProps {
   onClick(): void;
 }
 
-export const NodeRemoveButton = (props: NodeRemoveButtonProps) => (
+export const NodeRemoveButton: FunctionComponent<NodeRemoveButtonProps> = (
+  props,
+) => (
   <button
     type="button"
     className="close"

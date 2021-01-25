@@ -1,11 +1,11 @@
 import { basemapLayer } from 'esri-leaflet';
 import { Layer } from 'leaflet';
-import * as React from 'react';
+import { useEffect, FunctionComponent } from 'react';
 import { useMap } from 'react-leaflet';
 
-export const EsriLayer = () => {
+export const EsriLayer: FunctionComponent = () => {
   const map = useMap();
-  React.useEffect(() => {
+  useEffect(() => {
     const layer: Layer = basemapLayer('Gray');
     layer.addTo(map);
     return () => {

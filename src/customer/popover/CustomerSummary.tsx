@@ -1,5 +1,5 @@
-import * as React from 'react';
-import * as Table from 'react-bootstrap/lib/Table';
+import { FunctionComponent } from 'react';
+import { Table } from 'react-bootstrap';
 
 import { Customer } from '@waldur/customer/types';
 import { translate } from '@waldur/i18n';
@@ -18,7 +18,9 @@ const Row = ({ label, value }) =>
     </tr>
   ) : null;
 
-export const CustomerSummary = ({ customer }: CustomerSummaryProps) => (
+export const CustomerSummary: FunctionComponent<CustomerSummaryProps> = ({
+  customer,
+}) => (
   <Table responsive bordered>
     <tbody>
       <Row

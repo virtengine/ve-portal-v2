@@ -1,7 +1,11 @@
-import * as React from 'react';
-import * as Col from 'react-bootstrap/lib/Col';
-import * as Dropdown from 'react-bootstrap/lib/Dropdown';
-import * as Row from 'react-bootstrap/lib/Row';
+import { FunctionComponent, Component } from 'react';
+import {
+  Col,
+  Dropdown,
+  DropdownMenu,
+  DropdownToggle,
+  Row,
+} from 'react-bootstrap';
 import { connect } from 'react-redux';
 import { compose } from 'redux';
 
@@ -11,6 +15,7 @@ import { Link } from '@waldur/core/Link';
 import { translate } from '@waldur/i18n';
 import { getLabel } from '@waldur/marketplace/common/registry';
 import * as actions from '@waldur/marketplace/orders/store/actions';
+import { RootState } from '@waldur/store/reducers';
 import {
   getCustomer,
   isOwnerOrStaff,
@@ -35,9 +40,7 @@ interface PendingOrderIndicatorProps extends ToggleOpenProps {
   workspace: string;
 }
 
-export class PurePendingOrderIndicator extends React.Component<
-  PendingOrderIndicatorProps
-> {
+export class PurePendingOrderIndicator extends Component<PendingOrderIndicatorProps> {
   componentDidMount() {
     const { workspace, customer } = this.props;
     if (!customer) {
@@ -98,10 +101,7 @@ export class PurePendingOrderIndicator extends React.Component<
         className="PendingOrderDropdown"
         id="pending-dropdown"
       >
-        <Dropdown.Toggle
-          noCaret={true}
-          className="PendingOrderDropdown__Toggle"
-        >
+        <DropdownToggle noCaret={true} className="PendingOrderDropdown__Toggle">
           <li className="navbar-indicator">
             <a onClick={handleToggleOpen}>
               <i className={'fa fa-bell'} />
@@ -110,8 +110,8 @@ export class PurePendingOrderIndicator extends React.Component<
               )}
             </a>
           </li>
-        </Dropdown.Toggle>
-        <Dropdown.Menu className="dropdown-orders dropdown-menu-right">
+        </DropdownToggle>
+        <DropdownMenu className="dropdown-orders dropdown-menu-right">
           {limitedOrders.map((order) => (
             <PendingOrderDropdownItem
               key={order.uuid}
@@ -129,7 +129,7 @@ export class PurePendingOrderIndicator extends React.Component<
               />
             </div>
           </li>
-        </Dropdown.Menu>
+        </DropdownMenu>
       </Dropdown>
     );
   }
@@ -148,7 +148,7 @@ const getNamePrefix = (type: OrderItemType) => {
   }
 };
 
-const PendingOrderDropdownItem = (props) => (
+const PendingOrderDropdownItem: FunctionComponent<any> = (props) => (
   <>
     <li>
       <OrderDetailsLink
@@ -162,8 +162,8 @@ const PendingOrderDropdownItem = (props) => (
           {props.order.items.map((item) => (
             <div key={item.uuid}>
               <p>
-                <span>{getNamePrefix(item.type)} </span>
-                <strong>{item.attributes.name}</strong>
+                <>{getNamePrefix(item.type)} </>
+                <strong>{item.attributes.name || item.resource_name}</strong>
               </p>
               <span className="display-flex text-muted small">
                 {getLabel(item.offering_type)}
@@ -215,7 +215,7 @@ const ShowAllLink = (props) => {
   }
 };
 
-const mapStateToProps = (state) => {
+const mapStateToProps = (state: RootState) => {
   const { pendingOrders } = state.marketplace.orders;
   return {
     customer: getCustomer(state),

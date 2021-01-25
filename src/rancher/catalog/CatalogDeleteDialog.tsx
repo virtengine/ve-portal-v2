@@ -1,4 +1,4 @@
-import * as React from 'react';
+import { FunctionComponent, useCallback, useState } from 'react';
 import { useDispatch } from 'react-redux';
 
 import { format } from '@waldur/core/ErrorMessageFormatter';
@@ -6,7 +6,7 @@ import { translate } from '@waldur/i18n';
 import { ActionDialog } from '@waldur/modal/ActionDialog';
 import { closeModalDialog } from '@waldur/modal/actions';
 import { Resource } from '@waldur/resource/types';
-import { showError, showSuccess } from '@waldur/store/coreSaga';
+import { showError, showSuccess } from '@waldur/store/notify';
 import { deleteEntity } from '@waldur/table/actions';
 
 import { deleteCatalog } from '../api';
@@ -18,9 +18,9 @@ interface OwnProps {
 }
 
 const useCatalogDeleteDialog = (catalog) => {
-  const [submitting, setSubmitting] = React.useState(false);
+  const [submitting, setSubmitting] = useState(false);
   const dispatch = useDispatch();
-  const callback = React.useCallback(async () => {
+  const callback = useCallback(async () => {
     try {
       setSubmitting(true);
       await deleteCatalog(catalog.uuid);
@@ -42,7 +42,7 @@ const useCatalogDeleteDialog = (catalog) => {
   };
 };
 
-export const CatalogDeleteDialog = (props: OwnProps) => {
+export const CatalogDeleteDialog: FunctionComponent<OwnProps> = (props) => {
   const { submitting, deleteCatalog } = useCatalogDeleteDialog(
     props.resolve.catalog,
   );

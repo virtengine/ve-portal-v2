@@ -1,10 +1,12 @@
-import * as React from 'react';
+import { FunctionComponent } from 'react';
 
 import { Link } from '@waldur/core/Link';
 import { getUUID } from '@waldur/core/utils';
 import { translate } from '@waldur/i18n';
 
-export const RoleField = ({ invitation }) => {
+export const RoleField: FunctionComponent<{ invitation }> = ({
+  invitation,
+}) => {
   if (invitation.customer_role) {
     return <>{translate('owner')}</>;
   } else if (invitation.project_role) {

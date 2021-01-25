@@ -1,4 +1,4 @@
-import * as React from 'react';
+import React from 'react';
 
 import { Tooltip } from '@waldur/core/Tooltip';
 import { translate } from '@waldur/i18n';
@@ -16,9 +16,7 @@ interface OpenstackInstanceDataVolumeProps {
   setActive(value: boolean): void;
 }
 
-export class OpenstackInstanceDataVolume extends React.Component<
-  OpenstackInstanceDataVolumeProps
-> {
+export class OpenstackInstanceDataVolume extends React.Component<OpenstackInstanceDataVolumeProps> {
   toggleField = () => {
     this.props.input.onChange(undefined);
     this.props.setActive(!this.props.isActive);

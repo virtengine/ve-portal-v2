@@ -1,19 +1,19 @@
-import * as React from 'react';
+import { useState, useCallback } from 'react';
 import { useDispatch } from 'react-redux';
 
 import { post } from '@waldur/core/api';
 import { format } from '@waldur/core/ErrorMessageFormatter';
 import { translate } from '@waldur/i18n';
 import { closeModalDialog } from '@waldur/modal/actions';
-import { showError, showSuccess } from '@waldur/store/coreSaga';
+import { showError, showSuccess } from '@waldur/store/notify';
 import { setCurrentUser } from '@waldur/workspace/actions';
 
 export const useEmailChange = (user) => {
-  const [email, setEmail] = React.useState('');
-  const [submitting, setSubmitting] = React.useState(false);
+  const [email, setEmail] = useState('');
+  const [submitting, setSubmitting] = useState(false);
   const dispatch = useDispatch();
 
-  const handleSubmit = React.useCallback(async () => {
+  const handleSubmit = useCallback(async () => {
     setSubmitting(false);
     try {
       await post(`/users/${user.uuid}/change_email/`, { email });

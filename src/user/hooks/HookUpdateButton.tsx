@@ -1,4 +1,4 @@
-import * as React from 'react';
+import { FunctionComponent } from 'react';
 import { connect } from 'react-redux';
 
 import { translate } from '@waldur/i18n';
@@ -11,7 +11,9 @@ interface HookUpdateButtonProps {
   row: any;
 }
 
-export const PureHookUpdateButton = (props: HookUpdateButtonProps) => (
+export const PureHookUpdateButton: FunctionComponent<HookUpdateButtonProps> = (
+  props,
+) => (
   <ActionButton
     title={translate('Update')}
     action={() => props.showHookUpdateDialog(props.row)}

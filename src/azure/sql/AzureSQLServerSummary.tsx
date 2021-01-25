@@ -1,5 +1,3 @@
-import * as React from 'react';
-
 import { AzureSQLServer } from '@waldur/azure/common/types';
 import { Tooltip } from '@waldur/core/Tooltip';
 import { formatFilesize } from '@waldur/core/utils';

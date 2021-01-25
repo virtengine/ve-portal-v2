@@ -1,14 +1,16 @@
-import * as classNames from 'classnames';
-import * as React from 'react';
-import Col from 'react-bootstrap/lib/Col';
-import ControlLabel from 'react-bootstrap/lib/ControlLabel';
-import FormGroup from 'react-bootstrap/lib/FormGroup';
-import InputGroup from 'react-bootstrap/lib/InputGroup';
-import OverlayTrigger from 'react-bootstrap/lib/OverlayTrigger';
-import BootstrapTooltip from 'react-bootstrap/lib/Tooltip';
+import classNames from 'classnames';
+import { FunctionComponent } from 'react';
+import {
+  Col,
+  ControlLabel,
+  FormGroup,
+  InputGroup,
+  OverlayTrigger,
+  Tooltip as BootstrapTooltip,
+} from 'react-bootstrap';
 import { Field } from 'redux-form';
 
-import { ENV } from '@waldur/core/services';
+import { ENV } from '@waldur/configs/default';
 import { renderValidationWrapper } from '@waldur/form/FieldValidationWrapper';
 import { InputField } from '@waldur/form/InputField';
 import { translate } from '@waldur/i18n';
@@ -41,7 +43,7 @@ const validateUsername = (username: string) => {
   }
 };
 
-export const UsernameGroup = () => (
+export const UsernameGroup: FunctionComponent = () => (
   <FormGroup>
     <Col sm={3} componentClass={ControlLabel}>
       {translate('Username')}

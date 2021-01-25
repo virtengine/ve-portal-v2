@@ -1,8 +1,5 @@
-import * as React from 'react';
-import * as Checkbox from 'react-bootstrap/lib/Checkbox';
-import * as Col from 'react-bootstrap/lib/Col';
-import * as FormGroup from 'react-bootstrap/lib/FormGroup';
-import * as HelpBlock from 'react-bootstrap/lib/HelpBlock';
+import React from 'react';
+import { Checkbox, Col, FormGroup, HelpBlock } from 'react-bootstrap';
 import { Field } from 'redux-form';
 
 import { FieldProps } from '../types';

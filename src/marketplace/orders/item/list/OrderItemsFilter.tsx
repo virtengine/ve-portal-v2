@@ -1,5 +1,5 @@
-import * as React from 'react';
-import * as Row from 'react-bootstrap/lib/Row';
+import React from 'react';
+import { Row } from 'react-bootstrap';
 import { connect } from 'react-redux';
 import { compose } from 'redux';
 import { reduxForm } from 'redux-form';
@@ -18,6 +18,7 @@ interface OwnProps {
   showOfferingFilter?: boolean;
   showOrganizationFilter?: boolean;
   showProviderFilter?: boolean;
+  offeringFilter?: object;
 }
 
 interface StateProps {
@@ -46,8 +47,8 @@ const filterSelector = createSelector(
   },
 );
 
-const mapStateToProps = (state) => ({
-  offeringFilter: filterSelector(state),
+const mapStateToProps = (state, ownProps) => ({
+  offeringFilter: { ...ownProps.offeringFilter, ...filterSelector(state) },
 });
 
 const enhance = compose(

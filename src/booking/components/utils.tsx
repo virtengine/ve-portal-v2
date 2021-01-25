@@ -1,9 +1,7 @@
 import type { EventApi } from '@fullcalendar/core';
-import * as classNames from 'classnames';
-import * as React from 'react';
-import * as OverlayTrigger from 'react-bootstrap/lib/OverlayTrigger';
-import * as BootstrapTooltip from 'react-bootstrap/lib/Tooltip';
-import * as ReactDOM from 'react-dom';
+import classNames from 'classnames';
+import { OverlayTrigger, Tooltip as BootstrapTooltip } from 'react-bootstrap';
+import ReactDOM from 'react-dom';
 
 import { bookingStateAliases } from '@waldur/booking/BookingStateField';
 import { formatShortDateTime, formatTime } from '@waldur/core/dateUtils';
@@ -21,7 +19,7 @@ export const bookingDataTemplate = (event) => {
         <label className="control-label col-xs-4" style={{ marginTop: '-7px' }}>
           {item.label}
         </label>
-        <span>{item.value ? item.value : 'N/A'}</span>
+        <>{item.value ? item.value : 'N/A'}</>
       </div>
     </div>
   ));

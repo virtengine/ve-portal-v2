@@ -1,7 +1,7 @@
-import * as React from 'react';
+import { useMemo } from 'react';
 import { useSelector } from 'react-redux';
 
-import { defaultCurrency } from '@waldur/core/services';
+import { defaultCurrency } from '@waldur/core/formatCurrency';
 import { translate } from '@waldur/i18n';
 import { getCustomer } from '@waldur/workspace/selectors';
 
@@ -12,13 +12,14 @@ import { InvoiceItemDetails } from './InvoiceItemDetails';
 import { getActiveFixedPricePaymentProfile, groupInvoiceItems } from './utils';
 
 export const InvoiceDetails = ({ invoice }: { invoice: Invoice }) => {
-  const projects = React.useMemo(() => groupInvoiceItems(invoice.items), [
+  const projects = useMemo(() => groupInvoiceItems(invoice.items), [
     invoice.items,
   ]);
   const customer = useSelector(getCustomer);
   const activeFixedPriceProfile = getActiveFixedPricePaymentProfile(
     customer.payment_profiles,
   );
+
   return (
     <div className="row">
       <div className="col-lg-12">
@@ -54,6 +55,7 @@ export const InvoiceDetails = ({ invoice }: { invoice: Invoice }) => {
               <thead>
                 <tr>
                   <th>{translate('Item')}</th>
+                  <th>{translate('Unit')}</th>
                   <th>{translate('Quantity')}</th>
                   {!activeFixedPriceProfile && (
                     <>
@@ -79,10 +81,12 @@ export const InvoiceDetails = ({ invoice }: { invoice: Invoice }) => {
                     <tr key={itemIndex}>
                       <td>
                         <InvoiceItemDetails
+                          customerId={customer.uuid}
                           item={item}
                           itemId={`item-${projectIndex}-${itemIndex}`}
                         />
                       </td>
+                      <td>{item.measured_unit}</td>
                       <td>{item.factor || item.quantity}</td>
                       {!activeFixedPriceProfile && (
                         <>

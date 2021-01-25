@@ -1,7 +1,7 @@
-import * as React from 'react';
-import PanelBody from 'react-bootstrap/lib/PanelBody';
+import { FunctionComponent } from 'react';
+import { PanelBody } from 'react-bootstrap';
 
-import { ENV } from '@waldur/core/services';
+import { ENV } from '@waldur/configs/default';
 import { isFeatureVisible } from '@waldur/features/connect';
 import { useTitle } from '@waldur/navigation/title';
 import { PayPalInvoicesList } from '@waldur/paypal/PayPalInvoicesList';
@@ -13,7 +13,7 @@ import { BillingRecordsList } from './BillingRecordsList';
 import { EstimatedCost } from './EstimatedCost';
 import { InvoicesList } from './InvoicesList';
 
-export const BillingTabs = () => {
+export const BillingTabs: FunctionComponent = () => {
   useTitle(getTabTitle());
   return ENV.accountingMode === 'accounting' ? (
     <PanelBody>

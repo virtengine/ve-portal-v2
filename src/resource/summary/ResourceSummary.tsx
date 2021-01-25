@@ -1,20 +1,25 @@
-import * as React from 'react';
+import { FunctionComponent } from 'react';
 
 import * as ResourceSummaryRegistry from '@waldur/resource/summary/registry';
 
+import { ResourceDetailsTable } from './ResourceDetailsTable';
 import { ResourceSummaryBase } from './ResourceSummaryBase';
-import './resource-summary.scss';
 
 interface ResourceSummaryProps {
   resource: any;
 }
 
-export const ResourceSummary = (props: ResourceSummaryProps) => {
-  const { component: SummaryComponent = ResourceSummaryBase, className } =
-    ResourceSummaryRegistry.get(props.resource.resource_type) || {};
-  return (
-    <dl className={`dl-horizontal col-sm-12 ${className}`}>
-      <SummaryComponent resource={props.resource} />
-    </dl>
+export const ResourceSummary: FunctionComponent<ResourceSummaryProps> = (
+  props,
+) => {
+  const {
+    component: SummaryComponent = ResourceSummaryBase,
+    useDefaultWrapper,
+  } = ResourceSummaryRegistry.get(props.resource.resource_type) || {};
+  const body = <SummaryComponent resource={props.resource} />;
+  return useDefaultWrapper ? (
+    <ResourceDetailsTable>{body}</ResourceDetailsTable>
+  ) : (
+    <dl className="dl-horizontal col-sm-12">{body}</dl>
   );
 };

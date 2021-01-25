@@ -1,6 +1,6 @@
-import * as React from 'react';
+import { Component } from 'react';
 
-import { ENV } from '@waldur/core/services';
+import { ENV } from '@waldur/configs/default';
 import { getLatinNameValidators } from '@waldur/core/validators';
 import {
   FormContainer,
@@ -21,9 +21,7 @@ import { OpenStackAllocationPool } from './OpenStackAllocationPool';
 import { OpenStackSubnetField } from './OpenStackSubnetField';
 import { validateSubnetPrivateCIDR } from './utils';
 
-export class OpenStackPackageForm extends React.Component<
-  OfferingConfigurationFormProps
-> {
+export class OpenStackPackageForm extends Component<OfferingConfigurationFormProps> {
   componentDidMount() {
     const { project, plan } = this.props;
     const defaults = getDefaults(this.props.offering);

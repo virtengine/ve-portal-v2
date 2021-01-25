@@ -1,11 +1,11 @@
-import * as React from 'react';
+import React from 'react';
 import { Field } from 'redux-form';
 
 import { AwesomeCheckboxField } from '@waldur/form/AwesomeCheckboxField';
 import { translate } from '@waldur/i18n';
 import { FormGroup } from '@waldur/marketplace/offerings/FormGroup';
 
-export const ComponentLimitEnableField: React.FC<{}> = () => (
+export const ComponentLimitEnableField: React.FC = () => (
   <FormGroup label={translate('Enable limit')}>
     <Field
       component={AwesomeCheckboxField}

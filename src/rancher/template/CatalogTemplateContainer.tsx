@@ -1,6 +1,6 @@
 import { useCurrentStateAndParams } from '@uirouter/react';
-import * as React from 'react';
-import useAsync from 'react-use/lib/useAsync';
+import { FunctionComponent } from 'react';
+import { useAsync } from 'react-use';
 
 import { LoadingSpinner } from '@waldur/core/LoadingSpinner';
 import { translate } from '@waldur/i18n';
@@ -58,7 +58,7 @@ const loadData = async (clusterUuid: string, catalogUuid: string) => {
   return { cluster, catalog };
 };
 
-export const CatalogTemplateContainer = () => {
+export const CatalogTemplateContainer: FunctionComponent = () => {
   useTitle(translate('Application templates'));
 
   const {

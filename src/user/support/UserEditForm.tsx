@@ -1,9 +1,9 @@
-import * as React from 'react';
+import { FunctionComponent } from 'react';
 import { connect } from 'react-redux';
 import { compose } from 'redux';
 import { InjectedFormProps, reduxForm } from 'redux-form';
 
-import { dateTime } from '@waldur/core/utils';
+import { formatDateTime } from '@waldur/core/dateUtils';
 import {
   FieldError,
   FormContainer,
@@ -23,9 +23,9 @@ import { UserDetails } from '@waldur/workspace/types';
 import { EmailField } from './EmailField';
 import { TermsOfService } from './TermsOfService';
 import {
-  tokenOptions,
   tokenLifetimeTooltip,
   TokenLifetimeWarning,
+  tokenOptions,
 } from './TokenLifetimeField';
 
 interface UserEditFormData {
@@ -55,7 +55,9 @@ interface UserEditFormProps extends TranslateProps, InjectedFormProps {
   protected?: boolean;
 }
 
-export const PureUserEditForm = (props: UserEditFormProps) => (
+export const PureUserEditForm: FunctionComponent<UserEditFormProps> = (
+  props,
+) => (
   <form
     onSubmit={props.handleSubmit(props.updateUser)}
     className="form-horizontal col-sm-10 col-xs-12"
@@ -170,7 +172,7 @@ export const PureUserEditForm = (props: UserEditFormProps) => (
       {props.userTokenIsVisible && <TokenLifetimeWarning />}
       <TermsOfService
         initial={props.initial}
-        agreementDate={dateTime(props.user.agreement_date)}
+        agreementDate={formatDateTime(props.user.agreement_date)}
       />
     </FormContainer>
     <div className="form-group">

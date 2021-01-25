@@ -1,4 +1,4 @@
-import * as React from 'react';
+import { FunctionComponent } from 'react';
 import { connect } from 'react-redux';
 import { Field } from 'redux-form';
 
@@ -13,7 +13,9 @@ interface PureTermsOfServiceProps {
   onClick(): void;
 }
 
-const PureTermsOfService = (props: PureTermsOfServiceProps) => (
+const PureTermsOfService: FunctionComponent<PureTermsOfServiceProps> = (
+  props,
+) => (
   <Field
     name={props.name}
     component={AwesomeCheckboxField}

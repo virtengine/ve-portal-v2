@@ -1,17 +1,10 @@
 import { Calendar, OptionsInput } from '@fullcalendar/core';
 import moment from 'moment-timezone';
-import * as React from 'react';
+import { useRef, useState, useEffect, FC } from 'react';
 import { useDispatch } from 'react-redux';
-import '@fullcalendar/core/main.css';
-import '@fullcalendar/daygrid/main.css';
-import '@fullcalendar/list/main.css';
-import '@fullcalendar/timegrid/main.css';
 
-import {
-  BookingProps,
-  State,
-  CalendarComponentProps,
-} from '@waldur/booking/types';
+import { CURSOR_NOT_ALLOWED_CLASSNAME } from '@waldur/booking/constants';
+import { BookingProps } from '@waldur/booking/types';
 import {
   createBooking,
   keysOf,
@@ -20,22 +13,36 @@ import {
   transformBookingEvent,
   handleSchedule,
 } from '@waldur/booking/utils';
-import { showSuccess, showError } from '@waldur/store/coreSaga';
+import { translate } from '@waldur/i18n';
+import { showSuccess, showError } from '@waldur/store/notify';
 
-import BookingModal from '../modal/BookingModal';
+import { BookingModal } from '../modal/BookingModal';
 
 import { defaultOptions } from './defaultOptions';
 import './Calendar.scss';
+import './styles';
 
-export const getCalendarState = (state): State => state.bookings;
+interface AvailabilitySlot {
+  start: Date | string;
+  end: Date | string;
+}
 
-export const LazyCalendarComponent = (props: CalendarComponentProps) => {
-  const elRef = React.useRef<HTMLDivElement>(null);
-  const calendarRef = React.useRef<Calendar>();
-  const oldDate = React.useRef<Date>();
-  const oldOptionsRef = React.useRef<OptionsInput>(props.options);
-  const [hovered, setHovered] = React.useState('');
-  const [modal, setModal] = React.useState({
+export interface CalendarComponentProps {
+  calendarType: 'create' | 'edit' | 'read';
+  events: BookingProps[];
+  availabilitySlots?: AvailabilitySlot[];
+  options?: OptionsInput;
+  addEventCb?: (event: BookingProps) => any;
+  removeEventCb?: (id: BookingProps['id']) => any;
+}
+
+export const LazyCalendarComponent: FC<CalendarComponentProps> = (props) => {
+  const elRef = useRef<HTMLDivElement>(null);
+  const calendarRef = useRef<Calendar>();
+  const oldDate = useRef<Date>();
+  const oldOptionsRef = useRef<OptionsInput>(props.options);
+  const [hovered, setHovered] = useState('');
+  const [modal, setModal] = useState({
     isOpen: false,
     el: null,
     event: null,
@@ -63,9 +70,14 @@ export const LazyCalendarComponent = (props: CalendarComponentProps) => {
   const toggleModal = () => setModal({ isOpen: false, el: null, event: null });
 
   const eventClick = ({ el, event }) => {
-    if (event.extendedProps.type !== 'Availability') {
-      return setModal({ isOpen: true, el, event });
+    if (
+      (props.calendarType === 'edit' &&
+        event.extendedProps.type === 'Availability') ||
+      event.classNames.includes(CURSOR_NOT_ALLOWED_CLASSNAME)
+    ) {
+      return;
     }
+    return setModal({ isOpen: true, el, event });
   };
   const addBooking = (event: BookingProps) => {
     dispatch(showSuccess('Time slot has been added.'));
@@ -82,7 +94,7 @@ export const LazyCalendarComponent = (props: CalendarComponentProps) => {
   const handleSelect = (arg) => {
     if (isCalType('create')) {
       const { weekends, slotDuration, businessHours } = props.options;
-      const availabiltyBooking = createBooking(
+      const availabilityBooking = createBooking(
         {
           ...arg,
           allDay: arg.view.type === 'dayGridMonth',
@@ -94,33 +106,36 @@ export const LazyCalendarComponent = (props: CalendarComponentProps) => {
         arg.jsEvent.timeStamp,
       );
 
-      return addBooking(availabiltyBooking);
+      return addBooking(availabilityBooking);
     } else if (isCalType('edit')) {
       const calendarApi = calendarRef.current;
       const checkEvents = calendarApi.getEvents();
 
-      checkEvents.forEach(function (event) {
-        if (
+      const isOverlapping = !!checkEvents.find((event) => {
+        return (
           event.rendering !== 'background' &&
           ((event.start >= arg.start && event.start <= arg.end) ||
             (event.end > arg.start && event.end <= arg.end) ||
             (arg.start >= event.start && arg.start < event.end) ||
             (arg.end >= event.start && arg.end <= event.end))
-        ) {
-          dispatch(
-            showError('Booking is not allowed to overlap other bookings.'),
-          );
-          return calendarApi.unselect();
-        }
+        );
       });
 
-      const scheduledBooking = handleSchedule(
-        arg,
-        props.availabiltySlots,
-        props.options.slotDuration,
-      );
-
-      return addBooking(scheduledBooking);
+      if (isOverlapping) {
+        dispatch(
+          showError(
+            translate('Booking is not allowed to overlap other bookings.'),
+          ),
+        );
+        return calendarApi.unselect();
+      } else {
+        const scheduledBooking = handleSchedule(
+          arg,
+          props.availabilitySlots,
+          props.options.slotDuration,
+        );
+        return addBooking(scheduledBooking);
+      }
     }
   };
 
@@ -199,9 +214,9 @@ export const LazyCalendarComponent = (props: CalendarComponentProps) => {
     calendarRef.current.addEventSource(props.events);
   };
 
-  React.useEffect(calendarMountEffect, []);
+  useEffect(calendarMountEffect, []);
 
-  React.useEffect(calendarUpdateEffect, [
+  useEffect(calendarUpdateEffect, [
     props.events,
     props.options,
     calendarRef,

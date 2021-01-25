@@ -1,4 +1,3 @@
-import * as React from 'react';
 import { Field } from 'redux-form';
 
 import { withTranslation, TranslateProps } from '@waldur/i18n';

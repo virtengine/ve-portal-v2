@@ -1,7 +1,7 @@
-import * as React from 'react';
+import { FunctionComponent } from 'react';
 import Select from 'react-select';
 
-export const SelectField = (props) => {
+export const SelectField: FunctionComponent<any> = (props) => {
   const { input, simpleValue, options, ...rest } = props;
   return (
     <Select

@@ -1,17 +1,21 @@
-import { gettext } from '@waldur/i18n';
-import { ActionConfigurationRegistry } from '@waldur/resource/actions/action-configuration';
+import { lazyComponent } from '@waldur/core/lazyComponent';
+import { ActionRegistry } from '@waldur/resource/actions/registry';
 import * as ResourceSummary from '@waldur/resource/summary/registry';
 
 import './breadcrumbs';
-import { OpenStackFloatingIpSummary } from './OpenStackFloatingIpSummary';
+import { DestroyFloatingIpAction } from './DestroyFloatingIpAction';
+import { PullFloatingIpAction } from './PullFloatingIpAction';
+const OpenStackFloatingIpSummary = lazyComponent(
+  () =>
+    import(
+      /* webpackChunkName: "OpenStackFloatingIpSummary" */ './OpenStackFloatingIpSummary'
+    ),
+  'OpenStackFloatingIpSummary',
+);
 
-ActionConfigurationRegistry.register('OpenStack.FloatingIP', {
-  order: ['pull', 'destroy'],
-  options: {
-    pull: {
-      title: gettext('Synchronise'),
-    },
-  },
-});
+ActionRegistry.register('OpenStack.FloatingIP', [
+  PullFloatingIpAction,
+  DestroyFloatingIpAction,
+]);
 
 ResourceSummary.register('OpenStack.FloatingIP', OpenStackFloatingIpSummary);

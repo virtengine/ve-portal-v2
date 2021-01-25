@@ -1,4 +1,4 @@
-import * as React from 'react';
+import { FunctionComponent } from 'react';
 
 import { OfferingLogo } from '@waldur/marketplace/common/OfferingLogo';
 import { OfferingLink } from '@waldur/marketplace/links/OfferingLink';
@@ -14,7 +14,9 @@ interface ComparisonItemProps {
   item: Offering;
 }
 
-export const ComparisonItem = (props: ComparisonItemProps) => (
+export const ComparisonItem: FunctionComponent<ComparisonItemProps> = (
+  props,
+) => (
   <div className="text-center comparison-item">
     <ComparisonItemRemoveButtonContainer offering={props.item} />
     <OfferingLink

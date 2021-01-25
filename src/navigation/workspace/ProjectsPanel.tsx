@@ -1,5 +1,11 @@
-import * as React from 'react';
-import * as Col from 'react-bootstrap/lib/Col';
+import {
+  useMemo,
+  useState,
+  useCallback,
+  useEffect,
+  FunctionComponent,
+} from 'react';
+import { Col } from 'react-bootstrap';
 import { useSelector } from 'react-redux';
 
 import { Link } from '@waldur/core/Link';
@@ -9,15 +15,17 @@ import {
   getUser,
   checkCustomerUser,
 } from '@waldur/workspace/selectors';
-import { Project } from '@waldur/workspace/types';
+import { Customer, Project } from '@waldur/workspace/types';
 
 import { BaseList } from './BaseList';
 import { FilterGroup } from './FilterGroup';
 import { useProjectFilter } from './utils';
 
-const CreateProjectButton = ({ selectedOrganization }) => {
+const CreateProjectButton: FunctionComponent<{
+  selectedOrganization: Customer;
+}> = ({ selectedOrganization }) => {
   const user = useSelector(getUser);
-  const canCreate = React.useMemo(
+  const canCreate = useMemo(
     () => checkCustomerUser(selectedOrganization, user),
     [selectedOrganization, user],
   );
@@ -37,13 +45,15 @@ const CreateProjectButton = ({ selectedOrganization }) => {
   );
 };
 
-const EmptyProjectsPlaceholder = () => (
+const EmptyProjectsPlaceholder: FunctionComponent = () => (
   <p className="text-center text-danger">
     {translate('There are no projects yet for this organization.')}
   </p>
 );
 
-const ProjectsHeader = ({ selectedOrganization }) => (
+const ProjectsHeader: FunctionComponent<{
+  selectedOrganization?: Customer;
+}> = ({ selectedOrganization }) => (
   <h3 className="m-b-md">
     {translate('Projects ({count})', {
       count: selectedOrganization?.projects?.length || 0,
@@ -61,7 +71,7 @@ const SelectProjectButton = ({ project }) => (
   </Link>
 );
 
-const EmptyProjectListPlaceholder = () => (
+const EmptyProjectListPlaceholder: FunctionComponent = () => (
   <span className="ellipsis">
     {translate('There are no projects matching filter.')}
   </span>
@@ -74,17 +84,17 @@ const ProjectListItem = ({ item }) => (
   </>
 );
 
-export const ProjectsPanel = ({ selectedOrganization }) => {
+export const ProjectsPanel: FunctionComponent<{
+  selectedOrganization: Customer;
+}> = ({ selectedOrganization }) => {
   const currentProject = useSelector(getProject);
-  const [selectedProject, selectProject] = React.useState<Project>(
-    currentProject,
-  );
+  const [selectedProject, selectProject] = useState<Project>(currentProject);
 
   const { filter, setFilter, filteredProjects } = useProjectFilter(
     selectedOrganization?.projects,
   );
 
-  const selectFirstProject = React.useCallback(() => {
+  const selectFirstProject = useCallback(() => {
     if (
       !selectedProject &&
       selectedOrganization &&
@@ -94,7 +104,7 @@ export const ProjectsPanel = ({ selectedOrganization }) => {
     }
   }, [selectedOrganization, selectedProject]);
 
-  React.useEffect(selectFirstProject, [selectedOrganization]);
+  useEffect(selectFirstProject, [selectedOrganization]);
 
   return (
     <Col md={6} xs={12}>

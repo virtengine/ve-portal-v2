@@ -1,5 +1,3 @@
-import * as React from 'react';
-
 import { Tooltip } from '@waldur/core/Tooltip';
 
 export type AttrGetter = string | ((option: any) => string);

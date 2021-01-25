@@ -1,19 +1,21 @@
-import * as React from 'react';
-import ModalBody from 'react-bootstrap/lib/ModalBody';
-import ModalFooter from 'react-bootstrap/lib/ModalFooter';
-import ModalHeader from 'react-bootstrap/lib/ModalHeader';
-import ModalTitle from 'react-bootstrap/lib/ModalTitle';
+import { useCallback } from 'react';
+import {
+  ModalBody,
+  ModalFooter,
+  ModalHeader,
+  ModalTitle,
+} from 'react-bootstrap';
 import { useDispatch } from 'react-redux';
 import { reduxForm } from 'redux-form';
 
 import { SubmitButton } from '@waldur/auth/SubmitButton';
+import { ENV } from '@waldur/configs/default';
 import { post } from '@waldur/core/api';
 import {
   CUSTOMER_OWNER_ROLE,
   PROJECT_ADMIN_ROLE,
   PROJECT_MANAGER_ROLE,
 } from '@waldur/core/constants';
-import { ENV } from '@waldur/core/services';
 import { required } from '@waldur/core/validators';
 import {
   FormContainer,
@@ -30,7 +32,7 @@ import {
 } from '@waldur/marketplace/common/autocompletes';
 import { closeModalDialog } from '@waldur/modal/actions';
 import { CloseDialogButton } from '@waldur/modal/CloseDialogButton';
-import { showError, showSuccess } from '@waldur/store/coreSaga';
+import { showError, showSuccess } from '@waldur/store/notify';
 
 import { projectAutocomplete } from './utils';
 
@@ -39,7 +41,7 @@ export const NotificationCreateDialog = reduxForm({
 })(({ submitting, invalid, handleSubmit }) => {
   const dispatch = useDispatch();
 
-  const createNotification = React.useCallback(
+  const createNotification = useCallback(
     async (formData) => {
       try {
         const response = await post<{ emails: string[] }>('/notifications/', {
@@ -112,6 +114,7 @@ export const NotificationCreateDialog = reduxForm({
               },
             ]}
             isMulti={true}
+            noUpdateOnBlur={true}
           />
           <AsyncSelectField
             name="projects"
@@ -138,6 +141,7 @@ export const NotificationCreateDialog = reduxForm({
               },
             ]}
             isMulti={true}
+            noUpdateOnBlur={true}
           />
           <AsyncSelectField
             name="offerings"

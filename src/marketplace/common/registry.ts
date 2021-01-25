@@ -1,4 +1,4 @@
-import * as React from 'react';
+import React from 'react';
 import { Omit } from 'react-redux';
 
 import {
@@ -8,6 +8,8 @@ import {
   OfferingConfigurationFormProps,
   OfferingComponent,
 } from '@waldur/marketplace/types';
+
+import { OfferingDetailsProps } from '../details/OfferingDetails';
 
 const REGISTRY: { [key: string]: Omit<OfferingConfiguration, 'type'> } = {};
 
@@ -21,7 +23,7 @@ interface OfferingConfiguration<AttributesType = any, RequestPaylodType = any> {
   pluginOptionsForm?: React.ComponentType<any>;
   secretOptionsForm?: React.ComponentType<any>;
   detailsComponent?: React.ComponentType<OrderItemDetailsProps>;
-  checkoutSummaryComponent?: any;
+  checkoutSummaryComponent?: React.ComponentType<OfferingDetailsProps>;
   serializer?: (
     attributes: AttributesType,
     offering: Offering,
@@ -109,10 +111,12 @@ export function getOfferingTypes(): Option[] {
   const keys = Object.keys(REGISTRY).filter(
     (key) => !REGISTRY[key].disableOfferingCreation,
   );
-  return keys.map((key) => ({
-    value: key,
-    label: REGISTRY[key].label,
-  }));
+  return keys
+    .map((key) => ({
+      value: key,
+      label: REGISTRY[key].label,
+    }))
+    .sort((a, b) => a.label.localeCompare(b.label));
 }
 
 export function showOfferingOptions(offeringType: string) {

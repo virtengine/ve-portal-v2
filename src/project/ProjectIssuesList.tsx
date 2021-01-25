@@ -1,6 +1,5 @@
-import * as React from 'react';
-import * as Col from 'react-bootstrap/lib/Col';
-import * as Row from 'react-bootstrap/lib/Row';
+import { FunctionComponent } from 'react';
+import { Col, Row } from 'react-bootstrap';
 import { connect } from 'react-redux';
 import { createSelector } from 'reselect';
 
@@ -17,7 +16,7 @@ const mapStateToProps = createSelector(getProject, (project) => ({
 
 const ProjectIssuesListComponent = connect(mapStateToProps)(IssuesList);
 
-export const ProjectIssuesList = () => {
+export const ProjectIssuesList: FunctionComponent = () => {
   useTitle(translate('Issues'));
   return (
     <div className="wrapper wrapper-content">

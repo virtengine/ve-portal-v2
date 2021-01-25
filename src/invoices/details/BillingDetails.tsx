@@ -1,11 +1,11 @@
 import { useCurrentStateAndParams, useRouter } from '@uirouter/react';
-import * as React from 'react';
+import { useEffect, FunctionComponent } from 'react';
 import { useSelector } from 'react-redux';
-import useAsyncFn from 'react-use/lib/useAsyncFn';
+import { useAsyncFn } from 'react-use';
 
+import { ENV } from '@waldur/configs/default';
 import { getById } from '@waldur/core/api';
 import { LoadingSpinner } from '@waldur/core/LoadingSpinner';
-import { ENV } from '@waldur/core/services';
 import { getUUID } from '@waldur/core/utils';
 import { CustomerSidebar } from '@waldur/customer/workspace/CustomerSidebar';
 import { isFeatureVisible } from '@waldur/features/connect';
@@ -69,7 +69,7 @@ const loadData = async (invoiceId: string) => {
   return invoice;
 };
 
-export const BillingDetails = () => {
+export const BillingDetails: FunctionComponent = () => {
   useTitle(
     ENV.accountingMode === 'accounting'
       ? translate('Accounting record')
@@ -86,7 +86,7 @@ export const BillingDetails = () => {
     [invoiceId],
   );
 
-  React.useEffect(() => {
+  useEffect(() => {
     if (!invoiceId) {
       router.stateService.go('errorPage.notFound');
     } else {
@@ -94,7 +94,7 @@ export const BillingDetails = () => {
     }
   }, [invoiceId, router.stateService, callback]);
 
-  React.useEffect(() => {
+  useEffect(() => {
     if ((error as any)?.status === 404) {
       router.stateService.go('errorPage.notFound');
     }

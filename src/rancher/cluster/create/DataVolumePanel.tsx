@@ -1,6 +1,6 @@
-import * as React from 'react';
-import * as Panel from 'react-bootstrap/lib/Panel';
-import { FormSection, FormName } from 'redux-form';
+import { FunctionComponent } from 'react';
+import { Panel } from 'react-bootstrap';
+import { FormName, FormSection } from 'redux-form';
 
 import { isFeatureVisible } from '@waldur/features/connect';
 import { translate } from '@waldur/i18n';
@@ -19,7 +19,7 @@ interface OwnProps {
   mountPoints: any[];
 }
 
-export const DataVolumePanel = (props: OwnProps) => (
+export const DataVolumePanel: FunctionComponent<OwnProps> = (props) => (
   <Panel>
     <Panel.Heading>
       <RemoveButton onClick={() => props.onRemove(props.volumeIndex)} />

@@ -1,7 +1,8 @@
-import * as React from 'react';
+import { FunctionComponent } from 'react';
 
+import { defaultCurrency } from '@waldur/core/formatCurrency';
 import { FormattedHtml } from '@waldur/core/FormattedHtml';
-import { defaultCurrency } from '@waldur/core/services';
+import { Link } from '@waldur/core/Link';
 import { Tooltip } from '@waldur/core/Tooltip';
 import { translate } from '@waldur/i18n';
 import { OfferingLogo } from '@waldur/marketplace/common/OfferingLogo';
@@ -15,6 +16,7 @@ import { OrderItemDetailsLink } from './OrderItemDetailsLink';
 
 interface OrderItemProps {
   project_uuid: string;
+  customer_uuid: string;
   item: OrderItemResponse;
   editable: boolean;
   onRemove?(): void;
@@ -22,7 +24,7 @@ interface OrderItemProps {
   maxUnit: BillingPeriod;
 }
 
-export const OrderItem = (props: OrderItemProps) => {
+export const OrderItem: FunctionComponent<OrderItemProps> = (props) => {
   return (
     <tr>
       <td>
@@ -43,7 +45,9 @@ export const OrderItem = (props: OrderItemProps) => {
                 order_item_uuid={props.item.uuid}
                 project_uuid={props.project_uuid}
               >
-                {props.item.attributes.name || props.item.offering_name}
+                {props.item.attributes.name ||
+                  props.item.resource_name ||
+                  props.item.offering_name}
               </OrderItemDetailsLink>
             </h5>
             <p>
@@ -51,13 +55,24 @@ export const OrderItem = (props: OrderItemProps) => {
                 <FormattedHtml html={props.item.offering_description} />
               )}
             </p>
-            {props.item.resource_uuid && (
+            {props.item.resource_uuid ? (
               <p>
                 <ResourceDetailsLink item={props.item as ResourceReference}>
                   {translate('Resource link')}
                 </ResourceDetailsLink>
               </p>
-            )}
+            ) : props.item.marketplace_resource_uuid ? (
+              <p>
+                <Link
+                  state="marketplace-public-resource-details"
+                  params={{
+                    uuid: props.customer_uuid,
+                    resource_uuid: props.item.marketplace_resource_uuid,
+                  }}
+                  label={translate('Resource link')}
+                />
+              </p>
+            ) : null}
           </div>
         </div>
       </td>

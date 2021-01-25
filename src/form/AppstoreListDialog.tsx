@@ -1,5 +1,4 @@
-import * as React from 'react';
-import * as Modal from 'react-bootstrap/lib/Modal';
+import { Modal } from 'react-bootstrap';
 
 import { CustomComponentInputProps, FilterOptions } from '@waldur/form/types';
 import { TranslateProps, withTranslation } from '@waldur/i18n';

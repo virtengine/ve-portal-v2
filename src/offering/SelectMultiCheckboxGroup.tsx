@@ -1,8 +1,8 @@
-import * as React from 'react';
+import { FunctionComponent } from 'react';
 
 import { AwesomeCheckbox } from '@waldur/core/AwesomeCheckbox';
 
-export const SelectMultiCheckboxGroup = (props) => (
+export const SelectMultiCheckboxGroup: FunctionComponent<any> = (props) => (
   <>
     {props.options.map((value, index) => (
       <AwesomeCheckbox

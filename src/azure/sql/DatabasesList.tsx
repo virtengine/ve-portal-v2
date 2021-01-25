@@ -1,12 +1,13 @@
-import * as React from 'react';
+import { FunctionComponent } from 'react';
 
-import { NestedListActions } from '@waldur/resource/actions/NestedListActions';
 import { ResourceRowActions } from '@waldur/resource/actions/ResourceRowActions';
 import { ResourceName } from '@waldur/resource/ResourceName';
 import { ResourceState } from '@waldur/resource/state/ResourceState';
 import { Table, connectTable, createFetcher } from '@waldur/table';
 
-const TableComponent = (props) => {
+import { CreateDatabaseAction } from './CreateDatabaseAction';
+
+const TableComponent: FunctionComponent<any> = (props) => {
   const { translate } = props;
   return (
     <Table
@@ -30,7 +31,7 @@ const TableComponent = (props) => {
         },
       ]}
       verboseName={translate('databases')}
-      actions={<NestedListActions resource={props.resource} tab="databases" />}
+      actions={<CreateDatabaseAction resource={props.resource} />}
     />
   );
 };

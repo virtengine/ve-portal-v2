@@ -3,7 +3,7 @@ import { useDispatch } from 'react-redux';
 
 import { format } from '@waldur/core/ErrorMessageFormatter';
 import { translate } from '@waldur/i18n';
-import { showSuccess, showError } from '@waldur/store/coreSaga';
+import { showSuccess, showError } from '@waldur/store/notify';
 
 import {
   getChecklists,
@@ -13,7 +13,7 @@ import {
   getStats,
   getCategory,
 } from './api';
-import { Checklist, Answer, ChecklistStats } from './types';
+import { Checklist, Answer, ChecklistStats, Question } from './types';
 
 const useChecklistSelector = (categoryId?: string) => {
   const [checklistOptions, setChecklistOptions] = useState([]);
@@ -58,15 +58,27 @@ const useChecklistSelector = (categoryId?: string) => {
   };
 };
 
+type AnswersTableType = Record<string, boolean>;
+
+const mapArrayToObject = (data: Answer[]): AnswersTableType =>
+  data.reduce(
+    (result: {}, answer: Answer) => ({
+      ...result,
+      [answer.question_uuid]: answer.value,
+    }),
+    {},
+  );
+
 export const useUserChecklist = (userId, categoryId?) => {
   const { checklist, ...checklistLoader } = useChecklistSelector(categoryId);
 
-  const [questionsList, setQuestionsList] = useState([]);
+  const [questionsList, setQuestionsList] = useState<Question[]>([]);
   const [questionsLoading, setQuestionsLoading] = useState(true);
   const [questionsErred, setQuestionsErred] = useState(true);
   const [categoryInfo, setCategoryInfo] = useState(null);
 
-  const [answers, setAnswers] = useState<{}>();
+  const [answers, setAnswers] = useState<AnswersTableType>();
+  const [answersTable, setAnswersTable] = useState<AnswersTableType>();
   const [submitting, setSubmitting] = useState(false);
 
   const dispatch = useDispatch();
@@ -84,15 +96,10 @@ export const useUserChecklist = (userId, categoryId?) => {
         }
 
         setQuestionsList(questions);
-        setAnswers(
-          answersList.reduce(
-            (result, answer: Answer) => ({
-              ...result,
-              [answer.question_uuid]: answer.value,
-            }),
-            {},
-          ),
-        );
+
+        setAnswers(mapArrayToObject(answersList));
+        setAnswersTable(mapArrayToObject(answersList));
+
         setQuestionsLoading(false);
       } catch (error) {
         setQuestionsLoading(false);
@@ -111,12 +118,14 @@ export const useUserChecklist = (userId, categoryId?) => {
 
   const submit = useCallback(async () => {
     setSubmitting(true);
+
     try {
-      const payload = Object.keys(answers).map((question_uuid) => ({
+      const payload = Object.keys(answersTable).map((question_uuid) => ({
         question_uuid,
-        value: answers[question_uuid],
+        value: answersTable[question_uuid],
       }));
       await postAnswers(checklist.uuid, payload);
+      setAnswers(answersTable);
     } catch (error) {
       setSubmitting(false);
       const errorMessage = `${translate('Unable to submit answers.')} ${format(
@@ -127,7 +136,7 @@ export const useUserChecklist = (userId, categoryId?) => {
     }
     dispatch(showSuccess(translate('Answers have been submitted')));
     setSubmitting(false);
-  }, [answers]);
+  }, [answersTable]);
 
   return {
     ...checklistLoader,
@@ -138,6 +147,8 @@ export const useUserChecklist = (userId, categoryId?) => {
     categoryInfo,
     answers,
     setAnswers,
+    answersTable,
+    setAnswersTable,
     submit,
     submitting,
   };

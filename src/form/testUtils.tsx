@@ -1,5 +1,5 @@
 import { mount, ReactWrapper } from 'enzyme';
-import * as React from 'react';
+import React from 'react';
 import { Provider } from 'react-redux';
 import { compose, createStore, combineReducers } from 'redux';
 import {
@@ -32,7 +32,7 @@ export const mountTestForm: (
 export const errorOnSubmit = (error) => {
   const formError = new SubmissionError(error);
   let onSubmit;
-  const promise = new Promise((resolve) => {
+  const promise = new Promise<void>((resolve) => {
     onSubmit = () => {
       resolve();
       throw formError;

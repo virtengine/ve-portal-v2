@@ -1,16 +1,19 @@
 import moment from 'moment-timezone';
-import * as React from 'react';
-import ControlLabel from 'react-bootstrap/lib/ControlLabel';
-import FormGroup from 'react-bootstrap/lib/FormGroup';
+import { FunctionComponent } from 'react';
+import { ControlLabel, FormGroup } from 'react-bootstrap';
 import { Field } from 'redux-form';
 
 import { DateField } from '@waldur/form/DateField';
+import { datePickerOverlayContainerInDialogs } from '@waldur/form/utils';
 import { translate } from '@waldur/i18n';
 
 import './ProjectsListGroup.scss';
 import { ProjectRoleField } from './ProjectRoleField';
 
-export const ProjectsListGroup = ({ canChangeRole, projects }) => {
+export const ProjectsListGroup: FunctionComponent<{
+  canChangeRole;
+  projects;
+}> = ({ canChangeRole, projects }) => {
   return projects.length === 0 ? (
     <p className="text-danger">
       {translate('There are no available projects.')}
@@ -46,6 +49,7 @@ export const ProjectsListGroup = ({ canChangeRole, projects }) => {
                     disabled={!canChangeRole}
                     minDate={moment().add(1, 'days').toISOString()}
                     weekStartsOn={1}
+                    {...datePickerOverlayContainerInDialogs()}
                   />
                 </td>
               </tr>

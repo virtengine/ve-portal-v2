@@ -1,4 +1,4 @@
-import * as React from 'react';
+import { FunctionComponent } from 'react';
 import { AsyncPaginate } from 'react-select-async-paginate';
 import { Field } from 'redux-form';
 
@@ -15,7 +15,7 @@ const Select = ({ input, loadOptions, ...rest }) => (
   />
 );
 
-export const AsyncSelectField = (props) => {
+export const AsyncSelectField: FunctionComponent<any> = (props) => {
   const { name, placeholder, ...rest } = props;
   return (
     <Field

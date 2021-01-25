@@ -1,11 +1,10 @@
-import * as React from 'react';
+import { Component } from 'react';
 
 import { SelectDialogField } from '@waldur/form/SelectDialogField';
-import { connectAngularComponent } from '@waldur/store/connect';
 
 import { columns, choices, openstackTemplateFilters } from './storyFixtures';
 
-class SelectDialogFieldStory extends React.Component {
+export class SelectDialogFieldStory extends Component {
   state = {
     selectedValue: null,
   };
@@ -35,5 +34,3 @@ class SelectDialogFieldStory extends React.Component {
     );
   }
 }
-
-export default connectAngularComponent(SelectDialogFieldStory);

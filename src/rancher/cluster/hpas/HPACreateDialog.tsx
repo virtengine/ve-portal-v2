@@ -1,4 +1,4 @@
-import * as React from 'react';
+import { useState, useCallback, useEffect, useMemo } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useAsync } from 'react-use';
 import { reduxForm, formValueSelector, change } from 'redux-form';
@@ -10,7 +10,8 @@ import { ActionDialog } from '@waldur/modal/ActionDialog';
 import { closeModalDialog } from '@waldur/modal/actions';
 import { createHPA, listWorkloads, listNamespaces } from '@waldur/rancher/api';
 import { Resource } from '@waldur/resource/types';
-import { showError, showSuccess } from '@waldur/store/coreSaga';
+import { showError, showSuccess } from '@waldur/store/notify';
+import { RootState } from '@waldur/store/reducers';
 import { createEntity } from '@waldur/table/actions';
 
 import { MetricOption, HPACreateFormData } from './types';
@@ -29,9 +30,9 @@ interface OwnProps {
 }
 
 const useHPACreateDialog = (cluster) => {
-  const [submitting, setSubmitting] = React.useState(false);
+  const [submitting, setSubmitting] = useState(false);
   const dispatch = useDispatch();
-  const callback = React.useCallback(
+  const callback = useCallback(
     async (formData: HPACreateFormData) => {
       try {
         setSubmitting(true);
@@ -66,7 +67,8 @@ const useHPACreateDialog = (cluster) => {
   };
 };
 
-const getNamespace = (state) => formValueSelector(FORM_ID)(state, 'namespace');
+const getNamespace = (state: RootState) =>
+  formValueSelector(FORM_ID)(state, 'namespace');
 
 export const HPACreateDialog = reduxForm<{}, OwnProps>({
   form: FORM_ID,
@@ -89,13 +91,13 @@ export const HPACreateDialog = reduxForm<{}, OwnProps>({
   const dispatch = useDispatch();
 
   // Clear workload selection after namespace selection has been changed
-  React.useEffect(() => {
+  useEffect(() => {
     if (namespace) {
       dispatch(change(FORM_ID, 'workload', null));
     }
   }, [dispatch, namespace]);
 
-  const validWorkloads = React.useMemo(
+  const validWorkloads = useMemo(
     () =>
       namespace &&
       value?.workloads.filter(
@@ -104,12 +106,9 @@ export const HPACreateDialog = reduxForm<{}, OwnProps>({
     [value, namespace],
   );
 
-  const metricNameOptions = React.useMemo<MetricOption[]>(
-    getMetricNameOptions,
-    [],
-  );
+  const metricNameOptions = useMemo<MetricOption[]>(getMetricNameOptions, []);
 
-  const targetTypeOptions = React.useMemo(getTargetTypeOptions, []);
+  const targetTypeOptions = useMemo(getTargetTypeOptions, []);
 
   const metric: MetricOption = useSelector(metricSelector);
 

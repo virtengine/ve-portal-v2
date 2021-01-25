@@ -1,23 +1,24 @@
-import * as React from 'react';
-import { useSelector, useDispatch } from 'react-redux';
-import useAsync from 'react-use/lib/useAsync';
-import { formValueSelector, change } from 'redux-form';
+import { FunctionComponent, useCallback, useEffect, useMemo } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { useAsync } from 'react-use';
+import { change, formValueSelector } from 'redux-form';
 
 import { translate } from '@waldur/i18n';
 import { getTemplates, IssueTemplate } from '@waldur/issues/api';
 import { ISSUE_IDS } from '@waldur/issues/types/constants';
+import { RootState } from '@waldur/store/reducers';
 import { getUser } from '@waldur/workspace/selectors';
 
-import { getShowAllTypes, getIssueTypes } from '../types/utils';
+import { getIssueTypes, getShowAllTypes } from '../types/utils';
 
 import { ISSUE_CREATION_FORM_ID } from './constants';
 import { IssueCreateForm } from './IssueCreateForm';
 import {
-  IssueOptions,
-  IssueTypeOption,
   CreateIssueProps,
-  IssueRequestPayload,
   IssueFormData,
+  IssueOptions,
+  IssueRequestPayload,
+  IssueTypeOption,
 } from './types';
 import { sendIssueCreateRequest } from './utils';
 
@@ -76,8 +77,10 @@ const createIssue = async (
   await sendIssueCreateRequest(payload, dispatch, formData.files);
 };
 
-export const IssueCreateDialog = ({ resolve }: CreateIssueDialogProps) => {
-  const options = React.useMemo(
+export const IssueCreateDialog: FunctionComponent<CreateIssueDialogProps> = ({
+  resolve,
+}) => {
+  const options = useMemo(
     () => ({ ...getDefaultOptions(), ...resolve.options }),
     [resolve.options],
   );
@@ -94,19 +97,19 @@ export const IssueCreateDialog = ({ resolve }: CreateIssueDialogProps) => {
 
   const templateState = useAsync(getTemplates);
 
-  const onCreateIssue = React.useCallback(
+  const onCreateIssue = useCallback(
     (formData) => createIssue(formData, resolve.issue, dispatch),
     [resolve.issue, dispatch],
   );
 
-  const issueType = useSelector<any, IssueTypeOption>((state) =>
+  const issueType = useSelector<any, IssueTypeOption>((state: RootState) =>
     selector(state, 'type'),
   );
-  const issueTemplate = useSelector<any, IssueTemplate>((state) =>
+  const issueTemplate = useSelector<any, IssueTemplate>((state: RootState) =>
     selector(state, 'template'),
   );
 
-  const filteredTemplates = React.useMemo(
+  const filteredTemplates = useMemo(
     () =>
       templateState.value && issueType
         ? templateState.value.filter(
@@ -116,7 +119,7 @@ export const IssueCreateDialog = ({ resolve }: CreateIssueDialogProps) => {
     [templateState.value, issueType],
   );
 
-  React.useEffect(() => {
+  useEffect(() => {
     if (issueTemplate) {
       dispatch(change(ISSUE_CREATION_FORM_ID, 'summary', issueTemplate.name));
       dispatch(
@@ -129,7 +132,7 @@ export const IssueCreateDialog = ({ resolve }: CreateIssueDialogProps) => {
     }
   }, [issueTemplate, dispatch]);
 
-  React.useEffect(() => {
+  useEffect(() => {
     if (filteredTemplates.length == 0 && issueTemplate) {
       dispatch(change(ISSUE_CREATION_FORM_ID, 'template', undefined));
       dispatch(change(ISSUE_CREATION_FORM_ID, 'summary', ''));

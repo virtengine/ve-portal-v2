@@ -1,13 +1,15 @@
-import * as React from 'react';
-import ControlLabel from 'react-bootstrap/lib/ControlLabel';
-import FormControl from 'react-bootstrap/lib/FormControl';
-import FormGroup from 'react-bootstrap/lib/FormGroup';
-import ModalBody from 'react-bootstrap/lib/ModalBody';
-import ModalFooter from 'react-bootstrap/lib/ModalFooter';
-import ModalHeader from 'react-bootstrap/lib/ModalHeader';
-import ModalTitle from 'react-bootstrap/lib/ModalTitle';
+import { useCallback } from 'react';
+import {
+  ControlLabel,
+  FormControl,
+  FormGroup,
+  ModalBody,
+  ModalFooter,
+  ModalHeader,
+  ModalTitle,
+} from 'react-bootstrap';
 import { useDispatch } from 'react-redux';
-import useAsync from 'react-use/lib/useAsync';
+import { useAsync } from 'react-use';
 import { Field, reduxForm } from 'redux-form';
 
 import { SubmitButton } from '@waldur/auth/SubmitButton';
@@ -18,7 +20,7 @@ import { closeModalDialog } from '@waldur/modal/actions';
 import { CloseDialogButton } from '@waldur/modal/CloseDialogButton';
 import { BaseResource } from '@waldur/resource/types';
 import { formatFlavor } from '@waldur/resource/utils';
-import { showSuccess, showError } from '@waldur/store/coreSaga';
+import { showSuccess, showError } from '@waldur/store/notify';
 
 import { RadioField } from './RadioField';
 import { SelectField } from './SelectField';
@@ -137,7 +139,7 @@ export const DropletResizeDialog = reduxForm<
       [resource],
     );
     const dispatch = useDispatch();
-    const resizeDroplet = React.useCallback(
+    const resizeDroplet = useCallback(
       async (formData: DropletResizeDialogFormData) => {
         const payload = {
           size: formData.flavor.value,

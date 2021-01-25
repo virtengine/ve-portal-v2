@@ -1,13 +1,20 @@
-import * as React from 'react';
+import { FunctionComponent } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 
+import { lazyComponent } from '@waldur/core/lazyComponent';
 import { translate } from '@waldur/i18n';
 import { openModalDialog } from '@waldur/modal/actions';
 import { getCustomer } from '@waldur/workspace/selectors';
 
-import { CustomerErrorDialog } from './CustomerErrorDialog';
+const CustomerErrorDialog = lazyComponent(
+  () =>
+    import(
+      /* webpackChunkName: "CustomerErrorDialog" */ './CustomerErrorDialog'
+    ),
+  'CustomerErrorDialog',
+);
 
-export const CustomerErrorPanel = () => {
+export const CustomerErrorPanel: FunctionComponent = () => {
   const dispatch = useDispatch();
   const customer = useSelector(getCustomer);
   const reportError = () =>

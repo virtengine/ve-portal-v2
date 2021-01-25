@@ -1,6 +1,5 @@
-import * as React from 'react';
-import * as Col from 'react-bootstrap/lib/Col';
-import * as Row from 'react-bootstrap/lib/Row';
+import { FunctionComponent } from 'react';
+import { Col, Row } from 'react-bootstrap';
 
 import { BookingsFilter } from '@waldur/booking/BookingsFilter';
 import { BookingsList } from '@waldur/booking/BookingsList';
@@ -10,7 +9,9 @@ interface OfferingBookingTab {
   offeringUuid: string;
 }
 
-export const OfferingBookingTab = ({ offeringUuid }: OfferingBookingTab) => (
+export const OfferingBookingTab: FunctionComponent<OfferingBookingTab> = ({
+  offeringUuid,
+}) => (
   <Row>
     <Col md={6}>
       <BookingsCalendar offeringUuid={offeringUuid} />

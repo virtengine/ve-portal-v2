@@ -1,4 +1,4 @@
-import * as React from 'react';
+import { FunctionComponent } from 'react';
 
 import { TranslateProps } from '@waldur/i18n';
 
@@ -7,7 +7,9 @@ interface ProjectDetailsProps extends TranslateProps {
   description: string;
 }
 
-export const ProjectDetails = (props: ProjectDetailsProps) => (
+export const ProjectDetails: FunctionComponent<ProjectDetailsProps> = (
+  props,
+) => (
   <dl className="dl-horizontal">
     <dt>{props.translate('Name')}:</dt>
     <dd>{props.name}</dd>

@@ -1,11 +1,13 @@
-import * as React from 'react';
-import Button from 'react-bootstrap/lib/Button';
-import FormGroup from 'react-bootstrap/lib/FormGroup';
+import { FunctionComponent } from 'react';
+import { Button, FormGroup } from 'react-bootstrap';
 
-import { ENV } from '@waldur/core/services';
+import { ENV } from '@waldur/configs/default';
 import { translate } from '@waldur/i18n';
 
-export const LoadUserDetailsButton = ({ loading, onClick }) =>
+export const LoadUserDetailsButton: FunctionComponent<{ loading; onClick }> = ({
+  loading,
+  onClick,
+}) =>
   ENV.invitationRequireUserDetails ? (
     <FormGroup>
       <Button bsStyle="primary" disabled={loading} onClick={onClick}>

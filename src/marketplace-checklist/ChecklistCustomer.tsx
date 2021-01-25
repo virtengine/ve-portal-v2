@@ -1,17 +1,15 @@
-import * as React from 'react';
-import * as Table from 'react-bootstrap/lib/Table';
-import * as ToggleButton from 'react-bootstrap/lib/ToggleButton';
-import * as ToggleButtonGroup from 'react-bootstrap/lib/ToggleButtonGroup';
+import { useState, FunctionComponent } from 'react';
+import { Table, ToggleButton, ToggleButtonGroup } from 'react-bootstrap';
 import { useDispatch, useSelector } from 'react-redux';
 import Select from 'react-select';
-import useAsync from 'react-use/lib/useAsync';
-import useAsyncFn from 'react-use/lib/useAsyncFn';
+import { useAsync, useAsyncFn } from 'react-use';
 
 import { SubmitButton } from '@waldur/auth/SubmitButton';
+import { ENV } from '@waldur/configs/default';
 import { LoadingSpinner } from '@waldur/core/LoadingSpinner';
 import { translate } from '@waldur/i18n';
 import { useTitle } from '@waldur/navigation/title';
-import { showErrorResponse, showSuccess } from '@waldur/store/coreSaga';
+import { showErrorResponse, showSuccess } from '@waldur/store/notify';
 import { getCustomer } from '@waldur/workspace/selectors';
 
 import {
@@ -22,11 +20,16 @@ import {
 } from './api';
 import { Category, Checklist } from './types';
 
-export const ChecklistCustomer = () => {
+const formatRolesList = (roles) =>
+  roles.length === 0
+    ? 'N/A'
+    : roles.map((role) => translate(ENV.roles[role])).join(', ');
+
+export const ChecklistCustomer: FunctionComponent = () => {
   useTitle(translate('Checklists'));
   const customer = useSelector(getCustomer);
-  const [category, setCategory] = React.useState<Category>();
-  const [enabled, setEnabled] = React.useState<Record<string, boolean>>({});
+  const [category, setCategory] = useState<Category>();
+  const [enabled, setEnabled] = useState<Record<string, boolean>>({});
   const dispatch = useDispatch();
 
   const categoriesState = useAsync<Category[]>(getCategories);
@@ -107,6 +110,8 @@ export const ChecklistCustomer = () => {
               <tr>
                 <th>{translate('Category')}</th>
                 <th className="col-sm-2">{translate('Enabled')}</th>
+                <th className="col-sm-2">{translate('Organization roles')}</th>
+                <th className="col-sm-2">{translate('Project roles')}</th>
               </tr>
             </thead>
             <tbody>
@@ -139,6 +144,8 @@ export const ChecklistCustomer = () => {
                       </ToggleButton>
                     </ToggleButtonGroup>
                   </td>
+                  <td>{formatRolesList(checklist.customer_roles)}</td>
+                  <td>{formatRolesList(checklist.project_roles)}</td>
                 </tr>
               ))}
             </tbody>

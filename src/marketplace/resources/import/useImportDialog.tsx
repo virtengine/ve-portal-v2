@@ -1,7 +1,6 @@
-import * as React from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { useDispatch } from 'react-redux';
-import useAsync from 'react-use/lib/useAsync';
-import useAsyncFn from 'react-use/lib/useAsyncFn';
+import { useAsync, useAsyncFn } from 'react-use';
 
 import { translate } from '@waldur/i18n';
 import {
@@ -9,9 +8,9 @@ import {
   getImportableResources,
   importResource,
 } from '@waldur/marketplace/common/api';
-import { Offering, Plan, ImportableResource } from '@waldur/marketplace/types';
+import { ImportableResource, Offering, Plan } from '@waldur/marketplace/types';
 import { closeModalDialog } from '@waldur/modal/actions';
-import { showSuccess, showError } from '@waldur/store/coreSaga';
+import { showError, showSuccess } from '@waldur/store/notify';
 import { createEntity } from '@waldur/table/actions';
 
 import { ImportDialogProps } from './types';
@@ -25,12 +24,12 @@ const toggleElement = (element, list) =>
     : [...list, element];
 
 export const useImportDialog = (props: ImportDialogProps) => {
-  const [offering, setOffering] = React.useState<Offering>();
-  const [resources, setResources] = React.useState<ImportableResource[]>([]);
-  const [plans, setPlans] = React.useState<Record<string, Plan>>({});
-  const [submitting, setSubmitting] = React.useState(false);
+  const [offering, setOffering] = useState<Offering>();
+  const [resources, setResources] = useState<ImportableResource[]>([]);
+  const [plans, setPlans] = useState<Record<string, Plan>>({});
+  const [submitting, setSubmitting] = useState(false);
 
-  const submitEnabled = React.useMemo(
+  const submitEnabled = useMemo(
     () =>
       resources.length > 0 &&
       (!offering.billable ||
@@ -59,7 +58,7 @@ export const useImportDialog = (props: ImportDialogProps) => {
     [offering],
   );
 
-  React.useEffect(() => {
+  useEffect(() => {
     if (offering) {
       resourceCallback();
     }

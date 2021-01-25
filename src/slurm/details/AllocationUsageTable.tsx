@@ -1,17 +1,18 @@
-import * as React from 'react';
-import * as PanelBody from 'react-bootstrap/lib/PanelBody';
-import * as Tab from 'react-bootstrap/lib/Tab';
-import * as Tabs from 'react-bootstrap/lib/Tabs';
-import useAsync from 'react-use/lib/useAsync';
+import { FunctionComponent } from 'react';
+import { PanelBody, Tab, Tabs } from 'react-bootstrap';
+import { useAsync } from 'react-use';
 
 import { LoadingSpinner } from '@waldur/core/LoadingSpinner';
 import { translate } from '@waldur/i18n';
 
 import { AllocationUsageChart } from './AllocationUsageChart';
 import { loadCharts } from './api';
+
 import './AllocationUsageTable.scss';
 
-export const AllocationUsageTable = ({ resource }) => {
+export const AllocationUsageTable: FunctionComponent<{ resource }> = ({
+  resource,
+}) => {
   const { loading, error, value } = useAsync(() => loadCharts(resource.url));
 
   return loading ? (

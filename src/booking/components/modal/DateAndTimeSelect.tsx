@@ -1,7 +1,7 @@
-import * as classNames from 'classnames';
-import * as moment from 'moment';
-import * as React from 'react';
-import * as DatePicker from 'react-16-bootstrap-date-picker';
+import classNames from 'classnames';
+import moment from 'moment';
+import { FunctionComponent } from 'react';
+import DatePicker from 'react-16-bootstrap-date-picker';
 import Select from 'react-select';
 
 import { timelineLabels } from '@waldur/booking/utils';
@@ -23,7 +23,9 @@ interface TimeSelect {
   minute: number;
 }
 
-export const DateAndTimeSelectField = (props: DateAndTimeSelectField) => (
+export const DateAndTimeSelectField: FunctionComponent<DateAndTimeSelectField> = (
+  props,
+) => (
   <div className="form-group">
     <label className="control-label col-sm-2">{props.label}</label>
     <div className="col-sm-5">
@@ -33,7 +35,7 @@ export const DateAndTimeSelectField = (props: DateAndTimeSelectField) => (
         showTodayButton={true}
         todayButtonLabel={translate('Today')}
         dateFormat="DD-MM-YYYY"
-        value={props.currentTime.toISOString()}
+        value={props.currentTime.format()}
         onChange={(_, formattedValue) =>
           props.onChange(
             moment.utc(formattedValue, 'DD-MM-YYYY', true).toDate(),

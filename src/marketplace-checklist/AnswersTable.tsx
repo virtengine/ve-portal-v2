@@ -1,11 +1,11 @@
-import * as React from 'react';
-import * as Table from 'react-bootstrap/lib/Table';
+import React, { FunctionComponent } from 'react';
+import { Table } from 'react-bootstrap';
 
 import { Link } from '@waldur/core/Link';
 import { translate } from '@waldur/i18n';
 
 import { AnswerGroup } from './AnswerGroup';
-import { Question, Answers } from './types';
+import { Answers, Question } from './types';
 
 interface TableProps {
   answers: Answers;
@@ -14,13 +14,10 @@ interface TableProps {
   readOnly: boolean;
 }
 
-const QuestionGroup = ({
-  question,
-  answers,
-}: {
+const QuestionGroup: FunctionComponent<{
   answers: Answers;
   question: Question;
-}) => (
+}> = ({ question, answers }) => (
   <>
     {question.description}
     {answers[question.uuid] !== question.correct_answer &&
@@ -38,7 +35,7 @@ const QuestionGroup = ({
   </>
 );
 
-const TableHeader = () => (
+const TableHeader: FunctionComponent = () => (
   <thead>
     <tr>
       <th className="col-sm-1">#</th>
@@ -57,12 +54,12 @@ const RenderAnswer: React.FC<{ value: boolean | null }> = ({ value }) =>
     <>{translate('N/A')}</>
   );
 
-const TableBody = ({
+const TableBody: FunctionComponent<TableProps> = ({
   questions,
   answers,
   setAnswers,
   readOnly,
-}: TableProps) => (
+}) => (
   <tbody>
     {questions.map((question, index) => (
       <tr key={question.uuid}>
@@ -86,12 +83,12 @@ const TableBody = ({
   </tbody>
 );
 
-export const AnswersTable = ({
+export const AnswersTable: FunctionComponent<TableProps> = ({
   questions,
   answers,
   setAnswers,
   readOnly,
-}: TableProps) => (
+}) => (
   <Table responsive={true} bordered={true} striped={true} className="m-t-md">
     <TableHeader />
     <TableBody

@@ -1,12 +1,14 @@
-import * as React from 'react';
+import { FunctionComponent } from 'react';
 import { connect } from 'react-redux';
 import { compose } from 'redux';
 
 import { formatDateTime } from '@waldur/core/dateUtils';
 import { translate } from '@waldur/i18n';
 import { ResourceNameField } from '@waldur/marketplace/resources/list/ResourceNameField';
+import { ResourceOpenDetail } from '@waldur/marketplace/resources/list/ResourceOpenDetail';
 import { ResourceStateField } from '@waldur/marketplace/resources/list/ResourceStateField';
 import { Resource } from '@waldur/marketplace/resources/types';
+import { RootState } from '@waldur/store/reducers';
 import { Table, connectTable, createFetcher } from '@waldur/table';
 import { getCustomer } from '@waldur/workspace/selectors';
 import { Customer } from '@waldur/workspace/types';
@@ -15,7 +17,7 @@ interface FieldProps {
   row: Resource;
 }
 
-export const TableComponent = (props) => {
+export const TableComponent: FunctionComponent<any> = (props) => {
   const columns = [
     {
       title: translate('Name'),
@@ -53,6 +55,7 @@ export const TableComponent = (props) => {
       columns={columns}
       verboseName={translate('Resources')}
       initialSorting={{ field: 'created', mode: 'desc' }}
+      expandableRow={ResourceOpenDetail}
     />
   );
 };
@@ -69,7 +72,7 @@ const TableOptions = {
       : {},
 };
 
-const mapStateToProps = (state) => ({
+const mapStateToProps = (state: RootState) => ({
   customer: getCustomer(state),
 });
 

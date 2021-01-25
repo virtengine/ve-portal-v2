@@ -1,4 +1,4 @@
-import * as React from 'react';
+import { FunctionComponent } from 'react';
 
 import { StateIndicator, StateVariant } from '@waldur/core/StateIndicator';
 
@@ -17,7 +17,9 @@ interface InvoiceStateIndicatorProps {
   };
 }
 
-export const InvoiceStateIndicator = (props: InvoiceStateIndicatorProps) => (
+export const InvoiceStateIndicator: FunctionComponent<InvoiceStateIndicatorProps> = (
+  props,
+) => (
   <StateIndicator
     label={props.model.state}
     variant={LABEL_CLASSES[props.model.state] || 'info'}

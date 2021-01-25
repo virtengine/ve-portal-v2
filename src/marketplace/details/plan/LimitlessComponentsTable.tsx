@@ -1,6 +1,5 @@
-import * as React from 'react';
-
-import { formatCurrency, ENV } from '@waldur/core/services';
+import { ENV } from '@waldur/configs/default';
+import { formatCurrency } from '@waldur/core/formatCurrency';
 import { translate } from '@waldur/i18n';
 import { PriceTooltip } from '@waldur/price/PriceTooltip';
 

@@ -1,23 +1,23 @@
-import * as React from 'react';
-import * as Col from 'react-bootstrap/lib/Col';
-import * as Row from 'react-bootstrap/lib/Row';
+import { FunctionComponent, Component } from 'react';
+import { Col, Row } from 'react-bootstrap';
 import { connect } from 'react-redux';
 
 import { FormattedHtml } from '@waldur/core/FormattedHtml';
 import { LoadingSpinner } from '@waldur/core/LoadingSpinner';
-import { $state } from '@waldur/core/services';
 import { translate } from '@waldur/i18n';
+import { ShoppingCartItemUpdateExtraComponent } from '@waldur/marketplace/cart/ShoppingCartItemUpdateExtraComponent';
 import { Plan, Offering } from '@waldur/marketplace/types';
 import { setTitle } from '@waldur/navigation/title';
+import { router } from '@waldur/router';
+import { RootState } from '@waldur/store/reducers';
 
 import * as api from '../common/api';
+import '../details/OfferingDetails.scss';
 import { OrderSummary } from '../details/OrderSummary';
 import { OrderItemResponse } from '../orders/types';
 
 import { ShoppingCartItemUpdateForm } from './ShoppingCartItemUpdateForm';
 import { getItemSelectorFactory } from './store/selectors';
-
-import '../details/OfferingDetails.scss';
 
 interface PureShoppingCartItemUpdateProps {
   offering: Offering;
@@ -26,7 +26,9 @@ interface PureShoppingCartItemUpdateProps {
   limits: string[];
 }
 
-const PureShoppingCartItemUpdate = (props: PureShoppingCartItemUpdateProps) => (
+const PureShoppingCartItemUpdate: FunctionComponent<PureShoppingCartItemUpdateProps> = (
+  props,
+) => (
   <>
     {props.offering.description && (
       <div className="bs-callout bs-callout-success">
@@ -51,6 +53,7 @@ const PureShoppingCartItemUpdate = (props: PureShoppingCartItemUpdateProps) => (
         <OrderSummary
           offering={{ ...props.offering, uuid: props.shoppingCartItem.uuid }}
           updateMode={true}
+          extraComponent={ShoppingCartItemUpdateExtraComponent}
         />
       </Col>
     </Row>
@@ -62,9 +65,7 @@ interface ShoppingCartItemUpdateProps {
   setTitle: typeof setTitle;
 }
 
-class ShoppingCartItemUpdateComponent extends React.Component<
-  ShoppingCartItemUpdateProps
-> {
+class ShoppingCartItemUpdateComponent extends Component<ShoppingCartItemUpdateProps> {
   state = {
     loading: false,
     loaded: false,
@@ -119,10 +120,10 @@ class ShoppingCartItemUpdateComponent extends React.Component<
   }
 }
 
-const mapStateToProps = (state) => ({
-  shoppingCartItem: getItemSelectorFactory($state.params.order_item_uuid)(
-    state,
-  ),
+const mapStateToProps = (state: RootState) => ({
+  shoppingCartItem: getItemSelectorFactory(
+    router.globals.params.order_item_uuid,
+  )(state),
 });
 
 export const ShoppingCartItemUpdate = connect(mapStateToProps, { setTitle })(

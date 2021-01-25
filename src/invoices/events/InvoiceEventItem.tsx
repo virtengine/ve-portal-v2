@@ -1,15 +1,22 @@
-import * as classNames from 'classnames';
-import * as React from 'react';
-import Button from 'react-bootstrap/lib/Button';
+import classNames from 'classnames';
+import { FunctionComponent } from 'react';
+import { Button } from 'react-bootstrap';
 import { useDispatch } from 'react-redux';
 
 import { formatRelative, formatDateTime } from '@waldur/core/dateUtils';
-import { FormattedHtml } from '@waldur/core/FormattedHtml';
-import { EventDetailsDialog } from '@waldur/events/EventDetailsDialog';
+import { lazyComponent } from '@waldur/core/lazyComponent';
 import { translate } from '@waldur/i18n';
 import { closeModalDialog, openModalDialog } from '@waldur/modal/actions';
 
-export const InvoiceEventItem = ({ event }) => {
+const EventDetailsDialog = lazyComponent(
+  () =>
+    import(
+      /* webpackChunkName: "EventDetailsDialog" */ '@waldur/events/EventDetailsDialog'
+    ),
+  'EventDetailsDialog',
+);
+
+export const InvoiceEventItem: FunctionComponent<{ event }> = ({ event }) => {
   const dispatch = useDispatch();
 
   const showEventDetails = (event) => {
@@ -30,7 +37,7 @@ export const InvoiceEventItem = ({ event }) => {
       </div>
 
       <div className="vertical-timeline-content">
-        <FormattedHtml html={event.message} />
+        {event.message}
         <Button
           bsSize="sm"
           bsStyle="primary"

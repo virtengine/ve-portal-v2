@@ -1,11 +1,18 @@
-import * as React from 'react';
+import { FunctionComponent } from 'react';
 import { connect } from 'react-redux';
 
+import { lazyComponent } from '@waldur/core/lazyComponent';
 import { translate } from '@waldur/i18n';
 import { openModalDialog } from '@waldur/modal/actions';
 import { ActionButton } from '@waldur/table/ActionButton';
 
-import { OfferingDetailsDialog } from './OfferingDetailsDialog';
+const OfferingDetailsDialog = lazyComponent(
+  () =>
+    import(
+      /* webpackChunkName: "OfferingDetailsDialog" */ './OfferingDetailsDialog'
+    ),
+  'OfferingDetailsDialog',
+);
 
 const openOfferingDetailsDialog = (offeringUuid: string) =>
   openModalDialog(OfferingDetailsDialog, {
@@ -18,7 +25,9 @@ interface OfferingDetailsButton {
   openDialog(): void;
 }
 
-const PureOfferingDetailsButton = (props: OfferingDetailsButton) => (
+const PureOfferingDetailsButton: FunctionComponent<OfferingDetailsButton> = (
+  props,
+) => (
   <ActionButton
     title={translate('Offering details')}
     icon="fa fa-eye"

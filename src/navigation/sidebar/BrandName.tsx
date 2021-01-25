@@ -1,8 +1,8 @@
 import { useRouter } from '@uirouter/react';
-import * as React from 'react';
+import { FunctionComponent } from 'react';
 import { useSelector } from 'react-redux';
 
-import { ENV } from '@waldur/core/services';
+import { ENV } from '@waldur/configs/default';
 import {
   getWorkspace,
   getCustomer,
@@ -15,7 +15,7 @@ import {
   USER_WORKSPACE,
 } from '@waldur/workspace/types';
 
-export const BrandName = () => {
+export const BrandName: FunctionComponent = () => {
   const router = useRouter();
   const workspace = useSelector(getWorkspace);
   const customer = useSelector(getCustomer);

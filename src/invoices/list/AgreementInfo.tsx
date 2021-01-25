@@ -1,10 +1,9 @@
-import * as React from 'react';
-import { useState } from 'react';
+import { FunctionComponent, useState } from 'react';
 import { useSelector } from 'react-redux';
-import useEffectOnce from 'react-use/lib/useEffectOnce';
+import { useEffectOnce } from 'react-use';
 
 import { formatDate } from '@waldur/core/dateUtils';
-import { defaultCurrency } from '@waldur/core/services';
+import { defaultCurrency } from '@waldur/core/formatCurrency';
 import { getTotalOfSumPaid } from '@waldur/customer/payments/api';
 import { translate } from '@waldur/i18n';
 import { getActiveFixedPricePaymentProfile } from '@waldur/invoices/details/utils';
@@ -15,7 +14,7 @@ interface AgreementInfoProps {
   paymentProfiles?: PaymentProfile[];
 }
 
-export const AgreementInfo = (props: AgreementInfoProps) => {
+export const AgreementInfo: FunctionComponent<AgreementInfoProps> = (props) => {
   const customer = useSelector(getCustomer);
   const activeFixedPricePaymentProfile = getActiveFixedPricePaymentProfile(
     customer ? customer.payment_profiles : props.paymentProfiles,

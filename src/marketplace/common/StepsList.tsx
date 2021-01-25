@@ -1,5 +1,5 @@
-import * as classNames from 'classnames';
-import * as React from 'react';
+import classNames from 'classnames';
+import { FunctionComponent } from 'react';
 
 import { Step } from './Step';
 import './StepsList.scss';
@@ -11,7 +11,7 @@ interface StepsListProps {
   disabled?: boolean;
 }
 
-export const StepsList = (props: StepsListProps) => {
+export const StepsList: FunctionComponent<StepsListProps> = (props) => {
   const stepIndex = props.choices.indexOf(props.value);
 
   return (

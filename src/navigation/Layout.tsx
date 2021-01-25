@@ -1,9 +1,10 @@
 import { UIView } from '@uirouter/react';
-import * as classNames from 'classnames';
-import * as React from 'react';
-import * as Col from 'react-bootstrap/lib/Col';
-import * as Row from 'react-bootstrap/lib/Row';
+import classNames from 'classnames';
+import React from 'react';
+import { Col, Row } from 'react-bootstrap';
 import { useSelector } from 'react-redux';
+
+import { getUser } from '@waldur/workspace/selectors';
 
 import { AppFooter } from './AppFooter';
 import { BreadcrumbsContainer } from './breadcrumbs/BreadcrumbsContainer';
@@ -28,6 +29,10 @@ export const Layout: React.FC<LayoutProps> = ({
   sidebarClass,
 }) => {
   const pageTitle = useSelector(getTitle);
+  const currentUser = useSelector(getUser);
+  if (!currentUser) {
+    return null;
+  }
   return (
     <>
       {sidebar}

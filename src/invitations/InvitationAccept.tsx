@@ -1,12 +1,14 @@
 import { useCurrentStateAndParams, useRouter } from '@uirouter/react';
-import * as React from 'react';
-import useEffectOnce from 'react-use/lib/useEffectOnce';
+import { FunctionComponent } from 'react';
+import { useEffectOnce } from 'react-use';
 
+import { ENV } from '@waldur/configs/default';
 import { LoadingSpinner } from '@waldur/core/LoadingSpinner';
-import { ENV, ngInjector } from '@waldur/core/services';
 import { translate } from '@waldur/i18n';
 
-export const InvitationAccept = () => {
+import { checkAndAccept } from './utils';
+
+export const InvitationAccept: FunctionComponent = () => {
   const router = useRouter();
   const {
     params: { uuid },
@@ -17,7 +19,7 @@ export const InvitationAccept = () => {
       router.stateService.go('errorPage.notFound');
       return;
     }
-    ngInjector.get('invitationUtilsService').checkAndAccept(uuid);
+    checkAndAccept(uuid);
   });
 
   return (

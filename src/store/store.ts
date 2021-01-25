@@ -1,23 +1,32 @@
-/* eslint-disable @typescript-eslint/ban-ts-ignore */
+import { createRouterMiddleware } from '@uirouter/redux';
 import { createStore, applyMiddleware, compose } from 'redux';
 import createSagaMiddleware from 'redux-saga';
 import thunk from 'redux-thunk';
 
+import { router } from '@waldur/router';
+
 import sagas from './effects';
-import rootReducer from './reducers';
+import { rootReducer } from './reducers';
+
+declare global {
+  interface Window {
+    __REDUX_DEVTOOLS_EXTENSION_COMPOSE__?: any;
+  }
+}
 
 const composeEnhancers =
-  // @ts-ignore
   (window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ &&
-    // @ts-ignore
     window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__({
       trace: true,
       traceLimit: 25,
     })) ||
   compose;
+
 const sagaMiddleware = createSagaMiddleware();
 
-const middlewares = [sagaMiddleware, thunk];
+const routerMiddleware = createRouterMiddleware(router);
+
+const middlewares = [sagaMiddleware, routerMiddleware, thunk];
 let enhancedMiddlewares;
 
 if (process.env.NODE_ENV !== 'production') {

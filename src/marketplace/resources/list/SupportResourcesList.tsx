@@ -1,13 +1,13 @@
-import * as React from 'react';
 import { connect } from 'react-redux';
 import { compose } from 'redux';
 import { getFormValues } from 'redux-form';
 
+import { RootState } from '@waldur/store/reducers';
 import { connectTable } from '@waldur/table';
 
 import { TableOptions, TableComponent } from './PublicResourcesList';
 
-const mapStateToProps = (state) => ({
+const mapStateToProps = (state: RootState) => ({
   filter: getFormValues('SupportResourcesFilter')(state),
 });
 
@@ -19,6 +19,4 @@ const enhance = compose(
   }),
 );
 
-export const SupportResourcesList = enhance(
-  TableComponent,
-) as React.ComponentType<{}>;
+export const SupportResourcesList = enhance(TableComponent);

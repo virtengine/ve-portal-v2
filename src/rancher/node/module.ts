@@ -1,11 +1,17 @@
-import { ActionConfigurationRegistry } from '@waldur/resource/actions/action-configuration';
+import { lazyComponent } from '@waldur/core/lazyComponent';
+import { ActionRegistry } from '@waldur/resource/actions/registry';
 import * as ResourceSummary from '@waldur/resource/summary/registry';
 import { ResourceTabsConfiguration } from '@waldur/resource/tabs/ResourceTabsConfiguration';
 
 import nodeActions from './actions';
 import './breadcrumbs';
-import { RancherNodeSummary } from './RancherNodeSummary';
+
+const RancherNodeSummary = lazyComponent(
+  () =>
+    import(/* webpackChunkName: "RancherNodeSummary" */ './RancherNodeSummary'),
+  'RancherNodeSummary',
+);
 
 ResourceTabsConfiguration.register('Rancher.Node', () => []);
 ResourceSummary.register('Rancher.Node', RancherNodeSummary);
-ActionConfigurationRegistry.register('Rancher.Node', nodeActions);
+ActionRegistry.register('Rancher.Node', nodeActions);

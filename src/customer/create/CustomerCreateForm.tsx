@@ -1,6 +1,6 @@
-import * as React from 'react';
+import { useState, createElement, FunctionComponent } from 'react';
 
-import { ENV } from '@waldur/core/services';
+import { ENV } from '@waldur/configs/default';
 import { translate } from '@waldur/i18n';
 
 import { WizardFormFirstPage } from './WizardFormFirstPage';
@@ -8,8 +8,8 @@ import { WizardFormSecondPage } from './WizardFormSecondPage';
 
 const WizardForms = [WizardFormFirstPage, WizardFormSecondPage];
 
-export const CustomerCreateForm = (props) => {
-  const [step, setStep] = React.useState(1);
+export const CustomerCreateForm: FunctionComponent<any> = (props) => {
+  const [step, setStep] = useState(1);
   const steps = [translate('General information')];
   if (!ENV.hideOrganizationBillingStep) {
     steps.push(translate('Billing details'));
@@ -23,7 +23,7 @@ export const CustomerCreateForm = (props) => {
 
   const stepTitle = steps[step - 1];
 
-  return React.createElement(WizardForms[step - 1], {
+  return createElement(WizardForms[step - 1], {
     onSubmit: isLast ? props.onSubmit : nextStep,
     onPrev: prevStep,
     submitLabel,

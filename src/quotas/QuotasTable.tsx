@@ -1,5 +1,3 @@
-import * as React from 'react';
-
 import { translate } from '@waldur/i18n';
 
 import './QuotasTable.scss';

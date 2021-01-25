@@ -1,11 +1,12 @@
-import * as React from 'react';
+import { FunctionComponent } from 'react';
 import { AsyncPaginate } from 'react-select-async-paginate';
 import { Field, reduxForm, formValueSelector } from 'redux-form';
 
+import { ENV } from '@waldur/configs/default';
 import { getSelectData } from '@waldur/core/api';
-import { ENV } from '@waldur/core/services';
 import { returnReactSelectAsyncPaginateObject } from '@waldur/core/utils';
 import { translate } from '@waldur/i18n';
+import { RootState } from '@waldur/store/reducers';
 
 const providerAutocomplete = async (
   query: string,
@@ -29,7 +30,7 @@ const providerAutocomplete = async (
   );
 };
 
-export const SharedProviderFilter = () => (
+export const SharedProviderFilter: FunctionComponent = () => (
   <div className="ibox">
     <div className="ibox-content">
       <div className="row">
@@ -64,7 +65,7 @@ export const SharedProviderFilter = () => (
 
 const FORM_ID = 'SharedProviderFilter';
 
-export const providerSelector = (state) =>
+export const providerSelector = (state: RootState) =>
   formValueSelector(FORM_ID)(state, 'provider');
 
 const enhance = reduxForm({ form: FORM_ID });

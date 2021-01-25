@@ -1,17 +1,18 @@
-import * as React from 'react';
+import { FunctionComponent } from 'react';
 import { connect } from 'react-redux';
 import { compose } from 'redux';
 
 import { formatDateTime } from '@waldur/core/dateUtils';
+import { defaultCurrency } from '@waldur/core/formatCurrency';
 import { Link } from '@waldur/core/Link';
-import { defaultCurrency } from '@waldur/core/services';
 import { withTranslation } from '@waldur/i18n';
 import { useTitle } from '@waldur/navigation/title';
+import { RootState } from '@waldur/store/reducers';
 import { Table, connectTable, createFetcher } from '@waldur/table';
 import { DASH_ESCAPE_CODE } from '@waldur/table/constants';
 import { getProject } from '@waldur/workspace/selectors';
 
-export const TableComponent = (props) => {
+export const TableComponent: FunctionComponent<any> = (props) => {
   const { translate } = props;
   useTitle(translate('My orders'));
   const columns = [
@@ -92,7 +93,7 @@ const TableOptions = {
   ],
 };
 
-const mapStateToProps = (state) => ({
+const mapStateToProps = (state: RootState) => ({
   project: getProject(state),
 });
 

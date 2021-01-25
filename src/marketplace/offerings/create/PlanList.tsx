@@ -1,8 +1,12 @@
-import * as React from 'react';
+import { FunctionComponent } from 'react';
 
 import { PlanSummary } from './PlanSummary';
 
-export const PlanList = ({ title, plans, components }) =>
+export const PlanList: FunctionComponent<{ title; plans; components }> = ({
+  title,
+  plans,
+  components,
+}) =>
   plans.length > 0 ? (
     <>
       <h4>{title}</h4>

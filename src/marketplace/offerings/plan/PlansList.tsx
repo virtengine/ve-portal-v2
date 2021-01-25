@@ -1,14 +1,15 @@
-import * as React from 'react';
-import * as Col from 'react-bootstrap/lib/Col';
+import { FunctionComponent } from 'react';
+import { Col } from 'react-bootstrap';
 import { connect } from 'react-redux';
 
 import { translate } from '@waldur/i18n';
 import { hidePlanAddButton } from '@waldur/marketplace/common/registry';
+import { RootState } from '@waldur/store/reducers';
 
 import { PlanAddButton } from './PlanAddButton';
 import { PlanPanel } from './PlanPanel';
 
-const PlansListComponent = (props) => (
+const PlansListComponent: FunctionComponent<any> = (props) => (
   <div className="form-group">
     <Col smOffset={2} sm={8} className="m-b-sm">
       <p className="form-control-static">
@@ -33,7 +34,7 @@ const PlansListComponent = (props) => (
   </div>
 );
 
-const mapStateToProps = (state) => ({
+const mapStateToProps = (state: RootState) => ({
   selectedProvider: state.form.marketplaceOfferingCreate.values.type,
 });
 

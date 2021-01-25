@@ -1,5 +1,3 @@
-import * as React from 'react';
-
 import { TranslateProps, withTranslation } from '@waldur/i18n';
 
 import eventRegistry from './registry';

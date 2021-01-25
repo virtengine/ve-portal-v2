@@ -1,11 +1,11 @@
 import { useRouter } from '@uirouter/react';
-import * as React from 'react';
+import { useCallback } from 'react';
 import { useDispatch } from 'react-redux';
 import { reduxForm, SubmissionError } from 'redux-form';
 
 import { format } from '@waldur/core/ErrorMessageFormatter';
 import { translate } from '@waldur/i18n';
-import { showSuccess } from '@waldur/store/coreSaga';
+import { showSuccess } from '@waldur/store/notify';
 
 import { AuthService } from './AuthService';
 import { InputGroup } from './InputGroup';
@@ -22,7 +22,7 @@ export const SignupForm = reduxForm<FormData>({ form: 'SignupForm' })(
   ({ submitting, handleSubmit, error, reset }) => {
     const dispatch = useDispatch();
     const router = useRouter();
-    const signup = React.useCallback(
+    const signup = useCallback(
       async (values: FormData) => {
         // See also: https://github.com/facebook/react/issues/1159#issuecomment-506584346
         if (!values.password || !values.username || !values.email) {

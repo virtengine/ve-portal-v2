@@ -1,6 +1,11 @@
-import * as React from 'react';
+import { FunctionComponent } from 'react';
 
-export const FilterGroup = ({ value, onChange, placeholder, groupId }) => (
+export const FilterGroup: FunctionComponent<{
+  value;
+  onChange;
+  placeholder;
+  groupId;
+}> = ({ value, onChange, placeholder, groupId }) => (
   <div className="form-group">
     <div className="search-box">
       <input

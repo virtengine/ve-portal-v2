@@ -1,4 +1,4 @@
-import * as React from 'react';
+import { FunctionComponent } from 'react';
 import { connect } from 'react-redux';
 import { compose } from 'redux';
 
@@ -7,6 +7,7 @@ import { translate } from '@waldur/i18n';
 import { ResourceNameField } from '@waldur/marketplace/resources/list/ResourceNameField';
 import { ResourceStateField } from '@waldur/marketplace/resources/list/ResourceStateField';
 import { Resource } from '@waldur/marketplace/resources/types';
+import { RootState } from '@waldur/store/reducers';
 import { Table, connectTable, createFetcher } from '@waldur/table';
 import { getProject } from '@waldur/workspace/selectors';
 import { Project } from '@waldur/workspace/types';
@@ -15,7 +16,7 @@ interface FieldProps {
   row: Resource;
 }
 
-export const TableComponent = (props) => {
+export const TableComponent: FunctionComponent<any> = (props) => {
   const columns = [
     {
       title: translate('Name'),
@@ -64,7 +65,7 @@ const TableOptions = {
       : {},
 };
 
-const mapStateToProps = (state) => ({
+const mapStateToProps = (state: RootState) => ({
   project: getProject(state),
 });
 

@@ -1,6 +1,6 @@
-import * as React from 'react';
+import { FunctionComponent } from 'react';
 
-import { defaultCurrency } from '@waldur/core/services';
+import { defaultCurrency } from '@waldur/core/formatCurrency';
 import { translate } from '@waldur/i18n';
 import { OfferingComponent } from '@waldur/marketplace/types';
 
@@ -9,7 +9,7 @@ interface PlanProps {
   components: Array<object>;
 }
 
-export const PlanSummary = (props: PlanProps) => (
+export const PlanSummary: FunctionComponent<PlanProps> = (props) => (
   <>
     <p>
       <strong>{translate('Plan name')}:</strong> {props.plan.name}

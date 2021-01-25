@@ -1,6 +1,5 @@
-import * as React from 'react';
-import * as Col from 'react-bootstrap/lib/Col';
-import * as Row from 'react-bootstrap/lib/Row';
+import { FunctionComponent } from 'react';
+import { Col, Row } from 'react-bootstrap';
 
 import { FormattedHtml } from '@waldur/core/FormattedHtml';
 import { translate } from '@waldur/i18n';
@@ -10,15 +9,17 @@ import { Offering } from '@waldur/marketplace/types';
 
 import { OfferingConfigurator } from './OfferingConfigurator';
 import './OfferingDetails.scss';
-import { OfferingTabsComponent, OfferingTab } from './OfferingTabsComponent';
+import { OfferingTab, OfferingTabsComponent } from './OfferingTabsComponent';
 
-interface OfferingDetailsProps {
+export interface OfferingDetailsProps {
   offering: Offering;
   tabs: OfferingTab[];
   limits: string[];
 }
 
-export const OfferingDetails = (props: OfferingDetailsProps) => {
+export const OfferingDetails: FunctionComponent<OfferingDetailsProps> = (
+  props,
+) => {
   const CheckoutSummaryComponent = getCheckoutSummaryComponent(
     props.offering.type,
   );

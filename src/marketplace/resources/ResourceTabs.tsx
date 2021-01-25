@@ -1,16 +1,17 @@
-import * as React from 'react';
-import * as PanelBody from 'react-bootstrap/lib/PanelBody';
-import * as Tab from 'react-bootstrap/lib/Tab';
-import * as Tabs from 'react-bootstrap/lib/Tabs';
+import { FC } from 'react';
+import { PanelBody, Tab, Tabs } from 'react-bootstrap';
 
 import { Calendar } from '@waldur/booking/components/calendar/Calendar';
 import { isFeatureVisible } from '@waldur/features/connect';
 import { translate } from '@waldur/i18n';
 import { IssuesList } from '@waldur/issues/list/IssuesList';
+import { ResourceUsageTabsContainer } from '@waldur/marketplace/resources/usage/ResourceUsageTabsContainer';
 
 import { ResourceOrderItems } from '../orders/item/list/ResourceOrderItems';
 
-export const ResourceTabs = ({ resource }) => (
+import { Resource } from './types';
+
+export const ResourceTabs: FC<{ resource: Resource }> = ({ resource }) => (
   <Tabs
     defaultActiveKey="orderItems"
     id="resource-details"
@@ -34,6 +35,14 @@ export const ResourceTabs = ({ resource }) => (
         <PanelBody>
           <Calendar events={resource.attributes.schedules} />
         </PanelBody>
+      </Tab>
+    )}
+    {resource.is_usage_based && (
+      <Tab eventKey="usage" title={translate('Usage')}>
+        <ResourceUsageTabsContainer
+          offeringUuid={resource.offering_uuid}
+          resourceUuid={resource.uuid}
+        />
       </Tab>
     )}
   </Tabs>

@@ -5,10 +5,9 @@
  * that the user is authorized to see.
  */
 
-import * as React from 'react';
+import { triggerTransition } from '@uirouter/redux';
 import { useEffect, useState } from 'react';
-import FormGroup from 'react-bootstrap/lib/FormGroup';
-import * as ToggleButton from 'react-bootstrap/lib/ToggleButton';
+import { FormGroup, ToggleButton } from 'react-bootstrap';
 import { connect } from 'react-redux';
 import { compose } from 'redux';
 import { Field, formValueSelector, reduxForm } from 'redux-form';
@@ -20,7 +19,7 @@ import { reactSelectMenuPortaling } from '@waldur/form/utils';
 import { translate } from '@waldur/i18n';
 import { CloseDialogButton } from '@waldur/modal/CloseDialogButton';
 import { ModalDialog } from '@waldur/modal/ModalDialog';
-import { stateGo } from '@waldur/store/coreSaga';
+import { RootState } from '@waldur/store/reducers';
 import {
   ORGANIZATION_ROUTE,
   PROJECT_ROUTE,
@@ -138,14 +137,15 @@ const SelectAffiliationDialogContainer = (props) => {
 };
 
 const selector = formValueSelector(SELECT_AFFILIATION_FORM_ID);
-const mapStateToProps = (state) => ({
+
+const mapStateToProps = (state: RootState) => ({
   affiliationValue: selector(state, 'affiliation'),
 });
 
 const mapDispatchToProps = (dispatch, ownProps) => ({
   onSubmit: (formData) =>
     dispatch(
-      stateGo(formData.affiliation, {
+      triggerTransition(formData.affiliation, {
         uuid:
           formData.affiliation === ORGANIZATION_ROUTE
             ? formData.organization

@@ -1,17 +1,21 @@
-import * as React from 'react';
-import Button from 'react-bootstrap/lib/Button';
+import { useCallback, FunctionComponent } from 'react';
+import { Button } from 'react-bootstrap';
 import { useDispatch } from 'react-redux';
 
 import { Tooltip } from '@waldur/core/Tooltip';
 import { translate } from '@waldur/i18n';
-import { showSuccess, showErrorResponse } from '@waldur/store/coreSaga';
+import { showSuccess, showErrorResponse } from '@waldur/store/notify';
 
 import { enableProfile } from './api';
 
-export const EnableProfile = ({ profile, setLoading, refreshProfile }) => {
+export const EnableProfile: FunctionComponent<{
+  profile;
+  setLoading;
+  refreshProfile;
+}> = ({ profile, setLoading, refreshProfile }) => {
   const dispatch = useDispatch();
 
-  const callback = React.useCallback(async () => {
+  const callback = useCallback(async () => {
     setLoading(true);
     try {
       await enableProfile(profile.uuid);

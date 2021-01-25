@@ -1,5 +1,5 @@
-import * as classNames from 'classnames';
-import * as React from 'react';
+import classNames from 'classnames';
+import { FunctionComponent } from 'react';
 
 import { FormattedHtml } from '@waldur/core/FormattedHtml';
 import { OfferingLogo } from '@waldur/marketplace/common/OfferingLogo';
@@ -12,7 +12,9 @@ interface MobileOfferingCardProps {
   offering: Offering;
 }
 
-export const MobileOfferingCard = (props: MobileOfferingCardProps) => (
+export const MobileOfferingCard: FunctionComponent<MobileOfferingCardProps> = (
+  props,
+) => (
   <tr className={classNames({ disabled: props.offering.state !== 'Active' })}>
     <td className="img-md">
       {wrapTooltip(

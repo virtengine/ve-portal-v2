@@ -1,5 +1,8 @@
-import { formatDateTime } from '@waldur/core/dateUtils';
-import { ENV } from '@waldur/core/services';
+import { ENV } from '@waldur/configs/default';
+
+export function wait(amount = 0) {
+  return new Promise((resolve) => setTimeout(resolve, amount));
+}
 
 export const FILESIZE_UNITS = ['B', 'KB', 'MB', 'GB', 'TB', 'PB'];
 
@@ -58,17 +61,6 @@ export const listToDict = (key, value) => (list) => {
   return dict;
 };
 
-export const dictToList = (dict) => {
-  const list = [];
-  for (const key in dict) {
-    if (!dict.hasOwnProperty(key)) {
-      continue;
-    }
-    list.push(dict[key]);
-  }
-  return list;
-};
-
 export const getUUID = (url) => url.split('/').splice(-2)[0];
 
 export const minutesToHours = (input) => {
@@ -90,12 +82,6 @@ export const pick = (fields) => (source) =>
 export const titleCase = (input) => {
   if (input) {
     return input.charAt(0).toUpperCase() + input.slice(1);
-  }
-};
-
-export const dateTime = (input) => {
-  if (input) {
-    return formatDateTime(input);
   }
 };
 
@@ -172,47 +158,32 @@ export function isCustomerQuotaReached(customer, quotaName) {
   return false;
 }
 
-export function mergeLists(list1, list2, fieldIdentifier) {
-  list1 = list1 || [];
-  list2 = list2 || [];
-  fieldIdentifier = fieldIdentifier || 'uuid';
-  const itemByUuid = {};
-  const newListUuids = list2.map((item) => {
-    return item[fieldIdentifier];
-  });
-  for (const item of list1) {
-    itemByUuid[item[fieldIdentifier]] = item;
-  }
-
-  // Remove stale items
-  list1 = list1.filter((item) => {
-    return newListUuids.indexOf(item[fieldIdentifier]) !== -1;
-  });
-
-  // Add or update remaining items
-  for (const item2 of list2) {
-    const item1 = itemByUuid[item2[fieldIdentifier]];
-    if (!item1) {
-      list1.push(item2);
-      continue;
-    }
-    for (const key in item2) {
-      if (item2.hasOwnProperty(key)) {
-        item1[key] = item2[key];
-      }
-    }
-  }
-  return list1;
-}
-
-export const returnReactSelectAsyncPaginateObject = (
-  response,
+export function returnReactSelectAsyncPaginateObject<T = {}>(
+  response: { options: T[]; totalItems: number },
   prevOptions,
   currentPage: number,
-) => ({
-  options: response.options,
-  hasMore: response.totalItems > prevOptions.length + ENV.pageSize,
-  additional: {
-    page: currentPage + 1,
-  },
-});
+) {
+  return {
+    options: response.options,
+    hasMore: response.totalItems > prevOptions.length + ENV.pageSize,
+    additional: {
+      page: currentPage + 1,
+    },
+  };
+}
+
+export const cleanObject = (value: any) => JSON.parse(JSON.stringify(value));
+
+export const createDeferred = () => {
+  const deferred: any = {};
+  deferred.promise = new Promise((resolve, reject) => {
+    deferred.resolve = resolve;
+    deferred.reject = reject;
+  });
+  return deferred;
+};
+
+export const orderByFilter = (sorting: {
+  mode: 'asc' | 'desc';
+  field: string;
+}): string => `${sorting.mode === 'desc' ? '-' : ''}${sorting.field}`;

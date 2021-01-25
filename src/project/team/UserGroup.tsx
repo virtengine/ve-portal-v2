@@ -1,7 +1,5 @@
-import * as React from 'react';
-import ControlLabel from 'react-bootstrap/lib/ControlLabel';
-import FormControl from 'react-bootstrap/lib/FormControl';
-import FormGroup from 'react-bootstrap/lib/FormGroup';
+import { FunctionComponent } from 'react';
+import { ControlLabel, FormControl, FormGroup } from 'react-bootstrap';
 import { components } from 'react-select';
 import { Field } from 'redux-form';
 
@@ -9,7 +7,7 @@ import { reactSelectMenuPortaling } from '@waldur/form/utils';
 import { translate } from '@waldur/i18n';
 import { SelectField } from '@waldur/issues/create/SelectField';
 
-const Option = (props) => (
+const Option: FunctionComponent<any> = (props) => (
   <components.Option {...props}>
     <>
       <div>{props.data.full_name}</div>
@@ -34,7 +32,11 @@ const Option = (props) => (
   </components.Option>
 );
 
-export const UserGroup = ({ editUser, users, disabled }) =>
+export const UserGroup: FunctionComponent<{ editUser; users; disabled }> = ({
+  editUser,
+  users,
+  disabled,
+}) =>
   editUser ? (
     <FormGroup>
       <FormControl.Static>

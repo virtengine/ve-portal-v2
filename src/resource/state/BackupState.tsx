@@ -1,4 +1,4 @@
-import * as React from 'react';
+import { FunctionComponent } from 'react';
 
 import { StateIndicator, StateVariant } from '@waldur/core/StateIndicator';
 
@@ -18,7 +18,9 @@ interface BackupStateIndicatorProps {
   };
 }
 
-export const BackupState = (props: BackupStateIndicatorProps) => (
+export const BackupState: FunctionComponent<BackupStateIndicatorProps> = (
+  props,
+) => (
   <StateIndicator
     label={props.resource.backup_state}
     variant={LABEL_CLASSES[props.resource.backup_state] || 'info'}

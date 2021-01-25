@@ -1,22 +1,23 @@
-import * as React from 'react';
+import { FunctionComponent } from 'react';
 import { connect } from 'react-redux';
 import { compose } from 'redux';
 import { getFormValues } from 'redux-form';
 
+import { RootState } from '@waldur/store/reducers';
 import { createFetcher } from '@waldur/table/api';
 import { Table, connectTable } from '@waldur/table/index';
 
 import { formatFilter } from './utils';
 
-const FlavorNameField = ({ row }) => <span>{row.name}</span>;
+const FlavorNameField = ({ row }) => <>{row.name}</>;
 const NumOfRunningInstancesField = ({ row }) => (
-  <span>{row.running_instances_count}</span>
+  <>{row.running_instances_count}</>
 );
 const NumOfCreatedInstancesField = ({ row }) => (
-  <span>{row.created_instances_count}</span>
+  <>{row.created_instances_count}</>
 );
 
-const TableComponent = (props) => {
+const TableComponent: FunctionComponent<any> = (props) => {
   const { translate } = props;
   return (
     <Table
@@ -46,7 +47,7 @@ const TableOptions = {
   mapPropsToFilter: (props) => formatFilter(props.vmOverviewFilter),
 };
 
-const mapStateToProps = (state) => ({
+const mapStateToProps = (state: RootState) => ({
   vmOverviewFilter: getFormValues('vmOverviewFilter')(state),
 });
 

@@ -1,4 +1,4 @@
-import * as React from 'react';
+import { FunctionComponent } from 'react';
 import { useSelector } from 'react-redux';
 
 import { getTitle } from '../title';
@@ -6,7 +6,7 @@ import { getTitle } from '../title';
 import { Breadcrumbs } from './Breadcrumbs';
 import { getBreadcrumbs } from './store';
 
-export const BreadcrumbsContainer = () => {
+export const BreadcrumbsContainer: FunctionComponent = () => {
   const items = useSelector(getBreadcrumbs);
   const activeItem = useSelector(getTitle);
   if (!items) {

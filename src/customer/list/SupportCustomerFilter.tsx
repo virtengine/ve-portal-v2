@@ -1,5 +1,5 @@
-import * as React from 'react';
-import * as Row from 'react-bootstrap/lib/Row';
+import { FunctionComponent } from 'react';
+import { Row } from 'react-bootstrap';
 import { reduxForm } from 'redux-form';
 
 import {
@@ -15,7 +15,7 @@ import {
 } from '@waldur/customer/list/ServiceProviderFilter';
 import { translate } from '@waldur/i18n';
 
-export const PureSupportCustomerFilter = () => (
+export const PureSupportCustomerFilter: FunctionComponent = () => (
   <Row>
     <div className="form-group col-sm-3">
       <label className="control-label">{translate('Accounting running')}</label>

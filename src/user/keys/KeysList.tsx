@@ -1,9 +1,10 @@
-import * as React from 'react';
+import { FunctionComponent } from 'react';
 import { connect } from 'react-redux';
 import { compose } from 'redux';
 
-import { $state } from '@waldur/core/services';
 import { useTitle } from '@waldur/navigation/title';
+import { router } from '@waldur/router';
+import { RootState } from '@waldur/store/reducers';
 import { Table, createFetcher, connectTable } from '@waldur/table';
 import { KeysListTablePlaceholder } from '@waldur/user/keys/KeysListTablePlaceholder';
 import { getUser } from '@waldur/workspace/selectors';
@@ -12,7 +13,7 @@ import { KeyCreateButton } from './KeyCreateButton';
 import { KeyRemoveButton } from './KeyRemoveButton';
 import { isStaffOrSelfSelectorCreator } from './selectors';
 
-const TableComponent = (props) => {
+const TableComponent: FunctionComponent<any> = (props) => {
   const { translate } = props;
   useTitle(translate('SSH keys'));
   return (
@@ -48,7 +49,7 @@ const TableOptions = {
   table: 'keysList',
   fetchData: createFetcher('keys'),
   mapPropsToFilter: (props) => ({
-    user_uuid: $state.params.uuid || props.user?.uuid,
+    user_uuid: router.globals.params.uuid || props.user?.uuid,
   }),
   exportRow: (row) => [row.name, row.fingerprint],
   exportAll: true,
@@ -56,9 +57,9 @@ const TableOptions = {
   queryField: 'name',
 };
 
-const mapStateToProps = (state) => ({
+const mapStateToProps = (state: RootState) => ({
   user: getUser(state),
-  isStaffOrSelf: isStaffOrSelfSelectorCreator($state.params)(state),
+  isStaffOrSelf: isStaffOrSelfSelectorCreator(router.globals.params)(state),
 });
 
 const enhance = compose(connect(mapStateToProps), connectTable(TableOptions));

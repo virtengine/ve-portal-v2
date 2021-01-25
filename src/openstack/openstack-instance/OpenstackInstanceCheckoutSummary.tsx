@@ -1,10 +1,10 @@
-import * as React from 'react';
-import * as Table from 'react-bootstrap/lib/Table';
+import React from 'react';
+import { Table } from 'react-bootstrap';
 import { useSelector } from 'react-redux';
 import { getFormValues, isValid } from 'redux-form';
 
+import { defaultCurrency } from '@waldur/core/formatCurrency';
 import { Panel } from '@waldur/core/Panel';
-import { defaultCurrency } from '@waldur/core/services';
 import { formatFilesize } from '@waldur/core/utils';
 import { isFeatureVisible } from '@waldur/features/connect';
 import { translate } from '@waldur/i18n';
@@ -12,14 +12,15 @@ import { ShoppingCartButtonContainer } from '@waldur/marketplace/cart/ShoppingCa
 import { OfferingLogo } from '@waldur/marketplace/common/OfferingLogo';
 import { RatingStars } from '@waldur/marketplace/common/RatingStars';
 import { OfferingCompareButtonContainer } from '@waldur/marketplace/compare/OfferingCompareButtonContainer';
+import { OfferingDetailsProps } from '@waldur/marketplace/details/OfferingDetails';
 import { pricesSelector } from '@waldur/marketplace/details/plan/utils';
 import { formatOrderItemForCreate } from '@waldur/marketplace/details/utils';
 import { ProviderLink } from '@waldur/marketplace/links/ProviderLink';
-import { Offering } from '@waldur/marketplace/types';
 import { Quota } from '@waldur/openstack/types';
 import { parseQuotas, parseQuotasUsage } from '@waldur/openstack/utils';
 import { PriceTooltip } from '@waldur/price/PriceTooltip';
 import { QuotaUsageBarChart } from '@waldur/quotas/QuotaUsageBarChart';
+import { RootState } from '@waldur/store/reducers';
 import { getCustomer, getProject } from '@waldur/workspace/selectors';
 
 import { Flavor } from './types';
@@ -31,10 +32,6 @@ interface FormData {
   image?: { name: string };
   flavor?: Flavor;
   attributes?: Record<string, any>;
-}
-
-interface OwnProps {
-  offering: Offering;
 }
 
 const getTotalStorage = (formData) =>
@@ -129,25 +126,26 @@ const getQuotas = ({ formData, usages, limits, project, components }) => {
   return quotas;
 };
 
-const formDataSelector = (state) =>
+const formDataSelector = (state: RootState) =>
   (getFormValues('marketplaceOffering')(state) || {}) as FormData;
 
-const formHasFlavorSelector = (state) =>
+const formHasFlavorSelector = (state: RootState) =>
   Boolean(formDataSelector(state).flavor);
 
-const formIsValidSelector = (state) => isValid('marketplaceOffering')(state);
+const formIsValidSelector = (state: RootState) =>
+  isValid('marketplaceOffering')(state);
 
-const formAttributesSelector = (state) => {
+const formAttributesSelector = (state: RootState) => {
   const formData = formDataSelector(state);
   return formData.attributes || {};
 };
 
-const flavorSelector = (state) => {
+const flavorSelector = (state: RootState) => {
   const formAttrs = formAttributesSelector(state);
   return formAttrs.flavor ? formAttrs.flavor : {};
 };
 
-export const OpenstackInstanceCheckoutSummary: React.FC<OwnProps> = ({
+export const OpenstackInstanceCheckoutSummary: React.FC<OfferingDetailsProps> = ({
   offering,
 }) => {
   const customer = useSelector(getCustomer);
@@ -156,8 +154,9 @@ export const OpenstackInstanceCheckoutSummary: React.FC<OwnProps> = ({
   const formHasFlavor = useSelector(formHasFlavorSelector);
   const formData = useSelector(formAttributesSelector);
   const flavor = useSelector(flavorSelector);
-  const total = useSelector((state) => pricesSelector(state, { offering }))
-    .total;
+  const total = useSelector((state: RootState) =>
+    pricesSelector(state, { offering }),
+  ).total;
   const components = React.useMemo(
     () => (offering.plans.length > 0 ? offering.plans[0].prices : {}),
     [offering],
@@ -278,7 +277,7 @@ export const OpenstackInstanceCheckoutSummary: React.FC<OwnProps> = ({
               <td>
                 <strong>{translate('Project')}</strong>
               </td>
-              <td>{project ? project.name : <span>&mdash;</span>}</td>
+              <td>{project ? project.name : <>&mdash;</>}</td>
             </tr>
             <tr>
               <td>

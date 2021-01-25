@@ -1,12 +1,12 @@
-import * as React from 'react';
-import * as Col from 'react-bootstrap/lib/Col';
+import { FunctionComponent } from 'react';
+import { Col } from 'react-bootstrap';
 
 import { translate } from '@waldur/i18n';
 
 import { EnvironmentVariableAddButton } from './EnvironmentVariableAddButton';
 import { EnvironmentVariablePanel } from './EnvironmentVariablePanel';
 
-export const EnvironmentVariablesList = (props) => (
+export const EnvironmentVariablesList: FunctionComponent<any> = (props) => (
   <div className="form-group">
     <Col smOffset={2} sm={8} className="m-b-sm">
       <p className="form-control-static">

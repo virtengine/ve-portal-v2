@@ -1,11 +1,13 @@
-import * as React from 'react';
+import React from 'react';
 import { connect } from 'react-redux';
 
 import { formatDateTime } from '@waldur/core/dateUtils';
 import { Customer } from '@waldur/customer/types';
 import { translate } from '@waldur/i18n';
 import { Field } from '@waldur/resource/summary';
+import { ResourceDetailsTable } from '@waldur/resource/summary/ResourceDetailsTable';
 import { getConfig, getNativeNameVisible } from '@waldur/store/config';
+import { RootState } from '@waldur/store/reducers';
 import { getCustomer } from '@waldur/workspace/selectors';
 
 import { CustomerAccordion } from './CustomerAccordion';
@@ -31,7 +33,7 @@ export const PureCustomerDetails: React.FC<CustomerDetailsProps> = ({
         'Update your organization name, logo, accounting and contact details.',
       )}
     >
-      <dl className="dl-horizontal resource-details-table">
+      <ResourceDetailsTable>
         <Field label={translate('Name')} value={customer.display_name} />
 
         {nativeNameVisible && (
@@ -107,14 +109,14 @@ export const PureCustomerDetails: React.FC<CustomerDetailsProps> = ({
           label={translate('Bank account')}
           value={customer.bank_account}
         />
-      </dl>
+      </ResourceDetailsTable>
 
       <CustomerLogoUpdateContainer customer={customer} />
     </CustomerAccordion>
   );
 };
 
-const mapStateToProps = (state) => ({
+const mapStateToProps = (state: RootState) => ({
   customer: getCustomer(state),
   organizationSubnetsVisible: getConfig(state).organizationSubnetsVisible,
   organizationDomainVisible: getConfig(state).organizationDomainVisible,
@@ -123,4 +125,4 @@ const mapStateToProps = (state) => ({
 
 export const CustomerDetailsPanel = connect(mapStateToProps)(
   PureCustomerDetails,
-) as React.ComponentType;
+);

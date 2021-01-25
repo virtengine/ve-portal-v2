@@ -1,12 +1,12 @@
-import * as React from 'react';
-import FormGroup from 'react-bootstrap/lib/FormGroup';
+import { FunctionComponent } from 'react';
+import { FormGroup } from 'react-bootstrap';
 import { Field } from 'redux-form';
 
 import { Link } from '@waldur/core/Link';
 import { required } from '@waldur/core/validators';
 import { translate } from '@waldur/i18n';
 
-export const TosGroup = () => (
+export const TosGroup: FunctionComponent = () => (
   <FormGroup>
     <div className="checkbox col-sm-offset-3 col-xs-12">
       <label>

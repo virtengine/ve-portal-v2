@@ -1,11 +1,12 @@
-import * as React from 'react';
+import { FunctionComponent } from 'react';
 import { compose } from 'redux';
 
 import { formatDateTime } from '@waldur/core/dateUtils';
+import { defaultCurrency } from '@waldur/core/formatCurrency';
 import { Link } from '@waldur/core/Link';
-import { defaultCurrency } from '@waldur/core/services';
 import { withTranslation } from '@waldur/i18n';
 import { useTitle } from '@waldur/navigation/title';
+import { RootState } from '@waldur/store/reducers';
 import { Table, connectTable, createFetcher } from '@waldur/table';
 import { formatLongText } from '@waldur/table/utils';
 import { getCustomer } from '@waldur/workspace/selectors';
@@ -32,7 +33,7 @@ const ProjectActionsField = ({ row }) => (
   </div>
 );
 
-export const TableComponent = (props) => {
+export const TableComponent: FunctionComponent<any> = (props) => {
   const { translate, filterColumns } = props;
   useTitle(translate('Projects'));
   const columns = filterColumns([
@@ -80,7 +81,7 @@ const TableOptions = {
   table: 'ProjectsList',
   fetchData: createFetcher('projects'),
   queryField: 'query',
-  getDefaultFilter: (state) => ({
+  getDefaultFilter: (state: RootState) => ({
     customer: getCustomer(state).uuid,
     o: 'name',
   }),

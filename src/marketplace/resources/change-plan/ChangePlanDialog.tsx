@@ -1,5 +1,5 @@
-import * as React from 'react';
-import useAsync from 'react-use/lib/useAsync';
+import React from 'react';
+import { useAsync } from 'react-use';
 
 import { DialogBody } from './ChangePlanBody';
 import { loadData } from './utils';

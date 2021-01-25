@@ -1,9 +1,11 @@
-import * as React from 'react';
+import { FunctionComponent } from 'react';
 
 import { Tooltip } from '@waldur/core/Tooltip';
 import { translate } from '@waldur/i18n';
 
-export const ServiceProviderIcon = ({ organization }) =>
+export const ServiceProviderIcon: FunctionComponent<{ organization }> = ({
+  organization,
+}) =>
   organization.is_service_provider ? (
     <Tooltip
       label={translate('Service provider')}

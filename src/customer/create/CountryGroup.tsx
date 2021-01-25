@@ -1,13 +1,14 @@
 import Axios from 'axios';
-import * as React from 'react';
+import { FunctionComponent } from 'react';
 import { components } from 'react-select';
-import useAsync from 'react-use/lib/useAsync';
+import { useAsync } from 'react-use';
+import WindowedSelect from 'react-windowed-select';
 
-import { ENV } from '@waldur/core/services';
+import { ENV } from '@waldur/configs/default';
 import { translate } from '@waldur/i18n';
 
 import { InputGroup } from './InputGroup';
-import { SelectField } from './SelectField';
+import 'world-flags-sprite/stylesheets/flags16.css';
 
 const CountryRenderer = (option) => (
   <>
@@ -18,13 +19,13 @@ const CountryRenderer = (option) => (
   </>
 );
 
-export const Option = (props) => (
+export const Option: FunctionComponent<any> = (props) => (
   <components.Option {...props}>
     <CountryRenderer {...props.data} />
   </components.Option>
 );
 
-export const SingleValue = (props) => (
+export const SingleValue: FunctionComponent<any> = (props) => (
   <components.SingleValue {...props}>
     <CountryRenderer {...props.data} />
   </components.SingleValue>
@@ -38,19 +39,24 @@ export const loadCountries = async () => {
   return response.data.actions.POST.country.choices;
 };
 
-export const CountryGroup = () => {
-  const { loading, value } = useAsync(loadCountries);
+export const CountryGroup: FunctionComponent = () => {
+  const { loading, value: options } = useAsync(loadCountries);
   return (
     <InputGroup
       name="country"
       label={translate('Country')}
-      component={SelectField}
-      placeholder={translate('Select country...')}
-      components={{ Option, SingleValue }}
-      getOptionLabel={(option) => option.display_name}
-      options={value || []}
-      isLoading={loading}
-      isClearable={true}
+      component={({ input: { value, onChange } }) => (
+        <WindowedSelect
+          value={value}
+          onChange={onChange}
+          placeholder={translate('Select country...')}
+          components={{ Option, SingleValue }}
+          getOptionLabel={(option) => option.display_name}
+          options={options || []}
+          isLoading={loading}
+          isClearable={true}
+        />
+      )}
     />
   );
 };

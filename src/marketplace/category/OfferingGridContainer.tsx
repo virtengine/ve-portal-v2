@@ -1,13 +1,13 @@
 import debounce from 'lodash.debounce';
-import * as React from 'react';
+import { Component } from 'react';
 import { connect } from 'react-redux';
 import { reset } from 'redux-form';
 
-import { $state } from '@waldur/core/services';
+import { router } from '@waldur/router';
+import { RootState } from '@waldur/store/reducers';
 
 import { OfferingGrid } from '../common/OfferingGrid';
 import * as actions from '../landing/store/actions';
-import { Offering } from '../types';
 
 import { loadOfferingsStart, loadDataStart } from './store/actions';
 import { MARKETPLACE_FILTER_FORM } from './store/constants';
@@ -19,36 +19,37 @@ import {
   getFilterName,
 } from './store/selectors';
 
-const mapStateToProps = (state) => ({
+const mapStateToProps = (state: RootState) => ({
   items: getOfferings(state),
   loading: isOfferingsLoading(state),
   loaded: isOfferingsLoaded(state),
-  filterCategory: $state.params.category_uuid,
+  filterCategory: router.globals.params.category_uuid,
   filterAttributes: getFilterAttributes(state),
   filterName: getFilterName(state),
 });
 
 const mapDispatchToProps = (dispatch) => ({
-  loadCategories: () => dispatch(loadDataStart()),
-  getCategories: () => dispatch(actions.categoriesFetchStart()),
-  resetForm: () => dispatch(reset(MARKETPLACE_FILTER_FORM)),
-  loadOfferings: () => dispatch(loadOfferingsStart()),
+  loadCategories: () => {
+    dispatch(loadDataStart());
+  },
+  getCategories: () => {
+    dispatch(actions.categoriesFetchStart());
+  },
+  resetForm: () => {
+    dispatch(reset(MARKETPLACE_FILTER_FORM));
+  },
+  loadOfferings: () => {
+    dispatch(loadOfferingsStart());
+  },
 });
 
-interface OfferingGridWrapperProps {
-  filterCategory: string;
-  filterName: string;
-  filterAttributes: object;
-  items: Offering[];
-  loading: boolean;
-  loaded: boolean;
-  loadCategories: () => void;
-  getCategories: () => void;
-  resetForm: () => void;
-  loadOfferings: () => void;
-}
+type StateProps = ReturnType<typeof mapStateToProps>;
 
-class OfferingGridWrapper extends React.Component<OfferingGridWrapperProps> {
+type DispatchProps = ReturnType<typeof mapDispatchToProps>;
+
+type OfferingGridWrapperProps = StateProps & DispatchProps;
+
+class OfferingGridWrapper extends Component<OfferingGridWrapperProps> {
   componentDidMount() {
     this.props.getCategories();
     this.props.loadCategories();

@@ -1,7 +1,7 @@
-import * as React from 'react';
+import { FunctionComponent } from 'react';
 import { connect } from 'react-redux';
 import { compose } from 'redux';
-import { reduxForm, InjectedFormProps } from 'redux-form';
+import { InjectedFormProps, reduxForm } from 'redux-form';
 
 import { IssueAttachmentsList } from '@waldur/issues/attachments/IssueAttachmentsList';
 import { getUploading } from '@waldur/issues/attachments/selectors';
@@ -12,8 +12,8 @@ import * as constants from './constants';
 import { IssueCommentsForm } from './IssueCommentsForm';
 import {
   getCommentFormIsOpen,
-  getPendingAttachments,
   getIsUiDisabled,
+  getPendingAttachments,
 } from './selectors';
 
 interface PureIssueCommentsFormContainerProps extends InjectedFormProps {
@@ -46,8 +46,8 @@ const onCancel = (props: PureIssueCommentsFormContainerProps) => () => {
   cancelSubmit();
 };
 
-export const PureIssueCommentsFormContainer = (
-  props: PureIssueCommentsFormContainerProps,
+export const PureIssueCommentsFormContainer: FunctionComponent<PureIssueCommentsFormContainerProps> = (
+  props,
 ) => {
   const { attachments, uploadingAttachments, opened } = props;
 

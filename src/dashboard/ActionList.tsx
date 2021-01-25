@@ -1,8 +1,6 @@
-import * as classNames from 'classnames';
-import * as React from 'react';
-import * as Label from 'react-bootstrap/lib/Label';
-import * as ListGroup from 'react-bootstrap/lib/ListGroup';
-import * as ListGroupItem from 'react-bootstrap/lib/ListGroupItem';
+import classNames from 'classnames';
+import { FunctionComponent } from 'react';
+import { Label, ListGroup, ListGroupItem } from 'react-bootstrap';
 
 import { Action } from './types';
 
@@ -10,7 +8,7 @@ export interface ActionListProps {
   actions: Action[];
 }
 
-export const ActionList = (props: ActionListProps) => (
+export const ActionList: FunctionComponent<ActionListProps> = (props) => (
   <ListGroup className="clear-list">
     {props.actions.map((action, index) => (
       <ListGroupItem

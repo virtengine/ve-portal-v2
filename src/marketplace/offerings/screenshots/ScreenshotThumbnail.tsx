@@ -1,4 +1,4 @@
-import * as React from 'react';
+import { FunctionComponent } from 'react';
 
 import { translate } from '@waldur/i18n';
 import { Screenshot } from '@waldur/marketplace/types';
@@ -8,7 +8,9 @@ interface ScreenshotThumbnailProps {
   onClick(): void;
 }
 
-export const ScreenshotThumbnail = (props: ScreenshotThumbnailProps) => {
+export const ScreenshotThumbnail: FunctionComponent<ScreenshotThumbnailProps> = (
+  props,
+) => {
   return (
     <img
       src={props.screenshot.thumbnail}

@@ -1,8 +1,7 @@
 import type { EventInput } from '@fullcalendar/core';
-import * as moment from 'moment';
-import * as React from 'react';
-import * as Button from 'react-bootstrap/lib/Button';
-import * as Modal from 'react-bootstrap/lib/Modal';
+import moment from 'moment';
+import { Component } from 'react';
+import { Button, Modal } from 'react-bootstrap';
 
 import { DateAndTimeSelectField } from '@waldur/booking/components/modal/DateAndTimeSelect';
 import { translate } from '@waldur/i18n';
@@ -22,7 +21,7 @@ interface CalendarEventModalProps {
   };
 }
 
-export class CalendarEventModal extends React.Component<
+export class CalendarEventModal extends Component<
   CalendarEventModalProps,
   EventInput
 > {

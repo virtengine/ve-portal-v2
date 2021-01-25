@@ -1,4 +1,4 @@
-import * as React from 'react';
+import { FunctionComponent } from 'react';
 import { useSelector } from 'react-redux';
 
 import { translate } from '@waldur/i18n';
@@ -14,7 +14,7 @@ import { CustomerAccordion } from '../details/CustomerAccordion';
 import { PaymentProfileDetails } from './PaymentProfileDetails';
 import { PaymentProfileList } from './PaymentProfileList';
 
-export const PaymentProfilesPanel = () => {
+export const PaymentProfilesPanel: FunctionComponent = () => {
   const customer = useSelector(getCustomer);
   const isStaff = useSelector(isStaffSelector);
   const isSupport = useSelector(isSupportSelector);

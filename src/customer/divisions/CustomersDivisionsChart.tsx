@@ -1,6 +1,6 @@
-import * as React from 'react';
+import { FunctionComponent } from 'react';
 import { useSelector } from 'react-redux';
-import useAsync from 'react-use/lib/useAsync';
+import { useAsync } from 'react-use';
 import { formValueSelector } from 'redux-form';
 
 import { EChart } from '@waldur/core/EChart';
@@ -13,10 +13,11 @@ import {
   getAllOrganizationDivisions,
   getCustomersDivisionUuids,
 } from '@waldur/marketplace/common/api';
+import { RootState } from '@waldur/store/reducers';
 
 const growthFilterFormSelector = formValueSelector(CUSTOMERS_DIVISIONS_FORM_ID);
 
-const getAccountingRunningFieldValue = (state) =>
+const getAccountingRunningFieldValue = (state: RootState) =>
   growthFilterFormSelector(state, 'accounting_is_running');
 
 const loadData = (accounting_is_running: boolean) =>
@@ -28,7 +29,7 @@ const loadData = (accounting_is_running: boolean) =>
     customers,
   }));
 
-export const CustomersDivisionsChart = () => {
+export const CustomersDivisionsChart: FunctionComponent = () => {
   const accountRunningState = useSelector(getAccountingRunningFieldValue);
   const { loading, error, value: option } = useAsync(
     () => loadData(accountRunningState?.value).then(getEChartOptions),

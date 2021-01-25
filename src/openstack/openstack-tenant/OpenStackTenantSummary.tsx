@@ -1,4 +1,4 @@
-import * as React from 'react';
+import { FunctionComponent } from 'react';
 import { connect } from 'react-redux';
 import { compose } from 'redux';
 
@@ -6,11 +6,12 @@ import { ExternalLink } from '@waldur/core/ExternalLink';
 import { withTranslation } from '@waldur/i18n';
 import {
   Field,
-  ResourceSummaryProps,
   PureResourceSummaryBase,
+  ResourceSummaryProps,
 } from '@waldur/resource/summary';
 import { UserPassword } from '@waldur/resource/UserPassword';
 import { formatFlavor } from '@waldur/resource/utils';
+import { RootState } from '@waldur/store/reducers';
 
 import { parseQuotas } from '../utils';
 
@@ -44,8 +45,8 @@ const formatPassword = (props: OpenStackTenantSummaryProps) =>
     <UserPassword password={props.resource.user_password} />
   ) : null;
 
-export const PureOpenStackTenantSummary = (
-  props: OpenStackTenantSummaryProps,
+export const PureOpenStackTenantSummary: FunctionComponent<OpenStackTenantSummaryProps> = (
+  props,
 ) => {
   const { translate, resource } = props;
   const limits = parseQuotas(resource.quotas);
@@ -75,7 +76,7 @@ export const PureOpenStackTenantSummary = (
   );
 };
 
-const mapStateToProps = (state) => ({
+const mapStateToProps = (state: RootState) => ({
   tenantCredentialsVisible:
     state.config.plugins.WALDUR_OPENSTACK.TENANT_CREDENTIALS_VISIBLE,
 });

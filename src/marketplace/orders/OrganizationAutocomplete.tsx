@@ -1,4 +1,4 @@
-import * as React from 'react';
+import { FunctionComponent } from 'react';
 import { AsyncPaginate } from 'react-select-async-paginate';
 import { Field } from 'redux-form';
 
@@ -12,8 +12,8 @@ interface OrganizationAutocompleteProps {
   isServiceProvider?: boolean;
 }
 
-export const OrganizationAutocomplete = (
-  props: OrganizationAutocompleteProps,
+export const OrganizationAutocomplete: FunctionComponent<OrganizationAutocompleteProps> = (
+  props,
 ) => (
   <div className="form-group col-sm-3">
     <label className="control-label">

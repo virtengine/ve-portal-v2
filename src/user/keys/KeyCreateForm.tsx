@@ -1,5 +1,5 @@
 import { useRouter } from '@uirouter/react';
-import * as React from 'react';
+import React from 'react';
 import { useDispatch } from 'react-redux';
 import { InjectedFormProps, reduxForm, SubmissionError } from 'redux-form';
 
@@ -11,7 +11,7 @@ import { SubmitButton } from '@waldur/form/SubmitButton';
 import { TextField } from '@waldur/form/TextField';
 import { translate } from '@waldur/i18n';
 import { useTitle } from '@waldur/navigation/title';
-import { showSuccess } from '@waldur/store/coreSaga';
+import { showSuccess } from '@waldur/store/notify';
 
 import { createKey } from './api';
 

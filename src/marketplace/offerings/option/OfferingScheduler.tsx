@@ -1,28 +1,31 @@
-import * as React from 'react';
-import * as Col from 'react-bootstrap/lib/Col';
-import * as Panel from 'react-bootstrap/lib/Panel';
+import { FunctionComponent } from 'react';
+import { Col, FormGroup, Panel } from 'react-bootstrap';
 import { connect } from 'react-redux';
 import { compose } from 'redux';
-import { WrappedFieldArrayProps, formValueSelector } from 'redux-form';
+import { WrappedFieldArrayProps } from 'redux-form';
 
 import { CalendarComponent } from '@waldur/booking/components/calendar/CalendarComponent';
 import { CalendarSettings } from '@waldur/booking/components/CalendarSettings';
-import { BookingProps, State, ConfigProps } from '@waldur/booking/types';
+import { getConfig } from '@waldur/booking/store/selectors';
+import { BookingProps } from '@waldur/booking/types';
 import { deleteCalendarBooking } from '@waldur/booking/utils';
-import { withTranslation, TranslateProps } from '@waldur/i18n';
+import { TranslateProps, withTranslation } from '@waldur/i18n';
+import { RootState } from '@waldur/store/reducers';
 
 import './OfferingScheduler.scss';
 
-type OfferingSchedulerProps = TranslateProps &
-  WrappedFieldArrayProps<any> & {
-    setModalProps: (event) => void;
-    openModal: (cb) => void;
-    schedules: BookingProps[];
-    config: ConfigProps;
-  };
+import { getSchedules } from '../store/selectors';
 
-export const PureOfferingScheduler = (props: OfferingSchedulerProps) => (
-  <div className="form-group ">
+type StateProps = ReturnType<typeof mapStateToProps>;
+
+type OfferingSchedulerProps = TranslateProps &
+  WrappedFieldArrayProps<BookingProps> &
+  StateProps;
+
+const PureOfferingScheduler: FunctionComponent<OfferingSchedulerProps> = (
+  props,
+) => (
+  <FormGroup>
     <Col smOffset={2} sm={8}>
       <Panel>
         <Panel.Heading>
@@ -41,12 +44,12 @@ export const PureOfferingScheduler = (props: OfferingSchedulerProps) => (
         options={props.config}
       />
     </Col>
-  </div>
+  </FormGroup>
 );
 
-const mapStateToProps = (state) => ({
-  schedules: formValueSelector('marketplaceOfferingCreate')(state, 'schedules'),
-  config: state.bookings.config as State,
+const mapStateToProps = (state: RootState) => ({
+  schedules: getSchedules(state),
+  config: getConfig(state),
 });
 
 const enhance = compose(connect(mapStateToProps), withTranslation);

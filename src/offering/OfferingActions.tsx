@@ -1,4 +1,4 @@
-import * as React from 'react';
+import { FunctionComponent } from 'react';
 
 import { translate } from '@waldur/i18n';
 import { PlanDetailsButton } from '@waldur/marketplace/details/plan/PlanDetailsButton';
@@ -9,7 +9,10 @@ import { ActionButtonResource } from '@waldur/resource/actions/ActionButtonResou
 
 import { OfferingReportButton } from './OfferingReportButton';
 
-export const OfferingActions = ({ offering, reInitResource }) => (
+export const OfferingActions: FunctionComponent<{
+  offering;
+  reInitResource;
+}> = ({ offering, reInitResource }) => (
   <div className="pull-right">
     <button className="btn btn-default btn-sm" onClick={reInitResource}>
       <i className="fa fa-refresh" /> {translate('Refresh')}
@@ -22,7 +25,10 @@ export const OfferingActions = ({ offering, reInitResource }) => (
       <OfferingDetailsButton offering={offering.marketplace_offering_uuid} />
     )}
     {offering.is_usage_based && (
-      <ResourceShowUsageButton resource={offering.marketplace_resource_uuid} />
+      <ResourceShowUsageButton
+        offeringUuid={offering.marketplace_offering_uuid}
+        resourceUuid={offering.marketplace_resource_uuid}
+      />
     )}
     {offering.marketplace_plan_uuid && (
       <PlanDetailsButton resource={offering.marketplace_resource_uuid} />

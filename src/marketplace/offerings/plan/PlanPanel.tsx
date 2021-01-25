@@ -1,9 +1,9 @@
-import * as React from 'react';
 import { useState } from 'react';
-import * as Panel from 'react-bootstrap/lib/Panel';
+import { Panel } from 'react-bootstrap';
 import { connect } from 'react-redux';
 
 import { translate } from '@waldur/i18n';
+import { RootState } from '@waldur/store/reducers';
 
 import { RemoveButton } from '../RemoveButton';
 import { getPlanData } from '../store/selectors';
@@ -48,8 +48,10 @@ const PurePlanPanel = (props: OwnProps & StateProps) => {
   );
 };
 
-const connector = connect<StateProps, {}, OwnProps>((state, ownProps) => ({
-  archived: getPlanData(state, ownProps.plan).archived,
-}));
+const connector = connect<StateProps, {}, OwnProps, RootState>(
+  (state, ownProps) => ({
+    archived: getPlanData(state, ownProps.plan).archived,
+  }),
+);
 
 export const PlanPanel = connector(PurePlanPanel);

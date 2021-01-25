@@ -1,5 +1,5 @@
-import * as React from 'react';
-import * as ButtonGroup from 'react-bootstrap/lib/ButtonGroup';
+import { FunctionComponent } from 'react';
+import { ButtonGroup } from 'react-bootstrap';
 import { connect } from 'react-redux';
 import { compose } from 'redux';
 import { getFormValues } from 'redux-form';
@@ -12,13 +12,14 @@ import { OrganizationDetailsButton } from '@waldur/customer/list/OrganizationDet
 import { OrganizationEditButton } from '@waldur/customer/list/OrganizationEditButton';
 import { SetLocationButton } from '@waldur/customer/list/SetLocationButton';
 import { translate } from '@waldur/i18n';
+import { RootState } from '@waldur/store/reducers';
 import { connectTable, createFetcher, Table } from '@waldur/table';
 import { renderFieldOrDash } from '@waldur/table/utils';
 import { isStaff } from '@waldur/workspace/selectors';
 
 import { OrganizationLink } from './OrganizationLink';
 
-export const TableComponent = (props) => {
+export const TableComponent: FunctionComponent<any> = (props) => {
   const columns = [
     {
       title: translate('Name'),
@@ -88,7 +89,7 @@ const TableOptions = {
   },
 };
 
-const mapStateToProps = (state) => ({
+const mapStateToProps = (state: RootState) => ({
   filter: getFormValues(SUPPORT_CUSTOMERS_FORM_ID)(state),
   isStaff: isStaff(state),
 });

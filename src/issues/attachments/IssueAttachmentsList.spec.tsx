@@ -1,5 +1,4 @@
 import { shallow } from 'enzyme';
-import * as React from 'react';
 
 import { attachment } from './fixture';
 import { IssueAttachment } from './IssueAttachment';

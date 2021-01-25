@@ -1,5 +1,3 @@
-import * as React from 'react';
-
 import { Tooltip } from '@waldur/core/Tooltip';
 import { formatFilesize } from '@waldur/core/utils';
 import { translate } from '@waldur/i18n';
@@ -81,10 +79,10 @@ export const formatSummary = (resource) => {
   return summary;
 };
 
-export const formatDefault = (value) => value || <span>&mdash;</span>;
+export const formatDefault = (value) => value || <>&mdash;</>;
 
 export const formatCommaList = (items: string[]) =>
-  items.length === 0 ? <span>&ndash;</span> : items.join(', ');
+  items.length === 0 ? <>&ndash;</> : items.join(', ');
 
 export const formatSchedule = ({ resource }) => (
   <Tooltip label={resource.schedule} id="scheduleTooltip">

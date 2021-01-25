@@ -1,18 +1,18 @@
-import { ActionConfigurationRegistry } from '@waldur/resource/actions/action-configuration';
+import { lazyComponent } from '@waldur/core/lazyComponent';
+import { ActionRegistry } from '@waldur/resource/actions/registry';
 import * as ResourceSummary from '@waldur/resource/summary/registry';
 
 import actions from './actions';
 import './breadcrumbs';
-import openstackBackupRestoreSummary from './openstack-backup-restore-summary';
-import { OpenStackBackupSummary } from './OpenStackBackupSummary';
+const OpenStackBackupSummary = lazyComponent(
+  () =>
+    import(
+      /* webpackChunkName: "OpenStackBackupSummary" */ './OpenStackBackupSummary'
+    ),
+  'OpenStackBackupSummary',
+);
 
 import './tabs';
 
-export default (module) => {
-  ResourceSummary.register('OpenStackTenant.Backup', OpenStackBackupSummary);
-  module.component(
-    'openstackBackupRestoreSummary',
-    openstackBackupRestoreSummary,
-  );
-  ActionConfigurationRegistry.register('OpenStackTenant.Backup', actions);
-};
+ResourceSummary.register('OpenStackTenant.Backup', OpenStackBackupSummary);
+ActionRegistry.register('OpenStackTenant.Backup', actions);

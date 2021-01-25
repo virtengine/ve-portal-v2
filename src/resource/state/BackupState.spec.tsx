@@ -1,5 +1,4 @@
 import { render } from 'enzyme';
-import * as React from 'react';
 
 import { BackupState } from './BackupState';
 

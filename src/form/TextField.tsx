@@ -1,4 +1,4 @@
-import * as React from 'react';
+import { FunctionComponent } from 'react';
 
 import { FormField } from './types';
 
@@ -8,7 +8,7 @@ interface TextFieldProps extends FormField {
   rows?: number;
 }
 
-export const TextField = (props: TextFieldProps) => {
+export const TextField: FunctionComponent<TextFieldProps> = (props) => {
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const { input, label, rows, hideLabel, validate, ...rest } = props;
   return (

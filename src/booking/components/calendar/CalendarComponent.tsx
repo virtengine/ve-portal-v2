@@ -1,15 +1,11 @@
-import * as React from 'react';
+import { lazyComponent } from '@waldur/core/lazyComponent';
 
-import { LoadingSpinner } from '@waldur/core/LoadingSpinner';
+import type { CalendarComponentProps } from './LazyCalendarComponent';
 
-const LazyCalendarComponent = React.lazy(() =>
-  import('./LazyCalendarComponent').then(({ LazyCalendarComponent }) => ({
-    default: LazyCalendarComponent,
-  })),
-);
-
-export const CalendarComponent = (props) => (
-  <React.Suspense fallback={<LoadingSpinner />}>
-    <LazyCalendarComponent {...props} />
-  </React.Suspense>
+export const CalendarComponent = lazyComponent<CalendarComponentProps>(
+  () =>
+    import(
+      /* webpackChunkName: "LazyCalendarComponent" */ './LazyCalendarComponent'
+    ),
+  'LazyCalendarComponent',
 );

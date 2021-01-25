@@ -1,12 +1,9 @@
-import * as React from 'react';
-import ControlLabel from 'react-bootstrap/lib/ControlLabel';
-import FormGroup from 'react-bootstrap/lib/FormGroup';
-import HelpBlock from 'react-bootstrap/lib/HelpBlock';
+import { ControlLabel, FormGroup, HelpBlock } from 'react-bootstrap';
 import { Field } from 'redux-form';
 
 import { FieldError } from '@waldur/form';
 
-export const InputGroup = ({ label, helpText, ...props }: any) => (
+export const InputGroup = ({ label, helpText, validate, ...props }: any) => (
   <FormGroup>
     <ControlLabel>
       {label} {props.required && <span className="text-danger"> *</span>}
@@ -17,6 +14,7 @@ export const InputGroup = ({ label, helpText, ...props }: any) => (
       component={({ meta }) =>
         meta.touched && <FieldError error={meta.error} />
       }
+      validate={validate}
     />
     {helpText && (
       <HelpBlock>

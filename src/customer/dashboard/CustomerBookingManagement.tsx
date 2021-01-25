@@ -1,8 +1,7 @@
-import * as React from 'react';
-import * as Col from 'react-bootstrap/lib/Col';
-import * as Row from 'react-bootstrap/lib/Row';
+import { FunctionComponent } from 'react';
+import { Col, Row } from 'react-bootstrap';
 import { useSelector } from 'react-redux';
-import useAsync from 'react-use/lib/useAsync';
+import { useAsync } from 'react-use';
 
 import { BookingsFilter } from '@waldur/booking/BookingsFilter';
 import { BookingsList } from '@waldur/booking/BookingsList';
@@ -22,7 +21,7 @@ const loadBookingOfferingsCount = async (customerUuid: string) =>
     },
   });
 
-export const CustomerBookingManagement = () => {
+export const CustomerBookingManagement: FunctionComponent = () => {
   const customer = useSelector(getCustomer);
   const { loading, value: offeringsCount, error } = useAsync(
     () => loadBookingOfferingsCount(customer.uuid),

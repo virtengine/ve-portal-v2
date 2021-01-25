@@ -1,4 +1,4 @@
-import * as React from 'react';
+import { FunctionComponent } from 'react';
 import { useSelector } from 'react-redux';
 
 import { translate } from '@waldur/i18n';
@@ -39,11 +39,11 @@ const getWorkspaceAlias = (workspace: WorkspaceType): string => {
   return alias;
 };
 
-export const WorkspaceLabel = () => {
+export const WorkspaceLabel: FunctionComponent = () => {
   const workspace = useSelector(getWorkspace);
   return (
     <div className="workspace-label-container hidden-md-stable">
-      <span>{getWorkspaceAlias(workspace)}</span>
+      <>{getWorkspaceAlias(workspace)}</>
     </div>
   );
 };

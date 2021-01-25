@@ -1,7 +1,6 @@
-import * as React from 'react';
+import { FunctionComponent } from 'react';
 import { useSelector } from 'react-redux';
-import useAsyncFn from 'react-use/lib/useAsyncFn';
-import useEffectOnce from 'react-use/lib/useEffectOnce';
+import { useAsyncFn, useEffectOnce } from 'react-use';
 
 import { Link } from '@waldur/core/Link';
 import { LoadingSpinner } from '@waldur/core/LoadingSpinner';
@@ -12,7 +11,7 @@ import { getIssues } from '../api';
 
 import { IssueRow } from './IssueRow';
 
-export const IssuesShortList = () => {
+export const IssuesShortList: FunctionComponent = () => {
   const user = useSelector(getUser);
   const [{ loading, error, value }, loadData] = useAsyncFn(
     () => getIssues({ caller: user.url }),

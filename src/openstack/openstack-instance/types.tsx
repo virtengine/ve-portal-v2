@@ -1,5 +1,7 @@
 import { VirtualMachine } from '@waldur/resource/types';
 
+import { SecurityGroup } from '../openstack-security-groups/types';
+
 interface RancherClusterReference {
   uuid: string;
   name: string;
@@ -7,9 +9,9 @@ interface RancherClusterReference {
 
 export interface OpenStackInstance extends VirtualMachine {
   flavor_name: string;
-  floating_ips?: string[];
+  floating_ips?: FloatingIp[];
   runtime_state: 'SHUTOFF' | 'ACTIVE';
-  security_groups?: string[];
+  security_groups?: SecurityGroup[];
   availability_zone_name?: string;
   rancher_cluster?: RancherClusterReference;
 }
@@ -35,6 +37,8 @@ export interface FloatingIp {
   address: string;
   runtime_state: string;
   is_booked: boolean;
+  subnet?: string;
+  subnet_name?: string;
 }
 
 export interface ServiceComponent {
@@ -48,6 +52,7 @@ export interface Flavor extends ServiceComponent {
   name: string;
   disabled: boolean;
   display_name?: string;
+  disk: number;
 }
 
 export interface Image extends ServiceComponent {

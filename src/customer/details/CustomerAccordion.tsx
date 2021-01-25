@@ -1,6 +1,6 @@
-import * as React from 'react';
-import * as Button from 'react-bootstrap/lib/Button';
-import useBoolean from 'react-use/lib/useBoolean';
+import React from 'react';
+import { Button } from 'react-bootstrap';
+import { useBoolean } from 'react-use';
 
 import { translate } from '@waldur/i18n';
 

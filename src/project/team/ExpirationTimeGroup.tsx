@@ -1,14 +1,16 @@
 import moment from 'moment-timezone';
-import * as React from 'react';
-import ControlLabel from 'react-bootstrap/lib/ControlLabel';
-import FormGroup from 'react-bootstrap/lib/FormGroup';
+import { FunctionComponent } from 'react';
+import { ControlLabel, FormGroup } from 'react-bootstrap';
 import { Field } from 'redux-form';
 
 import { DateField } from '@waldur/form/DateField';
 import { translate } from '@waldur/i18n';
+
 import './ExpirationTimeGroup.scss';
 
-export const ExpirationTimeGroup = ({ disabled }) => (
+export const ExpirationTimeGroup: FunctionComponent<{ disabled }> = ({
+  disabled,
+}) => (
   <FormGroup id="expiration-time-group">
     <ControlLabel>{translate('Role expires on')}</ControlLabel>
     <Field

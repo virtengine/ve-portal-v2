@@ -1,5 +1,5 @@
-import * as React from 'react';
-import * as Panel from 'react-bootstrap/lib/Panel';
+import { FunctionComponent } from 'react';
+import { Panel } from 'react-bootstrap';
 import { Field, FormSection } from 'redux-form';
 
 import { translate } from '@waldur/i18n';
@@ -12,7 +12,9 @@ interface OwnProps {
   onRemove(index: number): void;
 }
 
-export const EnvironmentVariablePanel = (props: OwnProps) => (
+export const EnvironmentVariablePanel: FunctionComponent<OwnProps> = (
+  props,
+) => (
   <Panel>
     <Panel.Heading>
       <RemoveButton onClick={() => props.onRemove(props.index)} />

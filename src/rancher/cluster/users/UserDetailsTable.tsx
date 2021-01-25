@@ -1,12 +1,12 @@
-import * as React from 'react';
-import * as Table from 'react-bootstrap/lib/Table';
+import { FunctionComponent } from 'react';
+import { Table } from 'react-bootstrap';
 
 import { translate } from '@waldur/i18n';
 import { Row } from '@waldur/user/support/Row';
 
 import { RolesRenderer } from './RolesRenderer';
 
-export const UserDetailsTable = (props) => (
+export const UserDetailsTable: FunctionComponent<any> = (props) => (
   <Table responsive={true} bordered={true}>
     <tbody>
       <Row label={translate('Full name')} value={props.user.full_name} />

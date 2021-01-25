@@ -1,5 +1,5 @@
-import * as React from 'react';
-import * as Dropdown from 'react-bootstrap/lib/Dropdown';
+import { FunctionComponent } from 'react';
+import { Dropdown, DropdownMenu, DropdownToggle } from 'react-bootstrap';
 
 import { translate } from '@waldur/i18n';
 
@@ -7,7 +7,7 @@ interface Props {
   exportAs?: (format: string) => void;
 }
 
-export const TableExportButton = ({ exportAs }: Props) => {
+export const TableExportButton: FunctionComponent<Props> = ({ exportAs }) => {
   const exporters = [
     {
       label: translate('Copy to clipboard'),
@@ -29,12 +29,12 @@ export const TableExportButton = ({ exportAs }: Props) => {
 
   return (
     <Dropdown id="export-button">
-      <Dropdown.Toggle className="btn-sm">
+      <DropdownToggle className="btn-sm">
         <i className="fa fa-download" />
         &nbsp;
         {translate('Export as')}
-      </Dropdown.Toggle>
-      <Dropdown.Menu>
+      </DropdownToggle>
+      <DropdownMenu>
         {exporters.map(({ label, format }) => (
           <li role="presentation" key={format} onClick={() => exportAs(format)}>
             <a role="menuitem" tabIndex={-1}>
@@ -42,7 +42,7 @@ export const TableExportButton = ({ exportAs }: Props) => {
             </a>
           </li>
         ))}
-      </Dropdown.Menu>
+      </DropdownMenu>
     </Dropdown>
   );
 };

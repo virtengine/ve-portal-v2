@@ -1,4 +1,4 @@
-import * as React from 'react';
+import { FunctionComponent, useMemo } from 'react';
 
 import { Link } from '@waldur/core/Link';
 import { Table, connectTable, createFetcher } from '@waldur/table';
@@ -6,9 +6,9 @@ import { Table, connectTable, createFetcher } from '@waldur/table';
 import { CatalogCreateButton } from './CatalogCreateButton';
 import { CatalogDeleteButton } from './CatalogDeleteButton';
 
-const TableComponent = (props) => {
+const TableComponent: FunctionComponent<any> = (props) => {
   const { translate } = props;
-  const columns = React.useMemo(
+  const columns = useMemo(
     () => [
       {
         title: translate('Name'),
@@ -26,11 +26,11 @@ const TableComponent = (props) => {
       },
       {
         title: translate('Description'),
-        render: ({ row }) => <span>{row.description}</span>,
+        render: ({ row }) => <>{row.description}</>,
       },
       {
         title: translate('URL'),
-        render: ({ row }) => <span>{row.catalog_url}</span>,
+        render: ({ row }) => <>{row.catalog_url}</>,
       },
       {
         title: translate('Actions'),

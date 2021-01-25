@@ -4,53 +4,71 @@ import {
   PROJECT_ADMIN_ROLE,
   PROJECT_MANAGER_ROLE,
 } from '@waldur/core/constants';
+import { RootState } from '@waldur/store/reducers';
 
-import { User, Customer, Project, OuterState, WorkspaceType } from './types';
+import { User, Customer, Project, WorkspaceType } from './types';
 
-export const getUser = (state: OuterState): User => state.workspace.user;
+export const getUser = (state: RootState): User => state.workspace.user;
 
-export const getCustomer = (state: OuterState): Customer =>
+export const getCustomer = (state: RootState): Customer =>
   state.workspace.customer;
 
-export const getUserCustomerPermissions = createSelector(getUser, (user) => {
-  if (user) {
-    return user.customer_permissions;
-  }
-  return [];
-});
+export const getUserCustomerPermissions = createSelector(
+  getUser,
+  (user: User) => {
+    if (user) {
+      return user.customer_permissions;
+    }
+    return [];
+  },
+);
 
-export const getUserProjectPermissions = createSelector(getUser, (user) => {
-  if (user) {
-    return user.project_permissions;
-  }
-  return [];
-});
+export const getUserProjectPermissions = createSelector(
+  getUser,
+  (user: User) => {
+    if (user) {
+      return user.project_permissions;
+    }
+    return [];
+  },
+);
 
-export const getProject = (state: OuterState): Project =>
+export const getProject = (state: RootState): Project =>
   state.workspace.project;
 
-export const getWorkspace = (state: OuterState): WorkspaceType =>
+export const getWorkspace = (state: RootState): WorkspaceType =>
   state.workspace.workspace;
 
-export const isStaff = (state: OuterState): boolean =>
+export const isStaff = (state: RootState): boolean =>
   getUser(state) && getUser(state).is_staff;
 
-export const isSupport = (state: OuterState): boolean =>
+export const isSupport = (state: RootState): boolean =>
   getUser(state) && getUser(state).is_support;
 
-export const isStaffOrSupport = (state: OuterState): boolean =>
+export const isSupportOnly = (state: RootState): boolean =>
+  isSupport(state) &&
+  !isStaff(state) &&
+  !checkIsOwner(state.workspace.customer, state.workspace.user) &&
+  !checkIsServiceManager(state.workspace.customer, state.workspace.user);
+
+export const isStaffOrSupport = (state: RootState): boolean =>
   isStaff(state) || isSupport(state);
 
-export const checkIsOwner = (customer, user) => {
-  for (let i = 0; i < customer.owners.length; i++) {
-    if (user && user.uuid === customer.owners[i].uuid) {
-      return true;
-    }
-  }
-  return false;
-};
+export const checkIsOwner = (customer: Customer, user: User): boolean =>
+  customer &&
+  user &&
+  customer.owners.find((owner) => owner.uuid === user.uuid) !== undefined;
 
-export const checkCustomerUser = (customer, user) => {
+export const checkIsServiceManager = (
+  customer: Customer,
+  user: User,
+): boolean =>
+  customer &&
+  user &&
+  customer.service_managers.find((manager) => manager.uuid === user.uuid) !==
+    undefined;
+
+export const checkCustomerUser = (customer: Customer, user: User): boolean => {
   if (user && user.is_staff) {
     return true;
   }
@@ -60,7 +78,7 @@ export const checkCustomerUser = (customer, user) => {
 export const getOwner = createSelector(
   getUser,
   getCustomer,
-  (user, customer) => {
+  (user: User, customer: Customer) => {
     if (!user) {
       return undefined;
     }
@@ -70,6 +88,12 @@ export const getOwner = createSelector(
   },
 );
 
+export const isServiceManagerSelector = createSelector(
+  getCustomer,
+  getUser,
+  checkIsServiceManager,
+);
+
 export const isOwner = createSelector(getOwner, (owner) => {
   return !!owner;
 });
@@ -77,7 +101,7 @@ export const isOwner = createSelector(getOwner, (owner) => {
 export const isOwnerOrStaff = createSelector(
   getUser,
   isOwner,
-  (user, userIsOwner) => {
+  (user: User, userIsOwner: boolean): boolean => {
     if (!user) {
       return false;
     }
@@ -88,7 +112,7 @@ export const isOwnerOrStaff = createSelector(
   },
 );
 
-const checkRole = (project, user, role) => {
+const checkRole = (project: Project, user: User, role: string) => {
   if (!project.permissions) {
     return false;
   }
@@ -103,27 +127,19 @@ const checkRole = (project, user, role) => {
 export const isManager = createSelector(
   getUser,
   getProject,
-  (user, project) => {
+  (user: User, project: Project): boolean => {
     return project && checkRole(project, user, PROJECT_MANAGER_ROLE);
   },
 );
 
-export const isAdmin = createSelector(getUser, getProject, (user, project) => {
-  return checkRole(project, user, PROJECT_ADMIN_ROLE);
-});
+export const isAdmin = createSelector(
+  getUser,
+  getProject,
+  (user: User, project: Project): boolean => {
+    return checkRole(project, user, PROJECT_ADMIN_ROLE);
+  },
+);
 
-export const filterByUser = (state: OuterState) => ({
+export const filterByUser = (state: RootState) => ({
   user_url: getUser(state)?.url,
 });
-
-export const selectTablePagination = (state, table) => {
-  if (state.tables && state.tables[table]) {
-    return state.tables[table].pagination;
-  }
-};
-
-export const selectTableSorting = (state, table) => {
-  if (state.tables && state.tables[table]) {
-    return state.tables[table].sorting;
-  }
-};

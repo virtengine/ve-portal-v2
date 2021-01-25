@@ -1,10 +1,11 @@
-import * as React from 'react';
+import { FunctionComponent } from 'react';
 import { connect } from 'react-redux';
 import { compose } from 'redux';
 import { getFormValues } from 'redux-form';
 
+import { defaultCurrency } from '@waldur/core/formatCurrency';
 import { Link } from '@waldur/core/Link';
-import { defaultCurrency } from '@waldur/core/services';
+import { RootState } from '@waldur/store/reducers';
 import { Table, connectTable, createFetcher } from '@waldur/table';
 import { TableOptionsType } from '@waldur/table/types';
 import { getCustomer, isOwnerOrStaff } from '@waldur/workspace/selectors';
@@ -13,7 +14,7 @@ import { InvoiceActions } from './InvoiceActions';
 import { InvoicesFilter } from './InvoicesFilter';
 import { InvoiceStateIndicator } from './InvoiceStateIndicator';
 
-const TableComponent = (props) => {
+const TableComponent: FunctionComponent<any> = (props) => {
   const { translate } = props;
   return (
     <Table
@@ -74,7 +75,7 @@ const TableOptions: TableOptionsType = {
   mapPropsToFilter,
 };
 
-const mapStateToProps = (state) => ({
+const mapStateToProps = (state: RootState) => ({
   customer: getCustomer(state),
   showActions: isOwnerOrStaff(state),
   stateFilter: getFormValues('PayPalInvoicesFilter')(state),
@@ -84,7 +85,7 @@ const enhance = compose(connect(mapStateToProps), connectTable(TableOptions));
 
 const InvoicesListComponent = enhance(TableComponent);
 
-export const PayPalInvoicesList = () => (
+export const PayPalInvoicesList: FunctionComponent = () => (
   <>
     <InvoicesFilter />
     <InvoicesListComponent />

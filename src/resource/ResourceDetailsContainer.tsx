@@ -1,10 +1,9 @@
 import { useCurrentStateAndParams, useRouter } from '@uirouter/react';
-import * as React from 'react';
-import useAsyncFn from 'react-use/lib/useAsyncFn';
-import useEffectOnce from 'react-use/lib/useEffectOnce';
+import { useState, useEffect, FunctionComponent } from 'react';
+import { useAsyncFn, useEffectOnce, useNetwork } from 'react-use';
 
+import { ENV } from '@waldur/configs/default';
 import { LoadingSpinner } from '@waldur/core/LoadingSpinner';
-import { ENV } from '@waldur/core/services';
 import { useRecursiveTimeout } from '@waldur/core/useRecursiveTimeout';
 import { translate } from '@waldur/i18n';
 import { useBreadcrumbsFn } from '@waldur/navigation/breadcrumbs/store';
@@ -17,7 +16,7 @@ import { ResourceDetails } from './ResourceDetails';
 import { ResourcesService } from './ResourcesService';
 import { BaseResource } from './types';
 
-export const ResourceDetailsContainer = () => {
+export const ResourceDetailsContainer: FunctionComponent = () => {
   const { params } = useCurrentStateAndParams();
   const router = useRouter();
 
@@ -30,11 +29,14 @@ export const ResourceDetailsContainer = () => {
     refreshResource();
   });
 
-  useRecursiveTimeout(refreshResource, ENV.resourcesTimerInterval * 1000);
+  const { online } = useNetwork();
 
-  const [resource, setResource] = React.useState<BaseResource>();
+  const pullInterval = online ? ENV.defaultPullInterval * 1000 : null;
+  useRecursiveTimeout(refreshResource, pullInterval);
 
-  React.useEffect(() => {
+  const [resource, setResource] = useState<BaseResource>();
+
+  useEffect(() => {
     if (
       asyncResult.value &&
       (!resource || resource.modified !== asyncResult.value.modified)
@@ -50,7 +52,7 @@ export const ResourceDetailsContainer = () => {
 
   useTitle(resource ? resource.name : translate('Resource details'));
 
-  React.useEffect(() => {
+  useEffect(() => {
     if (!asyncResult.error) {
       return;
     }

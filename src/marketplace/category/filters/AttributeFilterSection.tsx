@@ -1,4 +1,4 @@
-import * as React from 'react';
+import { FunctionComponent } from 'react';
 import { connect } from 'react-redux';
 import { Field, getFormValues } from 'redux-form';
 
@@ -22,8 +22,8 @@ const markSelectedFilter = (filterValues, fieldName) => {
   }
 };
 
-export const PureAttributeFilterSection = (
-  props: PureAttributeFilterSectionProps,
+export const PureAttributeFilterSection: FunctionComponent<PureAttributeFilterSectionProps> = (
+  props,
 ) => (
   <section className="m-t-md m-b-md">
     <h3 className="shopping-cart-sidebar-title">{props.section.title}</h3>

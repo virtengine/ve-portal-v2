@@ -1,7 +1,5 @@
-import * as React from 'react';
-import * as Panel from 'react-bootstrap/lib/Panel';
-import * as PanelGroup from 'react-bootstrap/lib/PanelGroup';
-import Table from 'react-bootstrap/lib/Table';
+import { FunctionComponent } from 'react';
+import { Panel, PanelGroup, Table } from 'react-bootstrap';
 
 import { ExternalLink } from '@waldur/core/ExternalLink';
 import { translate } from '@waldur/i18n';
@@ -64,7 +62,9 @@ const ApplicationAnswersTable = ({ application }) => (
   </Table>
 );
 
-export const ApplicationDetailsDialog = ({ resolve: { application } }) => (
+export const ApplicationDetailsDialog: FunctionComponent<{
+  resolve: { application };
+}> = ({ resolve: { application } }) => (
   <ModalDialog
     title={translate('Application details')}
     footer={<CloseDialogButton />}

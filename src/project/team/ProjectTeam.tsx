@@ -1,7 +1,5 @@
-import * as React from 'react';
-import * as PanelBody from 'react-bootstrap/lib/PanelBody';
-import * as Tab from 'react-bootstrap/lib/Tab';
-import * as Tabs from 'react-bootstrap/lib/Tabs';
+import { FunctionComponent } from 'react';
+import { PanelBody, Tab, Tabs } from 'react-bootstrap';
 
 import { translate } from '@waldur/i18n';
 import { useTitle } from '@waldur/navigation/title';
@@ -9,7 +7,7 @@ import { useTitle } from '@waldur/navigation/title';
 import { ProjectPermissionsLogList } from './ProjectPermissionsLogList';
 import { ProjectUsersList } from './ProjectUsersList';
 
-export const ProjectTeam = () => {
+export const ProjectTeam: FunctionComponent = () => {
   useTitle(translate('Team'));
   return (
     <div className="tabs-container m-l-sm">

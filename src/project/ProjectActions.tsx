@@ -1,15 +1,22 @@
-import * as React from 'react';
+import { FunctionComponent } from 'react';
 
-import { $state } from '@waldur/core/services';
+import { lazyComponent } from '@waldur/core/lazyComponent';
 import { ActionList } from '@waldur/dashboard/ActionList';
 import { getIssueAction } from '@waldur/dashboard/ReportIssueAction';
 import { getSupportPortalAction } from '@waldur/dashboard/SupportPortalAction';
 import { translate } from '@waldur/i18n';
 import { openModalDialog } from '@waldur/modal/actions';
+import { router } from '@waldur/router';
 import store from '@waldur/store/store';
 import { Project, User } from '@waldur/workspace/types';
 
-import { ProjectDetailsDialog } from './ProjectDetailsDialog';
+const ProjectDetailsDialog = lazyComponent(
+  () =>
+    import(
+      /* webpackChunkName: "ProjectDetailsDialog" */ './ProjectDetailsDialog'
+    ),
+  'ProjectDetailsDialog',
+);
 
 interface ProjectActionsProps {
   user: User;
@@ -38,12 +45,14 @@ const getTeamAction = (props: ProjectActionsProps) => {
   return {
     title: translate('Add team member'),
     onClick() {
-      $state.go('project.team');
+      router.stateService.go('project.team');
     },
   };
 };
 
-export const ProjectActions = (props: ProjectActionsProps) => {
+export const ProjectActions: FunctionComponent<ProjectActionsProps> = (
+  props,
+) => {
   const actions = [
     getDetailsAction(props.project),
     getTeamAction(props),

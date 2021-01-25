@@ -1,7 +1,5 @@
-import * as React from 'react';
-import * as Col from 'react-bootstrap/lib/Col';
-import * as FormGroup from 'react-bootstrap/lib/FormGroup';
-import * as HelpBlock from 'react-bootstrap/lib/HelpBlock';
+import React from 'react';
+import { Col, FormGroup, HelpBlock } from 'react-bootstrap';
 import { Field, WrappedFieldProps } from 'redux-form';
 
 import { required } from '@waldur/core/validators';

@@ -1,4 +1,4 @@
-import * as React from 'react';
+import { FunctionComponent } from 'react';
 import { connect } from 'react-redux';
 import { compose } from 'redux';
 
@@ -14,7 +14,7 @@ interface DispatchProps {
   onOpenCreateDialog(): void;
 }
 
-const PureZabbixHostCreateButton = (props) => (
+const PureZabbixHostCreateButton: FunctionComponent<any> = (props) => (
   <a onClick={props.onOpenCreateDialog} className="btn btn-default btn-xs">
     <i className="text-info fa fa-line-chart" />{' '}
     {props.translate('Resource is not monitored yet.')}

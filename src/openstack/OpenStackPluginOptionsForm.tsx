@@ -1,16 +1,19 @@
-import * as React from 'react';
+import { useMemo, FunctionComponent } from 'react';
 import { useSelector } from 'react-redux';
 import { formValueSelector } from 'redux-form';
 
 import { FormContainer, SelectField, NumberField } from '@waldur/form';
 import { translate } from '@waldur/i18n';
 import { FORM_ID } from '@waldur/marketplace/offerings/store/constants';
+import { RootState } from '@waldur/store/reducers';
 
-const pluginOptionsSelector = (state) =>
+const pluginOptionsSelector = (state: RootState) =>
   formValueSelector(FORM_ID)(state, 'plugin_options');
 
-export const OpenStackPluginOptionsForm = ({ container }) => {
-  const STORAGE_MODE_OPTIONS = React.useMemo(
+export const OpenStackPluginOptionsForm: FunctionComponent<{ container }> = ({
+  container,
+}) => {
+  const STORAGE_MODE_OPTIONS = useMemo(
     () => [
       {
         label: translate('Fixed — use common storage quota'),

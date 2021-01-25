@@ -1,6 +1,5 @@
-import * as React from 'react';
-import * as Panel from 'react-bootstrap/lib/Panel';
-import * as PanelGroup from 'react-bootstrap/lib/PanelGroup';
+import { FunctionComponent } from 'react';
+import { Panel, PanelGroup } from 'react-bootstrap';
 
 import { translate } from '@waldur/i18n';
 
@@ -10,7 +9,9 @@ interface OfferingReportComponentProps {
   report: Report;
 }
 
-export const OfferingReportComponent = (props: OfferingReportComponentProps) =>
+export const OfferingReportComponent: FunctionComponent<OfferingReportComponentProps> = (
+  props,
+) =>
   Array.isArray(props.report) ? (
     <PanelGroup accordion={true} defaultActiveKey={0} id="oracle-report">
       {props.report.map((section, index) => (

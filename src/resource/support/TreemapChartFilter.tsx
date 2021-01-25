@@ -1,15 +1,14 @@
-import * as React from 'react';
-import { useState } from 'react';
-import * as Panel from 'react-bootstrap/lib/Panel';
-import { reduxForm, Field } from 'redux-form';
+import { FunctionComponent } from 'react';
+import { Panel } from 'react-bootstrap';
+import { useToggle } from 'react-use';
+import { Field, reduxForm } from 'redux-form';
 
 import { AwesomeCheckboxField } from '@waldur/form/AwesomeCheckboxField';
 import { translate } from '@waldur/i18n/translate';
 
 import { QuotaSelector } from './QuotaSelector';
-import { QuotaList, QuotaChoice } from './types';
-
 import './TreemapChartFilter.scss';
+import { QuotaChoice, QuotaList } from './types';
 
 interface TreemapChartFilterProps {
   quotas: QuotaList;
@@ -17,20 +16,17 @@ interface TreemapChartFilterProps {
   total?: number;
 }
 
-export const PureTreemapChartFilter = (props: TreemapChartFilterProps) => {
-  const [open, setOpen] = useState(true);
-  const togglePanel = () => {
-    setOpen(!open);
-  };
+export const PureTreemapChartFilter: FunctionComponent<TreemapChartFilterProps> = (
+  props,
+) => {
+  const [open, togglePanel] = useToggle(true);
 
   return (
     <Panel expanded={open}>
       <Panel.Heading>
         <Panel.Title>
           <h4 id="toggle-controls-label" onClick={togglePanel}>
-            {translate('{state} controls', {
-              state: !open ? 'Show' : 'Hide',
-            })}
+            {open ? translate('Hide controls') : translate('Show controls')}
           </h4>
         </Panel.Title>
       </Panel.Heading>

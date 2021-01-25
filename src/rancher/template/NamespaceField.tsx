@@ -1,18 +1,19 @@
-import * as React from 'react';
-import * as FormControl from 'react-bootstrap/lib/FormControl';
+import React, { FunctionComponent } from 'react';
+import { FormControl } from 'react-bootstrap';
 import { useSelector } from 'react-redux';
 import { Field, formValueSelector } from 'redux-form';
 
 import { required } from '@waldur/core/validators';
 import { FieldError } from '@waldur/form';
 import { translate } from '@waldur/i18n';
+import { RootState } from '@waldur/store/reducers';
 
 import { Namespace } from '../types';
 
 import { DecoratedField } from './DecoratedField';
 import { SelectControl } from './SelectControl';
 
-const NamespaceSwitcher = () => (
+const NamespaceSwitcher: FunctionComponent = () => (
   <Field
     name="useNewNamespace"
     component={(fieldProps) => (
@@ -33,7 +34,7 @@ interface NamespaceFieldProps {
 }
 
 export const NamespaceField: React.FC<NamespaceFieldProps> = ({ options }) => {
-  const useNew = useSelector((state) =>
+  const useNew = useSelector((state: RootState) =>
     formValueSelector('RancherTemplateQuestions')(state, 'useNewNamespace'),
   );
 

@@ -1,28 +1,26 @@
-import * as React from 'react';
+import { triggerTransition } from '@uirouter/redux';
+import { useEffect, FunctionComponent } from 'react';
 import { useDispatch } from 'react-redux';
 
 import { AuthService } from '@waldur/auth/AuthService';
 import { post, getFirst } from '@waldur/core/api';
 import { format } from '@waldur/core/ErrorMessageFormatter';
 import { LoadingSpinner } from '@waldur/core/LoadingSpinner';
-import { $state } from '@waldur/core/services';
+import { wait } from '@waldur/core/utils';
 import { translate } from '@waldur/i18n';
-import { showError, showSuccess, stateGo } from '@waldur/store/coreSaga';
+import { router } from '@waldur/router';
+import { showError, showSuccess } from '@waldur/store/notify';
 import { setCurrentUser } from '@waldur/workspace/actions';
 
-function delay(ms) {
-  return new Promise((resolve) => {
-    setTimeout(resolve, ms);
-  });
-}
-
-export const UserEmailChangeCallback = () => {
+export const UserEmailChangeCallback: FunctionComponent = () => {
   const dispatch = useDispatch();
 
-  React.useEffect(() => {
+  useEffect(() => {
     async function load() {
       try {
-        await post('/users/confirm_email/', { code: $state.params.token });
+        await post('/users/confirm_email/', {
+          code: router.globals.params.token,
+        });
         dispatch(showSuccess(translate('Email has been updated.')));
       } catch (error) {
         const errorMessage = `${translate('Unable to confirm email.')} ${format(
@@ -32,7 +30,7 @@ export const UserEmailChangeCallback = () => {
       }
 
       if (!AuthService.isAuthenticated()) {
-        dispatch(stateGo('login'));
+        dispatch(triggerTransition('login', {}));
         return;
       }
 
@@ -48,9 +46,9 @@ export const UserEmailChangeCallback = () => {
 
       if (currentUser) {
         dispatch(setCurrentUser(currentUser));
-        await delay(1000);
+        await wait(1000);
       }
-      dispatch(stateGo('profile.manage'));
+      dispatch(triggerTransition('profile.manage', {}));
     }
     load();
   }, [dispatch]);

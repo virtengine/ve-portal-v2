@@ -1,18 +1,21 @@
-import * as React from 'react';
-import * as PanelBody from 'react-bootstrap/lib/PanelBody';
-import * as Tab from 'react-bootstrap/lib/Tab';
-import * as Tabs from 'react-bootstrap/lib/Tabs';
+import { FunctionComponent } from 'react';
+import { PanelBody, Tab, Tabs } from 'react-bootstrap';
+import { useSelector } from 'react-redux';
 
+import { CustomerUsersListFilter } from '@waldur/customer/team/CustomerUsersListFilter';
 import { translate } from '@waldur/i18n';
 import { InvitationsList } from '@waldur/invitations/InvitationsList';
 import { useTitle } from '@waldur/navigation/title';
+import { getCustomer } from '@waldur/workspace/selectors';
 
 import { CustomerPermissionsLogList } from './CustomerPermissionsLogList';
 import { CustomerPermissionsReviewList } from './CustomerPermissionsReviewList';
 import { CustomerUsersList } from './CustomerUsersList';
+import { OfferingPermissionsList } from './OfferingPermissionsList';
 
-export const CustomerTeam = () => {
+export const CustomerTeam: FunctionComponent = () => {
   useTitle(translate('Team'));
+  const customer = useSelector(getCustomer);
   return (
     <div className="tabs-container m-l-sm">
       <Tabs
@@ -24,6 +27,7 @@ export const CustomerTeam = () => {
       >
         <Tab title={translate('Users')} eventKey="users">
           <PanelBody>
+            <CustomerUsersListFilter />
             <CustomerUsersList />
           </PanelBody>
         </Tab>
@@ -42,6 +46,13 @@ export const CustomerTeam = () => {
             <CustomerPermissionsReviewList />
           </PanelBody>
         </Tab>
+        {customer.is_service_provider && (
+          <Tab title={translate('Offering permissions')} eventKey="offerings">
+            <PanelBody>
+              <OfferingPermissionsList />
+            </PanelBody>
+          </Tab>
+        )}
       </Tabs>
     </div>
   );

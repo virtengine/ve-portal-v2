@@ -1,11 +1,15 @@
-import * as React from 'react';
-import * as Dropdown from 'react-bootstrap/lib/Dropdown';
-import * as MenuItem from 'react-bootstrap/lib/MenuItem';
+import { FunctionComponent } from 'react';
+import {
+  Dropdown,
+  DropdownMenu,
+  DropdownToggle,
+  MenuItem,
+} from 'react-bootstrap';
 
 import { translate } from './translate';
 import { useLanguageSelector } from './useLanguageSelector';
 
-export const LanguageSelector = () => {
+export const LanguageSelector: FunctionComponent = () => {
   const {
     currentLanguage,
     languageChoices,
@@ -18,7 +22,7 @@ export const LanguageSelector = () => {
 
   return (
     <Dropdown id="language-selector" componentClass="li">
-      <Dropdown.Toggle
+      <DropdownToggle
         useAnchor
         noCaret
         title={translate(currentLanguage.label)}
@@ -26,8 +30,8 @@ export const LanguageSelector = () => {
         {currentLanguage.display_code
           ? currentLanguage.display_code.toUpperCase()
           : currentLanguage.code.toUpperCase()}
-      </Dropdown.Toggle>
-      <Dropdown.Menu>
+      </DropdownToggle>
+      <DropdownMenu>
         {languageChoices.map((language) => (
           <MenuItem
             key={language.code}
@@ -37,7 +41,7 @@ export const LanguageSelector = () => {
             {translate(language.label)}
           </MenuItem>
         ))}
-      </Dropdown.Menu>
+      </DropdownMenu>
     </Dropdown>
   );
 };

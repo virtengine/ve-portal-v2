@@ -1,18 +1,18 @@
 import { useRouter } from '@uirouter/react';
 import Qs from 'qs';
-import * as React from 'react';
+import { FunctionComponent } from 'react';
 import { useDispatch } from 'react-redux';
-import useEffectOnce from 'react-use/lib/useEffectOnce';
+import { useEffectOnce } from 'react-use';
 
 import { post } from '@waldur/core/api';
 import { getQueryString } from '@waldur/core/utils';
 import { translate } from '@waldur/i18n';
 import { useTitle } from '@waldur/navigation/title';
-import { showError, showSuccess } from '@waldur/store/coreSaga';
+import { showError, showSuccess } from '@waldur/store/notify';
 
 const cancelPayment = (payload) => post('/paypal-payments/cancel/', payload);
 
-export const PaymentCancel = () => {
+export const PaymentCancel: FunctionComponent = () => {
   useTitle(translate('Cancel payment'));
   const dispatch = useDispatch();
   const router = useRouter();

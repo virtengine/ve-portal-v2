@@ -1,4 +1,4 @@
-import * as React from 'react';
+import { FunctionComponent } from 'react';
 
 import { required } from '@waldur/core/validators';
 import {
@@ -8,7 +8,10 @@ import {
   SecretField,
 } from '@waldur/form';
 
-export const VMwareForm = ({ translate, container }) => (
+export const VMwareForm: FunctionComponent<{ translate; container }> = ({
+  translate,
+  container,
+}) => (
   <FormContainer {...container}>
     <StringField
       name="backend_url"

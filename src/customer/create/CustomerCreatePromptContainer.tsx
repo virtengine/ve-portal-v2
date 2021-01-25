@@ -4,13 +4,14 @@ import { reduxForm, SubmissionError } from 'redux-form';
 
 import { translate, withTranslation } from '@waldur/i18n';
 import { renderServiceProvider } from '@waldur/marketplace/service-providers/selectors';
-import { closeModalDialog, openModalDialog } from '@waldur/modal/actions';
+import { closeModalDialog } from '@waldur/modal/actions';
+import { RootState } from '@waldur/store/reducers';
 
+import { customerCreateDialog } from './actions';
 import * as constants from './constants';
-import { CustomerCreateDialog } from './CustomerCreateDialog';
 import { CustomerCreatePrompt } from './CustomerCreatePrompt';
 
-const mapStateToProps = (state) => ({
+const mapStateToProps = (state: RootState) => ({
   renderServiceProvider: renderServiceProvider(state),
 });
 
@@ -24,11 +25,8 @@ const mapDispatchToProps = (dispatch) => ({
     }
 
     dispatch(
-      openModalDialog(CustomerCreateDialog, {
-        resolve: {
-          role: data[constants.FIELD_NAMES.role],
-        },
-        size: 'lg',
+      customerCreateDialog({
+        role: data[constants.FIELD_NAMES.role],
       }),
     );
   },

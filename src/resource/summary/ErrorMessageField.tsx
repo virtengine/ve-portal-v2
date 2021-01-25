@@ -1,4 +1,4 @@
-import * as React from 'react';
+import { FunctionComponent } from 'react';
 
 import { Tooltip } from '@waldur/core/Tooltip';
 import { translate } from '@waldur/i18n';
@@ -29,6 +29,8 @@ const formatErrorField = (props: ResourceSummaryProps) => {
   );
 };
 
-export const ErrorMessageField = (props: ResourceSummaryProps) => (
+export const ErrorMessageField: FunctionComponent<ResourceSummaryProps> = (
+  props,
+) => (
   <Field label={translate('Error message')} value={formatErrorField(props)} />
 );

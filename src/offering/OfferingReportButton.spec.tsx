@@ -1,5 +1,5 @@
 import { render } from 'enzyme';
-import * as React from 'react';
+import { FunctionComponent } from 'react';
 
 import { withReduxForm } from '@waldur/form/testUtils';
 import { translate } from '@waldur/i18n';
@@ -7,7 +7,7 @@ import { translate } from '@waldur/i18n';
 import { OfferingReportButton } from './OfferingReportButton';
 
 const renderButton = (props?) => {
-  const Component = () => (
+  const Component: FunctionComponent = () => (
     <OfferingReportButton translate={translate} {...props} />
   );
   return render(withReduxForm(Component));

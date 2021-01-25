@@ -1,8 +1,9 @@
-import * as React from 'react';
+import { Component } from 'react';
 import { connect } from 'react-redux';
 
 import { translate } from '@waldur/i18n';
 import { setTitle } from '@waldur/navigation/title';
+import { RootState } from '@waldur/store/reducers';
 
 import { fetchServiceUsageStart } from './actions';
 import { FlowMapFilter } from './FlowMapFilter';
@@ -16,7 +17,7 @@ interface HeatMapComponentProps {
   setTitle: typeof setTitle;
 }
 
-class HeatMapComponent extends React.Component<HeatMapComponentProps> {
+class HeatMapComponent extends Component<HeatMapComponentProps> {
   componentDidMount() {
     this.props.fetchServiceUsageStart();
     this.props.setTitle(translate('Heatmap'));
@@ -37,7 +38,7 @@ class HeatMapComponent extends React.Component<HeatMapComponentProps> {
   }
 }
 
-const mapStateToProps = (state) => ({
+const mapStateToProps = (state: RootState) => ({
   serviceUsage: selectServiceUsage(state),
   countriesToRender: selectCountriesToRender(state),
 });

@@ -1,8 +1,16 @@
+import { lazyComponent } from '@waldur/core/lazyComponent';
 import { StateDeclaration } from '@waldur/core/types';
 import { PROJECT_WORKSPACE } from '@waldur/workspace/types';
 
 import { loadResource } from './resolve';
-import { ResourceDetailsContainer } from './ResourceDetailsContainer';
+
+const ResourceDetailsContainer = lazyComponent(
+  () =>
+    import(
+      /* webpackChunkName: "ResourceDetailsContainer" */ './ResourceDetailsContainer'
+    ),
+  'ResourceDetailsContainer',
+);
 
 export const states: StateDeclaration[] = [
   {
@@ -15,9 +23,13 @@ export const states: StateDeclaration[] = [
         dynamic: true,
       },
     },
-    resolve: {
-      resource: loadResource,
-    },
+    resolve: [
+      {
+        token: 'resource',
+        deps: ['$transition$'],
+        resolveFn: loadResource,
+      },
+    ],
     data: {
       auth: true,
       workspace: PROJECT_WORKSPACE,

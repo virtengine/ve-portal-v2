@@ -1,4 +1,4 @@
-import * as React from 'react';
+import { Component } from 'react';
 import { connect } from 'react-redux';
 import { Field } from 'redux-form';
 
@@ -14,11 +14,6 @@ import { offeringSelector } from '@waldur/marketplace/details/selectors';
 import { OfferingConfigurationFormProps } from '@waldur/marketplace/types';
 import * as api from '@waldur/openstack/api';
 import {
-  flavorValidator,
-  flavorComparator,
-  internalIpFormatter,
-} from '@waldur/openstack/openstack-instance/openstack-instance-config';
-import {
   OpenstackInstanceNetworks,
   getDefaultFloatingIps,
 } from '@waldur/openstack/openstack-instance/OpenstackInstanceNetworks';
@@ -31,6 +26,9 @@ import {
   SshKey,
 } from '@waldur/openstack/openstack-instance/types';
 import {
+  flavorValidator,
+  flavorComparator,
+  formatSubnet,
   validateAndSort,
   calculateSystemVolumeSize,
   formatVolumeTypeChoices,
@@ -38,6 +36,7 @@ import {
   validateOpenstackInstanceName,
 } from '@waldur/openstack/openstack-instance/utils';
 import { SecurityGroup } from '@waldur/openstack/openstack-security-groups/types';
+import { RootState } from '@waldur/store/reducers';
 import { User } from '@waldur/workspace/types';
 
 import { CreateResourceFormGroup } from '../CreateResourceFormGroup';
@@ -75,7 +74,7 @@ interface OpenstackInstanceCreateFormComponentProps {
 
 const nameValidators = [required, validateOpenstackInstanceName];
 
-export class OpenstackInstanceCreateFormComponent extends React.Component<
+export class OpenstackInstanceCreateFormComponent extends Component<
   OfferingConfigurationFormProps &
     OpenstackInstanceCreateFormComponentProps &
     TranslateProps,
@@ -156,7 +155,7 @@ export class OpenstackInstanceCreateFormComponent extends React.Component<
           return {
             subnet: {
               ...subnet,
-              label: internalIpFormatter(subnet),
+              label: formatSubnet(subnet),
             },
             floatingIp,
           };
@@ -321,7 +320,7 @@ export class OpenstackInstanceCreateFormComponent extends React.Component<
   }
 }
 
-const mapStateToProps = (state) => ({
+const mapStateToProps = (state: RootState) => ({
   currentUser: getUser(state),
   image: offeringSelector(state, 'attributes.image'),
   flavor: offeringSelector(state, 'attributes.flavor'),

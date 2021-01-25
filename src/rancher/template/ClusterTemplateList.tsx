@@ -1,9 +1,9 @@
-import * as React from 'react';
+import { FunctionComponent } from 'react';
 
 import { Link } from '@waldur/core/Link';
 import { Table, connectTable, createFetcher } from '@waldur/table';
 
-const TableComponent = (props) => {
+const TableComponent: FunctionComponent<any> = (props) => {
   const { translate } = props;
   return (
     <Table
@@ -27,16 +27,16 @@ const TableComponent = (props) => {
         },
         {
           title: translate('Description'),
-          render: ({ row }) => <span>{row.description}</span>,
+          render: ({ row }) => <>{row.description}</>,
         },
         {
           title: translate('Catalog'),
-          render: ({ row }) => <span>{row.catalog_name}</span>,
+          render: ({ row }) => <>{row.catalog_name}</>,
           orderField: 'catalog_name',
         },
         {
           title: translate('State'),
-          render: ({ row }) => <span>{row.runtime_state}</span>,
+          render: ({ row }) => <>{row.runtime_state}</>,
         },
       ]}
       verboseName={translate('application templates')}

@@ -1,6 +1,5 @@
-import * as React from 'react';
-import * as Col from 'react-bootstrap/lib/Col';
-import * as Row from 'react-bootstrap/lib/Row';
+import { FunctionComponent } from 'react';
+import { Col, Row } from 'react-bootstrap';
 import { reduxForm } from 'redux-form';
 
 import { AccountingPeriodField } from './AccountingPeriodField';
@@ -11,7 +10,7 @@ interface Props {
   accountingPeriods: AccountingPeriodOption[];
 }
 
-export const PureCustomerListFilter = (props: Props) => (
+export const PureCustomerListFilter: FunctionComponent<Props> = (props) => (
   <div className="ibox">
     <div className="ibox-content m-b-sm border-bottom">
       <form className="form-inline">

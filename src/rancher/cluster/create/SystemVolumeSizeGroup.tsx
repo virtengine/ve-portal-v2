@@ -1,4 +1,4 @@
-import * as React from 'react';
+import { FunctionComponent } from 'react';
 import { Field } from 'redux-form';
 
 import { required } from '@waldur/core/validators';
@@ -11,7 +11,7 @@ import { FormGroup } from '@waldur/marketplace/offerings/FormGroup';
 
 import { IntegerUnitField } from './IntegerUnitField';
 
-export const SystemVolumeSizeGroup = (props) => (
+export const SystemVolumeSizeGroup: FunctionComponent<any> = (props) => (
   <FormGroup
     label={translate('System volume size')}
     required={true}

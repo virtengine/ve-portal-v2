@@ -1,14 +1,16 @@
-import * as React from 'react';
-import Button from 'react-bootstrap/lib/Button';
-import ButtonGroup from 'react-bootstrap/lib/ButtonGroup';
-import Col from 'react-bootstrap/lib/Col';
-import ControlLabel from 'react-bootstrap/lib/ControlLabel';
-import FormGroup from 'react-bootstrap/lib/FormGroup';
+import { useCallback, useEffect, FunctionComponent } from 'react';
+import {
+  Button,
+  ButtonGroup,
+  Col,
+  ControlLabel,
+  FormGroup,
+} from 'react-bootstrap';
 import { useDispatch, useSelector } from 'react-redux';
 import Select from 'react-select';
 import { Field, change } from 'redux-form';
 
-import { CustomerPopover } from '@waldur/customer/popover/CustomerPopover';
+import { lazyComponent } from '@waldur/core/lazyComponent';
 import { translate } from '@waldur/i18n';
 import { openModalDialog } from '@waldur/modal/actions';
 
@@ -17,9 +19,19 @@ import { AsyncSelectField } from './AsyncSelectField';
 import { ISSUE_REGISTRATION_FORM_ID } from './constants';
 import { callerSelector, customerSelector } from './selectors';
 
+const CustomerPopover = lazyComponent(
+  () =>
+    import(
+      /* webpackChunkName: "CustomerPopover" */ '@waldur/customer/popover/CustomerPopover'
+    ),
+  'CustomerPopover',
+);
+
 const filterOption = (options) => options;
 
-export const OrganizationGroup = ({ onSearch }) => {
+export const OrganizationGroup: FunctionComponent<{ onSearch }> = ({
+  onSearch,
+}) => {
   const dispatch = useDispatch();
   const caller = useSelector(callerSelector);
   const customer = useSelector(customerSelector);
@@ -31,12 +43,11 @@ export const OrganizationGroup = ({ onSearch }) => {
       }),
     );
   const filterByCustomer = () => onSearch({ customer });
-  const loadOptions = React.useCallback(
-    (name) => refreshCustomers(name, caller),
-    [caller],
-  );
+  const loadOptions = useCallback((name) => refreshCustomers(name, caller), [
+    caller,
+  ]);
 
-  React.useEffect(() => {
+  useEffect(() => {
     dispatch(change(ISSUE_REGISTRATION_FORM_ID, 'customer', undefined));
   }, [dispatch, caller]);
 

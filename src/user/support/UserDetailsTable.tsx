@@ -1,11 +1,12 @@
-import * as React from 'react';
-import * as Table from 'react-bootstrap/lib/Table';
+import { FunctionComponent } from 'react';
+import { Table } from 'react-bootstrap';
 import { connect } from 'react-redux';
 import { compose } from 'redux';
 
 import { formatDateTime } from '@waldur/core/dateUtils';
 import { TranslateProps, withTranslation } from '@waldur/i18n';
 import { getNativeNameVisible } from '@waldur/store/config';
+import { RootState } from '@waldur/store/reducers';
 import {
   formatRegistrationMethod,
   formatUserStatus,
@@ -32,7 +33,9 @@ interface OwnProps {
 
 export type UserDetailsTableProps = TranslateProps & StateProps & OwnProps;
 
-const PureUserDetailsTable = (props: UserDetailsTableProps) => (
+const PureUserDetailsTable: FunctionComponent<UserDetailsTableProps> = (
+  props,
+) => (
   <Table responsive={true} bordered={true}>
     <tbody>
       <Row label={props.translate('Full name')} value={props.user.full_name} />
@@ -83,7 +86,7 @@ const PureUserDetailsTable = (props: UserDetailsTableProps) => (
   </Table>
 );
 
-const mapStateToProps = (state) => ({
+const mapStateToProps = (state: RootState) => ({
   userLanguageIsVisible: userLanguageIsVisible(state),
   userCompetenceIsVisible: userCompetenceIsVisible(state),
   isVisibleForSupportOrStaff: isVisibleForSupportOrStaff(state),

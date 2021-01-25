@@ -1,6 +1,6 @@
-import * as React from 'react';
+import { useState, useCallback, useMemo } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import useEffectOnce from 'react-use/lib/useEffectOnce';
+import { useEffectOnce } from 'react-use';
 import { reduxForm } from 'redux-form';
 
 import { format } from '@waldur/core/ErrorMessageFormatter';
@@ -10,7 +10,7 @@ import { ActionDialog } from '@waldur/modal/ActionDialog';
 import { closeModalDialog } from '@waldur/modal/actions';
 import { updateHPA } from '@waldur/rancher/api';
 import { HPA } from '@waldur/rancher/types';
-import { showError, showSuccess } from '@waldur/store/coreSaga';
+import { showError, showSuccess } from '@waldur/store/notify';
 import { updateEntity } from '@waldur/table/actions';
 
 import { MetricOption, HPAUpdateFormData } from './types';
@@ -29,9 +29,9 @@ interface OwnProps {
 }
 
 const useHPAUpdateDialog = (originalHPA) => {
-  const [submitting, setSubmitting] = React.useState(false);
+  const [submitting, setSubmitting] = useState(false);
   const dispatch = useDispatch();
-  const callback = React.useCallback(
+  const callback = useCallback(
     async (formData: HPAUpdateFormData) => {
       try {
         setSubmitting(true);
@@ -71,12 +71,9 @@ export const HPAUpdateDialog = reduxForm<HPAUpdateFormData, OwnProps>({
   const { hpa } = props.resolve;
   const { submitting, callback } = useHPAUpdateDialog(hpa);
 
-  const metricNameOptions = React.useMemo<MetricOption[]>(
-    getMetricNameOptions,
-    [],
-  );
+  const metricNameOptions = useMemo<MetricOption[]>(getMetricNameOptions, []);
 
-  const targetTypeOptions = React.useMemo(getTargetTypeOptions, []);
+  const targetTypeOptions = useMemo(getTargetTypeOptions, []);
 
   useEffectOnce(() => {
     const metric = hpa.metrics[0];

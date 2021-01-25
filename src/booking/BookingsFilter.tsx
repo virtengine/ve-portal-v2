@@ -1,14 +1,14 @@
-import * as React from 'react';
-import * as Row from 'react-bootstrap/lib/Row';
+import React, { FunctionComponent } from 'react';
+import { Row } from 'react-bootstrap';
 import { reduxForm } from 'redux-form';
 
 import {
   BookingStateFilter,
   getStates,
 } from '@waldur/booking/BookingStateFilter';
-import { BOOKINGS_FILTER_FORM_ID } from '@waldur/customer/dashboard/contants';
+import { BOOKINGS_FILTER_FORM_ID } from '@waldur/booking/store/constants';
 
-const PureBookingsFilter = () => (
+const PureBookingsFilter: FunctionComponent = () => (
   <Row style={{ margin: '0' }}>
     <BookingStateFilter />
   </Row>
@@ -21,6 +21,4 @@ const enhance = reduxForm({
   },
 });
 
-export const BookingsFilter = enhance(
-  PureBookingsFilter,
-) as React.ComponentType<{}>;
+export const BookingsFilter = enhance(PureBookingsFilter);

@@ -1,13 +1,14 @@
-import * as React from 'react';
-import FormControl from 'react-bootstrap/lib/FormControl';
-import FormGroup from 'react-bootstrap/lib/FormGroup';
+import { FunctionComponent } from 'react';
+import { FormControl, FormGroup } from 'react-bootstrap';
 import { Field } from 'redux-form';
 
-import { ENV } from '@waldur/core/services';
+import { ENV } from '@waldur/configs/default';
 import { isFeatureVisible } from '@waldur/features/connect';
 import { translate } from '@waldur/i18n';
 
-export const RoleGroup = ({ isProjectManager }) =>
+export const RoleGroup: FunctionComponent<{ isProjectManager }> = ({
+  isProjectManager,
+}) =>
   isProjectManager ? (
     <FormGroup>
       <FormControl.Static>

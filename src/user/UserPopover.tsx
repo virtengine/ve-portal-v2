@@ -1,13 +1,14 @@
-import * as React from 'react';
-import ModalBody from 'react-bootstrap/lib/ModalBody';
-import ModalFooter from 'react-bootstrap/lib/ModalFooter';
-import ModalHeader from 'react-bootstrap/lib/ModalHeader';
-import ModalTitle from 'react-bootstrap/lib/ModalTitle';
-import Tab from 'react-bootstrap/lib/Tab';
-import Tabs from 'react-bootstrap/lib/Tabs';
+import { FunctionComponent } from 'react';
+import {
+  ModalBody,
+  ModalFooter,
+  ModalHeader,
+  ModalTitle,
+  Tab,
+  Tabs,
+} from 'react-bootstrap';
 import { useSelector } from 'react-redux';
-import useAsyncFn from 'react-use/lib/useAsyncFn';
-import useEffectOnce from 'react-use/lib/useEffectOnce';
+import { useAsyncFn, useEffectOnce } from 'react-use';
 import { createSelector } from 'reselect';
 
 import { getById } from '@waldur/core/api';
@@ -29,7 +30,7 @@ const getCanSeeChecklist = createSelector(
   (support, staff, owner) => support || staff || owner,
 );
 
-export const UserPopover = ({ resolve }) => {
+export const UserPopover: FunctionComponent<{ resolve }> = ({ resolve }) => {
   const [{ loading, value }, callback] = useAsyncFn(async () => {
     let user;
     if (resolve.user_uuid) {

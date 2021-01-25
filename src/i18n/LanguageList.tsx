@@ -1,11 +1,12 @@
-import * as React from 'react';
+import { FunctionComponent } from 'react';
 import Select from 'react-select';
 
 import { translate } from './translate';
 import { useLanguageSelector } from './useLanguageSelector';
+
 import './LanguageList.scss';
 
-export const LanguageList = () => {
+export const LanguageList: FunctionComponent = () => {
   const {
     currentLanguage,
     languageChoices,

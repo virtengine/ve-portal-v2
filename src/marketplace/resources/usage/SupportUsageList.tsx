@@ -1,11 +1,11 @@
-import * as moment from 'moment-timezone';
-import * as React from 'react';
+import moment from 'moment-timezone';
 import { connect } from 'react-redux';
 import { compose } from 'redux';
 import { getFormValues } from 'redux-form';
 
 import { formatDateTime } from '@waldur/core/dateUtils';
 import { translate } from '@waldur/i18n';
+import { RootState } from '@waldur/store/reducers';
 import { Table, connectTable, createFetcher } from '@waldur/table';
 import { TableProps } from '@waldur/table/Table';
 import { Column } from '@waldur/table/types';
@@ -23,31 +23,31 @@ const TableComponent = (props: TableProps<UsageReport>) => {
   const columns: Array<Column<UsageReport>> = [
     {
       title: translate('Client organization'),
-      render: ({ row }) => <span>{row.customer_name}</span>,
+      render: ({ row }) => <>{row.customer_name}</>,
     },
     {
       title: translate('Client project'),
-      render: ({ row }) => <span>{row.project_name}</span>,
+      render: ({ row }) => <>{row.project_name}</>,
     },
     {
       title: translate('Offering type'),
-      render: ({ row }) => <span>{row.offering_name}</span>,
+      render: ({ row }) => <>{row.offering_name}</>,
     },
     {
       title: translate('Resource name'),
-      render: ({ row }) => <span>{row.resource_name}</span>,
+      render: ({ row }) => <>{row.resource_name}</>,
     },
     {
       title: translate('Plan component name'),
-      render: ({ row }) => <span>{row.name}</span>,
+      render: ({ row }) => <>{row.name}</>,
     },
     {
       title: translate('Date of reporting'),
-      render: ({ row }) => <span>{formatDateTime(row.created)}</span>,
+      render: ({ row }) => <>{formatDateTime(row.created)}</>,
     },
     {
       title: translate('Value'),
-      render: ({ row }) => <span>{row.usage + ' ' + row.measured_unit}</span>,
+      render: ({ row }) => <>{row.usage + ' ' + row.measured_unit}</>,
     },
   ];
 
@@ -115,7 +115,7 @@ const TableOptions = {
   mapPropsToFilter,
 };
 
-const mapStateToProps = (state) => ({
+const mapStateToProps = (state: RootState) => ({
   usageFilter: getFormValues(FORM_ID)(state),
 });
 

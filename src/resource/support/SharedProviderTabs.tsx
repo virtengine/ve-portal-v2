@@ -1,15 +1,15 @@
-import * as React from 'react';
-import * as Tab from 'react-bootstrap/lib/Tab';
-import * as Tabs from 'react-bootstrap/lib/Tabs';
+import { FunctionComponent } from 'react';
+import { Tab, Tabs } from 'react-bootstrap';
 import { connect } from 'react-redux';
 
 import { translate } from '@waldur/i18n';
+import { RootState } from '@waldur/store/reducers';
 
 import { SharedProviderCustomers } from './SharedProviderCustomers';
 import { providerSelector } from './SharedProviderFilter';
 import { SharedProviderResources } from './SharedProviderResources';
 
-const SharedProviderTabs = ({ provider }) =>
+const SharedProviderTabs: FunctionComponent<{ provider }> = ({ provider }) =>
   provider ? (
     <div className="ibox">
       <div className="ibox-content">
@@ -33,7 +33,7 @@ const SharedProviderTabs = ({ provider }) =>
     </div>
   ) : null;
 
-const mapStateToProps = (state) => ({
+const mapStateToProps = (state: RootState) => ({
   provider: providerSelector(state),
 });
 

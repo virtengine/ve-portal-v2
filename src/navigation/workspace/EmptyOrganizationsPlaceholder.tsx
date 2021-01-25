@@ -1,6 +1,5 @@
-import * as React from 'react';
-import * as Button from 'react-bootstrap/lib/Button';
-import * as Row from 'react-bootstrap/lib/Row';
+import { FunctionComponent } from 'react';
+import { Button, Row } from 'react-bootstrap';
 
 import { translate } from '@waldur/i18n';
 
@@ -13,14 +12,14 @@ const InitialCreateOrganizationButton = () => {
   }
   return (
     <div>
-      <Button onClick={onClick}>
+      <Button onClick={onClick as any}>
         <i className="fa fa-plus" /> {translate('Add new organization')}
       </Button>
     </div>
   );
 };
 
-export const EmptyOrganizationsPlaceholder = () => (
+export const EmptyOrganizationsPlaceholder: FunctionComponent = () => (
   <Row>
     <div className="middle-box text-center">
       <h3 className="font-bold m-b-lg">

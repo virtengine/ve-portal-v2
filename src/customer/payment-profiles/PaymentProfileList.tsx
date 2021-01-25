@@ -1,18 +1,19 @@
 import { useRouter } from '@uirouter/react';
-import * as React from 'react';
+import { FunctionComponent } from 'react';
 import { connect } from 'react-redux';
 import { compose } from 'redux';
 
 import { StateIndicator } from '@waldur/core/StateIndicator';
 import { PAYMENT_PROFILES_TABLE } from '@waldur/customer/details/constants';
 import { translate } from '@waldur/i18n';
+import { RootState } from '@waldur/store/reducers';
 import { Table, connectTable, createFetcher } from '@waldur/table';
 import { ActionButton } from '@waldur/table/ActionButton';
 import { getCustomer, isStaff, isSupport } from '@waldur/workspace/selectors';
 
 import { PaymentProfileActions } from './PaymentProfileActions';
 
-export const TableComponent = (props) => {
+export const TableComponent: FunctionComponent<any> = (props) => {
   const router = useRouter();
 
   const tooltipAndDisabledAttributes = {
@@ -82,7 +83,7 @@ const TableOptions = {
   }),
 };
 
-const mapStateToProps = (state) => ({
+const mapStateToProps = (state: RootState) => ({
   customer: getCustomer(state),
   isStaff: isStaff(state),
   isSupport: isSupport(state),

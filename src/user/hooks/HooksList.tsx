@@ -1,9 +1,10 @@
-import * as React from 'react';
+import { FunctionComponent } from 'react';
 import { connect } from 'react-redux';
 import { compose } from 'redux';
 
 import { titleCase } from '@waldur/core/utils';
 import { useTitle } from '@waldur/navigation/title';
+import { RootState } from '@waldur/store/reducers';
 import { Table, createFetcher, connectTable } from '@waldur/table';
 import { HookListTablePlaceholder } from '@waldur/user/hooks/HookListTablePlaceholder';
 import { getUser } from '@waldur/workspace/selectors';
@@ -24,7 +25,7 @@ const getDestinationField = (row) => row.destination_url || row.email || 'N/A';
 const getEventsField = (row) =>
   row.event_groups.map(formatEventTitle).join(', ');
 
-const TableComponent = (props) => {
+const TableComponent: FunctionComponent<any> = (props) => {
   const { translate } = props;
   useTitle(translate('Notifications'));
   return (
@@ -84,7 +85,7 @@ const TableOptions = {
   exportFields: ['Method', 'Destination', 'Events'],
 };
 
-const mapStateToProps = (state) => ({
+const mapStateToProps = (state: RootState) => ({
   user: getUser(state),
 });
 

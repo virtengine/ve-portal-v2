@@ -1,5 +1,5 @@
-import * as React from 'react';
-import * as ButtonGroup from 'react-bootstrap/lib/ButtonGroup';
+import { FunctionComponent } from 'react';
+import { ButtonGroup } from 'react-bootstrap';
 import { connect } from 'react-redux';
 import { compose } from 'redux';
 import { getFormValues } from 'redux-form';
@@ -7,13 +7,18 @@ import { createSelector } from 'reselect';
 
 import { formatDateTime } from '@waldur/core/dateUtils';
 import { withTranslation } from '@waldur/i18n';
-import { SUPPORT_OFFERINGS_FILTER_FORM_ID } from '@waldur/marketplace/offerings/customers/constants';
-import { OfferingsListExpandableRow } from '@waldur/marketplace/offerings/customers/OfferingsListExpandableRow';
+import { OfferingsListExpandableRow } from '@waldur/marketplace/offerings/expandable/OfferingsListExpandableRow';
 import { PreviewOfferingButton } from '@waldur/marketplace/offerings/PreviewOfferingButton';
-import { TABLE_NAME } from '@waldur/marketplace/offerings/store/constants';
+import { OFFERING_TABLE_NAME } from '@waldur/marketplace/offerings/store/constants';
+import { RootState } from '@waldur/store/reducers';
 import { Table, connectTable, createFetcher } from '@waldur/table';
-import { renderFieldOrDash } from '@waldur/table/utils';
-import { getCustomer, isOwnerOrStaff } from '@waldur/workspace/selectors';
+import {
+  getCustomer,
+  getUser,
+  isOwnerOrStaff,
+  isServiceManagerSelector,
+  isSupportOnly,
+} from '@waldur/workspace/selectors';
 
 import { Offering } from '../types';
 
@@ -22,29 +27,22 @@ import { OfferingCreateButton } from './actions/OfferingCreateButton';
 import { OfferingDetailsLink } from './details/OfferingDetailsLink';
 import { OfferingsListTablePlaceholder } from './OfferingsListTablePlaceholder';
 
-const OfferingNameColumn = ({ isReporting, row }) =>
-  !isReporting ? (
-    <OfferingDetailsLink offering_uuid={row.uuid}>
-      {row.name}
-    </OfferingDetailsLink>
-  ) : (
-    <>{row.name}</>
-  );
+const OfferingNameColumn = ({ row }) => (
+  <OfferingDetailsLink offering_uuid={row.uuid}>{row.name}</OfferingDetailsLink>
+);
 
-export const TableComponent = (props) => {
-  const { translate, isReporting } = props;
+export const TableComponent: FunctionComponent<any> = (props) => {
+  const { translate } = props;
 
   const columns = [
     {
       title: translate('Name'),
-      render: ({ row }) => (
-        <OfferingNameColumn isReporting={isReporting} row={row} />
-      ),
+      render: OfferingNameColumn,
       orderField: 'name',
     },
     {
       title: translate('Category'),
-      render: ({ row }) => row.category_title,
+      render: ({ row }) => <>{row.category_title}</>,
     },
     {
       title: translate('Created'),
@@ -57,20 +55,13 @@ export const TableComponent = (props) => {
     },
   ];
 
-  if (isReporting) {
-    columns.splice(1, 0, {
-      title: translate('Service provider'),
-      render: ({ row }) => renderFieldOrDash(row.customer_name),
-    });
-  }
-
   if (!props.actionsDisabled) {
     columns.push({
       title: translate('Actions'),
       render: ({ row }) => {
         return (
           <ButtonGroup>
-            <OfferingActions row={row} />
+            {!props.isSupportOnly && <OfferingActions offering={row} />}
             <PreviewOfferingButton offering={row} />
           </ButtonGroup>
         );
@@ -92,27 +83,31 @@ export const TableComponent = (props) => {
   );
 };
 
-const mapPropsToFilter = (props) => {
-  const filter: Record<string, string | boolean> = {
+interface FilterData {
+  state: { value: string }[];
+}
+
+type StateProps = Readonly<ReturnType<typeof mapStateToProps>>;
+
+const mapPropsToFilter = (props: StateProps) => {
+  const filter: Record<string, any> = {
     billable: true,
     shared: true,
   };
-  if (props.customer && !props.isReporting) {
+  if (props.customer) {
     filter.customer_uuid = props.customer.uuid;
   }
-  if (props.filter) {
-    if (props.filter.state) {
-      filter.state = props.filter.state.map((option) => option.value);
-    }
-    if (props.filter.organization) {
-      filter.customer_uuid = props.filter.organization.uuid;
-    }
+  if (props.filter?.state) {
+    filter.state = props.filter.state.map((option) => option.value);
+  }
+  if (props.isServiceManager) {
+    filter.service_manager_uuid = props.user.uuid;
   }
   return filter;
 };
 
 export const TableOptions = {
-  table: TABLE_NAME,
+  table: OFFERING_TABLE_NAME,
   fetchData: createFetcher('marketplace-offerings'),
   mapPropsToFilter,
   exportRow: (row: Offering) => [
@@ -131,14 +126,14 @@ const showOfferingCreateButton = createSelector(
     customer && customer.is_service_provider && ownerOrStaff,
 );
 
-const mapStateToProps = (state, ownProps) => ({
+const mapStateToProps = (state: RootState) => ({
   customer: getCustomer(state),
-  actionsDisabled: !isOwnerOrStaff(state) || ownProps.isReporting,
-  showOfferingCreateButton:
-    showOfferingCreateButton(state) && !ownProps.isReporting,
-  filter: getFormValues(
-    ownProps.isReporting ? SUPPORT_OFFERINGS_FILTER_FORM_ID : 'OfferingsFilter',
-  )(state),
+  user: getUser(state),
+  isServiceManager: isServiceManagerSelector(state),
+  isSupportOnly: isSupportOnly(state),
+  actionsDisabled: !isOwnerOrStaff(state),
+  showOfferingCreateButton: showOfferingCreateButton(state),
+  filter: getFormValues('OfferingsFilter')(state) as FilterData,
 });
 
 const enhance = compose(

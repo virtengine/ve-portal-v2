@@ -1,4 +1,4 @@
-import * as React from 'react';
+import { FunctionComponent } from 'react';
 
 import { translate } from '@waldur/i18n';
 import { formatFlavor } from '@waldur/resource/utils';
@@ -11,8 +11,8 @@ interface OpenStackInstanceCurrentFlavorProps {
   };
 }
 
-export const OpenStackInstanceCurrentFlavor = (
-  props: OpenStackInstanceCurrentFlavorProps,
+export const OpenStackInstanceCurrentFlavor: FunctionComponent<OpenStackInstanceCurrentFlavorProps> = (
+  props,
 ) => (
   <p>
     <strong>{translate('Current flavor')}: </strong>

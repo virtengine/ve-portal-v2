@@ -9,19 +9,20 @@ export function getItemName(item: InvoiceItem) {
   if (item.details) {
     // eslint-disable-next-line no-unused-vars
     const {
+      resource_name,
       offering_name,
-      offering_type,
       plan_name,
       offering_component_name,
     } = item.details;
     if (
+      resource_name &&
       offering_name &&
-      offering_type &&
       plan_name &&
       offering_component_name
     ) {
-      return `${offering_name} - ${offering_component_name} - (${offering_type} / ${plan_name})`;
+      return `${resource_name} / ${offering_name} - ${offering_component_name} - ${plan_name}`;
     }
+    return `${item.name}`;
   }
   return item.name;
 }

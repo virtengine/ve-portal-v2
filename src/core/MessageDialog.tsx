@@ -1,16 +1,16 @@
-import * as React from 'react';
+import { FunctionComponent, ReactNode } from 'react';
 
 import { CloseDialogButton } from '@waldur/modal/CloseDialogButton';
 import { ModalDialog } from '@waldur/modal/ModalDialog';
 
 interface MessageDialogProps {
   resolve: {
-    title: string;
-    message: string;
+    title: ReactNode;
+    message: ReactNode;
   };
 }
 
-export const MessageDialog = (props: MessageDialogProps) => (
+export const MessageDialog: FunctionComponent<MessageDialogProps> = (props) => (
   <ModalDialog title={props.resolve.title} footer={<CloseDialogButton />}>
     {props.resolve.message}
   </ModalDialog>

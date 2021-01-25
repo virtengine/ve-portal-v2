@@ -1,4 +1,4 @@
-import * as React from 'react';
+import { FunctionComponent } from 'react';
 
 import { StateIndicator, StateVariant } from '@waldur/core/StateIndicator';
 
@@ -17,7 +17,9 @@ interface PaymentStateIndicatorProps {
   };
 }
 
-export const PaymentStateIndicator = (props: PaymentStateIndicatorProps) => (
+export const PaymentStateIndicator: FunctionComponent<PaymentStateIndicatorProps> = (
+  props,
+) => (
   <StateIndicator
     label={props.payment.state}
     variant={LABEL_CLASSES[props.payment.state] || 'info'}

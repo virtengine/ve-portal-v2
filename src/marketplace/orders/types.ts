@@ -57,6 +57,7 @@ export interface OrderItemResponse {
   category_title?: string;
   category_uuid?: string;
   created: string;
+  modified: string;
   error_message?: string;
   limits: Record<string, number>;
   current_usages?: Record<string, number>;
@@ -88,4 +89,5 @@ export interface Order {
   file?: string;
   project?: string;
   project_uuid?: string;
+  customer_uuid?: string;
 }

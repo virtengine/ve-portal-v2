@@ -1,11 +1,26 @@
-import { ENV } from '@waldur/core/services';
+import Qs from 'qs';
+
+import { ENV } from '@waldur/configs/default';
+import { lazyComponent } from '@waldur/core/lazyComponent';
 import { openModalDialog } from '@waldur/modal/actions';
 
 import { AuthButtonProps } from './AuthButton';
-import { AuthSaml2Dialog } from './saml2/AuthSaml2Dialog';
-import { loginSaml2 } from './saml2/store/actions';
+import { loginSaml2Action } from './saml2/store/actions';
 import { getOauthCallback } from './utils';
-import { AuthValimoDialog } from './valimo/AuthValimoDialog';
+
+const AuthSaml2Dialog = lazyComponent(
+  () =>
+    import(/* webpackChunkName: "AuthSaml2Dialog" */ './saml2/AuthSaml2Dialog'),
+  'AuthSaml2Dialog',
+);
+
+const AuthValimoDialog = lazyComponent(
+  () =>
+    import(
+      /* webpackChunkName: "AuthValimoDialog" */ './valimo/AuthValimoDialog'
+    ),
+  'AuthValimoDialog',
+);
 
 export const getAuthProviders: () => Omit<AuthButtonProps, 'mode'>[] = () => [
   {
@@ -76,14 +91,9 @@ export const getAuthProviders: () => Omit<AuthButtonProps, 'mode'>[] = () => [
     btnClass: 'btn-saml2',
     iconClass: 'fa-university',
     onClick: (dispatch) => {
-      dispatch({
-        type: loginSaml2.REQUEST,
-        payload: {
-          'identity-provider': {
-            url: ENV.plugins.WALDUR_AUTH_SAML2.IDENTITY_PROVIDER_URL,
-          },
-        },
-      });
+      dispatch(
+        loginSaml2Action(ENV.plugins.WALDUR_AUTH_SAML2.IDENTITY_PROVIDER_URL),
+      );
     },
   },
   {
@@ -92,6 +102,20 @@ export const getAuthProviders: () => Omit<AuthButtonProps, 'mode'>[] = () => [
     iconClass: 'fa-globe',
     label: 'eduGAIN',
     onClick: (dispatch) => dispatch(openModalDialog(AuthSaml2Dialog)),
+  },
+  {
+    providerKey: 'saml2discovery',
+    btnClass: 'btn-saml2-edu',
+    iconClass: 'fa-globe',
+    label: ENV.plugins.WALDUR_AUTH_SAML2.DISCOVERY_SERVICE_LABEL,
+    onClick: () => {
+      const discovery = ENV.plugins.WALDUR_AUTH_SAML2.DISCOVERY_SERVICE_URL;
+      const params = {
+        entityID: `${ENV.plugins.WALDUR_AUTH_SAML2.base_url}/api-auth/saml2/metadata/`,
+        return: `${window.location.origin}/saml2_discovery_completed/`,
+      };
+      window.location.href = `${discovery}?${Qs.stringify(params)}`;
+    },
   },
   {
     providerKey: 'valimo',

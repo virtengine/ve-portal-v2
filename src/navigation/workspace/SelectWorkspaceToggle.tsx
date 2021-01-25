@@ -1,9 +1,10 @@
-import * as classNames from 'classnames';
-import * as React from 'react';
-import Button from 'react-bootstrap/lib/Button';
+import classNames from 'classnames';
+import { FunctionComponent } from 'react';
+import { Button } from 'react-bootstrap';
 import { useDispatch, useSelector } from 'react-redux';
-import useMedia from 'react-use/lib/useMedia';
+import { useMedia } from 'react-use';
 
+import { lazyComponent } from '@waldur/core/lazyComponent';
 import { truncate } from '@waldur/core/utils';
 import { translate } from '@waldur/i18n';
 import { openModalDialog } from '@waldur/modal/actions';
@@ -23,7 +24,13 @@ import {
 
 import './SelectWorkspaceToggle.scss';
 
-import { SelectWorkspaceDialog } from './SelectWorkspaceDialog';
+const SelectWorkspaceDialog = lazyComponent(
+  () =>
+    import(
+      /* webpackChunkName: "SelectWorkspaceDialog" */ './SelectWorkspaceDialog'
+    ),
+  'SelectWorkspaceDialog',
+);
 
 const workspaceIconClasses: Record<WorkspaceType, string> = {
   [ORGANIZATION_WORKSPACE]: 'fa-sitemap',
@@ -71,7 +78,7 @@ const getTitleTooltip = (isWide, workspace, customer, project) => {
   }
 };
 
-export const SelectWorkspaceToggle = () => {
+export const SelectWorkspaceToggle: FunctionComponent = () => {
   const dispatch = useDispatch();
   const workspace = useSelector(getWorkspace);
   const customer = useSelector(getCustomer);

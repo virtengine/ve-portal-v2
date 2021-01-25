@@ -1,6 +1,6 @@
-import * as classNames from 'classnames';
-import _uniqueId from 'lodash.uniqueid';
-import * as React from 'react';
+import classNames from 'classnames';
+import uniqueId from 'lodash.uniqueid';
+import React, { FunctionComponent } from 'react';
 
 type BootstrapStyle = 'primary' | 'success' | 'info' | 'warning' | 'danger';
 
@@ -13,10 +13,10 @@ interface AwesomeCheckboxProps {
   disabled?: boolean;
 }
 
-export const AwesomeCheckbox: React.FC<AwesomeCheckboxProps> = (
-  props: AwesomeCheckboxProps,
+export const AwesomeCheckbox: FunctionComponent<AwesomeCheckboxProps> = (
+  props,
 ) => {
-  const [id] = React.useState(_uniqueId('checkbox-'));
+  const [id] = React.useState(uniqueId('checkbox-'));
   return (
     <div
       className={classNames(

@@ -1,6 +1,5 @@
-import * as React from 'react';
-import ControlLabel from 'react-bootstrap/lib/ControlLabel';
-import FormGroup from 'react-bootstrap/lib/FormGroup';
+import { FunctionComponent } from 'react';
+import { ControlLabel, FormGroup } from 'react-bootstrap';
 import { Field } from 'redux-form';
 
 import { InputField } from '@waldur/form/InputField';
@@ -14,14 +13,14 @@ interface InputGroupProps {
   disabled?: boolean;
 }
 
-export const InputGroup = ({
+export const InputGroup: FunctionComponent<InputGroupProps> = ({
   name,
   disabled,
   label,
   required,
   type,
   helpText,
-}: InputGroupProps) => (
+}) => (
   <FormGroup>
     <ControlLabel>
       {label}

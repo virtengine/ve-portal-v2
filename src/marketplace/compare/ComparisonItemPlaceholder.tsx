@@ -1,9 +1,9 @@
-import * as React from 'react';
+import { FunctionComponent } from 'react';
 
 import { translate } from '@waldur/i18n';
 import { LandingLink } from '@waldur/marketplace/links/LandingLink';
 
-export const ComparisonItemPlaceholder = () => (
+export const ComparisonItemPlaceholder: FunctionComponent = () => (
   <td
     style={{
       width: 230,

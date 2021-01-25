@@ -1,4 +1,3 @@
-import * as React from 'react';
 import { connect } from 'react-redux';
 import { compose } from 'redux';
 import { reset } from 'redux-form';
@@ -22,7 +21,7 @@ const PureResetFormButton = ({
     className={className || 'btn btn-danger'}
     onClick={resetForm}
   >
-    <span>{label || translate('Reset')}</span>
+    <>{label || translate('Reset')}</>
   </button>
 );
 

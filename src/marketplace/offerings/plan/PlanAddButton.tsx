@@ -1,5 +1,3 @@
-import * as React from 'react';
-
 import { withTranslation, TranslateProps } from '@waldur/i18n';
 
 interface PlanAddButtonProps extends TranslateProps {

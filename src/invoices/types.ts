@@ -5,8 +5,11 @@ export interface InvoiceItem {
   total: string;
   name: string;
   details: any;
+  scope_uuid: string;
+  scope_type: string;
   start: string;
   end: string;
+  measured_unit: string;
   unit_price: string;
   price: string;
   factor: number;

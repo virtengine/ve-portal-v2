@@ -1,4 +1,4 @@
-import * as React from 'react';
+import { FunctionComponent } from 'react';
 import { connect } from 'react-redux';
 import Select from 'react-select';
 import { Field, formValueSelector } from 'redux-form';
@@ -28,7 +28,7 @@ const connector = connect<{ type?: string }, {}, { option: string }>(
   },
 );
 
-const StringField = (props) => (
+const StringField: FunctionComponent<any> = (props) => (
   <Field
     name={`${props.option}.${props.name}`}
     type="text"
@@ -48,7 +48,7 @@ const RequiredField = withTranslation(
   ),
 );
 
-const OptionTypeField = (props) => (
+const OptionTypeField: FunctionComponent<any> = (props) => (
   <Field
     name={`${props.option}.type`}
     validate={props.validate}

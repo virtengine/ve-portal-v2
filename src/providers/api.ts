@@ -1,5 +1,5 @@
+import { ENV } from '@waldur/configs/default';
 import { sendForm } from '@waldur/core/api';
-import { $rootScope, ENV } from '@waldur/core/services';
 
 import { ProviderCreateFormData } from './types';
 
@@ -16,6 +16,3 @@ export const updateProvider = (provider) =>
     name: provider.name,
     ...serializeDetails(provider),
   });
-
-export const refreshProjectList = () =>
-  $rootScope.$broadcast('refreshProjectList');

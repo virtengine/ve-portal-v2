@@ -1,10 +1,37 @@
+import { lazyComponent } from '@waldur/core/lazyComponent';
 import { translate } from '@waldur/i18n';
 import { registerOfferingType } from '@waldur/marketplace/common/registry';
-import { OfferingConfigurationDetails } from '@waldur/offering/OfferingConfigurationDetails';
-import { OfferingConfigurationForm } from '@waldur/offering/OfferingConfigurationForm';
 
-import { OfferingPluginOptionsForm } from './OfferingPluginOptionsForm';
 import { serializer } from './serializer';
+
+const OfferingConfigurationDetails = lazyComponent(
+  () =>
+    import(
+      /* webpackChunkName: "OfferingConfigurationDetails" */ '@waldur/offering/OfferingConfigurationDetails'
+    ),
+  'OfferingConfigurationDetails',
+);
+const OfferingConfigurationForm = lazyComponent(
+  () =>
+    import(
+      /* webpackChunkName: "OfferingConfigurationForm" */ '@waldur/offering/OfferingConfigurationForm'
+    ),
+  'OfferingConfigurationForm',
+);
+const OfferingPluginOptionsForm = lazyComponent(
+  () =>
+    import(
+      /* webpackChunkName: "OfferingPluginOptionsForm" */ './OfferingPluginOptionsForm'
+    ),
+  'OfferingPluginOptionsForm',
+);
+const OfferingPluginSecretOptionsForm = lazyComponent(
+  () =>
+    import(
+      /* webpackChunkName: "OfferingPluginSecretOptionsForm" */ './OfferingPluginSecretOptionsForm'
+    ),
+  'OfferingPluginSecretOptionsForm',
+);
 
 registerOfferingType({
   type: 'Support.OfferingTemplate',
@@ -14,6 +41,7 @@ registerOfferingType({
   component: OfferingConfigurationForm,
   detailsComponent: OfferingConfigurationDetails,
   pluginOptionsForm: OfferingPluginOptionsForm,
+  secretOptionsForm: OfferingPluginSecretOptionsForm,
   serializer,
   showOptions: true,
   showComponents: true,
@@ -27,6 +55,7 @@ registerOfferingType({
   component: OfferingConfigurationForm,
   detailsComponent: OfferingConfigurationDetails,
   pluginOptionsForm: OfferingPluginOptionsForm,
+  secretOptionsForm: OfferingPluginSecretOptionsForm,
   serializer,
   showOptions: true,
   showComponents: true,

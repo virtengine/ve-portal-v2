@@ -1,25 +1,25 @@
-import * as classNames from 'classnames';
-import * as React from 'react';
+import classNames from 'classnames';
 import { useSelector } from 'react-redux';
-import useAsync from 'react-use/lib/useAsync';
-import { getFormValues } from 'redux-form';
+import { useAsync } from 'react-use';
 
-import { getBookingsList } from '@waldur/booking/common/api';
+import { getBookingsList } from '@waldur/booking/api';
 import { Calendar } from '@waldur/booking/components/calendar/Calendar';
 import { eventRender } from '@waldur/booking/components/utils';
 import { BOOKING_RESOURCES_TABLE } from '@waldur/booking/constants';
+import { bookingFormSelector } from '@waldur/booking/store/selectors';
 import { eventsMapper } from '@waldur/booking/utils';
 import { formatDateTime } from '@waldur/core/dateUtils';
 import { LoadingSpinner } from '@waldur/core/LoadingSpinner';
-import { BOOKINGS_FILTER_FORM_ID } from '@waldur/customer/dashboard/contants';
+import { orderByFilter } from '@waldur/core/utils';
 import { translate } from '@waldur/i18n';
-import { selectTablePagination } from '@waldur/workspace/selectors';
+import { RootState } from '@waldur/store/reducers';
+import {
+  selectTablePagination,
+  selectTableSorting,
+} from '@waldur/table/selectors';
 
-const bookingsFilterFormSelector = (state) =>
-  (getFormValues(BOOKINGS_FILTER_FORM_ID)(state) || {}) as { state };
-
-const bookingsFilterStateSelector = (state) =>
-  bookingsFilterFormSelector(state).state;
+const bookingsFilterStateSelector = (state: RootState) =>
+  bookingFormSelector(state)?.state;
 
 export const getCalendarEvent = (bookingItem, event) => ({
   ...event,
@@ -58,6 +58,7 @@ async function loadBookingOfferings(
   state,
   page,
   page_size,
+  sorting,
 ) {
   const bookings = await getBookingsList({
     provider_uuid: providerUuid,
@@ -66,6 +67,7 @@ async function loadBookingOfferings(
     state: state?.map(({ value }) => value),
     page,
     page_size,
+    o: orderByFilter(sorting),
   });
   return getCalendarEvents(bookings);
 }
@@ -81,11 +83,15 @@ export const BookingsCalendar = ({
 }: BookingsCalendarProps) => {
   const bookingsFilterState = useSelector(bookingsFilterStateSelector);
   const bookingsListCurrentPage = useSelector(
-    (state) =>
+    (state: RootState) =>
       selectTablePagination(state, BOOKING_RESOURCES_TABLE)?.currentPage,
   );
   const bookingsListPageSize = useSelector(
-    (state) => selectTablePagination(state, BOOKING_RESOURCES_TABLE)?.pageSize,
+    (state: RootState) =>
+      selectTablePagination(state, BOOKING_RESOURCES_TABLE)?.pageSize,
+  );
+  const bookingsListSorting = useSelector((state: RootState) =>
+    selectTableSorting(state, BOOKING_RESOURCES_TABLE),
   );
 
   const { loading, value: calendarEvents, error } = useAsync(
@@ -96,6 +102,7 @@ export const BookingsCalendar = ({
         bookingsFilterState,
         bookingsListCurrentPage,
         bookingsListPageSize,
+        bookingsListSorting,
       ),
     [
       providerUuid,
@@ -103,6 +110,7 @@ export const BookingsCalendar = ({
       bookingsFilterState,
       bookingsListCurrentPage,
       bookingsListPageSize,
+      bookingsListSorting,
     ],
   );
 

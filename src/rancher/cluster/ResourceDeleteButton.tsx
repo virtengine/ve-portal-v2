@@ -1,13 +1,16 @@
-import * as React from 'react';
+import { FunctionComponent } from 'react';
 import { useDispatch } from 'react-redux';
-import useAsyncFn from 'react-use/lib/useAsyncFn';
+import { useAsyncFn } from 'react-use';
 
 import { translate } from '@waldur/i18n';
 import { waitForConfirmation } from '@waldur/modal/actions';
-import { showSuccess, showErrorResponse } from '@waldur/store/coreSaga';
+import { showSuccess, showErrorResponse } from '@waldur/store/notify';
 import { ActionButton } from '@waldur/table/ActionButton';
 
-export const ResourceDeleteButton = ({ apiFunction, resourceType }) => {
+export const ResourceDeleteButton: FunctionComponent<{
+  apiFunction;
+  resourceType;
+}> = ({ apiFunction, resourceType }) => {
   const dispatch = useDispatch();
   const deleteApp = async () => {
     try {

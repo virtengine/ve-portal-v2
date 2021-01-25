@@ -1,8 +1,5 @@
-import * as React from 'react';
-import Button from 'react-bootstrap/lib/Button';
-import Col from 'react-bootstrap/lib/Col';
-import ControlLabel from 'react-bootstrap/lib/ControlLabel';
-import FormGroup from 'react-bootstrap/lib/FormGroup';
+import { useCallback, useEffect, FunctionComponent } from 'react';
+import { Button, Col, ControlLabel, FormGroup } from 'react-bootstrap';
 import { useSelector, useDispatch } from 'react-redux';
 import Select from 'react-select';
 import { Field, change } from 'redux-form';
@@ -16,22 +13,24 @@ import { projectSelector, customerSelector } from './selectors';
 
 const filterOption = (options) => options;
 
-export const ProjectGroup = ({ onSearch, disabled }) => {
+export const ProjectGroup: FunctionComponent<{ onSearch; disabled }> = ({
+  onSearch,
+  disabled,
+}) => {
   const dispatch = useDispatch();
   const project = useSelector(projectSelector);
   const customer = useSelector(customerSelector);
 
-  const filterByProject = React.useCallback(() => onSearch({ project }), [
+  const filterByProject = useCallback(() => onSearch({ project }), [
     project,
     onSearch,
   ]);
 
-  const loadOptions = React.useCallback(
-    (name) => refreshProjects(name, customer),
-    [customer],
-  );
+  const loadOptions = useCallback((name) => refreshProjects(name, customer), [
+    customer,
+  ]);
 
-  React.useEffect(() => {
+  useEffect(() => {
     dispatch(change(ISSUE_REGISTRATION_FORM_ID, 'project', undefined));
   }, [dispatch, customer]);
 

@@ -1,4 +1,4 @@
-import * as React from 'react';
+import { FunctionComponent } from 'react';
 
 import { ResetFormButton } from '@waldur/form/ResetFormButton';
 import { TranslateProps, withTranslation } from '@waldur/i18n';
@@ -9,7 +9,9 @@ import { MARKETPLACE_FILTER_FORM } from '../store/constants';
 
 import { AttributeFilterListContainer } from './AttributeFilterListContainer';
 
-const PureAttributeFilterListDialog = (props: TranslateProps) => (
+const PureAttributeFilterListDialog: FunctionComponent<TranslateProps> = (
+  props,
+) => (
   <ModalDialog
     title={props.translate('Attributes filter')}
     footer={[

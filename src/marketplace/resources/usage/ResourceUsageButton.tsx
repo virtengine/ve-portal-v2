@@ -1,7 +1,9 @@
-import * as classNames from 'classnames';
-import * as React from 'react';
+import { FunctionComponent } from 'react';
+import { ButtonGroup } from 'react-bootstrap';
+import { useSelector } from 'react-redux';
 
 import { Resource } from '@waldur/marketplace/resources/types';
+import { isSupportOnly } from '@waldur/workspace/selectors';
 
 import { ResourceCreateUsageButton } from './ResourceCreateUsageButton';
 import { ResourceShowUsageButton } from './ResourceShowUsageButton';
@@ -21,15 +23,19 @@ interface Props {
   >;
 }
 
-export const ResourceUsageButton = ({ row }: Props) => {
-  const disabled =
-    !row.is_usage_based ||
-    !row.plan ||
-    !['OK', 'Updating', 'Terminating', 'Terminated'].includes(row.state);
-  const body = (
-    <div className={classNames('btn-group', { disabled })}>
-      <ResourceShowUsageButton resource={row.uuid} />
-      {['OK', 'Updating'].includes(row.state) && (
+export const ResourceUsageButton: FunctionComponent<Props> = ({ row }) => {
+  const is_support_only = useSelector(isSupportOnly);
+  if (!row.is_usage_based || !row.plan || row.state === 'Creating') {
+    return <>{'N/A'}</>;
+  }
+  const disabled = !['OK', 'Updating', 'Terminating'].includes(row.state);
+  return (
+    <ButtonGroup>
+      <ResourceShowUsageButton
+        offeringUuid={row.offering_uuid}
+        resourceUuid={row.uuid}
+      />
+      {!is_support_only && (
         <ResourceCreateUsageButton
           offering_uuid={row.offering_uuid}
           resource_uuid={row.uuid}
@@ -37,13 +43,9 @@ export const ResourceUsageButton = ({ row }: Props) => {
           customer_name={row.customer_name}
           project_name={row.project_name}
           backend_id={row.backend_id}
+          disabled={disabled}
         />
       )}
-    </div>
+    </ButtonGroup>
   );
-  if (disabled) {
-    return <span>N/A</span>;
-  } else {
-    return body;
-  }
 };

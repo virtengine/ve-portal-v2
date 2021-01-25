@@ -1,5 +1,5 @@
-import * as React from 'react';
-import * as Panel from 'react-bootstrap/lib/Panel';
+import { FunctionComponent } from 'react';
+import { Panel } from 'react-bootstrap';
 import { FormSection } from 'redux-form';
 
 import { translate } from '@waldur/i18n';
@@ -9,7 +9,7 @@ import { NodeRemoveButton } from './NodeRemoveButton';
 import { NodeRoleGroup } from './NodeRoleGroup';
 import { NodeStorageGroup } from './NodeStorageGroup';
 
-export const NodePanel = (props) => (
+export const NodePanel: FunctionComponent<any> = (props) => (
   <Panel>
     <Panel.Heading>
       <NodeRemoveButton onClick={() => props.onRemove(props.index)} />

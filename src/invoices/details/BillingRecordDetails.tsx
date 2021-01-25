@@ -1,7 +1,7 @@
-import * as React from 'react';
+import { useMemo } from 'react';
 import { useSelector } from 'react-redux';
 
-import { defaultCurrency } from '@waldur/core/services';
+import { defaultCurrency } from '@waldur/core/formatCurrency';
 import { translate } from '@waldur/i18n';
 import { PriceTooltip } from '@waldur/price/PriceTooltip';
 import { getCustomer } from '@waldur/workspace/selectors';
@@ -16,9 +16,10 @@ import { groupInvoiceItems } from './utils';
 
 export const BillingRecordDetails = ({ invoice }: { invoice: Invoice }) => {
   const customer = useSelector(getCustomer);
-  const projects = React.useMemo(() => groupInvoiceItems(invoice.items), [
+  const projects = useMemo(() => groupInvoiceItems(invoice.items), [
     invoice.items,
   ]);
+
   return (
     <div className="row">
       <div className="col-lg-12">
@@ -57,10 +58,11 @@ export const BillingRecordDetails = ({ invoice }: { invoice: Invoice }) => {
                 <thead>
                   <tr>
                     <th>{translate('Item')}</th>
+                    <th>{translate('Unit')}</th>
                     <th>{translate('Quantity')}</th>
                     <th>{translate('Unit price')}</th>
                     <th>
-                      <PriceTooltip /> <span>{translate('Total price')}</span>
+                      <PriceTooltip /> <>{translate('Total price')}</>
                     </th>
                   </tr>
                 </thead>
@@ -77,10 +79,12 @@ export const BillingRecordDetails = ({ invoice }: { invoice: Invoice }) => {
                       <tr key={itemIndex}>
                         <td>
                           <InvoiceItemDetails
+                            customerId={customer.uuid}
                             item={item}
                             itemId={`item-${projectIndex}-${itemIndex}`}
                           />
                         </td>
+                        <td>{item.measured_unit}</td>
                         <td>{item.factor || item.quantity}</td>
                         <td>{defaultCurrency(item.unit_price)}</td>
                         <td>{defaultCurrency(item.price)}</td>

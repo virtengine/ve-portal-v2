@@ -1,4 +1,4 @@
-import * as React from 'react';
+import { FunctionComponent } from 'react';
 
 import { IssueAttachment } from './IssueAttachment';
 import { IssueAttachmentLoading } from './IssueAttachmentLoading';
@@ -25,7 +25,9 @@ const getAttachmentsLoading = (count: number) => {
   return attachmentsLoadingList;
 };
 
-export const IssueAttachmentsList = (props: IssueAttachmentsListProps) => {
+export const IssueAttachmentsList: FunctionComponent<IssueAttachmentsListProps> = (
+  props,
+) => {
   const { attachments, uploading } = props;
   const attachmentsList = attachments.length
     ? attachments.map((attachment: Attachment) => (

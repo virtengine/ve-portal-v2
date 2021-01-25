@@ -1,7 +1,7 @@
-import * as moment from 'moment-timezone';
-import * as React from 'react';
+import moment from 'moment-timezone';
+import { FunctionComponent, useMemo } from 'react';
 
-import { defaultCurrency } from '@waldur/core/services';
+import { defaultCurrency } from '@waldur/core/formatCurrency';
 import { translate } from '@waldur/i18n';
 import { OrderItemDetailsType } from '@waldur/marketplace/orders/types';
 import { Offering, OfferingComponent } from '@waldur/marketplace/types';
@@ -160,10 +160,12 @@ const getMessage = (
   }
 };
 
-export const OrderItemSummary: React.FC<OrderItemSummaryProps> = (props) => {
-  const message = React.useMemo(
-    () => getMessage(props.orderItem, props.offering),
-    [props.orderItem, props.offering],
-  );
+export const OrderItemSummary: FunctionComponent<OrderItemSummaryProps> = (
+  props,
+) => {
+  const message = useMemo(() => getMessage(props.orderItem, props.offering), [
+    props.orderItem,
+    props.offering,
+  ]);
   return <>{message}</>;
 };

@@ -1,6 +1,6 @@
-import * as React from 'react';
+import { FunctionComponent } from 'react';
 import { useSelector } from 'react-redux';
-import useAsync from 'react-use/lib/useAsync';
+import { useAsync } from 'react-use';
 
 import { Sidebar } from '@waldur/navigation/sidebar/Sidebar';
 import { SidebarMenuProps } from '@waldur/navigation/sidebar/types';
@@ -13,7 +13,7 @@ import {
   getExtraSidebarItems,
 } from './utils';
 
-export const ProjectSidebar = () => {
+export const ProjectSidebar: FunctionComponent = () => {
   const project = useSelector(getProject);
   const sidebarItems = useSelector(getSidebarItems);
 

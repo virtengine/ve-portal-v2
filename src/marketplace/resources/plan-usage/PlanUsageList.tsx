@@ -1,16 +1,17 @@
-import * as React from 'react';
+import { FunctionComponent } from 'react';
 import { connect } from 'react-redux';
 import { compose } from 'redux';
 import { getFormValues } from 'redux-form';
 
 import { withTranslation } from '@waldur/i18n';
 import { PlanRemainingColumn } from '@waldur/marketplace/common/PlanRemainingColumn';
+import { RootState } from '@waldur/store/reducers';
 import { Table, connectTable, createFetcher } from '@waldur/table';
 
 import { PlanUsageButton } from './PlanUsageButton';
 import { PlanUsageRowProps } from './types';
 
-export const TableComponent = (props) => {
+export const TableComponent: FunctionComponent<any> = (props) => {
   const { translate } = props;
   const columns = [
     {
@@ -90,7 +91,7 @@ const TableOptions = {
   ],
 };
 
-const mapStateToProps = (state) => ({
+const mapStateToProps = (state: RootState) => ({
   filter: getFormValues('PlanUsageFilter')(state),
 });
 

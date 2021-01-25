@@ -1,5 +1,4 @@
-import * as React from 'react';
-import * as Table from 'react-bootstrap/lib/Table';
+import { Table } from 'react-bootstrap';
 
 import { StateIndicator } from '@waldur/core/StateIndicator';
 import { translate } from '@waldur/i18n';

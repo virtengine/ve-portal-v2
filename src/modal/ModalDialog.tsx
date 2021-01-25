@@ -1,5 +1,5 @@
-import * as classNames from 'classnames';
-import * as React from 'react';
+import classNames from 'classnames';
+import React, { FunctionComponent } from 'react';
 
 interface Props {
   title: React.ReactNode;
@@ -8,7 +8,7 @@ interface Props {
   children?: React.ReactNode;
 }
 
-export const ModalDialog = (props: Props) => (
+export const ModalDialog: FunctionComponent<Props> = (props) => (
   <div>
     <div className="modal-header">
       <h3 className="modal-title">{props.title}</h3>

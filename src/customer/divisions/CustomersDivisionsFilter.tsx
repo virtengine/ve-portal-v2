@@ -1,6 +1,5 @@
-import * as React from 'react';
-import * as Col from 'react-bootstrap/lib/Col';
-import * as Row from 'react-bootstrap/lib/Row';
+import { FunctionComponent } from 'react';
+import { Col, Row } from 'react-bootstrap';
 import { reduxForm } from 'redux-form';
 
 import { CUSTOMERS_DIVISIONS_FORM_ID } from '@waldur/customer/divisions/constants';
@@ -9,7 +8,7 @@ import {
   getOptions,
 } from '@waldur/customer/list/AccountingRunningField';
 
-export const PureCustomersDivisionsFilter = () => (
+export const PureCustomersDivisionsFilter: FunctionComponent = () => (
   <div className="ibox">
     <div className="ibox-content border-bottom m-t-md">
       <form className="form-inline">

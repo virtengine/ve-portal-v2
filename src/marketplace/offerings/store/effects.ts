@@ -1,14 +1,15 @@
+import { triggerTransition } from '@uirouter/redux';
 import { reset, change } from 'redux-form';
 import { call, put, select, takeEvery } from 'redux-saga/effects';
 
 import { format } from '@waldur/core/ErrorMessageFormatter';
 import { Action } from '@waldur/core/reducerActions';
-import { $state } from '@waldur/core/services';
 import { translate } from '@waldur/i18n';
 import * as api from '@waldur/marketplace/common/api';
 import { Category } from '@waldur/marketplace/types';
 import { closeModalDialog } from '@waldur/modal/actions';
-import { showError, showSuccess, stateGo } from '@waldur/store/coreSaga';
+import { router } from '@waldur/router';
+import { showError, showSuccess } from '@waldur/store/notify';
 import { updateEntity } from '@waldur/table/actions';
 import { getCustomer } from '@waldur/workspace/selectors';
 
@@ -19,7 +20,12 @@ import {
   isAddingOfferingScreenshot,
 } from './actions';
 import * as constants from './constants';
-import { getPlans, getAttributes, getOfferingComponents } from './selectors';
+import {
+  getPlans,
+  getAttributes,
+  getOfferingComponents,
+  getComponents,
+} from './selectors';
 import { OfferingFormData, OfferingUpdateFormData } from './types';
 import {
   formatOfferingRequest,
@@ -102,7 +108,7 @@ function* createOffering(action: Action<OfferingFormData>) {
     yield put(constants.createOffering.failure());
     return;
   }
-  yield call(() => $state.go('marketplace-vendor-offerings'));
+  yield call(() => router.stateService.go('marketplace-vendor-offerings'));
   yield put(reset(constants.FORM_ID));
   yield put(setStep('Overview'));
   yield put(showSuccess(translate('Offering has been created.')));
@@ -111,7 +117,7 @@ function* createOffering(action: Action<OfferingFormData>) {
 
 function* updateOffering(action: Action<OfferingUpdateFormData>) {
   const { offeringUuid, thumbnail, ...rest } = action.payload;
-  const components = yield select(getOfferingComponents, rest.type.value);
+  const components = yield select(getComponents, rest.type.value);
   try {
     const offeringRequest = formatOfferingRequest(rest, components);
     yield call(api.updateOffering, offeringUuid, offeringRequest);
@@ -129,7 +135,7 @@ function* updateOffering(action: Action<OfferingUpdateFormData>) {
   yield put(constants.updateOffering.success());
   yield put(reset(constants.FORM_ID));
   yield put(showSuccess(translate('Offering has been updated.')));
-  yield put(stateGo('marketplace-vendor-offerings'));
+  yield put(triggerTransition('marketplace-vendor-offerings', {}));
 }
 
 function* updateOfferingState(action) {
@@ -142,7 +148,7 @@ function* updateOfferingState(action) {
       reason,
     );
     yield put(
-      updateEntity(constants.TABLE_NAME, offering.uuid, {
+      updateEntity(constants.OFFERING_TABLE_NAME, offering.uuid, {
         ...offering,
         state: response.state,
       }),
@@ -218,15 +224,65 @@ function* removeOfferingScreenshot(action: Action<any>) {
 function* addOfferingLocation(action: Action<any>) {
   try {
     const { offering } = action.payload;
-    const response = yield call(api.updateOffering, offering.uuid, offering);
+    yield call(api.updateOffering, offering.uuid, offering);
     yield put(showSuccess(translate('Location has been saved successfully.')));
-    if (response.status === 201) {
-      yield put(closeModalDialog());
-    }
+    yield put(closeModalDialog());
   } catch (error) {
     const errorMessage = `${translate('Unable to save location.')} ${format(
       error,
     )}`;
+    yield put(showError(errorMessage));
+  }
+}
+
+function* googleCalendarSync(action: Action<any>) {
+  const { uuid } = action.payload;
+  try {
+    yield call(api.syncGoogleCalendar, uuid);
+    yield put(
+      showSuccess(translate('Google Calendar has been synced successfully.')),
+    );
+    yield put(closeModalDialog());
+  } catch (error) {
+    const errorMessage = `${translate(
+      'Unable to sync Google Calendar.',
+    )} ${format(error)}`;
+    yield put(showError(errorMessage));
+  }
+}
+
+function* googleCalendarPublish(action: Action<any>) {
+  const { uuid } = action.payload;
+  try {
+    yield call(api.publishGoogleCalendar, uuid);
+    yield put(
+      showSuccess(
+        translate('Google Calendar has been published successfully.'),
+      ),
+    );
+    yield put(closeModalDialog());
+  } catch (error) {
+    const errorMessage = `${translate(
+      'Unable to publish Google Calendar.',
+    )} ${format(error)}`;
+    yield put(showError(errorMessage));
+  }
+}
+
+function* googleCalendarUnpublish(action: Action<any>) {
+  const { uuid } = action.payload;
+  try {
+    yield call(api.unpublishGoogleCalendar, uuid);
+    yield put(
+      showSuccess(
+        translate('Google Calendar has been unpublished successfully.'),
+      ),
+    );
+    yield put(closeModalDialog());
+  } catch (error) {
+    const errorMessage = `${translate(
+      'Unable to unpublish Google Calendar.',
+    )} ${format(error)}`;
     yield put(showError(errorMessage));
   }
 }
@@ -246,4 +302,7 @@ export default function* () {
     removeOfferingScreenshot,
   );
   yield takeEvery(constants.ADD_OFFERING_LOCATION, addOfferingLocation);
+  yield takeEvery(constants.GOOGLE_CALENDAR_SYNC, googleCalendarSync);
+  yield takeEvery(constants.GOOGLE_CALENDAR_PUBLISH, googleCalendarPublish);
+  yield takeEvery(constants.GOOGLE_CALENDAR_UNPUBLISH, googleCalendarUnpublish);
 }

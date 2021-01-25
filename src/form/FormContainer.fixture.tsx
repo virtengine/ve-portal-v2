@@ -1,5 +1,4 @@
 import { ReactWrapper } from 'enzyme';
-import * as React from 'react';
 import { formValues } from 'redux-form';
 
 import { FormContainer } from './FormContainer';

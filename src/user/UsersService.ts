@@ -1,25 +1,27 @@
+import { ENV } from '@waldur/configs/default';
 import { getFirst, getById, patch } from '@waldur/core/api';
-import { ENV, $q } from '@waldur/core/services';
 import store from '@waldur/store/store';
 import { setCurrentUser } from '@waldur/workspace/actions';
 import { getUser } from '@waldur/workspace/selectors';
+import { UserDetails } from '@waldur/workspace/types';
 
-export const getCurrentUser = () => getFirst('/users/', { current: '' });
+export const getCurrentUser = () =>
+  getFirst<UserDetails>('/users/', { current: '' });
 
 class UsersServiceClass {
   get(userId) {
-    return $q.when(getById('/users/', userId));
+    return getById<UserDetails>('/users/', userId);
   }
 
   update(user) {
-    return $q.when(patch(`/users/${user.uuid}/`, user));
+    return patch(`/users/${user.uuid}/`, user);
   }
 
   getCurrentUser() {
     if (getUser(store.getState())) {
-      return $q.when(getUser(store.getState()));
+      return Promise.resolve(getUser(store.getState()));
     }
-    return $q.when(getCurrentUser()).then((user) => {
+    return getCurrentUser().then((user) => {
       store.dispatch(setCurrentUser(user));
       return user;
     });
@@ -27,7 +29,10 @@ class UsersServiceClass {
 
   isCurrentUserValid() {
     return this.getCurrentUser().then((user) => {
-      return !this.mandatoryFieldsMissing(user) && user.agreement_date;
+      return (
+        !this.mandatoryFieldsMissing(user) &&
+        (user as UserDetails).agreement_date
+      );
     });
   }
 

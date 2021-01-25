@@ -1,4 +1,4 @@
-import * as React from 'react';
+import { FunctionComponent } from 'react';
 
 import { TranslateProps, withTranslation } from '@waldur/i18n';
 import { CloseDialogButton } from '@waldur/modal/CloseDialogButton';
@@ -11,8 +11,8 @@ interface UserRemovalMessageDialogProps extends TranslateProps {
   };
 }
 
-export const PureUserRemovalMessageDialog = (
-  props: UserRemovalMessageDialogProps,
+export const PureUserRemovalMessageDialog: FunctionComponent<UserRemovalMessageDialogProps> = (
+  props,
 ) => {
   const {
     resolve: { supportEmail, userName },

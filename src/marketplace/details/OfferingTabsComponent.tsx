@@ -1,12 +1,11 @@
-import * as React from 'react';
-import * as Tab from 'react-bootstrap/lib/Tab';
-import * as Tabs from 'react-bootstrap/lib/Tabs';
+import React from 'react';
+import { Tab, Tabs } from 'react-bootstrap';
 
 import './OfferingTabs.scss';
 
 export interface OfferingTab {
   title: React.ReactNode;
-  component: React.FC<{}>;
+  component: React.FC;
   visible: boolean;
 }
 

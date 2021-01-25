@@ -1,4 +1,4 @@
-import * as React from 'react';
+import React from 'react';
 
 import { formatDate } from '@waldur/core/dateUtils';
 import { OrganizationLink } from '@waldur/customer/list/OrganizationLink';
@@ -10,11 +10,11 @@ import { Column, TableOptionsType } from '@waldur/table/types';
 import { renderFieldOrDash } from '@waldur/table/utils';
 
 const AbbreviationField = ({ row }) => (
-  <span>{renderFieldOrDash(row.abbreviation)}</span>
+  <>{renderFieldOrDash(row.abbreviation)}</>
 );
 
 const CreatedDateField = ({ row }) => (
-  <span>{renderFieldOrDash(formatDate(row.created))}</span>
+  <>{renderFieldOrDash(formatDate(row.created))}</>
 );
 
 const TableComponent = (
@@ -35,7 +35,7 @@ const TableComponent = (
     },
     {
       title: translate('VMs'),
-      render: ({ row }) => <span>{row.vm_count}</span>,
+      render: ({ row }) => <>{row.vm_count}</>,
     },
   ];
 

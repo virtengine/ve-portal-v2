@@ -1,5 +1,6 @@
 import Axios, { AxiosRequestConfig } from 'axios';
 
+import { ENV } from '@waldur/configs/default';
 import {
   get,
   getAll,
@@ -13,7 +14,6 @@ import {
   getSelectData,
   parseResultCount,
 } from '@waldur/core/api';
-import { ENV } from '@waldur/core/services';
 import { Customer } from '@waldur/customer/types';
 import { SubmitCartRequest } from '@waldur/marketplace/cart/types';
 import {
@@ -95,6 +95,9 @@ export const uploadOfferingThumbnail = (offeringId, thumbnail) =>
     `${ENV.apiEndpoint}api/marketplace-offerings/${offeringId}/`,
     { thumbnail },
   );
+
+export const updateOfferingAttributes = (offeringId, data) =>
+  post(`/marketplace-offerings/${offeringId}/update_attributes/`, data);
 
 export const uploadOfferingDocument = (
   offeringUrl: string,
@@ -227,7 +230,7 @@ export const submitUsageReport = (payload) =>
   );
 
 export const getResource = (id: string) =>
-  getById<OrderItemResponse>('/marketplace-resources/', id);
+  getById<Resource>('/marketplace-resources/', id);
 
 export const switchPlan = (resource_uuid: string, plan_url: string) =>
   post(`/marketplace-resources/${resource_uuid}/switch_plan/`, {
@@ -257,3 +260,18 @@ export const importResource = ({ offering_uuid, ...payload }) =>
     `/marketplace-offerings/${offering_uuid}/import_resource/`,
     payload,
   ).then((response) => response.data);
+
+export const syncGoogleCalendar = (uuid: string) =>
+  post(`/booking-offerings/${uuid}/google_calendar_sync/`).then(
+    (response) => response.data,
+  );
+
+export const publishGoogleCalendar = (uuid: string) =>
+  post(`/booking-offerings/${uuid}/share_google_calendar/`).then(
+    (response) => response.data,
+  );
+
+export const unpublishGoogleCalendar = (uuid: string) =>
+  post(`/booking-offerings/${uuid}/unshare_google_calendar/`).then(
+    (response) => response.data,
+  );

@@ -1,14 +1,14 @@
 import copy from 'copy-to-clipboard';
-import * as React from 'react';
+import { useCallback, FunctionComponent } from 'react';
 import { useDispatch } from 'react-redux';
 
 import { translate } from '@waldur/i18n';
-import { showSuccess } from '@waldur/store/coreSaga';
+import { showSuccess } from '@waldur/store/notify';
 
-export const CopyToClipboard = ({ value }) => {
+export const CopyToClipboard: FunctionComponent<{ value }> = ({ value }) => {
   const dispatch = useDispatch();
 
-  const onClick = React.useCallback(() => {
+  const onClick = useCallback(() => {
     copy(value);
     dispatch(showSuccess(translate('File has been copied')));
   }, [dispatch, value]);

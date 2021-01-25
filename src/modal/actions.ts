@@ -1,13 +1,17 @@
-import { $q } from '@waldur/core/services';
+import { ReactNode } from 'react';
+
+import { createDeferred } from '@waldur/core/utils';
 
 import { ConfirmationDialog } from './ConfirmationDialog';
 
 export const OPEN = 'waldur/modal/OPEN';
 export const CLOSE = 'waldur/modal/CLOSE';
 
-export const openModalDialog = (
-  modalComponent: React.ComponentType<any> | string,
-  modalProps?: any,
+export type DialogSizeType = 'lg' | 'xl';
+
+export const openModalDialog = <P = any>(
+  modalComponent: React.ComponentType<P>,
+  modalProps?: P & { size?: DialogSizeType },
 ) => ({
   type: 'SHOW_MODAL',
   modalComponent,
@@ -18,8 +22,12 @@ export const closeModalDialog = () => ({
   type: 'HIDE_MODAL',
 });
 
-export const waitForConfirmation = (dispatch, title, body) => {
-  const deferred = $q.defer();
+export const waitForConfirmation = (
+  dispatch,
+  title: ReactNode,
+  body: ReactNode,
+) => {
+  const deferred = createDeferred();
   const params = {
     resolve: {
       deferred,

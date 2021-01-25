@@ -1,16 +1,18 @@
+import { ComponentType } from 'react';
+
 const registry = {};
 
 export const register = (
-  type,
-  component,
-  className = 'resource-details-table',
+  type: string,
+  component: ComponentType<any>,
+  useDefaultWrapper = true,
 ) => {
   registry[type] = {
     component,
-    className,
+    useDefaultWrapper,
   };
 };
 
-export const get = (type) => {
+export const get = (type: string) => {
   return registry[type];
 };

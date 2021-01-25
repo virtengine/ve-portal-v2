@@ -1,13 +1,14 @@
-import * as React from 'react';
+import { FunctionComponent } from 'react';
 
 import { formatDateTime } from '@waldur/core/dateUtils';
-import { NestedListActions } from '@waldur/resource/actions/NestedListActions';
 import { ResourceRowActions } from '@waldur/resource/actions/ResourceRowActions';
 import { ResourceName } from '@waldur/resource/ResourceName';
 import { ResourceState } from '@waldur/resource/state/ResourceState';
 import { Table, connectTable, createFetcher } from '@waldur/table';
 
-const TableComponent = (props) => {
+import { CreatePortAction } from './actions/CreatePortAction';
+
+const TableComponent: FunctionComponent<any> = (props) => {
   const { translate } = props;
   return (
     <Table
@@ -41,7 +42,7 @@ const TableComponent = (props) => {
         },
       ]}
       verboseName={translate('ports')}
-      actions={<NestedListActions resource={props.resource} tab="ports" />}
+      actions={<CreatePortAction resource={props.resource} />}
     />
   );
 };

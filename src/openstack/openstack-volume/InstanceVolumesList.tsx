@@ -1,4 +1,4 @@
-import * as React from 'react';
+import { FunctionComponent } from 'react';
 
 import { formatFilesize } from '@waldur/core/utils';
 import { ResourceRowActions } from '@waldur/resource/actions/ResourceRowActions';
@@ -7,7 +7,9 @@ import { ResourceState } from '@waldur/resource/state/ResourceState';
 import { Table, connectTable, createFetcher } from '@waldur/table';
 import { BooleanField } from '@waldur/table/BooleanField';
 
-const TableComponent = (props) => {
+import { AttachVolumeAction } from '../openstack-instance/actions/AttachVolumeAction';
+
+const TableComponent: FunctionComponent<any> = (props) => {
   const { translate } = props;
   return (
     <Table
@@ -42,6 +44,7 @@ const TableComponent = (props) => {
           render: ({ row }) => <ResourceRowActions resource={row} />,
         },
       ]}
+      actions={<AttachVolumeAction resource={props.resource} />}
       verboseName={translate('volumes')}
     />
   );

@@ -79,6 +79,8 @@ interface ReferredPids {
   relation_type: string;
 }
 
+type OfferingState = 'Draft' | 'Active' | 'Paused' | 'Archived';
+
 export interface Offering extends GeolocationPoint {
   quotas?: Quota[];
   uuid?: string;
@@ -105,7 +107,7 @@ export interface Offering extends GeolocationPoint {
   secret_options?: Record<string, any>;
   plans?: Plan[];
   type: string;
-  state: string;
+  state: OfferingState;
   scope?: string;
   scope_uuid?: string;
   created?: string;
@@ -117,6 +119,7 @@ export interface Offering extends GeolocationPoint {
   referred_pids: ReferredPids[];
   latitude: number;
   longitude: number;
+  google_calendar_is_public: boolean;
 }
 
 export interface Screenshot {
@@ -197,6 +200,7 @@ export interface OfferingsListType {
 }
 
 export interface ServiceProvider {
+  customer_uuid?: string;
   name: string;
   uuid: string;
   image?: string;

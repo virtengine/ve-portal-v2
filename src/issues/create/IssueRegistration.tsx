@@ -1,6 +1,6 @@
-import * as React from 'react';
+import { useCallback } from 'react';
 import { useDispatch } from 'react-redux';
-import useAsync from 'react-use/lib/useAsync';
+import { useAsync } from 'react-use';
 import { reduxForm } from 'redux-form';
 
 import { SubmitButton } from '@waldur/auth/SubmitButton';
@@ -45,7 +45,7 @@ export const IssueRegistration = reduxForm<IssueFormData, OwnProps>({
 })(({ onSearch, handleSubmit, submitting }) => {
   const dispatch = useDispatch();
 
-  const createIssue = React.useCallback(
+  const createIssue = useCallback(
     async (formData: IssueFormData) => {
       const payload: IssueRequestPayload = {
         type: formData.type.id,

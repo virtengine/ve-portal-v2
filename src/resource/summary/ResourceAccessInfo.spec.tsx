@@ -1,5 +1,4 @@
 import { shallow } from 'enzyme';
-import * as React from 'react';
 
 import { DownloadLink } from '@waldur/core/DownloadLink';
 import { ExternalLink } from '@waldur/core/ExternalLink';

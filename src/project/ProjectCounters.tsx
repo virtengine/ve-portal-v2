@@ -1,8 +1,7 @@
-import * as React from 'react';
-import * as Col from 'react-bootstrap/lib/Col';
-import * as Row from 'react-bootstrap/lib/Row';
+import { FunctionComponent } from 'react';
+import { Col, Row } from 'react-bootstrap';
 
-import { defaultCurrency } from '@waldur/core/services';
+import { defaultCurrency } from '@waldur/core/formatCurrency';
 import { DashboardCounter } from '@waldur/dashboard/DashboardCounter';
 import { translate } from '@waldur/i18n';
 import { Project } from '@waldur/workspace/types';
@@ -11,7 +10,9 @@ interface ProjectCountersProps {
   project: Project;
 }
 
-export const ProjectCounters = (props: ProjectCountersProps) => (
+export const ProjectCounters: FunctionComponent<ProjectCountersProps> = (
+  props,
+) => (
   <Row>
     <Col md={6}>
       <DashboardCounter

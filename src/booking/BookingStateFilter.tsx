@@ -1,4 +1,4 @@
-import * as React from 'react';
+import { FunctionComponent } from 'react';
 import Select from 'react-select';
 import { Field } from 'redux-form';
 
@@ -10,7 +10,7 @@ export const getStates = () => [
   { value: 'Terminated', label: translate('Rejected') },
 ];
 
-export const BookingStateFilter = () => (
+export const BookingStateFilter: FunctionComponent = () => (
   <div className="form-group">
     <label className="control-label">{translate('State')}</label>
     <Field

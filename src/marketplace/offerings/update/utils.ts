@@ -1,5 +1,6 @@
 import { getOfferingTypes } from '@waldur/marketplace/common/registry';
 import { Offering, Category, OfferingOptions } from '@waldur/marketplace/types';
+import { RootState } from '@waldur/store/reducers';
 
 import { getAccountingTypeOptions } from '../create/ComponentAccountingTypeField';
 import { getLimitPeriods } from '../create/ComponentLimitPeriodField';
@@ -27,7 +28,7 @@ const parseOptions = (options: OfferingOptions) =>
         })
     : [];
 
-const parseAttributes = (category: Category, attributes) => {
+export const parseAttributes = (category: Category, attributes) => {
   const attributeMap = {};
   for (const section of category.sections) {
     for (const attr of section.attributes) {
@@ -70,7 +71,7 @@ const parseComponents = (components) => {
   }));
 };
 
-export const getInitialValues = (state) => {
+export const getInitialValues = (state: RootState) => {
   const offering: Offering = getOffering(state).offering;
   if (!offering?.type) {
     return {};

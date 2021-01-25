@@ -1,6 +1,6 @@
-import * as React from 'react';
+import { useCallback } from 'react';
 import { useDispatch } from 'react-redux';
-import useAsync from 'react-use/lib/useAsync';
+import { useAsync } from 'react-use';
 import { reduxForm } from 'redux-form';
 
 import { format } from '@waldur/core/ErrorMessageFormatter';
@@ -14,7 +14,7 @@ import { ModalDialog } from '@waldur/modal/ModalDialog';
 import { Flavor } from '@waldur/openstack/openstack-instance/types';
 import { createNode } from '@waldur/rancher/api';
 import { Cluster } from '@waldur/rancher/types';
-import { showError, showSuccess } from '@waldur/store/coreSaga';
+import { showError, showSuccess } from '@waldur/store/notify';
 
 import { NodeFlavorGroup } from './NodeFlavorGroup';
 import { NodeRoleGroup } from './NodeRoleGroup';
@@ -23,7 +23,7 @@ import { SubnetGroup } from './SubnetGroup';
 import { loadData } from './utils';
 
 interface OwnProps {
-  resolve: { cluster: any };
+  resolve: { resource: any };
   flavors: any[];
   subnets: any[];
 }
@@ -66,12 +66,12 @@ const loadNodeCreateData = async (cluster: Cluster) => {
 export const CreateNodeDialog = reduxForm<FormData, OwnProps>({
   form: 'RancherNodeCreate',
 })((props) => {
-  const cluster = props.resolve.cluster;
+  const cluster = props.resolve.resource;
   const state = useAsync(() => loadNodeCreateData(cluster), [cluster]);
 
   const dispatch = useDispatch();
 
-  const callback = React.useCallback(
+  const callback = useCallback(
     async (formData: FormData) => {
       try {
         await createNode(serializeNode(cluster, formData));

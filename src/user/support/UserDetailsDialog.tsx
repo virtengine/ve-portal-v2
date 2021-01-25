@@ -1,4 +1,4 @@
-import * as React from 'react';
+import { FunctionComponent } from 'react';
 
 import { translate } from '@waldur/i18n';
 import { CloseDialogButton } from '@waldur/modal/CloseDialogButton';
@@ -11,7 +11,9 @@ interface UserDetailsDialogProps {
   resolve: { user: UserDetails };
 }
 
-export const UserDetailsDialog = (props: UserDetailsDialogProps) => {
+export const UserDetailsDialog: FunctionComponent<UserDetailsDialogProps> = (
+  props,
+) => {
   return (
     <ModalDialog
       title={translate('User details')}

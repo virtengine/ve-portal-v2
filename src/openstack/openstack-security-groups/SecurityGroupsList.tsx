@@ -1,12 +1,14 @@
-import * as React from 'react';
+import { FunctionComponent } from 'react';
+import { ButtonGroup } from 'react-bootstrap';
 
-import { NestedListActions } from '@waldur/resource/actions/NestedListActions';
 import { ResourceRowActions } from '@waldur/resource/actions/ResourceRowActions';
 import { ResourceName } from '@waldur/resource/ResourceName';
 import { ResourceState } from '@waldur/resource/state/ResourceState';
 import { Resource } from '@waldur/resource/types';
 import { Table, connectTable, createFetcher } from '@waldur/table';
 
+import { CreateSecurityGroupAction } from '../openstack-tenant/actions/CreateSecurityGroupAction';
+import { PullSecurityGroupsAction } from '../openstack-tenant/actions/PullSecurityGroupsAction';
 import { SecurityGroupRule } from '../types';
 
 interface ResourceRules extends Resource {
@@ -15,7 +17,7 @@ interface ResourceRules extends Resource {
 
 const ResourceRuleCount = (resource: ResourceRules) => resource.rules.length;
 
-const TableComponent = (props) => {
+const TableComponent: FunctionComponent<any> = (props) => {
   const { translate } = props;
   return (
     <Table
@@ -24,6 +26,7 @@ const TableComponent = (props) => {
         {
           title: translate('Name'),
           render: ({ row }) => <ResourceName resource={row} />,
+          orderField: 'name',
         },
         {
           title: translate('Rule count'),
@@ -41,8 +44,13 @@ const TableComponent = (props) => {
         },
       ]}
       verboseName={translate('security groups')}
+      initialSorting={{ field: 'name', mode: 'asc' }}
+      showPageSizeSelector={true}
       actions={
-        <NestedListActions resource={props.resource} tab="security_groups" />
+        <ButtonGroup>
+          <CreateSecurityGroupAction resource={props.resource} />
+          <PullSecurityGroupsAction resource={props.resource} />
+        </ButtonGroup>
       }
     />
   );

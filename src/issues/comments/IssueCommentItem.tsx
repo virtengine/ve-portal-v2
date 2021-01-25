@@ -1,10 +1,11 @@
-import * as React from 'react';
-import * as Gravatar from 'react-gravatar';
+import DOMPurify from 'dompurify';
+import { Fragment, FunctionComponent } from 'react';
+import Gravatar from 'react-gravatar';
 import { connect } from 'react-redux';
 import { compose } from 'redux';
 
 import { formatMediumDateTime } from '@waldur/core/dateUtils';
-import { $sanitize } from '@waldur/core/services';
+import { lazyComponent } from '@waldur/core/lazyComponent';
 import { TranslateProps, withTranslation } from '@waldur/i18n';
 import { getAttachments } from '@waldur/issues/attachments/selectors';
 import { Attachment } from '@waldur/issues/attachments/types';
@@ -14,17 +15,23 @@ import { openModalDialog } from '@waldur/modal/actions';
 
 import * as actions from './actions';
 import './IssueCommentItem.scss';
-import { IssueCommentDeleteDialog } from './IssueCommentDeleteDialog';
 import { IssueCommentsFormContainer } from './IssueCommentsFormContainer';
 import {
   getIsDeleting,
-  getIsUiDisabled,
   getIsFormToggleDisabled,
+  getIsUiDisabled,
   getUser,
 } from './selectors';
 import { Comment, User } from './types';
 import * as utils from './utils';
 
+const IssueCommentDeleteDialog = lazyComponent(
+  () =>
+    import(
+      /* webpackChunkName: "IssueCommentDeleteDialog" */ './IssueCommentDeleteDialog'
+    ),
+  'IssueCommentDeleteDialog',
+);
 interface PureIssueCommentItemProps extends TranslateProps {
   comment: Comment;
   user: User;
@@ -39,7 +46,9 @@ interface PureIssueCommentItemProps extends TranslateProps {
   toggleForm(): void;
 }
 
-export const PureIssueCommentItem = (props: PureIssueCommentItemProps) => {
+export const PureIssueCommentItem: FunctionComponent<PureIssueCommentItemProps> = (
+  props,
+) => {
   const {
     comment,
     attachments,
@@ -58,7 +67,7 @@ export const PureIssueCommentItem = (props: PureIssueCommentItemProps) => {
     users &&
     users[comment.author_uuid] &&
     users[comment.author_uuid].map((currentUser, index) => (
-      <React.Fragment key={index}>{currentUser.toUpperCase()}</React.Fragment>
+      <Fragment key={index}>{currentUser.toUpperCase()}</Fragment>
     ));
   const onCommentClick = (evt) => {
     const target = evt.target as HTMLElement;
@@ -83,7 +92,7 @@ export const PureIssueCommentItem = (props: PureIssueCommentItemProps) => {
         <div className="comment-item__header m-b-sm">
           <div className="comment-item__title">
             <a onClick={openUserDialog}>{comment.author_name}</a>&#32;
-            <span>{translate('commented:')}</span>
+            <>{translate('commented:')}</>
           </div>
           <div className="comment-item__controls">
             {(user.is_staff || user.uuid === comment.author_uuid) && (
@@ -114,7 +123,7 @@ export const PureIssueCommentItem = (props: PureIssueCommentItemProps) => {
         <div
           className="comment-item__content"
           dangerouslySetInnerHTML={{
-            __html: $sanitize(
+            __html: DOMPurify.sanitize(
               utils.formatJiraMarkup(comment.description, attachments),
             ),
           }}

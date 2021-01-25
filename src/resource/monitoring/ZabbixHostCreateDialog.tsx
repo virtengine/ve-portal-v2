@@ -1,4 +1,4 @@
-import * as React from 'react';
+import { FunctionComponent } from 'react';
 import { connect } from 'react-redux';
 import { compose } from 'redux';
 import { reduxForm, formValues } from 'redux-form';
@@ -11,7 +11,7 @@ import * as actions from './actions';
 import { MonitoringGuide } from './MonitoringGuide';
 import { ZabbixTemplateRequest } from './types';
 
-const PureZabbixHostCreateDialog = (props) => (
+const PureZabbixHostCreateDialog: FunctionComponent<any> = (props) => (
   <ActionDialog
     title={props.translate('Create Zabbix host')}
     submitLabel={props.translate('Create Zabbix host')}

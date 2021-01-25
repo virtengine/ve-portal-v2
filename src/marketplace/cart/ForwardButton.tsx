@@ -1,9 +1,10 @@
-import * as React from 'react';
+import { FunctionComponent } from 'react';
 import { connect } from 'react-redux';
 import { compose } from 'redux';
 import { createSelector } from 'reselect';
 
-import { withTranslation, TranslateProps } from '@waldur/i18n';
+import { TranslateProps, withTranslation } from '@waldur/i18n';
+import { RootState } from '@waldur/store/reducers';
 import { ActionButton } from '@waldur/table/ActionButton';
 import { isStaff } from '@waldur/workspace/selectors';
 
@@ -12,12 +13,11 @@ import { OrderItemResponse } from '../orders/types';
 
 import { createOrderRequest } from './store/actions';
 import {
+  allOfferingsPrivate,
+  allTermsOfServiceAgreed,
   getItems,
   isCreatingOrder,
-  allTermsOfServiceAgreed,
-  allOfferingsPrivate,
 } from './store/selectors';
-import { OuterState } from './types';
 
 interface ForwardButtonComponentProps extends TranslateProps {
   createOrder(): void;
@@ -33,7 +33,9 @@ interface PureForwardButton {
   tooltip?: string;
 }
 
-export const PureForwardButton = (props: PureForwardButton) => (
+export const PureForwardButton: FunctionComponent<PureForwardButton> = (
+  props,
+) => (
   <ActionButton
     title={props.title}
     icon="fa fa-arrow-right"
@@ -71,7 +73,7 @@ const orderCanBeAutoapproved = createSelector(
   (staff, isPrivate, permissions) => staff || isPrivate || permissions,
 );
 
-const mapStateToProps = (state: OuterState) => ({
+const mapStateToProps = (state: RootState) => ({
   items: getItems(state),
   disabled: isCreatingOrder(state) || !allTermsOfServiceAgreed(state),
   orderCanBeApproved: orderCanBeAutoapproved(state),

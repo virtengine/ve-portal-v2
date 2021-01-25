@@ -1,5 +1,3 @@
-import * as React from 'react';
-
 import { withTranslation } from '@waldur/i18n';
 import { KeyValueButton } from '@waldur/marketplace/resources/KeyValueButton';
 import { ResourceLink } from '@waldur/resource/ResourceLink';
@@ -19,7 +17,7 @@ const formatInstance = (resource) =>
       label={resource.instance_name}
     />
   ) : (
-    <span>&ndash;</span>
+    <>&ndash;</>
   );
 
 const PureRancherNodeSummary = (props: ResourceSummaryProps) => {

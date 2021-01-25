@@ -1,4 +1,4 @@
-import * as React from 'react';
+import { FunctionComponent } from 'react';
 import { connect } from 'react-redux';
 import { compose } from 'redux';
 import { getFormValues } from 'redux-form';
@@ -15,6 +15,7 @@ import { ResourceStateField } from '@waldur/marketplace/resources/list/ResourceS
 import { ResourceState } from '@waldur/marketplace/resources/types';
 import { ResourceUsageButton } from '@waldur/marketplace/resources/usage/ResourceUsageButton';
 import { Offering } from '@waldur/marketplace/types';
+import { RootState } from '@waldur/store/reducers';
 import { Table, connectTable, createFetcher } from '@waldur/table';
 
 interface OfferingResourceFilter {
@@ -29,7 +30,7 @@ interface OwnProps {
   offering: Offering;
 }
 
-export const TableComponent = (props) => {
+export const TableComponent: FunctionComponent<any> = (props) => {
   const columns = [
     {
       title: translate('Name'),
@@ -38,15 +39,15 @@ export const TableComponent = (props) => {
     },
     {
       title: translate('Client organization'),
-      render: ({ row }) => <span>{row.customer_name}</span>,
+      render: ({ row }) => <>{row.customer_name}</>,
     },
     {
       title: translate('Project'),
-      render: ({ row }) => <span>{row.project_name}</span>,
+      render: ({ row }) => <>{row.project_name}</>,
     },
     {
       title: translate('Plan'),
-      render: ({ row }) => <span>{row.plan_name || 'N/A'}</span>,
+      render: ({ row }) => <>{row.plan_name || 'N/A'}</>,
     },
     {
       title: translate('Created at'),
@@ -113,7 +114,7 @@ export const TableOptions = {
   queryField: 'query',
 };
 
-const mapStateToProps = (state) => ({
+const mapStateToProps = (state: RootState) => ({
   filter: getFormValues(FILTER_OFFERING_RESOURCE)(state),
 });
 

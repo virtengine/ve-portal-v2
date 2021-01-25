@@ -1,7 +1,7 @@
 import { useCurrentStateAndParams } from '@uirouter/react';
-import * as React from 'react';
+import React from 'react';
 import { useSelector } from 'react-redux';
-import useAsync from 'react-use/lib/useAsync';
+import { useAsync } from 'react-use';
 
 import { LoadingSpinner } from '@waldur/core/LoadingSpinner';
 import { translate } from '@waldur/i18n';
@@ -12,7 +12,7 @@ import { ProjectResourcesFilter } from './ProjectResourcesFilter';
 import { ProjectResourcesList } from './ProjectResourcesList';
 import { loadData } from './utils';
 
-export const ProjectResourcesContainer: React.FC<{}> = () => {
+export const ProjectResourcesContainer: React.FC = () => {
   const {
     params: { category_uuid },
   } = useCurrentStateAndParams();

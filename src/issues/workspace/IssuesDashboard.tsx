@@ -1,6 +1,5 @@
-import * as React from 'react';
-import * as Col from 'react-bootstrap/lib/Col';
-import * as Row from 'react-bootstrap/lib/Row';
+import { FunctionComponent } from 'react';
+import { Col, Row } from 'react-bootstrap';
 
 import { isFeatureVisible } from '@waldur/features/connect';
 import { translate } from '@waldur/i18n';
@@ -11,7 +10,7 @@ import { IssuesShortList } from '../list/IssuesShortList';
 
 import { IssuesActivityStream } from './IssuesActivityStream';
 
-export const IssuesDashboard = () => {
+export const IssuesDashboard: FunctionComponent = () => {
   useTitle(translate('Support dashboard'));
   return (
     <Row>

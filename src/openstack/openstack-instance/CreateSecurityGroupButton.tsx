@@ -1,6 +1,6 @@
 import { useRouter } from '@uirouter/react';
-import * as React from 'react';
-import * as Button from 'react-bootstrap/lib/Button';
+import { useCallback, FunctionComponent } from 'react';
+import { Button } from 'react-bootstrap';
 import { useDispatch } from 'react-redux';
 
 import { translate } from '@waldur/i18n';
@@ -8,12 +8,14 @@ import { waitForConfirmation } from '@waldur/modal/actions';
 
 import { CreateResourceFormGroup } from '../CreateResourceFormGroup';
 
-export const CreateSecurityGroupButton = ({ tenantUUID }) => {
+export const CreateSecurityGroupButton: FunctionComponent<{ tenantUUID }> = ({
+  tenantUUID,
+}) => {
   const router = useRouter();
 
   const dispatch = useDispatch();
 
-  const gotoTenant = React.useCallback(async () => {
+  const gotoTenant = useCallback(async () => {
     try {
       await waitForConfirmation(
         dispatch,

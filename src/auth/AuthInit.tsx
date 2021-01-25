@@ -1,13 +1,13 @@
 import { useRouter } from '@uirouter/react';
-import * as React from 'react';
+import { useCallback, FunctionComponent } from 'react';
 import { useDispatch } from 'react-redux';
-import useAsync from 'react-use/lib/useAsync';
+import { useAsync } from 'react-use';
 
+import { ENV } from '@waldur/configs/default';
 import { LoadingSpinner } from '@waldur/core/LoadingSpinner';
-import { ENV } from '@waldur/core/services';
 import { pick } from '@waldur/core/utils';
 import { translate } from '@waldur/i18n';
-import { showError, showSuccess } from '@waldur/store/coreSaga';
+import { showError, showSuccess } from '@waldur/store/notify';
 import { UserEditContainer } from '@waldur/user/support/UserEditContainer';
 import { UsersService } from '@waldur/user/UsersService';
 import { setCurrentUser } from '@waldur/workspace/actions';
@@ -23,13 +23,13 @@ const formatInitialData = pick([
   'phone_number',
 ]);
 
-export const AuthInit = () => {
+export const AuthInit: FunctionComponent = () => {
   const router = useRouter();
   const dispatch = useDispatch();
   const { loading, error, value: user } = useAsync(() =>
     UsersService.getCurrentUser(),
   );
-  const onSave = React.useCallback(
+  const onSave = useCallback(
     async (user) => {
       try {
         const response = await UsersService.update(formatInitialData(user));

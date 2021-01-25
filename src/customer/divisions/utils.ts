@@ -1,5 +1,5 @@
-import * as d3 from 'd3-scale-chromatic';
-import * as moment from 'moment-timezone';
+import { interpolateInferno } from 'd3-scale-chromatic';
+import moment from 'moment-timezone';
 
 import { translate } from '@waldur/i18n';
 
@@ -48,8 +48,11 @@ const getEChartOption = (chartData) => ({
   },
 });
 
+export const generateColors = (amount: number, colorRangeInfo): string[] =>
+  interpolateColors(amount, interpolateInferno, colorRangeInfo);
+
 const buildDivisionsHierarchy = (array) => {
-  const COLORS = interpolateColors(array.length, d3.interpolateInferno, {
+  const COLORS = generateColors(array.length, {
     colorStart: 0.2,
     colorEnd: 0.8,
     useEndAsStart: false,

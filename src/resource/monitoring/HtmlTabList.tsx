@@ -1,6 +1,5 @@
-import * as React from 'react';
-import * as Tab from 'react-bootstrap/lib/Tab';
-import * as Tabs from 'react-bootstrap/lib/Tabs';
+import { FunctionComponent } from 'react';
+import { Tab, Tabs } from 'react-bootstrap';
 
 import { FormattedHtml } from '@waldur/core/FormattedHtml';
 
@@ -13,7 +12,7 @@ interface HtmlTabListProps {
   tabs: HtmlTab[];
 }
 
-export const HtmlTabList = (props: HtmlTabListProps) => (
+export const HtmlTabList: FunctionComponent<HtmlTabListProps> = (props) => (
   <Tabs defaultActiveKey={0} id="htmlTabList">
     {props.tabs.map((tab, index) => (
       <Tab eventKey={index} title={tab.title} key={index}>

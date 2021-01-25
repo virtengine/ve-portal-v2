@@ -1,4 +1,4 @@
-import * as React from 'react';
+import { FunctionComponent } from 'react';
 
 import { Tooltip } from '@waldur/core/Tooltip';
 import { Customer } from '@waldur/workspace/types';
@@ -27,10 +27,10 @@ const TooltipWrapper = (component, tooltip) => (
   </>
 );
 
-export const ResourceNameField = ({
+export const ResourceNameField: FunctionComponent<ResourceNameFieldProps> = ({
   row,
   customer,
-}: ResourceNameFieldProps) => {
+}) => {
   const label = row.name || row.offering_name;
   let LinkComponent;
   if (row.resource_type && row.resource_uuid) {

@@ -1,10 +1,11 @@
-import * as React from 'react';
+import { FunctionComponent } from 'react';
 import { connect } from 'react-redux';
 
 import { DownloadLink } from '@waldur/core/DownloadLink';
-import { defaultCurrency } from '@waldur/core/services';
+import { defaultCurrency } from '@waldur/core/formatCurrency';
 import { translate } from '@waldur/i18n';
 import { getActiveFixedPricePaymentProfile } from '@waldur/invoices/details/utils';
+import { RootState } from '@waldur/store/reducers';
 import { getCustomer, getProject } from '@waldur/workspace/selectors';
 import { Customer, Project } from '@waldur/workspace/types';
 
@@ -18,7 +19,9 @@ interface ShoppingCartSidebarProps {
   project: Project;
 }
 
-export const PureShoppingCartSidebar = (props: ShoppingCartSidebarProps) =>
+export const PureShoppingCartSidebar: FunctionComponent<ShoppingCartSidebarProps> = (
+  props,
+) =>
   props.customer ? (
     <aside className="shopping-cart-sidebar">
       <div className="shopping-cart-sidebar-title">
@@ -62,7 +65,7 @@ export const PureShoppingCartSidebar = (props: ShoppingCartSidebarProps) =>
     </aside>
   ) : null;
 
-const mapStateToProps = (state) => ({
+const mapStateToProps = (state: RootState) => ({
   customer: getCustomer(state),
   project: getProject(state),
   total: getTotal(state),

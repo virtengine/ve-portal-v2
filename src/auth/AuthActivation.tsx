@@ -1,22 +1,22 @@
 import { useCurrentStateAndParams, useRouter } from '@uirouter/react';
-import * as React from 'react';
+import { useCallback, FunctionComponent } from 'react';
 import { useDispatch } from 'react-redux';
-import useEffectOnce from 'react-use/lib/useEffectOnce';
+import { useEffectOnce } from 'react-use';
 
 import { LoadingSpinner } from '@waldur/core/LoadingSpinner';
 import { translate } from '@waldur/i18n';
-import { showSuccess, showError } from '@waldur/store/coreSaga';
+import { showSuccess, showError } from '@waldur/store/notify';
 
 import { AuthService } from './AuthService';
 
-export const AuthActivation = () => {
+export const AuthActivation: FunctionComponent = () => {
   const {
     params: { user_uuid, token },
   } = useCurrentStateAndParams();
   const router = useRouter();
   const dispatch = useDispatch();
 
-  const activateAccount = React.useCallback(async () => {
+  const activateAccount = useCallback(async () => {
     try {
       await AuthService.activate({
         user_uuid,

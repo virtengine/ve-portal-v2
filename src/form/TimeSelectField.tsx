@@ -1,5 +1,4 @@
-import * as moment from 'moment-timezone';
-import * as React from 'react';
+import moment from 'moment-timezone';
 
 import { formatTime } from '@waldur/core/dateUtils';
 import { SelectField } from '@waldur/form';

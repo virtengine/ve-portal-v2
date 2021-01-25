@@ -1,7 +1,7 @@
-import * as classNames from 'classnames';
-import * as React from 'react';
+import classNames from 'classnames';
+import { Component } from 'react';
 
-export class SecretField extends React.Component<
+export class SecretField extends Component<
   { value: string },
   { showSecret: boolean }
 > {

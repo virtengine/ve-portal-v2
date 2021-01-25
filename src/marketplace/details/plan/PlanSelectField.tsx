@@ -1,4 +1,4 @@
-import * as React from 'react';
+import { FunctionComponent } from 'react';
 import Select from 'react-select';
 import { Field } from 'redux-form';
 
@@ -10,7 +10,9 @@ interface PlanSelectFieldProps {
   plans: Plan[];
 }
 
-export const PlanSelectField = (props: PlanSelectFieldProps) => (
+export const PlanSelectField: FunctionComponent<PlanSelectFieldProps> = (
+  props,
+) => (
   <Field
     name="plan"
     validate={[required]}

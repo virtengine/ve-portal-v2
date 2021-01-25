@@ -1,22 +1,24 @@
 import { useRouter } from '@uirouter/react';
-import * as React from 'react';
-import ControlLabel from 'react-bootstrap/lib/ControlLabel';
-import FormControl from 'react-bootstrap/lib/FormControl';
-import FormGroup from 'react-bootstrap/lib/FormGroup';
-import InputGroup from 'react-bootstrap/lib/InputGroup';
-import ModalBody from 'react-bootstrap/lib/ModalBody';
-import ModalFooter from 'react-bootstrap/lib/ModalFooter';
-import ModalHeader from 'react-bootstrap/lib/ModalHeader';
-import ModalTitle from 'react-bootstrap/lib/ModalTitle';
+import { useState } from 'react';
+import {
+  ControlLabel,
+  FormControl,
+  FormGroup,
+  InputGroup,
+  ModalBody,
+  ModalFooter,
+  ModalHeader,
+  ModalTitle,
+} from 'react-bootstrap';
 import { useDispatch } from 'react-redux';
-import useMountedState from 'react-use/lib/useMountedState';
+import { useMountedState } from 'react-use';
 import { reduxForm, Field } from 'redux-form';
 
-import { ENV } from '@waldur/core/services';
+import { ENV } from '@waldur/configs/default';
 import { InputField } from '@waldur/form/InputField';
 import { translate } from '@waldur/i18n';
 import { CloseDialogButton } from '@waldur/modal/CloseDialogButton';
-import { showErrorResponse, showError } from '@waldur/store/coreSaga';
+import { showErrorResponse, showError } from '@waldur/store/notify';
 import { UsersService } from '@waldur/user/UsersService';
 
 import { AuthService } from '../AuthService';
@@ -27,7 +29,7 @@ import delay from './delay';
 
 export const AuthValimoDialog = reduxForm({ form: 'AuthValimoDialog' })(
   ({ submitting, invalid, handleSubmit }) => {
-    const [challengeCode, setChallengeCode] = React.useState<string>();
+    const [challengeCode, setChallengeCode] = useState<string>();
     const dispatch = useDispatch();
     const router = useRouter();
     const isMounted = useMountedState();

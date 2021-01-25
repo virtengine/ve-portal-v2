@@ -1,8 +1,7 @@
-import * as React from 'react';
+import { triggerTransition } from '@uirouter/redux';
 import { connect } from 'react-redux';
 
 import { translate } from '@waldur/i18n';
-import { stateGo } from '@waldur/store/coreSaga';
 import { ActionButton } from '@waldur/table/ActionButton';
 
 interface OwnProps {
@@ -25,7 +24,7 @@ const mapDispatchToProps = (dispatch, ownProps: OwnProps) => {
   return {
     onClick: () =>
       dispatch(
-        stateGo('marketplace-category', {
+        triggerTransition('marketplace-category', {
           category_uuid: ownProps.category_uuid,
         }),
       ),

@@ -1,10 +1,10 @@
-import * as React from 'react';
+import { FunctionComponent } from 'react';
 
 import { Table, connectTable, createFetcher } from '@waldur/table';
 
 import { ProjectExpandableRow } from './ProjectExpandableRow';
 
-const TableComponent = (props) => {
+const TableComponent: FunctionComponent<any> = (props) => {
   const { translate } = props;
   return (
     <Table
@@ -12,15 +12,15 @@ const TableComponent = (props) => {
       columns={[
         {
           title: translate('Name'),
-          render: ({ row }) => <span>{row.name}</span>,
+          render: ({ row }) => <>{row.name}</>,
         },
         {
           title: translate('Description'),
-          render: ({ row }) => <span>{row.description}</span>,
+          render: ({ row }) => <>{row.description}</>,
         },
         {
           title: translate('State'),
-          render: ({ row }) => <span>{row.runtime_state}</span>,
+          render: ({ row }) => <>{row.runtime_state}</>,
         },
       ]}
       verboseName={translate('projects')}

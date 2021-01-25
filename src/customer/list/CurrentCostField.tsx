@@ -1,8 +1,11 @@
-import { ENV, defaultCurrency } from '@waldur/core/services';
+import { FunctionComponent } from 'react';
+
+import { ENV } from '@waldur/configs/default';
+import { defaultCurrency } from '@waldur/core/formatCurrency';
 import { getActiveFixedPricePaymentProfile } from '@waldur/invoices/details/utils';
 import { DASH_ESCAPE_CODE } from '@waldur/table/constants';
 
-export const CurrentCostField = ({ row }) => {
+export const CurrentCostField: FunctionComponent<{ row }> = ({ row }) => {
   if (getActiveFixedPricePaymentProfile(row.payment_profiles)) {
     return DASH_ESCAPE_CODE;
   }

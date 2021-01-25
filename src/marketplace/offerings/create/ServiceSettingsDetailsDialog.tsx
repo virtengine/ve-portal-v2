@@ -1,7 +1,7 @@
 import Axios from 'axios';
-import * as React from 'react';
+import { useCallback, FunctionComponent } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import useAsync from 'react-use/lib/useAsync';
+import { useAsync } from 'react-use';
 
 import { LoadingSpinner } from '@waldur/core/LoadingSpinner';
 import { translate } from '@waldur/i18n';
@@ -18,7 +18,7 @@ interface ProviderData {
   name: string;
 }
 
-export const ServiceSettingsDetailsDialog = () => {
+export const ServiceSettingsDetailsDialog: FunctionComponent = () => {
   const offeringData = useSelector(getOffering);
   const offeringScope = offeringData.offering.scope;
   const state = useAsync(async () => {
@@ -34,7 +34,7 @@ export const ServiceSettingsDetailsDialog = () => {
   }, [offeringScope]);
 
   const dispatch = useDispatch();
-  const updateProvider = React.useCallback(
+  const updateProvider = useCallback(
     (data) => actions.updateProvider(data, dispatch),
     [dispatch],
   );

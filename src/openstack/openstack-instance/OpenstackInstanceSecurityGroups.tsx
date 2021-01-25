@@ -1,10 +1,10 @@
-import * as React from 'react';
-import * as Col from 'react-bootstrap/lib/Col';
-import * as Row from 'react-bootstrap/lib/Row';
+import { Component } from 'react';
+import { Col, Row } from 'react-bootstrap';
 import { connect } from 'react-redux';
 import Select from 'react-select';
 import { compose } from 'redux';
 
+import { lazyComponent } from '@waldur/core/lazyComponent';
 import { TranslateProps, withTranslation } from '@waldur/i18n';
 import { openModalDialog } from '@waldur/modal/actions';
 import {
@@ -12,7 +12,13 @@ import {
   SecurityGroupOption,
 } from '@waldur/openstack/openstack-security-groups/types';
 
-import { OpenStackSecurityGroupsDialog } from '../openstack-security-groups/OpenStackSecurityGroupsDialog';
+const OpenStackSecurityGroupsDialog = lazyComponent(
+  () =>
+    import(
+      /* webpackChunkName: "OpenStackSecurityGroupsDialog" */ '../openstack-security-groups/OpenStackSecurityGroupsDialog'
+    ),
+  'OpenStackSecurityGroupsDialog',
+);
 
 const openSecurityGroupsDetailsDialog = (securityGroups: SecurityGroup[]) =>
   openModalDialog(OpenStackSecurityGroupsDialog, {
@@ -32,7 +38,7 @@ interface DispatchProps {
   openSecurityGroupsDetailsDialog(securityGroups: SecurityGroup[]): void;
 }
 
-class OpenstackInstanceSecurityGroupsComponent extends React.Component<
+class OpenstackInstanceSecurityGroupsComponent extends Component<
   OwnProps & DispatchProps & TranslateProps
 > {
   openDetailsDialog = (e) => {

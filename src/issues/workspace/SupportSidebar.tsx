@@ -1,14 +1,15 @@
-import * as React from 'react';
+import { useState, useEffect, FunctionComponent } from 'react';
 
-import { ngInjector } from '@waldur/core/services';
 import { Sidebar } from '@waldur/navigation/sidebar/Sidebar';
 import { MenuItemType } from '@waldur/navigation/sidebar/types';
 
-export const SupportSidebar = () => {
-  const [items, setItems] = React.useState<MenuItemType[]>([]);
+import { IssueNavigationService } from './IssueNavigationService';
 
-  React.useEffect(() => {
-    ngInjector.get('IssueNavigationService').getSidebarItems().then(setItems);
+export const SupportSidebar: FunctionComponent = () => {
+  const [items, setItems] = useState<MenuItemType[]>([]);
+
+  useEffect(() => {
+    IssueNavigationService.getSidebarItems().then(setItems);
   }, []);
 
   return <Sidebar items={items} />;

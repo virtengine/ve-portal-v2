@@ -1,4 +1,4 @@
-import * as React from 'react';
+import { FunctionComponent } from 'react';
 
 import { DownloadLink } from '@waldur/core/DownloadLink';
 import { ExternalLink } from '@waldur/core/ExternalLink';
@@ -8,7 +8,9 @@ interface ResourceAccessInfoProps extends TranslateProps {
   resource: any;
 }
 
-export const ResourceAccessInfo = (props: ResourceAccessInfoProps) => {
+export const ResourceAccessInfo: FunctionComponent<ResourceAccessInfoProps> = (
+  props,
+) => {
   const { resource, translate } = props;
   if (!resource.access_url) {
     return translate('No access info');

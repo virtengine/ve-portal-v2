@@ -1,5 +1,5 @@
-import * as moment from 'moment-timezone';
-import * as React from 'react';
+import moment from 'moment-timezone';
+import { useMemo, FunctionComponent } from 'react';
 import WindowedSelect from 'react-windowed-select';
 
 import { reactSelectMenuPortaling } from '@waldur/form/utils';
@@ -29,9 +29,9 @@ export function getDefaultTimezone() {
   return Intl.DateTimeFormat().resolvedOptions().timeZone;
 }
 
-export const TimezoneField = (props) => {
+export const TimezoneField: FunctionComponent<any> = (props) => {
   const { input, ...rest } = props;
-  const options = React.useMemo(getTimezoneItems, []);
+  const options = useMemo(getTimezoneItems, []);
   return (
     <WindowedSelect
       {...reactSelectMenuPortaling()}

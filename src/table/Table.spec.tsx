@@ -1,8 +1,10 @@
 import { shallow, mount } from 'enzyme';
-import * as React from 'react';
 
-import { LoadingSpinner } from '@waldur/core/LoadingSpinner';
 import { formatTemplate } from '@waldur/i18n/translate';
+import {
+  LoadingSpinner,
+  TableLoadingSpinnerContainer,
+} from '@waldur/table/TableLoadingSpinnerContainer';
 
 import Table from './Table';
 
@@ -23,7 +25,9 @@ describe('Table', () => {
 
   describe('special states', () => {
     it('renders spinner if list is loading', () => {
-      const wrapper = shallow(<Table {...defaultProps} loading={true} />);
+      const wrapper = shallow(
+        <TableLoadingSpinnerContainer {...defaultProps} loading={true} />,
+      );
       expect(wrapper.contains(<LoadingSpinner />)).toBe(true);
     });
 

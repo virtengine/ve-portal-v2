@@ -1,5 +1,5 @@
-import * as classNames from 'classnames';
-import * as React from 'react';
+import classNames from 'classnames';
+import React, { FunctionComponent } from 'react';
 import { connect } from 'react-redux';
 import { compose } from 'redux';
 import { getFormValues } from 'redux-form';
@@ -8,6 +8,7 @@ import { formatDateTime } from '@waldur/core/dateUtils';
 import { translate } from '@waldur/i18n';
 import { ResourceShowUsageButton } from '@waldur/marketplace/resources/usage/ResourceShowUsageButton';
 import { Category } from '@waldur/marketplace/types';
+import { RootState } from '@waldur/store/reducers';
 import { Table, connectTable, createFetcher } from '@waldur/table';
 import { wrapTooltip } from '@waldur/table/ActionButton';
 import { getCustomer } from '@waldur/workspace/selectors';
@@ -28,7 +29,7 @@ interface StateProps {
   filter: ResourceFilter;
 }
 
-export const TableComponent = (props) => {
+export const TableComponent: FunctionComponent<any> = (props) => {
   const columns = [
     {
       title: translate('Name'),
@@ -37,15 +38,15 @@ export const TableComponent = (props) => {
     },
     {
       title: translate('Project'),
-      render: ({ row }) => <span>{row.project_name}</span>,
+      render: ({ row }) => <>{row.project_name}</>,
     },
     {
       title: translate('Category'),
-      render: ({ row }) => <span>{row.category_title}</span>,
+      render: ({ row }) => <>{row.category_title}</>,
     },
     {
       title: translate('Created at'),
-      render: ({ row }) => <span>{formatDateTime(row.created)}</span>,
+      render: ({ row }) => <>{formatDateTime(row.created)}</>,
       orderField: 'created',
     },
     {
@@ -54,14 +55,17 @@ export const TableComponent = (props) => {
     },
     {
       title: translate('Plan'),
-      render: ({ row }) => <span>{row.plan_name || 'N/A'}</span>,
+      render: ({ row }) => <>{row.plan_name || 'N/A'}</>,
     },
     {
       title: translate('Actions'),
       render: ({ row }) => {
         const body = (
           <div className={classNames({ disabled: !row.is_usage_based })}>
-            <ResourceShowUsageButton resource={row.uuid} />
+            <ResourceShowUsageButton
+              offeringUuid={row.offering_uuid}
+              resourceUuid={row.uuid}
+            />
           </div>
         );
         if (!row.is_usage_based) {
@@ -130,7 +134,7 @@ const TableOptions = {
   queryField: 'name',
 };
 
-const mapStateToProps = (state) => ({
+const mapStateToProps = (state: RootState) => ({
   customer: getCustomer(state),
   filter: getFormValues('CustomerResourcesFilter')(state),
 });
@@ -140,6 +144,4 @@ const enhance = compose(
   connectTable(TableOptions),
 );
 
-export const CustomerResourcesList = enhance(
-  TableComponent,
-) as React.ComponentType<{}>;
+export const CustomerResourcesList = enhance(TableComponent);

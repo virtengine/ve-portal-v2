@@ -1,11 +1,12 @@
 import { useRouter, useCurrentStateAndParams } from '@uirouter/react';
 import Axios from 'axios';
 import Qs from 'qs';
-import * as React from 'react';
+import { useState, useEffect, FunctionComponent } from 'react';
 
+import { ENV } from '@waldur/configs/default';
 import { Link } from '@waldur/core/Link';
 import { LoadingSpinner } from '@waldur/core/LoadingSpinner';
-import { ENV } from '@waldur/core/services';
+import { getQueryString } from '@waldur/core/utils';
 import { translate } from '@waldur/i18n';
 import { UsersService } from '@waldur/user/UsersService';
 
@@ -21,16 +22,16 @@ const getClientId = (provider) =>
     eduteams: ENV.plugins.WALDUR_AUTH_SOCIAL.EDUTEAMS_CLIENT_ID,
   }[provider]);
 
-export const OauthLoginCompleted = () => {
+export const OauthLoginCompleted: FunctionComponent = () => {
   const router = useRouter();
   const {
     params: { provider },
   } = useCurrentStateAndParams();
-  const [error, setError] = React.useState();
+  const [error, setError] = useState();
 
-  React.useEffect(() => {
+  useEffect(() => {
     async function fetchToken() {
-      const qs = Qs.parse(document.location.search.split('?', 2)[1]);
+      const qs = Qs.parse(getQueryString());
       const url = `${ENV.apiEndpoint}api-auth/${provider}/`;
       try {
         const response = await Axios.post(url, {

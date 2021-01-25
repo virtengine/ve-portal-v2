@@ -1,12 +1,20 @@
-import * as React from 'react';
+import { FunctionComponent } from 'react';
 import { connect } from 'react-redux';
 
+import { lazyComponent } from '@waldur/core/lazyComponent';
 import { setOrganizationLocation } from '@waldur/customer/list/store/actions';
 import { Customer } from '@waldur/customer/types';
 import { translate } from '@waldur/i18n';
-import { SetLocationDialog } from '@waldur/map/SetLocationDialog';
 import { openModalDialog } from '@waldur/modal/actions';
 import { ActionButton } from '@waldur/table/ActionButton';
+
+const SetLocationDialog = lazyComponent(
+  () =>
+    import(
+      /* webpackChunkName: "SetLocationDialog" */ '@waldur/map/SetLocationDialog'
+    ),
+  'SetLocationDialog',
+);
 
 interface SetLocationButtonProps {
   customer: Customer;
@@ -26,7 +34,9 @@ const openSetLocationDialog = (
     size: 'lg',
   });
 
-const PureSetLocationButton = (props: SetLocationButtonProps) => (
+const PureSetLocationButton: FunctionComponent<SetLocationButtonProps> = (
+  props,
+) => (
   <ActionButton
     title={translate('Set location')}
     icon="fa fa-map-marker"

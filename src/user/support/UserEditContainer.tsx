@@ -1,9 +1,9 @@
-import * as React from 'react';
-import * as Gravatar from 'react-gravatar';
+import React from 'react';
+import Gravatar from 'react-gravatar';
 import { connect } from 'react-redux';
 import { compose } from 'redux';
 
-import { ENV } from '@waldur/core/services';
+import { ENV } from '@waldur/configs/default';
 import { translate, withTranslation } from '@waldur/i18n';
 import { getNativeNameVisible, getConfig } from '@waldur/store/config';
 import {

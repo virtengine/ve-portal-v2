@@ -1,11 +1,11 @@
-import * as classNames from 'classnames';
-import * as React from 'react';
+import classNames from 'classnames';
+import { FunctionComponent } from 'react';
 
 interface Props {
   value: boolean;
 }
 
-export const BooleanField = ({ value }: Props) => (
+export const BooleanField: FunctionComponent<Props> = ({ value }) => (
   <i
     className={classNames('fa', {
       'fa-check': value,

@@ -1,30 +1,63 @@
 import moment from 'moment-timezone';
-import React from 'react';
-import Button from 'react-bootstrap/lib/Button';
-import * as ButtonGroup from 'react-bootstrap/lib/ButtonGroup';
-import * as Modal from 'react-bootstrap/lib/Modal';
-import { useDispatch } from 'react-redux';
+import { FC, useCallback, useEffect, useState } from 'react';
+import { Button, ButtonGroup, Modal } from 'react-bootstrap';
+import { useDispatch, useSelector } from 'react-redux';
 
-import { BookingModalProps, BookingProps } from '@waldur/booking/types';
+import { BookingProps } from '@waldur/booking/types';
 import { translate } from '@waldur/i18n';
-import { showError } from '@waldur/store/coreSaga';
+import { formDataSelector } from '@waldur/marketplace/utils';
+import { showError } from '@waldur/store/notify';
 
 import { DateAndTimeSelectField } from './DateAndTimeSelect';
 
-const BookingModal = ({
+interface BookingModalProps {
+  isOpen: boolean;
+  toggle: () => void;
+  event: BookingProps | null | undefined;
+  onSuccess: (payload: {
+    oldID: BookingProps['id'];
+    event: BookingProps;
+  }) => any;
+  onDelete: () => void;
+}
+
+export const BookingModal: FC<BookingModalProps> = ({
   isOpen,
   toggle,
   onSuccess,
   onDelete,
   event,
-}: BookingModalProps) => {
+}) => {
   const dispatch = useDispatch();
-  const [newEvent, setNewEvent] = React.useState({
+  const marketplaceOfferingForm = useSelector(formDataSelector);
+  const [newEvent, setNewEvent] = useState({
     title: event.title,
     start: event.start,
     end: event.end,
     allDay: event.allDay,
   });
+
+  const setBookingTitle = useCallback(() => {
+    if (!marketplaceOfferingForm?.attributes?.name) {
+      dispatch(
+        showError(
+          translate('Please add resource name before editing a schedule.'),
+        ),
+      );
+      toggle();
+      return;
+    }
+    if (!event.title) {
+      setNewEvent({
+        ...newEvent,
+        title: marketplaceOfferingForm.attributes.name,
+      });
+    }
+  }, []);
+
+  useEffect(() => {
+    setBookingTitle();
+  }, [setBookingTitle]);
 
   const handleDelete = () => {
     onDelete();
@@ -73,23 +106,6 @@ const BookingModal = ({
 
       <Modal.Body>
         <form className="form-horizontal">
-          <div className="form-group">
-            <label className="control-label col-sm-2">
-              {translate('Title')}
-            </label>
-            <div className="col-sm-9">
-              <input
-                name="title"
-                type="text"
-                className="form-control"
-                value={newEvent.title}
-                onChange={({ target }) =>
-                  handleChange(target.name, target.value)
-                }
-              />
-            </div>
-          </div>
-
           <div className="form-group">
             <label className="control-label col-sm-2">
               {translate('All day')}
@@ -145,5 +161,3 @@ const BookingModal = ({
     </Modal>
   );
 };
-
-export default BookingModal;

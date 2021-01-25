@@ -1,11 +1,11 @@
-import * as React from 'react';
+import React from 'react';
 import { Field } from 'redux-form';
 
 import { AwesomeCheckboxField } from '@waldur/form/AwesomeCheckboxField';
 import { translate } from '@waldur/i18n';
 import { FormGroup } from '@waldur/marketplace/offerings/FormGroup';
 
-export const ComponentDisableQuotaField: React.FC<{}> = () => (
+export const ComponentDisableQuotaField: React.FC = () => (
   <FormGroup>
     <Field
       name="disable_quotas"

@@ -1,14 +1,14 @@
-import * as React from 'react';
+import { FunctionComponent } from 'react';
 import Select from 'react-select';
 import { Field } from 'redux-form';
 
-import { ENV } from '@waldur/core/services';
+import { ENV } from '@waldur/configs/default';
 import { required } from '@waldur/core/validators';
 import { translate } from '@waldur/i18n';
 
 import { CreateResourceFormGroup } from '../CreateResourceFormGroup';
 
-export const AvailabilityZoneGroup = (props) =>
+export const AvailabilityZoneGroup: FunctionComponent<any> = (props) =>
   props.availabilityZones.length > 0 ? (
     <CreateResourceFormGroup
       label={translate('Availability zone')}

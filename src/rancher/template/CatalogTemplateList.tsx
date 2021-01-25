@@ -1,4 +1,4 @@
-import * as React from 'react';
+import React from 'react';
 
 import { Link } from '@waldur/core/Link';
 import { OfferingLogo } from '@waldur/marketplace/common/OfferingLogo';
@@ -45,7 +45,7 @@ const TableComponent = (props: TableProps<Catalog> & OwnProps) => {
         },
         {
           title: translate('Description'),
-          render: ({ row }) => <span>{row.description}</span>,
+          render: ({ row }) => <>{row.description}</>,
         },
       ]}
       verboseName={translate('application templates')}

@@ -1,6 +1,6 @@
 import { useCurrentStateAndParams } from '@uirouter/react';
-import * as React from 'react';
-import useAsync from 'react-use/lib/useAsync';
+import React from 'react';
+import { useAsync } from 'react-use';
 
 import { LoadingSpinner } from '@waldur/core/LoadingSpinner';
 import { translate } from '@waldur/i18n';
@@ -25,7 +25,7 @@ async function loadData(offering_uuid: string) {
   return { offering, tabs, limits };
 }
 
-export const OfferingDetailsPage: React.FC<{}> = () => {
+export const OfferingDetailsPage: React.FC = () => {
   const {
     params: { offering_uuid },
   } = useCurrentStateAndParams();

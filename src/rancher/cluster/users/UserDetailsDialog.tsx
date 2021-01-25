@@ -1,15 +1,19 @@
-import * as React from 'react';
-import ModalBody from 'react-bootstrap/lib/ModalBody';
-import ModalFooter from 'react-bootstrap/lib/ModalFooter';
-import ModalHeader from 'react-bootstrap/lib/ModalHeader';
-import ModalTitle from 'react-bootstrap/lib/ModalTitle';
+import { FunctionComponent } from 'react';
+import {
+  ModalBody,
+  ModalFooter,
+  ModalHeader,
+  ModalTitle,
+} from 'react-bootstrap';
 
 import { translate } from '@waldur/i18n';
 import { CloseDialogButton } from '@waldur/modal/CloseDialogButton';
 
 import { UserDetailsTable } from './UserDetailsTable';
 
-export const UserDetailsDialog = ({ resolve }) => {
+export const UserDetailsDialog: FunctionComponent<{ resolve }> = ({
+  resolve,
+}) => {
   return (
     <>
       <ModalHeader>

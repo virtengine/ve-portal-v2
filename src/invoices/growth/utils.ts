@@ -1,6 +1,6 @@
-import * as moment from 'moment-timezone';
+import moment from 'moment-timezone';
 
-import { ENV } from '@waldur/core/services';
+import { ENV } from '@waldur/configs/default';
 import { translate } from '@waldur/i18n';
 
 export const formatGrowthChart = (growthChartData) => {

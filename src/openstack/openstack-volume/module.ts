@@ -1,16 +1,21 @@
-import { ActionConfigurationRegistry } from '@waldur/resource/actions/action-configuration';
+import { lazyComponent } from '@waldur/core/lazyComponent';
+import { ActionRegistry } from '@waldur/resource/actions/registry';
 import { ResourceStateConfigurationProvider } from '@waldur/resource/state/ResourceStateConfiguration';
 import * as ResourceSummary from '@waldur/resource/summary/registry';
 
 import actions from './actions';
-import { OpenStackVolumeSummary } from './OpenStackVolumeSummary';
 import './marketplace';
 import './tabs';
+const OpenStackVolumeSummary = lazyComponent(
+  () =>
+    import(
+      /* webpackChunkName: "OpenStackVolumeSummary" */ './OpenStackVolumeSummary'
+    ),
+  'OpenStackVolumeSummary',
+);
 
-export default () => {
-  ResourceSummary.register('OpenStackTenant.Volume', OpenStackVolumeSummary);
-  ActionConfigurationRegistry.register('OpenStackTenant.Volume', actions);
-  ResourceStateConfigurationProvider.register('OpenStackTenant.Volume', {
-    error_states: ['error'],
-  });
-};
+ResourceSummary.register('OpenStackTenant.Volume', OpenStackVolumeSummary);
+ActionRegistry.register('OpenStackTenant.Volume', actions);
+ResourceStateConfigurationProvider.register('OpenStackTenant.Volume', {
+  error_states: ['error'],
+});

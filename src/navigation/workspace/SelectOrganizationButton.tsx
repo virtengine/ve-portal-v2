@@ -1,14 +1,23 @@
-import * as React from 'react';
+import { useMemo, FunctionComponent } from 'react';
 import { useSelector } from 'react-redux';
 
 import { Link } from '@waldur/core/Link';
 import { translate } from '@waldur/i18n';
-import { getUser, checkCustomerUser } from '@waldur/workspace/selectors';
+import {
+  getUser,
+  checkCustomerUser,
+  checkIsServiceManager,
+} from '@waldur/workspace/selectors';
 
-export const SelectOrganizationButton = ({ organization }) => {
+export const SelectOrganizationButton: FunctionComponent<{ organization }> = ({
+  organization,
+}) => {
   const user = useSelector(getUser);
-  const canGotoDashboard = React.useMemo(
-    () => user.is_support || checkCustomerUser(organization, user),
+  const canGotoDashboard = useMemo(
+    () =>
+      user.is_support ||
+      checkCustomerUser(organization, user) ||
+      checkIsServiceManager(organization, user),
     [organization, user],
   );
   if (!canGotoDashboard) {

@@ -1,6 +1,5 @@
-import * as React from 'react';
-import * as Col from 'react-bootstrap/lib/Col';
-import * as Row from 'react-bootstrap/lib/Row';
+import { FunctionComponent } from 'react';
+import { Col, Row } from 'react-bootstrap';
 
 import { Panel } from '@waldur/core/Panel';
 import { CategoryResourcesList } from '@waldur/dashboard/CategoryResourcesList';
@@ -8,7 +7,7 @@ import { DashboardHeader } from '@waldur/dashboard/DashboardHeader';
 import { translate } from '@waldur/i18n';
 import { ComplianceChecklists } from '@waldur/marketplace-checklist/ComplianceChecklists';
 import { useTitle } from '@waldur/navigation/title';
-import { User, Project, PROJECT_WORKSPACE } from '@waldur/workspace/types';
+import { Project, PROJECT_WORKSPACE, User } from '@waldur/workspace/types';
 
 import { ProjectActions } from './ProjectActions';
 import { ProjectCounters } from './ProjectCounters';
@@ -20,7 +19,9 @@ interface ProjectDashboardProps {
   canAddUser: boolean;
 }
 
-export const ProjectDashboard = (props: ProjectDashboardProps) => {
+export const ProjectDashboard: FunctionComponent<ProjectDashboardProps> = (
+  props,
+) => {
   useTitle(translate('Dashboard'));
   if (!props.project) {
     return null;

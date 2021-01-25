@@ -1,10 +1,12 @@
-import * as React from 'react';
-import Button from 'react-bootstrap/lib/Button';
-import ModalBody from 'react-bootstrap/lib/ModalBody';
-import ModalFooter from 'react-bootstrap/lib/ModalFooter';
-import ModalHeader from 'react-bootstrap/lib/ModalHeader';
-import ModalTitle from 'react-bootstrap/lib/ModalTitle';
-import useAsyncRetry from 'react-use/lib/useAsyncRetry';
+import { FunctionComponent } from 'react';
+import {
+  Button,
+  ModalBody,
+  ModalFooter,
+  ModalHeader,
+  ModalTitle,
+} from 'react-bootstrap';
+import { useAsyncRetry } from 'react-use';
 
 import { LoadingSpinner } from '@waldur/core/LoadingSpinner';
 import { translate } from '@waldur/i18n';
@@ -13,7 +15,9 @@ import { CloseDialogButton } from '@waldur/modal/CloseDialogButton';
 import { InvoiceEventItem } from './InvoiceEventItem';
 import { loadEvents } from './utils';
 
-export const InvoiceEventsDialog = ({ resolve }) => {
+export const InvoiceEventsDialog: FunctionComponent<{ resolve }> = ({
+  resolve,
+}) => {
   const { loading, error, value: events, retry } = useAsyncRetry(() =>
     loadEvents(resolve.item),
   );
@@ -30,8 +34,7 @@ export const InvoiceEventsDialog = ({ resolve }) => {
           <>
             <p>{translate('Unable to load events for this resource.')}</p>
             <Button bsStyle="primary" onClick={retry}>
-              <i className="fa fa-refresh"></i>
-              {translate('Retry')}
+              <i className="fa fa-refresh"></i> {translate('Retry')}
             </Button>
           </>
         ) : events.length === 0 ? (

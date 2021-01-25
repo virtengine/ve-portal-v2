@@ -1,4 +1,4 @@
-import * as React from 'react';
+import { FunctionComponent } from 'react';
 import { InjectedFormProps } from 'redux-form';
 
 import { FormattedHtml } from '@waldur/core/FormattedHtml';
@@ -13,9 +13,7 @@ export interface OwnProps {
       name: string;
       marketplace_resource_uuid: string;
     };
-    action: {
-      dialogSubtitle?: string;
-    };
+    dialogSubtitle?: string;
   };
 }
 
@@ -32,7 +30,9 @@ type TerminateDialogProps = OwnProps &
   StateProps &
   InjectedFormProps;
 
-export const PureTerminateDialog = (props: TerminateDialogProps) => (
+export const PureTerminateDialog: FunctionComponent<TerminateDialogProps> = (
+  props,
+) => (
   <form onSubmit={props.handleSubmit(props.submitRequest)}>
     <ModalDialog
       title={translate('Terminate resource {resourceName}', {
@@ -59,8 +59,8 @@ export const PureTerminateDialog = (props: TerminateDialogProps) => (
           resourceName: props.resolve.resource.name,
         },
       )}
-      {props.resolve.action.dialogSubtitle && (
-        <FormattedHtml html={props.resolve.action.dialogSubtitle} />
+      {props.resolve.dialogSubtitle && (
+        <FormattedHtml html={props.resolve.dialogSubtitle} />
       )}
     </ModalDialog>
   </form>

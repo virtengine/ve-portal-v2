@@ -1,47 +1,20 @@
-import * as classNames from 'classnames';
-import * as React from 'react';
-import * as DropdownButton from 'react-bootstrap/lib/DropdownButton';
-import * as MenuItem from 'react-bootstrap/lib/MenuItem';
+import { FunctionComponent } from 'react';
+import { DropdownButton, MenuItem } from 'react-bootstrap';
 
-import { Tooltip } from '@waldur/core/Tooltip';
 import { translate } from '@waldur/i18n';
 
 interface ResourceActionComponentProps {
   onToggle: (isOpen: boolean) => void;
-  onSelect: (name: string, action: object) => void;
   disabled?: boolean;
   open?: boolean;
   loading?: boolean;
   error?: object;
-  actions: object;
+  actions: any;
+  resource: any;
 }
 
-const ActionItem = ({ action, actionKey, onSelect }) => (
-  <MenuItem
-    eventKey={actionKey}
-    className={classNames({
-      remove: action.destructive,
-    })}
-    // Workaround for rendering tooltips for disabled dropdown menu items.
-    // See also: https://stackoverflow.com/questions/57349166/
-    style={(!action.enabled || action.pending) && { opacity: 0.3 }}
-    onSelect={() => onSelect(actionKey, action)}
-  >
-    {action.reason ? (
-      <>
-        <Tooltip label={action.reason} id={`action-reason-${actionKey}`}>
-          <i className="fa fa-question-circle" />
-        </Tooltip>{' '}
-        {action.title}
-      </>
-    ) : (
-      action.title
-    )}
-  </MenuItem>
-);
-
-export const ResourceActionComponent = (
-  props: ResourceActionComponentProps,
+export const ResourceActionComponent: FunctionComponent<ResourceActionComponentProps> = (
+  props,
 ) => (
   <DropdownButton
     title={translate('Actions')}
@@ -57,19 +30,14 @@ export const ResourceActionComponent = (
       ) : props.error ? (
         <MenuItem eventKey="1">{translate('Unable to load actions')}</MenuItem>
       ) : props.actions ? (
-        Object.keys(props.actions).length === 0 ? (
-          <MenuItem eventKey="2">{translate('There are no actions.')}</MenuItem>
-        ) : (
-          Object.keys(props.actions).map((key) => (
-            <ActionItem
-              key={key}
-              action={props.actions[key]}
-              actionKey={key}
-              onSelect={props.onSelect}
-            />
-          ))
-        )
-      ) : null
+        <>
+          {props.actions.map((ActionComponent, index) => (
+            <ActionComponent key={index} resource={props.resource} />
+          ))}
+        </>
+      ) : (
+        <MenuItem eventKey="2">{translate('There are no actions.')}</MenuItem>
+      )
     ) : null}
   </DropdownButton>
 );

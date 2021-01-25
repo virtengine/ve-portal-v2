@@ -1,5 +1,5 @@
-import * as React from 'react';
-import * as Dropzone from 'react-dropzone';
+import { Component } from 'react';
+import Dropzone from 'react-dropzone';
 import { connect } from 'react-redux';
 import { compose } from 'redux';
 
@@ -8,6 +8,7 @@ import { TranslateProps, withTranslation } from '@waldur/i18n';
 import { issueAttachmentsPut } from '@waldur/issues/attachments/actions';
 import { LoadingOverlay } from '@waldur/issues/comments/LoadingOverlay';
 import { IssueReload } from '@waldur/issues/IssueReload';
+import { RootState } from '@waldur/store/reducers';
 
 import * as actions from './actions';
 import * as constants from './constants';
@@ -31,9 +32,7 @@ interface PureIssueCommentsContainerProps extends TranslateProps {
   renderHeader: boolean;
 }
 
-export class PureIssueCommentsContainer extends React.Component<
-  PureIssueCommentsContainerProps
-> {
+export class PureIssueCommentsContainer extends Component<PureIssueCommentsContainerProps> {
   state = {
     dropzoneActive: false,
   };
@@ -110,7 +109,7 @@ export class PureIssueCommentsContainer extends React.Component<
   }
 }
 
-const mapStateToProps = (state) => ({
+const mapStateToProps = (state: RootState) => ({
   comments: getCommentsSelector(state),
   loading: getIsLoading(state),
   erred: getCommentsGetErred(state),

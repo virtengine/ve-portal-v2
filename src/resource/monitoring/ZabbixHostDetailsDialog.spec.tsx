@@ -1,6 +1,5 @@
 import { shallow } from 'enzyme';
-import * as React from 'react';
-import * as Tabs from 'react-bootstrap/lib/Tabs';
+import { Tabs } from 'react-bootstrap';
 
 import { LoadingSpinner } from '@waldur/core/LoadingSpinner';
 import { translate } from '@waldur/i18n';

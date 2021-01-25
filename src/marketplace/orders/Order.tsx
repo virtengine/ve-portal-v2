@@ -1,4 +1,4 @@
-import * as React from 'react';
+import { FunctionComponent, useMemo } from 'react';
 import { useSelector } from 'react-redux';
 
 import { translate } from '@waldur/i18n';
@@ -16,11 +16,12 @@ interface OrderProps {
   editable: boolean;
   onOrderItemRemove?(item: OrderItemResponse): void;
   project_uuid: string;
+  customer_uuid: string;
 }
 
-export const Order = (props: OrderProps) => {
+export const Order: FunctionComponent<OrderProps> = (props) => {
   const showPrice = useSelector(showPriceSelector);
-  const maxUnit = React.useMemo(() => getMaxUnit(props.items), [props.items]);
+  const maxUnit = useMemo(() => getMaxUnit(props.items), [props.items]);
   return (
     <>
       <div className="table-responsive order">
@@ -52,6 +53,7 @@ export const Order = (props: OrderProps) => {
                 item={item}
                 editable={props.editable}
                 project_uuid={props.project_uuid}
+                customer_uuid={props.customer_uuid}
                 showPrice={showPrice}
                 maxUnit={maxUnit}
               />

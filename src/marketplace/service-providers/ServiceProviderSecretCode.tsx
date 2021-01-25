@@ -1,9 +1,10 @@
-import * as React from 'react';
+import { Component } from 'react';
 import { connect } from 'react-redux';
 
 import { TranslateProps } from '@waldur/i18n';
 import { SecretValueField } from '@waldur/marketplace/SecretValueField';
 import { ServiceProvider } from '@waldur/marketplace/types';
+import { RootState } from '@waldur/store/reducers';
 import { ActionButton } from '@waldur/table/ActionButton';
 
 import './ServiceProviderSecretCode.scss';
@@ -23,9 +24,7 @@ interface ServiceProviderSecretCodeProps extends TranslateProps {
   getServiceProviderSecretCode(): void;
 }
 
-class PureServiceProviderSecretCode extends React.Component<
-  ServiceProviderSecretCodeProps
-> {
+class PureServiceProviderSecretCode extends Component<ServiceProviderSecretCodeProps> {
   componentDidUpdate(prevProps) {
     if (
       this.props.serviceProvider &&
@@ -61,7 +60,7 @@ class PureServiceProviderSecretCode extends React.Component<
   }
 }
 
-const mapStateToProps = (state) => ({
+const mapStateToProps = (state: RootState) => ({
   secretCode: selectors.getServiceProviderSecretCode(state),
 });
 

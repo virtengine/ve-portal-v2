@@ -1,8 +1,8 @@
-import * as React from 'react';
-import * as Form from 'react-bootstrap/lib/Form';
+import { useMemo } from 'react';
+import { Form } from 'react-bootstrap';
 import { reduxForm, FormSection } from 'redux-form';
 
-import { ENV } from '@waldur/core/services';
+import { ENV } from '@waldur/configs/default';
 import { SubmitButton } from '@waldur/form';
 import { translate } from '@waldur/i18n';
 
@@ -26,7 +26,7 @@ const connector = reduxForm<FormData, OwnProps>({
 });
 
 const AnswersSection = ({ questions }: { questions: Question[] }) => {
-  const groups = React.useMemo(() => groupQuestions(questions), [questions]);
+  const groups = useMemo(() => groupQuestions(questions), [questions]);
 
   return (
     <FormSection name="answers">

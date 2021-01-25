@@ -1,5 +1,5 @@
-import * as React from 'react';
-import * as ButtonGroup from 'react-bootstrap/lib/ButtonGroup';
+import { FunctionComponent } from 'react';
+import { ButtonGroup } from 'react-bootstrap';
 
 import { formatDate } from '@waldur/core/dateUtils';
 import { HPA } from '@waldur/rancher/types';
@@ -12,7 +12,7 @@ import { HPACreateButton } from './HPACreateButton';
 import { HPADeleteButton } from './HPADeleteButton';
 import { HPAUpdateButton } from './HPAUpdateButton';
 
-const TableComponent = (props) => {
+const TableComponent: FunctionComponent<any> = (props) => {
   const { translate } = props;
   return (
     <Table<HPA>
@@ -20,43 +20,43 @@ const TableComponent = (props) => {
       columns={[
         {
           title: translate('Name'),
-          render: ({ row }) => <span>{row.name}</span>,
+          render: ({ row }) => <>{row.name}</>,
         },
         {
           title: translate('Project'),
-          render: ({ row }) => <span>{row.project_name}</span>,
+          render: ({ row }) => <>{row.project_name}</>,
         },
         {
           title: translate('Namespace'),
-          render: ({ row }) => <span>{row.namespace_name}</span>,
+          render: ({ row }) => <>{row.namespace_name}</>,
         },
         {
           title: translate('Workload'),
-          render: ({ row }) => <span>{row.workload_name}</span>,
+          render: ({ row }) => <>{row.workload_name}</>,
         },
         {
           title: translate('Min replicas'),
-          render: ({ row }) => <span>{row.min_replicas}</span>,
+          render: ({ row }) => <>{row.min_replicas}</>,
         },
         {
           title: translate('Max replicas'),
-          render: ({ row }) => <span>{row.max_replicas}</span>,
+          render: ({ row }) => <>{row.max_replicas}</>,
         },
         {
           title: translate('Current replicas'),
-          render: ({ row }) => <span>{row.current_replicas}</span>,
+          render: ({ row }) => <>{row.current_replicas}</>,
         },
         {
           title: translate('Desired replicas'),
-          render: ({ row }) => <span>{row.desired_replicas}</span>,
+          render: ({ row }) => <>{row.desired_replicas}</>,
         },
         {
           title: translate('Created'),
-          render: ({ row }) => <span>{formatDate(row.created)}</span>,
+          render: ({ row }) => <>{formatDate(row.created)}</>,
         },
         {
           title: translate('State'),
-          render: ({ row }) => <span>{row.runtime_state}</span>,
+          render: ({ row }) => <>{row.runtime_state}</>,
         },
         {
           title: translate('Actions'),

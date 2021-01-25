@@ -1,4 +1,4 @@
-import * as React from 'react';
+import { FunctionComponent } from 'react';
 
 import { range } from '@waldur/core/utils';
 import { AttributeCell } from '@waldur/marketplace/common/AttributeCell';
@@ -11,7 +11,9 @@ interface ComparisonSectionProps {
   section: Section;
 }
 
-export const ComparisonSection = (props: ComparisonSectionProps) => (
+export const ComparisonSection: FunctionComponent<ComparisonSectionProps> = (
+  props,
+) => (
   <>
     <tr className="gray-bg">
       <th>{props.section.title}</th>

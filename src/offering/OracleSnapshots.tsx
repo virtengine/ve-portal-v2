@@ -1,5 +1,5 @@
-import * as React from 'react';
-import * as Table from 'react-bootstrap/lib/Table';
+import { FunctionComponent } from 'react';
+import { Table } from 'react-bootstrap';
 
 import { translate } from '@waldur/i18n';
 
@@ -15,7 +15,7 @@ export const parseTable = (raw) =>
       return { name, source, dt };
     });
 
-export const OracleSnapshots = (props) => {
+export const OracleSnapshots: FunctionComponent<any> = (props) => {
   let snapshots = props.report.find(
     (section) => section.header.toLowerCase() === 'snapshots',
   );

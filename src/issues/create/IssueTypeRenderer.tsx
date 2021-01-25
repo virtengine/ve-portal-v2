@@ -1,8 +1,10 @@
-import * as React from 'react';
+import { FunctionComponent } from 'react';
 
 import { IssueTypeOption } from './types';
 
-export const IssueTypeRenderer = (option: IssueTypeOption) => (
+export const IssueTypeRenderer: FunctionComponent<IssueTypeOption> = (
+  option,
+) => (
   <>
     <i className={`fa ${option.iconClass} ${option.textClass}`} />{' '}
     {option.label}

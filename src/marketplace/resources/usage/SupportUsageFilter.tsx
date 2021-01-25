@@ -1,6 +1,6 @@
-import * as moment from 'moment-timezone';
-import * as React from 'react';
-import * as Row from 'react-bootstrap/lib/Row';
+import moment from 'moment-timezone';
+import { FunctionComponent } from 'react';
+import { Row } from 'react-bootstrap';
 import { connect } from 'react-redux';
 import { compose } from 'redux';
 import { reduxForm, formValueSelector } from 'redux-form';
@@ -11,6 +11,7 @@ import { AccountingPeriodOption } from '@waldur/customer/list/types';
 import { OfferingAutocomplete } from '@waldur/marketplace/offerings/details/OfferingAutocomplete';
 import { OrganizationAutocomplete } from '@waldur/marketplace/orders/OrganizationAutocomplete';
 import { ProjectFilter } from '@waldur/marketplace/resources/list/ProjectFilter';
+import { RootState } from '@waldur/store/reducers';
 import { Customer, ORGANIZATION_WORKSPACE } from '@waldur/workspace/types';
 
 const makeAccountingPeriods = () => {
@@ -34,14 +35,14 @@ interface Props {
   customer: Customer;
 }
 
-const PureSupportUsageFilter = (props: Props) => (
+const PureSupportUsageFilter: FunctionComponent<Props> = (props) => (
   <Row>
     <AccountingPeriodFilter options={props.options} />
     <OrganizationAutocomplete />
     <ProjectFilter
       customer_uuid={props.customer ? props.customer.uuid : null}
     />
-    <OfferingAutocomplete />
+    <OfferingAutocomplete offeringFilter={{ shared: true }} />
   </Row>
 );
 
@@ -50,13 +51,19 @@ export const FORM_ID = 'SupportUsageFilter';
 const selector = formValueSelector(FORM_ID);
 
 const mapStateToProps = createSelector(
-  (state) => selector(state, ORGANIZATION_WORKSPACE),
+  (state: RootState) => selector(state, ORGANIZATION_WORKSPACE),
   (customer) => ({
     customer,
     options: makeAccountingPeriods(),
   }),
 );
 
-const enhance = compose(reduxForm({ form: FORM_ID }), connect(mapStateToProps));
+const enhance = compose(
+  reduxForm({
+    form: FORM_ID,
+    initialValues: { accounting_period: makeAccountingPeriods()[0] },
+  }),
+  connect(mapStateToProps),
+);
 
 export const SupportUsageFilter = enhance(PureSupportUsageFilter);

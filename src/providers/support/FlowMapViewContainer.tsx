@@ -1,8 +1,9 @@
-import * as React from 'react';
+import { Component } from 'react';
 import { connect } from 'react-redux';
 
 import { translate } from '@waldur/i18n';
 import { setTitle } from '@waldur/navigation/title';
+import { RootState } from '@waldur/store/reducers';
 
 import {
   fetchServiceUsageStart,
@@ -30,7 +31,7 @@ interface FlowMapViewComponentProps {
   setTitle: typeof setTitle;
 }
 
-class FlowMapViewComponent extends React.Component<FlowMapViewComponentProps> {
+class FlowMapViewComponent extends Component<FlowMapViewComponentProps> {
   componentDidMount() {
     this.props.fetchServiceUsageStart();
     this.props.setTitle(translate('Flowmap'));
@@ -40,7 +41,7 @@ class FlowMapViewComponent extends React.Component<FlowMapViewComponentProps> {
   }
 }
 
-const mapStateToProps = (state) => ({
+const mapStateToProps = (state: RootState) => ({
   serviceUsage: selectServiceUsage(state),
   selectedServiceProvider: {
     ...selectServiceProvider(state),

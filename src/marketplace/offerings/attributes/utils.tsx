@@ -1,4 +1,3 @@
-import * as React from 'react';
 import Select from 'react-select';
 import { Validator } from 'redux-form';
 

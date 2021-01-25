@@ -1,15 +1,12 @@
-import * as React from 'react';
-import * as Col from 'react-bootstrap/lib/Col';
-import * as Panel from 'react-bootstrap/lib/Panel';
-import * as Row from 'react-bootstrap/lib/Row';
-import * as Tab from 'react-bootstrap/lib/Tab';
-import * as Tabs from 'react-bootstrap/lib/Tabs';
+import React from 'react';
+import { Col, Panel, Row, Tab, Tabs } from 'react-bootstrap';
 import { connect } from 'react-redux';
 
 import { withTranslation, TranslateProps } from '@waldur/i18n';
 import { IssueCommentsContainer } from '@waldur/issues/comments/IssueCommentsContainer';
 import { ResourceOrderItems } from '@waldur/marketplace/orders/item/list/ResourceOrderItems';
 import { isVisible } from '@waldur/store/config';
+import { RootState } from '@waldur/store/reducers';
 
 import { OfferingEvents } from './OfferingEvents';
 import { OfferingSummaryTab } from './OfferingSummaryTab';
@@ -97,11 +94,13 @@ export const PureOfferingTabs: React.FC<OfferingTabsProps> = (props) => {
   );
 };
 
-const connector = connect<StateProps, {}, OwnProps>((state, ownProps) => ({
-  showComments:
-    isVisible(state, 'offering.comments') &&
-    Boolean(ownProps.offering.issue && ownProps.offering.issue_key),
-}));
+const connector = connect<StateProps, {}, OwnProps>(
+  (state: RootState, ownProps) => ({
+    showComments:
+      isVisible(state, 'offering.comments') &&
+      Boolean(ownProps.offering.issue && ownProps.offering.issue_key),
+  }),
+);
 
 export const OfferingTabs = withTranslation(
   connector(PureOfferingTabs),

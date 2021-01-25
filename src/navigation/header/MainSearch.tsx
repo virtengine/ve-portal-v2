@@ -1,9 +1,9 @@
-import * as React from 'react';
+import { FunctionComponent } from 'react';
 
 import { isFeatureVisible } from '@waldur/features/connect';
 import { translate } from '@waldur/i18n';
 
-export const MainSearch = () =>
+export const MainSearch: FunctionComponent = () =>
   isFeatureVisible('mainSearch') ? (
     <div role="search" className="navbar-form-custom">
       <div className="form-group">

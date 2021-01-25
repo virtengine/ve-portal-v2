@@ -1,4 +1,4 @@
-import * as React from 'react';
+import React, { useMemo, FunctionComponent } from 'react';
 
 import { PlanDetailsButton } from '@waldur/marketplace/details/plan/PlanDetailsButton';
 import { OfferingDetailsButton } from '@waldur/marketplace/offerings/details/OfferingDetailsButton';
@@ -6,20 +6,17 @@ import { ResourceShowUsageButton } from '@waldur/marketplace/resources/usage/Res
 import { OpenStackInstanceTenantButton } from '@waldur/openstack/openstack-instance/OpenStackInstanceTenantButton';
 
 import { ActionButtonResource } from './actions/ActionButtonResource';
-import * as registry from './resource-configuration';
 import { ResourceRefreshButton } from './ResourceRefreshButton';
 import { ResourceSummary } from './summary/ResourceSummary';
 import { ResourceTabs } from './tabs/ResourceTabs';
 import { formatResourceType } from './utils';
 
-export const ResourceDetails = ({ resource, refreshResource }) => {
-  const header = React.useMemo(() => {
-    const config = registry.get(resource.resource_type);
-    if (config) {
-      return config.getHeader(resource);
-    } else {
-      return formatResourceType(resource);
-    }
+let ResourceDetails: FunctionComponent<{ resource; refreshResource }> = ({
+  resource,
+  refreshResource,
+}) => {
+  const header = useMemo(() => {
+    return formatResourceType(resource);
   }, [resource]);
 
   if (!resource) {
@@ -42,7 +39,8 @@ export const ResourceDetails = ({ resource, refreshResource }) => {
               )}
               {resource.is_usage_based && (
                 <ResourceShowUsageButton
-                  resource={resource.marketplace_resource_uuid}
+                  offeringUuid={resource.marketplace_offering_uuid}
+                  resourceUuid={resource.marketplace_resource_uuid}
                 />
               )}
               {resource.marketplace_plan_uuid && (
@@ -66,3 +64,6 @@ export const ResourceDetails = ({ resource, refreshResource }) => {
     </div>
   );
 };
+
+ResourceDetails = React.memo(ResourceDetails);
+export { ResourceDetails };

@@ -1,6 +1,6 @@
-import * as React from 'react';
+import { FunctionComponent } from 'react';
 
-export const RolesRenderer = ({ roles }) => (
+export const RolesRenderer: FunctionComponent<{ roles }> = ({ roles }) => (
   <>
     {roles.map((role, index) => (
       <span key={index}>
