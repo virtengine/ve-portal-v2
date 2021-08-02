@@ -1,5 +1,6 @@
 import React from 'react';
 
+import { CopyToClipboardContainer } from '@waldur/core/CopyToClipboardContainer';
 import { translate } from '@waldur/i18n';
 
 export const InvitationExpandableRow: React.FC<{
@@ -8,7 +9,9 @@ export const InvitationExpandableRow: React.FC<{
   <>
     <p>
       <b>{translate('Invitation link')}: </b>
-      {row.link_template.replace('{uuid}', row.uuid)}
+      <CopyToClipboardContainer
+        value={`${location.origin}/invitation/${row.uuid}/`}
+      />
     </p>
     {row.civil_number ? (
       <p>

@@ -1,5 +1,5 @@
 import { triggerTransition } from '@uirouter/redux';
-import { reset, change } from 'redux-form';
+import { reset, change, getFormValues } from 'redux-form';
 import { call, put, select, takeEvery } from 'redux-saga/effects';
 
 import { format } from '@waldur/core/ErrorMessageFormatter';
@@ -7,30 +7,33 @@ import { Action } from '@waldur/core/reducerActions';
 import { translate } from '@waldur/i18n';
 import * as api from '@waldur/marketplace/common/api';
 import { Category } from '@waldur/marketplace/types';
+import { handleMarketplaceErrorResponse } from '@waldur/marketplace/utils';
 import { closeModalDialog } from '@waldur/modal/actions';
 import { router } from '@waldur/router';
 import { showError, showSuccess } from '@waldur/store/notify';
 import { updateEntity } from '@waldur/table/actions';
-import { getCustomer } from '@waldur/workspace/selectors';
+import {
+  getCustomer,
+  getUser,
+  isOwnerOrStaff as isOwnerOrStaffSelector,
+  isServiceManagerSelector,
+} from '@waldur/workspace/selectors';
 
 import {
   setStep,
   loadDataSuccess,
   loadDataError,
-  isAddingOfferingScreenshot,
+  isAddingOfferingImage,
 } from './actions';
 import * as constants from './constants';
-import {
-  getPlans,
-  getAttributes,
-  getOfferingComponents,
-  getComponents,
-} from './selectors';
+import { PUBLIC_OFFERINGS_FILTER_FORM_ID } from './constants';
+import { getPlans, getAttributes, getOfferingComponents } from './selectors';
 import { OfferingFormData, OfferingUpdateFormData } from './types';
 import {
   formatOfferingRequest,
   planWithoutComponent,
   planWithoutQuotas,
+  updatePublicOfferingsList,
 } from './utils';
 
 function* loadCategories() {
@@ -103,6 +106,7 @@ function* createOffering(action: Action<OfferingFormData>) {
   } catch (error) {
     const errorMessage = `${translate('Unable to create offering.')} ${format(
       error,
+      handleMarketplaceErrorResponse,
     )}`;
     yield put(showError(errorMessage));
     yield put(constants.createOffering.failure());
@@ -117,7 +121,7 @@ function* createOffering(action: Action<OfferingFormData>) {
 
 function* updateOffering(action: Action<OfferingUpdateFormData>) {
   const { offeringUuid, thumbnail, ...rest } = action.payload;
-  const components = yield select(getComponents, rest.type.value);
+  const components = yield select(getOfferingComponents, rest.type.value);
   try {
     const offeringRequest = formatOfferingRequest(rest, components);
     yield call(api.updateOffering, offeringUuid, offeringRequest);
@@ -127,6 +131,7 @@ function* updateOffering(action: Action<OfferingUpdateFormData>) {
   } catch (error) {
     const errorMessage = `${translate('Unable to update offering.')} ${format(
       error,
+      handleMarketplaceErrorResponse,
     )}`;
     yield put(showError(errorMessage));
     yield put(constants.updateOffering.failure());
@@ -176,15 +181,11 @@ function* loadOffering(action) {
   }
 }
 
-function* addOfferingScreenshot(action: Action<any>) {
+function* addOfferingImage(action: Action<any>) {
   const { formData, offering } = action.payload;
   try {
-    const response = yield call(
-      api.uploadOfferingScreenshot,
-      formData,
-      offering,
-    );
-    yield put(showSuccess(translate('Screenshot has been added.')));
+    const response = yield call(api.uploadOfferingImage, formData, offering);
+    yield put(showSuccess(translate('Image has been added.')));
     if (response.status === 201) {
       yield put(closeModalDialog());
       yield loadOffering({
@@ -194,19 +195,19 @@ function* addOfferingScreenshot(action: Action<any>) {
       });
     }
   } catch (error) {
-    const errorMessage = `${translate('Unable to add screenshot.')} ${format(
+    const errorMessage = `${translate('Unable to add image.')} ${format(
       error,
     )}`;
     yield put(showError(errorMessage));
   }
-  yield put(isAddingOfferingScreenshot(false));
+  yield put(isAddingOfferingImage(false));
 }
 
-function* removeOfferingScreenshot(action: Action<any>) {
-  const { offering, screenshot } = action.payload;
+function* removeOfferingImage(action: Action<any>) {
+  const { offering, image } = action.payload;
   try {
-    yield call(api.deleteOfferingScreenshot, screenshot.uuid);
-    yield put(showSuccess(translate('Screenshot has been removed.')));
+    yield call(api.deleteOfferingImage, image.uuid);
+    yield put(showSuccess(translate('Image has been removed.')));
     yield put(closeModalDialog());
     yield loadOffering({
       payload: {
@@ -214,7 +215,7 @@ function* removeOfferingScreenshot(action: Action<any>) {
       },
     });
   } catch (error) {
-    const errorMessage = `${translate('Unable to remove screenshot.')} ${format(
+    const errorMessage = `${translate('Unable to remove image.')} ${format(
       error,
     )}`;
     yield put(showError(errorMessage));
@@ -225,6 +226,21 @@ function* addOfferingLocation(action: Action<any>) {
   try {
     const { offering } = action.payload;
     yield call(api.updateOffering, offering.uuid, offering);
+    const customer = yield select(getCustomer);
+    const isServiceManager = yield select(isServiceManagerSelector);
+    const isOwnerOrStaff = yield select(isOwnerOrStaffSelector);
+    const user = yield select(getUser);
+    const formData = yield select(
+      getFormValues(PUBLIC_OFFERINGS_FILTER_FORM_ID),
+    );
+    yield put(
+      updatePublicOfferingsList(
+        customer,
+        isServiceManager && !isOwnerOrStaff,
+        user,
+        formData.state,
+      ),
+    );
     yield put(showSuccess(translate('Location has been saved successfully.')));
     yield put(closeModalDialog());
   } catch (error) {
@@ -287,6 +303,99 @@ function* googleCalendarUnpublish(action: Action<any>) {
   }
 }
 
+function* updateConfirmationMessage(action: Action<any>) {
+  const {
+    offeringUuid,
+    templateConfirmationMessage,
+    secretOptions,
+  } = action.payload;
+  try {
+    yield call(
+      api.updateOfferingConfirmationMessage,
+      offeringUuid,
+      templateConfirmationMessage,
+      secretOptions,
+    );
+    yield put(
+      showSuccess(
+        translate('Confirmation message has been updated successfully.'),
+      ),
+    );
+    yield put(constants.updateConfirmationMessage.success());
+    yield put(closeModalDialog());
+  } catch (error) {
+    const errorMessage = `${translate(
+      'Unable to update confirmation message.',
+    )} ${format(error)}`;
+    yield put(showError(errorMessage));
+    yield put(constants.updateConfirmationMessage.failure());
+  }
+}
+
+function* updateAccessPolicy(action: Action<any>) {
+  const { offeringUuid, divisions } = action.payload;
+  try {
+    yield call(api.updateOfferingAccessPolicy, offeringUuid, divisions);
+    const customer = yield select(getCustomer);
+    const isServiceManager = yield select(isServiceManagerSelector);
+    const isOwnerOrStaff = yield select(isOwnerOrStaffSelector);
+    const user = yield select(getUser);
+    const formData = yield select(
+      getFormValues(PUBLIC_OFFERINGS_FILTER_FORM_ID),
+    );
+    yield put(
+      updatePublicOfferingsList(
+        customer,
+        isServiceManager && !isOwnerOrStaff,
+        user,
+        formData.state,
+      ),
+    );
+    yield put(
+      showSuccess(translate('Access policy has been updated successfully.')),
+    );
+    yield put(constants.setAccessPolicy.success());
+    yield put(closeModalDialog());
+  } catch (error) {
+    const errorMessage = `${translate(
+      'Unable to update access policy.',
+    )} ${format(error)}`;
+    yield put(showError(errorMessage));
+    yield put(constants.setAccessPolicy.failure());
+  }
+}
+
+function* updateOfferingLogo(action: Action<any>) {
+  const { offeringUuid, formData } = action.payload;
+  try {
+    yield call(api.updateOfferingLogo, offeringUuid, formData);
+    const customer = yield select(getCustomer);
+    const isServiceManager = yield select(isServiceManagerSelector);
+    const isOwnerOrStaff = yield select(isOwnerOrStaffSelector);
+    const user = yield select(getUser);
+    const filterFormData = yield select(
+      getFormValues(PUBLIC_OFFERINGS_FILTER_FORM_ID),
+    );
+    yield put(
+      updatePublicOfferingsList(
+        customer,
+        isServiceManager && !isOwnerOrStaff,
+        user,
+        filterFormData.state,
+      ),
+    );
+    yield put(showSuccess(translate('Logo has been updated successfully.')));
+    yield put(constants.updateOfferingLogo.success());
+    yield put(closeModalDialog());
+  } catch (error) {
+    const errorMessage = `${translate('Unable to update logo.')} ${format(
+      error,
+    )}`;
+    yield put(showError(errorMessage));
+    yield put(constants.updateOfferingLogo.failure());
+  }
+}
+
 export default function* () {
   yield takeEvery(constants.REMOVE_OFFERING_COMPONENT, removeOfferingComponent);
   yield takeEvery(constants.REMOVE_OFFERING_QUOTAS, removeOfferingQuotas);
@@ -296,13 +405,16 @@ export default function* () {
   yield takeEvery(constants.createOffering.REQUEST, createOffering);
   yield takeEvery(constants.updateOffering.REQUEST, updateOffering);
   yield takeEvery(constants.UPDATE_OFFERING_STATE, updateOfferingState);
-  yield takeEvery(constants.ADD_OFFERING_SCREENSHOT, addOfferingScreenshot);
-  yield takeEvery(
-    constants.REMOVE_OFFERING_SCREENSHOT,
-    removeOfferingScreenshot,
-  );
+  yield takeEvery(constants.ADD_OFFERING_IMAGE, addOfferingImage);
+  yield takeEvery(constants.REMOVE_OFFERING_IMAGE, removeOfferingImage);
   yield takeEvery(constants.ADD_OFFERING_LOCATION, addOfferingLocation);
   yield takeEvery(constants.GOOGLE_CALENDAR_SYNC, googleCalendarSync);
   yield takeEvery(constants.GOOGLE_CALENDAR_PUBLISH, googleCalendarPublish);
   yield takeEvery(constants.GOOGLE_CALENDAR_UNPUBLISH, googleCalendarUnpublish);
+  yield takeEvery(
+    constants.updateConfirmationMessage.REQUEST,
+    updateConfirmationMessage,
+  );
+  yield takeEvery(constants.setAccessPolicy.REQUEST, updateAccessPolicy);
+  yield takeEvery(constants.updateOfferingLogo.REQUEST, updateOfferingLogo);
 }

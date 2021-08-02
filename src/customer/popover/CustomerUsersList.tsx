@@ -20,7 +20,7 @@ const TableComponent: FunctionComponent<any> = (props) => {
           ),
         },
         {
-          title: translate('E-mail'),
+          title: translate('Email'),
           render: ({ row }) => row.email || 'N/A',
         },
         {
@@ -44,6 +44,13 @@ const TableComponent: FunctionComponent<any> = (props) => {
         {
           title: translate('Job position'),
           render: ({ row }) => row.job_title || 'N/A',
+        },
+        {
+          title: translate('Affiliations'),
+          render: ({ row }) =>
+            Array.isArray(row.affiliations) && row.affiliations.length > 0
+              ? row.affiliations.join(', ')
+              : 'N/A',
         },
       ]}
       verboseName={translate('users')}

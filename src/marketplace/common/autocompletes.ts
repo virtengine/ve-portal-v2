@@ -6,6 +6,7 @@ import {
   getOfferingsOptions,
   getProjectList,
   getCategoryOptions,
+  getUsers,
 } from '@waldur/marketplace/common/api';
 
 export const organizationAutocomplete = async (
@@ -13,6 +14,7 @@ export const organizationAutocomplete = async (
   prevOptions,
   { page },
   isServiceProvider?: boolean,
+  field = ['name', 'uuid'],
 ) => {
   const params = {
     name: query,
@@ -20,7 +22,7 @@ export const organizationAutocomplete = async (
     page_size: ENV.pageSize,
     is_service_provider: isServiceProvider,
     has_resources: isServiceProvider ? undefined : true,
-    field: ['name', 'uuid'],
+    field,
     o: 'name',
   };
   const response = await getCustomerList(params);
@@ -38,6 +40,26 @@ export const projectAutocomplete = async (
     customer,
     field: ['name', 'uuid'],
     o: 'name',
+    page: currentPage,
+    page_size: ENV.pageSize,
+  };
+  const response = await getProjectList(params);
+  return returnReactSelectAsyncPaginateObject(
+    response,
+    prevOptions,
+    currentPage,
+  );
+};
+
+export const moveToProjectAutocomplete = async (
+  query: string,
+  prevOptions,
+  currentPage: number,
+) => {
+  const params = {
+    name: query,
+    field: ['name', 'url', 'customer_name'],
+    o: 'customer_name',
     page: currentPage,
     page_size: ENV.pageSize,
   };
@@ -85,9 +107,10 @@ export const offeringsAutocomplete = async (
   query: object,
   prevOptions,
   currentPage: number,
+  field = ['name', 'uuid', 'url', 'category_title', 'thumbnail'],
 ) => {
   const params = {
-    field: ['name', 'uuid', 'url', 'category_title', 'thumbnail'],
+    field,
     o: 'name',
     state: 'Active',
     ...query,
@@ -100,4 +123,20 @@ export const offeringsAutocomplete = async (
     prevOptions,
     currentPage,
   );
+};
+
+export const userAutocomplete = async (
+  query: string,
+  prevOptions,
+  { page },
+) => {
+  const params = {
+    full_name: query,
+    field: ['full_name', 'url'],
+    o: ['full_name'],
+    page: page,
+    page_size: ENV.pageSize,
+  };
+  const response = await getUsers(params);
+  return returnReactSelectAsyncPaginateObject(response, prevOptions, page);
 };

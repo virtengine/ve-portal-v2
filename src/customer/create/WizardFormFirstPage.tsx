@@ -9,14 +9,7 @@ import { translate } from '@waldur/i18n';
 import { DomainGroup } from './DomainGroup';
 import { ImageFileField } from './ImageFileField';
 import { InputGroup } from './InputGroup';
-import { SelectField } from './SelectField';
 import { WizardForm } from './WizardForm';
-
-const formatCompanyTypes = () =>
-  (ENV.plugins.WALDUR_CORE.COMPANY_TYPES || []).map((item) => ({
-    value: item,
-    label: item,
-  }));
 
 export const WizardFormFirstPage: FunctionComponent<any> = (props) => (
   <WizardForm {...props}>
@@ -39,20 +32,11 @@ export const WizardFormFirstPage: FunctionComponent<any> = (props) => (
         />
       )}
       <DomainGroup />
-      {ENV.plugins.WALDUR_CORE.COMPANY_TYPES.length > 0 && (
-        <InputGroup
-          name="type"
-          component={SelectField}
-          label={translate('Organization type')}
-          options={formatCompanyTypes()}
-          isClearable={true}
-        />
-      )}
       <InputGroup
         name="email"
         component={InputField}
         type="email"
-        label={translate('Contact e-mail')}
+        label={translate('Contact email')}
         required={true}
       />
       <InputGroup

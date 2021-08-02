@@ -55,10 +55,23 @@ const getReportItems = (): MenuItemType[] => [
     feature: 'support.organizations',
   },
   {
-    label: translate('Notifications'),
+    label: translate('Organization requests'),
+    icon: 'fa-building',
+    state: 'support.customers-requests',
+    key: 'support.customers-requests',
+    feature: 'support.customers-requests',
+  },
+  {
+    label: translate('Broadcast'),
     icon: 'fa-bell',
-    state: 'support.notifications',
-    key: 'support.notifications',
+    state: 'support.broadcast',
+    key: 'support.broadcast',
+  },
+  {
+    label: translate('Orders'),
+    icon: 'fa-files-o',
+    state: 'marketplace-support-orders',
+    key: 'support-orders',
   },
   {
     label: translate('Reporting'),
@@ -98,12 +111,6 @@ const getReportItems = (): MenuItemType[] => [
         feature: 'support.organizations',
       },
       {
-        label: translate('Ordering'),
-        icon: 'fa-files-o',
-        state: 'marketplace-support-order-items',
-        key: 'support-order-items',
-      },
-      {
         label: translate('Resources usage'),
         icon: 'fa-map',
         state: 'support.resources-treemap',
@@ -115,6 +122,18 @@ const getReportItems = (): MenuItemType[] => [
         icon: 'fa-puzzle-piece',
         state: 'marketplace-support-usage-reports',
         key: 'support-usage-reports',
+      },
+      {
+        label: translate('Feedback'),
+        icon: 'fa-users',
+        state: 'support.feedback',
+        key: 'support.feedback',
+      },
+      {
+        label: translate('Audit logs'),
+        icon: 'fa-bell-o',
+        state: 'support.events',
+        key: 'support.events',
       },
     ],
   },
@@ -186,11 +205,7 @@ class IssueNavigationServiceClass {
 
   gotoDashboard() {
     if (!isFeatureVisible('support')) {
-      if (isFeatureVisible('marketplace')) {
-        return router.stateService.go('marketplace-support-resources');
-      } else {
-        return router.stateService.go('support.resources');
-      }
+      return router.stateService.go('marketplace-support-resources');
     }
     return UsersService.getCurrentUser().then((user) => {
       if (user.is_staff || user.is_support) {

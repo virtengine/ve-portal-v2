@@ -5,7 +5,6 @@ import { BillingType } from '@waldur/marketplace/types';
 
 import { ComponentBooleanDefaultLimitField } from './ComponentBooleanDefaultLimitField';
 import { ComponentBooleanLimitField } from './ComponentBooleanLimitField';
-import { ComponentDisableQuotaField } from './ComponentDisableQuotaField';
 import { ComponentLimitAmountField } from './ComponentLimitAmountField';
 import { ComponentLimitEnableField } from './ComponentLimitEnableField';
 import {
@@ -14,14 +13,12 @@ import {
 } from './ComponentLimitPeriodField';
 import { ComponentMaxValueField } from './ComponentMaxValueField';
 import { ComponentMinValueField } from './ComponentMinValueField';
-import { ComponentUseLimitForBillingField } from './ComponentUseLimitForBillingField';
 
 interface Values {
   billingType: {
     value: BillingType;
   };
   limitPeriod: LimitPeriodOption;
-  disableQuotas: boolean;
   isBoolean: boolean;
   limitAmount?: number;
 }
@@ -29,43 +26,41 @@ interface Values {
 const enhance = formValues(() => ({
   billingType: 'billing_type',
   limitPeriod: 'limit_period',
-  disableQuotas: 'disable_quotas',
   isBoolean: 'is_boolean',
   limitAmount: 'limit_amount',
 }));
 
 export const ComponentLimit = enhance((props: Values) => {
-  if (props.billingType?.value !== 'usage') {
-    return null;
-  }
-
-  if (props.isBoolean) {
-    return (
-      <>
-        <ComponentBooleanLimitField />
-        <ComponentBooleanDefaultLimitField />
-      </>
-    );
-  }
-
-  return (
-    <>
-      <ComponentBooleanLimitField />
-      <ComponentLimitEnableField />
-      {props.limitAmount !== null && (
+  const billingType = props.billingType?.value;
+  if (billingType == 'limit') {
+    if (props.isBoolean) {
+      return (
         <>
+          <ComponentBooleanLimitField />
+          <ComponentBooleanDefaultLimitField />
+        </>
+      );
+    } else {
+      return (
+        <>
+          <ComponentBooleanLimitField />
+          <ComponentMinValueField />
+          <ComponentMaxValueField />
+        </>
+      );
+    }
+  } else if (billingType == 'usage') {
+    if (typeof props.limitAmount === 'number') {
+      return (
+        <>
+          <ComponentLimitEnableField />
           <ComponentLimitPeriodField limitPeriod={props.limitPeriod} />
           <ComponentLimitAmountField />
         </>
-      )}
-      <ComponentDisableQuotaField />
-      {!props.disableQuotas && (
-        <>
-          <ComponentMinValueField />
-          <ComponentMaxValueField />
-          <ComponentUseLimitForBillingField />
-        </>
-      )}
-    </>
-  );
+      );
+    } else {
+      return <ComponentLimitEnableField />;
+    }
+  }
+  return null;
 });

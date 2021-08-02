@@ -25,6 +25,7 @@ import {
   taxNumberSelector,
   roleSelector,
 } from './selectors';
+import { InvitationContext } from './types';
 
 const getRoles = (context) => {
   const roles = [
@@ -56,7 +57,7 @@ const getRoles = (context) => {
   );
 };
 
-export const useInvitationCreateDialog = (context) => {
+export const useInvitationCreateDialog = (context: InvitationContext) => {
   const router = useRouter();
   const dispatch = useDispatch();
 
@@ -83,11 +84,6 @@ export const useInvitationCreateDialog = (context) => {
     async (formData) => {
       try {
         const payload: Record<string, any> = {};
-        const path = router.stateService.href('invitation', {
-          uuid: 'TEMPLATE',
-        });
-        payload.link_template =
-          location.origin + path.replace('TEMPLATE', '{uuid}');
         payload.email = formData.email;
         payload.civil_number = formData.civil_number;
         payload.tax_number = formData.tax_number;
@@ -105,6 +101,9 @@ export const useInvitationCreateDialog = (context) => {
         dispatch(closeModalDialog());
         router.stateService.go('organization.team');
         dispatch(showSuccess('Invitation has been created.'));
+        if (context.refreshList) {
+          context.refreshList();
+        }
       } catch (e) {
         dispatch(showError('Unable to create invitation.'));
       }

@@ -38,6 +38,9 @@ export const states: StateDeclaration[] = [
   { name: 'profile.notifications', ...tabs.notifications },
   { name: 'profile.manage', ...tabs.manage },
   { name: 'profile.freeipa', ...tabs.freeipa },
+  { name: 'profile.remote-accounts', ...tabs.offerings },
+  { name: 'profile.flows-list', ...tabs.flowsList },
+  { name: 'profile.flow-edit', ...tabs.flowEdit },
 
   {
     name: 'users',
@@ -67,9 +70,6 @@ export const states: StateDeclaration[] = [
     name: 'user-email-change',
     url: '/user_email_change/:token/',
     component: UserEmailChangeCallback,
-    data: {
-      bodyClass: 'old',
-    },
   },
 
   {

@@ -116,7 +116,7 @@ const entityMap = {
   '>': '&gt;',
 };
 
-// Basrd on https://github.com/janl/mustache.js/blob/v3.1.0/mustache.js#L73-L88
+// Based on https://github.com/janl/mustache.js/blob/v3.1.0/mustache.js#L73-L88
 export function escapeHtml(str) {
   return String(str).replace(/[<>]/g, function fromEntityMap(s) {
     return entityMap[s];
@@ -138,25 +138,6 @@ export const truncate = (fullStr: string, strLen = 30, separator = '...') => {
     fullStr.substr(fullStr.length - backChars)
   );
 };
-
-function getPrettyQuotaName(name) {
-  return name.replace(/nc_|_count/g, '').replace(/_/g, ' ');
-}
-
-export function isCustomerQuotaReached(customer, quotaName) {
-  const quotas = customer.quotas || [];
-  for (const quota of quotas) {
-    const name = getPrettyQuotaName(quota.name);
-    if (
-      name === quotaName &&
-      quota.limit > -1 &&
-      (quota.limit === quota.usage || quota.limit === 0)
-    ) {
-      return { name, usage: [quota.limit, quota.usage] };
-    }
-  }
-  return false;
-}
 
 export function returnReactSelectAsyncPaginateObject<T = {}>(
   response: { options: T[]; totalItems: number },

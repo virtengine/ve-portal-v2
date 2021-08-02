@@ -1,7 +1,6 @@
 import { Transition } from '@uirouter/react';
 
-import { getById } from '@waldur/core/api';
-import { CustomersService } from '@waldur/customer/services/CustomersService';
+import { getCustomer, getProject } from '@waldur/project/api';
 import { router } from '@waldur/router';
 import store from '@waldur/store/store';
 import {
@@ -9,25 +8,23 @@ import {
   setCurrentProject,
   setCurrentWorkspace,
 } from '@waldur/workspace/actions';
-import { Project, PROJECT_WORKSPACE } from '@waldur/workspace/types';
+import { PROJECT_WORKSPACE } from '@waldur/workspace/types';
 
-import { ResourcesService } from './ResourcesService';
+import { getResource } from './api';
 
 export function loadResource(trans: Transition) {
-  if (!trans.params().uuid) {
+  if (!trans.params().resource_uuid) {
     return Promise.reject();
   }
 
-  return ResourcesService.get(trans.params().resource_type, trans.params().uuid)
+  return getResource(trans.params().resource_type, trans.params().resource_uuid)
     .then((resource) => {
-      return getById<Project>('/projects/', resource.project_uuid).then(
-        (project) => {
-          return { project };
-        },
-      );
+      return getProject(resource.project_uuid).then((project) => {
+        return { project };
+      });
     })
     .then(({ project }) => {
-      return CustomersService.get(project.customer_uuid).then((customer) => {
+      return getCustomer(project.customer_uuid).then((customer) => {
         store.dispatch(setCurrentCustomer(customer));
         store.dispatch(setCurrentProject(project));
         store.dispatch(setCurrentWorkspace(PROJECT_WORKSPACE));

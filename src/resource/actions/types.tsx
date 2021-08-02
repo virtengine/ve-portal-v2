@@ -1,5 +1,5 @@
+import { ComponentType } from 'react';
 import { Omit } from 'react-redux';
-import { Dispatch } from 'redux';
 
 import { BaseResource } from '@waldur/resource/types';
 import { User } from '@waldur/workspace/types';
@@ -15,21 +15,6 @@ interface BaseField<Resource> {
   resource_default_value?: boolean;
   help_text?: string;
   formGroupClass?: string;
-}
-
-interface SelectOption {
-  value: string;
-  display_name: string;
-}
-
-interface SelectField<Resource> extends BaseField<Resource> {
-  serializer?: (items: any[]) => any[];
-  formatter?: (item) => string;
-  modelParser?: (field, items) => any[];
-  display_name_field?: string;
-  value_field?: string;
-  url?: string;
-  choices?: SelectOption[];
 }
 
 interface TextField<Resource> extends BaseField<Resource> {
@@ -51,42 +36,20 @@ interface ComponentField<Resource> extends Omit<BaseField<Resource>, 'type'> {
 export type ActionField<Resource = BaseResource> =
   | BaseField<Resource>
   | TextField<Resource>
-  | SelectField<Resource>
   | IntegerField<Resource>
   | ComponentField<Resource>;
-
-type ActionType = 'button' | 'form' | 'callback';
-
-type ActionMethod = 'POST' | 'PUT' | 'DELETE';
 
 export type ActionValidator<Resource> = (
   ctx: ActionContext<Resource>,
 ) => string;
 
-export interface ResourceAction<Resource = BaseResource> {
-  name: string;
-  title: string;
-  dialogTitle?: string;
-  getDialogTitle?(resource: Resource): string;
-  dialogSubtitle?: string;
-  tab?: string;
-  iconClass?: string;
-  type?: ActionType;
-  successMessage?: string;
-  onSuccess?: () => void;
-  method?: ActionMethod;
-  destructive?: boolean;
-  validators?: Array<ActionValidator<Resource>>;
-  dialogSize?: 'lg' | 'xl';
-  component?: React.ComponentType<any>;
-  isVisible?: boolean;
-  serializer?(form): object;
-  execute?(resource): void;
-  submitForm?(dispatch: Dispatch<any>, formData: any);
-  formId?: string;
-}
-
 export interface ActionContext<Resource = BaseResource> {
   resource: Resource;
   user: User;
 }
+
+export type ActionItem = ComponentType<{
+  resource;
+  reInitResource;
+  refreshList?;
+}>;

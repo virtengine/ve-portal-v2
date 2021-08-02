@@ -10,15 +10,19 @@ export interface OfferingFormData {
   attributes?: { [key: string]: any };
   project?: Project;
   limits?: Limits;
+  project_create_request?: any;
+  customer_create_request?: any;
+  customer?: any;
 }
 
 export interface OrderSummaryProps {
   offering: Offering;
-  customer: Customer;
+  customer?: Customer;
   project?: Project;
-  total: number;
+  total?: number;
   formData: OfferingFormData;
-  formValid: boolean;
+  formValid?: boolean;
   updateMode?: boolean;
   extraComponent?: React.ComponentType<any>;
+  shouldConcealPrices?: boolean;
 }

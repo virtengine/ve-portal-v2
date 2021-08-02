@@ -13,6 +13,7 @@ declare global {
       openDropdownByLabelForce(value: string): Chainable;
       openWorkspaceSelector(): Chainable;
       selectTheFirstOptionOfDropdown(): Chainable;
+      selectDate(): Chainable;
       openSelectDialog(selectId: string, option: string): Chainable;
       buttonShouldBeDisabled(btnClass: string): Chainable;
       waitForSpinner(): Chainable;
@@ -68,6 +69,15 @@ Cypress.Commands.add('selectTheFirstOptionOfDropdown', () => {
   cy.get('*div[id^="react-select"]').first().click({ force: true }); // get ids which start with "react-select"
 });
 
+Cypress.Commands.add('selectDate', () => {
+  cy.get("input[placeholder='YYYY-MM-DD']")
+    .click()
+    .get(
+      '.date-picker-popover .popover-content tbody tr:last-child td:first-child',
+    )
+    .click();
+});
+
 Cypress.Commands.add('openWorkspaceSelector', () => {
   cy.waitForSpinner()
     // Workspace selector indicates user workspace
@@ -90,7 +100,7 @@ Cypress.Commands.add('mockUser', () => {
     fixture: 'configuration.json',
   })
     .intercept('POST', '/api-auth/password/', { token: 'valid' })
-    .intercept('GET', '/api/users/?current=', {
+    .intercept('GET', '/api/users/me/', {
       fixture: 'users/alice.json',
     })
     .intercept('GET', '/api/customer-permissions/', [])

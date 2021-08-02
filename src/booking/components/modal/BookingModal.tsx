@@ -80,8 +80,41 @@ export const BookingModal: FC<BookingModalProps> = ({
       dispatch(showError(translate('End date must be after start date.')));
     }
   };
-  const handleChange = (name, value) =>
-    setNewEvent({ ...newEvent, [name]: value });
+
+  const convertEventToAllDay = (event) => {
+    const mStart = moment(newEvent.start);
+    const mEnd = moment(newEvent.end);
+    if (mEnd.diff(mStart, 'days') === 0) {
+      mEnd.add(1, 'days');
+    }
+    return {
+      ...event,
+      start: mStart.startOf('day').toDate(),
+      end: mEnd.startOf('day').toDate(),
+    };
+  };
+
+  const shiftEndDateAccordingToStartDate = (event, updateStartDate) => {
+    const mStart = moment(newEvent.start);
+    const mEnd = moment(newEvent.end);
+    const diff: number = moment(updateStartDate).diff(mStart);
+    mEnd.add(diff, 'milliseconds');
+    return {
+      ...event,
+      end: mEnd.startOf('day').toDate(),
+    };
+  };
+
+  const handleChange = (name, value) => {
+    let event = newEvent;
+    if (name === 'allDay' && value === true) {
+      event = convertEventToAllDay(newEvent);
+    }
+    if (name === 'start') {
+      event = shiftEndDateAccordingToStartDate(event, value);
+    }
+    return setNewEvent({ ...event, [name]: value });
+  };
 
   return (
     <Modal show={isOpen} onHide={toggle}>

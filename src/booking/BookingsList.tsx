@@ -6,18 +6,27 @@ import { BookingActions } from '@waldur/booking/BookingActions';
 import { BookingsListExpandableRow } from '@waldur/booking/BookingsListExpandableRow';
 import { BookingStateField } from '@waldur/booking/BookingStateField';
 import { BookingTimeSlotsField } from '@waldur/booking/BookingTimeSlotsField';
-import { BOOKING_RESOURCES_TABLE } from '@waldur/booking/constants';
+import {
+  BOOKING_RESOURCES_TABLE,
+  OFFERING_TYPE_BOOKING,
+} from '@waldur/booking/constants';
 import { translate, withTranslation } from '@waldur/i18n';
 import { PublicResourceLink } from '@waldur/marketplace/resources/list/PublicResourceLink';
 import { RootState } from '@waldur/store/reducers';
 import { connectTable, createFetcher, Table } from '@waldur/table';
-import { getCustomer, isOwnerOrStaff } from '@waldur/workspace/selectors';
+import {
+  getCustomer,
+  isOwnerOrStaff,
+  isServiceManagerSelector,
+} from '@waldur/workspace/selectors';
+import { ORGANIZATION_WORKSPACE } from '@waldur/workspace/types';
 
 import { bookingFormSelector } from './store/selectors';
 
 type OwnProps = {
   offeringUuid?: string;
-  providerUuid?: string;
+  customerUuid?: string;
+  projectUuid?: string;
 };
 
 type StateProps = ReturnType<typeof mapStateToProps>;
@@ -36,16 +45,8 @@ const TableComponent: FunctionComponent<any> = (props) => {
       render: ({ row }) => row.offering_name,
     },
     {
-      title: translate('Organization'),
-      render: ({ row }) => row.customer_name,
-    },
-    {
       title: translate('Created by'),
       render: ({ row }) => row.created_by_full_name,
-    },
-    {
-      title: translate('Approved by'),
-      render: ({ row }) => row.approved_by_full_name,
     },
     {
       title: translate('State'),
@@ -58,15 +59,23 @@ const TableComponent: FunctionComponent<any> = (props) => {
     },
   ];
 
+  if (props.customer.is_service_provider) {
+    columns.splice(2, 0, {
+      title: translate('Organization'),
+      render: ({ row }) => row.customer_name,
+    });
+  } else if (props.workspace === ORGANIZATION_WORKSPACE) {
+    columns.splice(2, 0, {
+      title: translate('Project'),
+      render: ({ row }) => row.project_name,
+    });
+  }
+
   if (!props.actionsDisabled) {
     columns.push({
       title: translate('Actions'),
       render: ({ row }) => (
-        <BookingActions
-          row={row}
-          offeringUuid={props.offeringUuid}
-          providerUuid={props.providerUuid}
-        />
+        <BookingActions resource={row} reInitResource={() => props.fetch()} />
       ),
     });
   }
@@ -77,20 +86,28 @@ const TableComponent: FunctionComponent<any> = (props) => {
       showPageSizeSelector={true}
       verboseName={translate('Bookings')}
       initialSorting={{ field: 'created', mode: 'desc' }}
-      expandableRow={BookingsListExpandableRow}
+      expandableRow={({ row }) => (
+        <BookingsListExpandableRow
+          row={row}
+          isServiceProvider={props.customer.is_service_provider}
+        />
+      )}
     />
   );
 };
 
 const mapPropsToFilter = (props: StateProps & OwnProps) => {
   const filter: Record<string, any> = {
-    offering_type: 'Marketplace.Booking',
+    offering_type: OFFERING_TYPE_BOOKING,
   };
   if (props.offeringUuid) {
     filter.offering_uuid = props.offeringUuid;
   }
-  if (props.providerUuid) {
-    filter.provider_uuid = props.providerUuid;
+  if (props.customerUuid) {
+    filter.connected_customer_uuid = props.customerUuid;
+  }
+  if (props.projectUuid) {
+    filter.project_uuid = props.projectUuid;
   }
   if (props.filter) {
     if (props.filter.state) {
@@ -108,7 +125,7 @@ const TableOptions = {
 
 const mapStateToProps = (state: RootState) => ({
   customer: getCustomer(state),
-  actionsDisabled: !isOwnerOrStaff(state),
+  actionsDisabled: !isOwnerOrStaff(state) && !isServiceManagerSelector(state),
   filter: bookingFormSelector(state),
 });
 

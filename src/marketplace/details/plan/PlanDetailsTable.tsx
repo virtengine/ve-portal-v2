@@ -60,18 +60,11 @@ export const PureDetailsTable: FunctionComponent<PlanDetailsTableProps> = (
   }
 
   const customer = useSelector(getCustomer);
-  const activeFixedPriceProfile = getActiveFixedPricePaymentProfile(
-    customer.payment_profiles,
-  );
+  const activeFixedPriceProfile =
+    customer && getActiveFixedPricePaymentProfile(customer.payment_profiles);
 
   const fixedRows = props.components.filter(
     (component) => component.billing_type === 'fixed',
-  );
-  const fixedWithLimits = fixedRows.filter((component) =>
-    props.limits.includes(component.type),
-  );
-  const fixedWithoutLimits = fixedRows.filter(
-    (component) => !props.limits.includes(component.type),
   );
   const usageRows = props.components.filter(
     (component) => component.billing_type === 'usage',
@@ -82,14 +75,10 @@ export const PureDetailsTable: FunctionComponent<PlanDetailsTableProps> = (
   const switchRows = props.components.filter(
     (component) => component.billing_type === 'few',
   );
-  const usageWithLimits = usageRows.filter(
-    (component) => component.disable_quotas === false,
+  const limitedRows = props.components.filter(
+    (component) => component.billing_type === 'limit',
   );
-  const usageWithoutLimits = usageRows.filter(
-    (component) => component.disable_quotas === true,
-  );
-  const hasExtraRows = fixedRows.length > 0 || usageWithLimits.length > 0;
-  const limitedRows = [...fixedWithLimits, ...usageWithLimits];
+  const hasExtraRows = fixedRows.length > 0 || limitedRows.length > 0;
 
   return (
     <div className={props.formGroupClassName}>
@@ -102,12 +91,10 @@ export const PureDetailsTable: FunctionComponent<PlanDetailsTableProps> = (
               />
             </thead>
             <tbody>
-              {fixedWithoutLimits.length > 0 && (
-                <FixedRows components={fixedWithoutLimits} />
-              )}
+              {fixedRows.length > 0 && <FixedRows components={fixedRows} />}
               {!props.viewMode &&
                 limitedRows.length > 0 &&
-                fixedWithoutLimits.length > 0 && (
+                fixedRows.length > 0 && (
                   <tr className="text-center">
                     <td colSpan={3 + props.periods.length}>
                       {translate(
@@ -134,7 +121,7 @@ export const PureDetailsTable: FunctionComponent<PlanDetailsTableProps> = (
             </tbody>
           </table>
         )}
-        {usageWithoutLimits.length > 0 && (
+        {usageRows.length > 0 && (
           <>
             <p>
               {hasExtraRows
@@ -145,7 +132,7 @@ export const PureDetailsTable: FunctionComponent<PlanDetailsTableProps> = (
                     'Service provider can charge for usage of the following components',
                   )}
             </p>
-            <LimitlessComponentsTable components={usageWithoutLimits} />
+            <LimitlessComponentsTable components={usageRows} />
           </>
         )}
         {initialRows.length > 0 && (
@@ -168,7 +155,6 @@ export const PureDetailsTable: FunctionComponent<PlanDetailsTableProps> = (
 PureDetailsTable.defaultProps = {
   formGroupClassName: 'form-group',
   columnClassName: 'col-sm-offset-3 col-sm-9',
-  limits: [],
 };
 
 const connector = connect(pricesSelector);

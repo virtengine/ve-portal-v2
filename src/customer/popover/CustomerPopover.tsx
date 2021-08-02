@@ -4,9 +4,9 @@ import { useAsync } from 'react-use';
 
 import { LoadingSpinner } from '@waldur/core/LoadingSpinner';
 import { translate } from '@waldur/i18n';
-import { getCustomer } from '@waldur/marketplace/common/api';
 import { CloseDialogButton } from '@waldur/modal/CloseDialogButton';
 import { ModalDialog } from '@waldur/modal/ModalDialog';
+import { getCustomer } from '@waldur/project/api';
 
 import { CustomerSummary } from './CustomerSummary';
 import { CustomerUsersList } from './CustomerUsersList';
@@ -14,10 +14,7 @@ import { CustomerUsersList } from './CustomerUsersList';
 export const CustomerPopover: FunctionComponent<{
   resolve: { customer_uuid };
 }> = ({ resolve: { customer_uuid } }) => {
-  const { loading, error, value } = useAsync(
-    async () => await getCustomer(customer_uuid),
-    [],
-  );
+  const { loading, error, value } = useAsync(() => getCustomer(customer_uuid));
   return (
     <ModalDialog
       title={translate('Organization users list')}

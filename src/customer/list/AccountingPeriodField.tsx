@@ -2,15 +2,16 @@ import { FunctionComponent } from 'react';
 import Select from 'react-select';
 import { Field } from 'redux-form';
 
+import { PeriodOption } from '@waldur/form/types';
 import { translate } from '@waldur/i18n';
 
-import { AccountingPeriodOption } from './types';
-
-interface Props {
-  options: AccountingPeriodOption[];
+interface AccountingPeriodFieldProps {
+  options: PeriodOption[];
 }
 
-export const AccountingPeriodField: FunctionComponent<Props> = (props) => (
+export const AccountingPeriodField: FunctionComponent<AccountingPeriodFieldProps> = (
+  props,
+) => (
   <Field
     name="accounting_period"
     component={(prop) => (

@@ -18,6 +18,8 @@ npm-debug.log
 coverage
 cypress/videos
 cypress/screenshots/
+cypress/results/
+junit.xml
 
 # config
 src/configs/config.json

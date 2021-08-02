@@ -15,16 +15,23 @@ const BookingCheckoutSummary = lazyComponent(
 const OfferingConfigurationDetails = lazyComponent(
   () =>
     import(
-      /* webpackChunkName: "OfferingConfigurationDetails" */ '@waldur/offering/OfferingConfigurationDetails'
+      /* webpackChunkName: "OfferingConfigurationDetails" */ '@waldur/support/OfferingConfigurationDetails'
     ),
   'OfferingConfigurationDetails',
 );
 const OfferingConfigurationForm = lazyComponent(
   () =>
     import(
-      /* webpackChunkName: "OfferingConfigurationForm" */ '@waldur/offering/OfferingConfigurationForm'
+      /* webpackChunkName: "OfferingConfigurationForm" */ '@waldur/support/OfferingConfigurationForm'
     ),
   'OfferingConfigurationForm',
+);
+const OfferingPluginOptionsForm = lazyComponent(
+  () =>
+    import(
+      /* webpackChunkName: "OfferingPluginOptionsForm" */ '@waldur/support/OfferingPluginOptionsForm'
+    ),
+  'OfferingPluginOptionsForm',
 );
 
 import { OFFERING_TYPE_BOOKING } from './constants';
@@ -67,6 +74,7 @@ registerOfferingType({
   },
   checkoutSummaryComponent: BookingCheckoutSummary,
   component: OfferingConfigurationForm,
+  pluginOptionsForm: OfferingPluginOptionsForm,
   detailsComponent: OfferingConfigurationDetails,
   showOptions: true,
   showComponents: true,

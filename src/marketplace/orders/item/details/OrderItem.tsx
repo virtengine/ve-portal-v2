@@ -57,7 +57,14 @@ export const OrderItem: FunctionComponent<OrderItemProps> = (props) => {
             </p>
             {props.item.resource_uuid ? (
               <p>
-                <ResourceDetailsLink item={props.item as ResourceReference}>
+                <ResourceDetailsLink
+                  item={
+                    {
+                      ...props.item,
+                      project_uuid: props.project_uuid,
+                    } as ResourceReference
+                  }
+                >
                   {translate('Resource link')}
                 </ResourceDetailsLink>
               </p>
@@ -81,7 +88,7 @@ export const OrderItem: FunctionComponent<OrderItemProps> = (props) => {
         <>
           {props.maxUnit ? (
             <td className="text-center text-lg">
-              {defaultCurrency(props.item.fixed_price || 0)}
+              {defaultCurrency(props.item.cost || props.item.fixed_price || 0)}
             </td>
           ) : null}
           <td className="text-center text-lg">

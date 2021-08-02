@@ -11,8 +11,10 @@ import { BillingPeriod } from '@waldur/marketplace/common/BillingPeriod';
 import { OfferingLogo } from '@waldur/marketplace/common/OfferingLogo';
 import { RatingStars } from '@waldur/marketplace/common/RatingStars';
 import { OfferingCompareButtonContainer } from '@waldur/marketplace/compare/OfferingCompareButtonContainer';
+import { FORM_ID } from '@waldur/marketplace/details/constants';
 import { ProviderLink } from '@waldur/marketplace/links/ProviderLink';
 import { Offering } from '@waldur/marketplace/types';
+import { isVisible } from '@waldur/store/config';
 import { getCustomer, getProject } from '@waldur/workspace/selectors';
 import { Customer, Project } from '@waldur/workspace/types';
 
@@ -49,12 +51,14 @@ export const SummaryTable: FunctionComponent<OrderSummaryProps> = (props) => (
           </td>
         </tr>
       )}
-      <tr>
-        <td>
-          <strong>{translate('Invoiced to')}</strong>
-        </td>
-        <td>{props.customer.name}</td>
-      </tr>
+      {props.customer && (
+        <tr>
+          <td>
+            <strong>{translate('Invoiced to')}</strong>
+          </td>
+          <td>{props.customer.name}</td>
+        </tr>
+      )}
       {props.project && (
         <tr>
           <td>
@@ -64,9 +68,11 @@ export const SummaryTable: FunctionComponent<OrderSummaryProps> = (props) => (
         </tr>
       )}
       {props.extraComponent ? createElement(props.extraComponent, props) : null}
-      {!getActiveFixedPricePaymentProfile(props.customer.payment_profiles) &&
+      {props.customer &&
+        !getActiveFixedPricePaymentProfile(props.customer.payment_profiles) &&
         props.formData &&
-        props.formData.plan && (
+        props.formData.plan &&
+        !props.shouldConcealPrices && (
           <tr>
             <td className="text-lg">
               <BillingPeriod unit={props.formData.plan.unit} />
@@ -116,8 +122,9 @@ const mapStateToProps = (state, ownProps) => ({
   customer: getCustomer(state),
   project: getProject(state),
   total: pricesSelector(state, ownProps).total,
-  formData: getFormValues('marketplaceOffering')(state),
-  formValid: isValid('marketplaceOffering')(state),
+  formData: getFormValues(FORM_ID)(state),
+  formValid: isValid(FORM_ID)(state),
+  shouldConcealPrices: isVisible(state, 'marketplace.conceal_prices'),
 });
 
 export const OrderSummary = connect<

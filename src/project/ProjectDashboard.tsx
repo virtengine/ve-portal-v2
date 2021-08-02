@@ -1,12 +1,17 @@
 import { FunctionComponent } from 'react';
 import { Col, Row } from 'react-bootstrap';
+import { useSelector } from 'react-redux';
 
 import { Panel } from '@waldur/core/Panel';
+import { CustomerBookingManagement } from '@waldur/customer/dashboard/CustomerBookingManagement';
 import { CategoryResourcesList } from '@waldur/dashboard/CategoryResourcesList';
 import { DashboardHeader } from '@waldur/dashboard/DashboardHeader';
 import { translate } from '@waldur/i18n';
 import { ComplianceChecklists } from '@waldur/marketplace-checklist/ComplianceChecklists';
 import { useTitle } from '@waldur/navigation/title';
+import { ProjectResourcesFilter } from '@waldur/project/ProjectResourcesFilter';
+import { isVisible } from '@waldur/store/config';
+import { RootState } from '@waldur/store/reducers';
 import { Project, PROJECT_WORKSPACE, User } from '@waldur/workspace/types';
 
 import { ProjectActions } from './ProjectActions';
@@ -23,6 +28,9 @@ export const ProjectDashboard: FunctionComponent<ProjectDashboardProps> = (
   props,
 ) => {
   useTitle(translate('Dashboard'));
+  const shouldConcealPrices = useSelector((state: RootState) =>
+    isVisible(state, 'marketplace.conceal_prices'),
+  );
   if (!props.project) {
     return null;
   }
@@ -40,14 +48,18 @@ export const ProjectDashboard: FunctionComponent<ProjectDashboardProps> = (
       <div style={{ paddingLeft: 10 }}>
         <Row>
           <Col md={8}>
-            <ProjectCounters project={props.project} />
+            {!shouldConcealPrices && (
+              <ProjectCounters project={props.project} />
+            )}
           </Col>
           <Col md={4}>
             <ProjectActions {...props} />
           </Col>
         </Row>
         <ComplianceChecklists />
+        <CustomerBookingManagement />
         <Panel title={translate('Resources')}>
+          <ProjectResourcesFilter />
           <ProjectResourcesList />
         </Panel>
         <CategoryResourcesList

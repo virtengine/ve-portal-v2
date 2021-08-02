@@ -58,9 +58,10 @@ export class OpenStackPackageForm extends Component<OfferingConfigurationFormPro
             )}
             validate={getLatinNameValidators()}
             required={true}
+            maxLength={64}
           />
           <PlanField offering={props.offering} />
-          <PlanDetailsTable offering={props.offering} limits={props.limits} />
+          <PlanDetailsTable offering={props.offering} />
           <TextField
             label={translate('Tenant description')}
             name="attributes.description"

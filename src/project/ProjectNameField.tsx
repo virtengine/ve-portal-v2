@@ -1,29 +1,34 @@
 import { FunctionComponent } from 'react';
 
 import { StringField } from '@waldur/form';
-import { TranslateProps } from '@waldur/i18n';
+import { translate } from '@waldur/i18n';
 
-const checkPattern = (value: string, props) => {
+const checkPattern = (value: string) => {
   if (!value) {
-    return props.translate('Name is required field.');
+    return translate('Name is required field.');
   }
   if (value.trim().length < 3) {
-    return props.translate('Name should contain at least 3 symbols.');
+    return translate('Name should contain at least 3 symbols.');
   }
 };
 
 const checkDuplicate = (value, props) =>
-  props.customer.projects.find(
+  props.customer?.projects.find(
     (project) => project.name === value && project.uuid !== props.project_uuid,
   )
     ? props.translate('Name is duplicated. Choose other name.')
     : undefined;
 
 const validateProjectName = (value, _, props) =>
-  checkDuplicate(value, props) || checkPattern(value, props);
+  checkDuplicate(value, props) || checkPattern(value);
 
-export const ProjectNameField: FunctionComponent<TranslateProps> = ({
-  translate,
+interface ProjectNameFieldProps {
+  isDisabled?: boolean;
+  customer?;
+}
+
+export const ProjectNameField: FunctionComponent<ProjectNameFieldProps> = ({
+  isDisabled = false,
 }) => (
   <StringField
     label={translate('Project name')}
@@ -31,5 +36,6 @@ export const ProjectNameField: FunctionComponent<TranslateProps> = ({
     description={translate('This name will be visible in accounting data.')}
     required={true}
     validate={validateProjectName}
+    disabled={isDisabled}
   />
 );

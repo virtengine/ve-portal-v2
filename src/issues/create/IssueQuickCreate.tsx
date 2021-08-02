@@ -6,8 +6,9 @@ import { Field, reduxForm, formValueSelector, change } from 'redux-form';
 import { createSelector } from 'reselect';
 
 import { SubmitButton } from '@waldur/auth/SubmitButton';
-import { getList } from '@waldur/core/api';
 import { translate } from '@waldur/i18n';
+import { formatResourceShort } from '@waldur/marketplace/utils';
+import { getCustomersList } from '@waldur/project/api';
 import { BaseResource } from '@waldur/resource/types';
 import { RootState } from '@waldur/store/reducers';
 import { getUser } from '@waldur/workspace/selectors';
@@ -36,7 +37,7 @@ const refreshCustomers = async (name: string) => {
   if (name) {
     params.name = name;
   }
-  const customers = await getList('/customers/', params);
+  const customers = await getCustomersList(params);
   return { options: customers };
 };
 
@@ -143,8 +144,8 @@ export const ResourceGroup = ({ disabled, project, formId }) => {
           isClearable={true}
           defaultOptions
           loadOptions={loadData}
-          getOptionValue={(option) => option.name}
-          getOptionLabel={(option) => option.name}
+          getOptionValue={(option) => formatResourceShort(option)}
+          getOptionLabel={(option) => formatResourceShort(option)}
           filterOption={filterOption}
           isDisabled={disabled}
         />

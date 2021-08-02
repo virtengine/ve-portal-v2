@@ -13,6 +13,7 @@ export interface Question {
   description: string;
   solution: string;
   category_uuid: string;
+  image?: string;
 }
 
 export interface Checklist {
@@ -24,6 +25,11 @@ export interface Checklist {
   category_uuid: string;
   project_roles?: string[];
   customer_roles?: string[];
+}
+
+export interface ChecklistSelectorOption {
+  name: string;
+  uuid: string;
 }
 
 export interface Answer {

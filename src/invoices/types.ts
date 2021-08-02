@@ -1,12 +1,11 @@
-import { Customer } from '@waldur/customer/types';
+import { Customer } from '@waldur/workspace/types';
 
 export interface InvoiceItem {
+  article_code: string;
   tax: string;
   total: string;
   name: string;
   details: any;
-  scope_uuid: string;
-  scope_type: string;
   start: string;
   end: string;
   measured_unit: string;
@@ -16,9 +15,13 @@ export interface InvoiceItem {
   quantity?: number;
   project_uuid?: string;
   project_name?: string;
+  resource?: string;
+  resource_name?: string;
+  resource_uuid?: string;
 }
 
 export interface Invoice {
+  pdf?: string;
   number: string;
   customer_details: Customer;
   issuer_details: Customer;

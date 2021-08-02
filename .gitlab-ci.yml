@@ -9,6 +9,10 @@ include:
     file: "/templates/validate/docker-compose-trigger.yml"
   - project: "waldur/waldur-pipelines"
     file: "/templates/test/lint-docker-image.yaml"
+  - project: "waldur/waldur-pipelines"
+    file: "/templates/test/lint-dockerfile.yaml"
+  - project: "waldur/waldur-pipelines"
+    file: "/templates/deploy/dev-env-update.yml"
 
 variables:
   COMPONENT_VERSION: "latest"
@@ -54,8 +58,13 @@ Run jest tests:
     - if: '$CI_PIPELINE_SOURCE == "merge_request_event"'
   script:
     - npm install -g jest
-    - jest --verbose --runInBand --coverage
+    - jest --verbose --runInBand --coverage --reporters=jest-junit
   coverage: /All\sfiles.*?\s+(\d+.\d+)/
+  artifacts:
+    when: always
+    reports:
+      junit: junit.xml
+      cobertura: coverage/cobertura-coverage.xml
 
 Run E2E tests:
   image:
@@ -83,7 +92,7 @@ Run E2E tests:
       - cypress/videos
     reports:
       junit:
-        - results/TEST-*.xml
+        - cypress/results/output-*.xml
 
 Build artifact:
   stage: build
@@ -104,4 +113,55 @@ Lint docker image:
   extends: .Lint docker image template
   variables:
     IMAGE: opennode/waldur-homeport:latest
+    DOCKERFILE: Dockerfile
+  before_script: []
+
+Lint dockerfile:
+  extends: .Lint dockerfile template
+  variables:
+    DOCKERFILE: Dockerfile
+    HADOLINT_CONFIG: |
+      ignored:
+        - DL3018 # "versions for `apk add`" warning
+  before_script: []
+
+Upload translatable strings:
+  stage: build
+  interruptible: true
+  rules:
+    - if: '$SKIP_I18N_UPLOAD == "true" || $SKIP_I18N_UPLOAD == "yes"'
+      when: never
+    - if: '$CI_COMMIT_BRANCH == "develop"'
+    - if: '$CI_COMMIT_BRANCH == "master"'
+  image:
+    name: registry.hpc.ut.ee/mirror/localazy/cli:latest
+  script:
+    - sed 's/{\([^}]*\)\}/{__\1__}/g' locales/template.pot > template-for-localazy.pot
+    - localazy upload source -w $LOCALAZY_WRITE_KEY -r $LOCALAZY_READ_KEY
+  before_script: []
+
+Download translation:
+  stage: test
+  interruptible: true
+  rules:
+    - if: '$CI_COMMIT_BRANCH == "develop" && $CI_PIPELINE_SOURCE == "schedule"'
+  image:
+    name: registry.hpc.ut.ee/mirror/localazy/cli:latest
+  script:
+    - apt update && apt install -y git
+    - git config --global user.name "$GITLAB_USER_NAME"
+    - git config --global user.email "$GITLAB_USER_EMAIL"
+    - echo https://gitlab-ci-token:$GIT_ACCESS_TOKEN@$CI_SERVER_HOST/$CI_PROJECT_PATH.git
+    - git remote set-url origin "https://gitlab-ci-token:$GITLAB_TOKEN@$CI_SERVER_HOST/$CI_PROJECT_PATH.git"
+    - git fetch
+    - git branch -D new-translations  || echo "No translation branch" # cleanup
+    - localazy download -w $LOCALAZY_WRITE_KEY -r $LOCALAZY_READ_KEY
+    - find locales -type f -name '*.po' -exec sed -i 's/{__\([^}]*\)__\}/{\1}/g' {} \;
+    - git status
+    - git add locales/*
+    - git commit locales -m "Updates translations [skip ci]" || exit 0
+    - git status
+    - echo "Committing updated translations"
+    - git branch new-translations
+    - git push --set-upstream origin new-translations:develop
   before_script: []

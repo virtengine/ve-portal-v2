@@ -3,6 +3,7 @@ import { FunctionComponent } from 'react';
 import { useSelector } from 'react-redux';
 
 import { ENV } from '@waldur/configs/default';
+import { isFeatureVisible } from '@waldur/features/connect';
 import {
   getWorkspace,
   getCustomer,
@@ -31,6 +32,10 @@ export const BrandName: FunctionComponent = () => {
         );
         break;
       case SUPPORT_WORKSPACE:
+        // temporary solution till WAL-3909 (support dashboard) is done
+        if (!isFeatureVisible('support')) {
+          return router.stateService.go('marketplace-support-resources');
+        }
         router.stateService.go('support.dashboard', { reload: true });
         break;
       case PROJECT_WORKSPACE:
@@ -52,7 +57,10 @@ export const BrandName: FunctionComponent = () => {
     <li className="brand-name hidden-xs">
       <a onClick={onLogoClick}>
         {ENV.sidebarLogo ? (
-          <img src={ENV.sidebarLogo} style={{ maxHeight: 60, maxWidth: 175 }} />
+          <img
+            src={ENV.sidebarLogo}
+            style={{ maxHeight: 100, maxWidth: 175 }}
+          />
         ) : (
           <>
             <i className="fa fa-th-large"></i>{' '}

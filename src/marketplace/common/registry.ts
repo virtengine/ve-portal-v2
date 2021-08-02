@@ -40,6 +40,8 @@ interface OfferingConfiguration<AttributesType = any, RequestPaylodType = any> {
   attributes?(): Attribute[];
   disableOfferingCreation?: boolean;
   schedulable?: boolean;
+  showBackendId?: boolean;
+  allowToUpdateService?: boolean;
   offeringComponentsFilter?: (
     formData: any,
     components: OfferingComponent[],
@@ -125,6 +127,20 @@ export function showOfferingOptions(offeringType: string) {
   );
 }
 
+export function showBackendId(offeringType: string) {
+  return (
+    REGISTRY.hasOwnProperty(offeringType) &&
+    REGISTRY[offeringType].showBackendId
+  );
+}
+
+export function allowToUpdateService(offeringType: string) {
+  return (
+    REGISTRY.hasOwnProperty(offeringType) &&
+    REGISTRY[offeringType].allowToUpdateService
+  );
+}
+
 export function showOfferingLimits(offeringType: string) {
   return (
     REGISTRY.hasOwnProperty(offeringType) &&
@@ -174,7 +190,10 @@ export function getProviderType(offeringType: string) {
 }
 
 export function getLabel(offeringType: string) {
-  return REGISTRY.hasOwnProperty(offeringType) && REGISTRY[offeringType].label;
+  return (
+    (REGISTRY.hasOwnProperty(offeringType) && REGISTRY[offeringType].label) ||
+    offeringType
+  );
 }
 
 export function getAttributes(offeringType: string) {

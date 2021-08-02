@@ -1,3 +1,4 @@
+import { ENV } from '@waldur/configs/default';
 import { translate } from '@waldur/i18n';
 
 export const getPrivateUserTabs = () => [
@@ -33,12 +34,26 @@ export const getPrivateUserTabs = () => [
     state: 'profile.manage',
     key: 'manage',
   },
+  ENV.plugins.WALDUR_FREEIPA?.ENABLED
+    ? {
+        label: translate('FreeIPA account'),
+        icon: 'fa-user',
+        state: 'profile.freeipa',
+        key: 'freeipa',
+      }
+    : undefined,
   {
-    label: translate('FreeIPA account'),
-    icon: 'fa-user',
-    state: 'profile.freeipa',
-    key: 'freeipa',
-    feature: 'freeipa',
+    label: translate('Remote accounts'),
+    icon: 'fa-file',
+    state: 'profile.remote-accounts',
+    key: 'remote-accounts',
+  },
+  {
+    label: translate('Resources'),
+    icon: 'fa-plus',
+    state: 'profile.flows-list',
+    key: 'flows-list',
+    feature: 'marketplace-flows',
   },
 ];
 
@@ -66,4 +81,4 @@ export const getPublicUserTabs = (user) => [
 
 export const SELECT_AFFILIATION_FORM_ID = 'SelectAffiliation';
 export const ORGANIZATION_ROUTE = 'marketplace-category-customer';
-export const PROJECT_ROUTE = 'marketplace-category';
+export const PROJECT_ROUTE = 'marketplace-category-project';

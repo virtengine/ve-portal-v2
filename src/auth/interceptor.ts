@@ -3,13 +3,15 @@ import Axios from 'axios';
 import Qs from 'qs';
 
 import { ENV } from '@waldur/configs/default';
+import { cleanObject } from '@waldur/core/utils';
 import { router } from '@waldur/router';
 
 import { AuthService } from './AuthService';
+import { getToken } from './TokenStorage';
 
 export function initAuthToken() {
   // When application starts up, we need to inject auth token if it exists
-  const token = localStorage['AUTH_TOKEN'];
+  const token = getToken();
   if (token) {
     Axios.defaults.headers.common['Authorization'] = 'Token ' + token;
   }
@@ -36,10 +38,14 @@ Axios.interceptors.response.use(
           toState: target.name(),
           toParams: target.params(),
         };
+      } else if (router.globals.$current.name === 'login') {
+        params = router.globals.params as any;
       } else if (router.globals.$current.name) {
         params = {
           toState: router.globals.$current.name,
-          toParams: router.globals.$current.params,
+          toParams: router.globals.params
+            ? cleanObject(router.globals.params)
+            : undefined,
         };
       }
       AuthService.localLogout(params);

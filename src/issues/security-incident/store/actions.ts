@@ -1,8 +1,6 @@
 import { lazyComponent } from '@waldur/core/lazyComponent';
 import { openModalDialog } from '@waldur/modal/actions';
 
-import * as constants from '../constants';
-
 const ReportSecurityIncidentDialog = lazyComponent(
   () =>
     import(
@@ -11,10 +9,10 @@ const ReportSecurityIncidentDialog = lazyComponent(
   'ReportSecurityIncidentDialog',
 );
 
-export const openReportSecurityIncidentDialog = () =>
-  openModalDialog(ReportSecurityIncidentDialog);
-
-export const reportIncident = (formData) => ({
-  type: constants.REPORT_INCIDENT,
-  payload: formData,
-});
+export const openReportSecurityIncidentDialog = (
+  showProjectField,
+  showResourceField,
+) =>
+  openModalDialog(ReportSecurityIncidentDialog, {
+    resolve: { showProjectField, showResourceField },
+  });

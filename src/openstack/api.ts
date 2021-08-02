@@ -98,6 +98,12 @@ export const destroyFloatingIP = (id: string) =>
 export const pullSubnet = (id: string) =>
   post(`/openstack-subnets/${id}/pull/`);
 
+export const connectSubnet = (id: string) =>
+  post(`/openstack-subnets/${id}/connect/`);
+
+export const disconnectSubnet = (id: string) =>
+  post(`/openstack-subnets/${id}/disconnect/`);
+
 export const destroySubnet = (id: string) =>
   deleteById('/openstack-subnets/', id);
 
@@ -146,7 +152,7 @@ export const loadSecurityGroupsResources = (params?) =>
   getAll<SecurityGroup>('/openstack-security-groups/', { params });
 
 export const updateSecurityGroup = (id: string, data) =>
-  put(`/openstack-security-groups/${id}`, data);
+  put(`/openstack-security-groups/${id}/`, data);
 
 export const setSecurityGroupRules = (id: string, data) =>
   post(`/openstack-security-groups/${id}/set_rules/`, data);

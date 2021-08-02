@@ -1,4 +1,4 @@
-import { withTranslation } from '@waldur/i18n';
+import { translate, withTranslation } from '@waldur/i18n';
 import { ResourceState } from '@waldur/resource/state/ResourceState';
 import { Resource } from '@waldur/resource/types';
 
@@ -10,7 +10,7 @@ import { ResourceSummaryProps } from './types';
 export function PureResourceSummaryBase<T extends Resource = any>(
   props: ResourceSummaryProps<T>,
 ) {
-  const { translate, resource } = props;
+  const { resource } = props;
   return (
     <>
       <Field label={translate('State')} value={<ResourceState {...props} />} />
@@ -23,6 +23,7 @@ export function PureResourceSummaryBase<T extends Resource = any>(
         label={translate('Created')}
         value={<CreatedField resource={props.resource} />}
       />
+      <Field label={translate('End date')} value={resource.end_date} />
       <Field
         label={translate('UUID')}
         value={resource.uuid}

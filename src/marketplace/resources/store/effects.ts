@@ -4,29 +4,37 @@ import { call, put, takeEvery } from 'redux-saga/effects';
 
 import { format } from '@waldur/core/ErrorMessageFormatter';
 import { translate } from '@waldur/i18n';
+import * as api from '@waldur/marketplace/common/api';
 import { closeModalDialog } from '@waldur/modal/actions';
 import { router } from '@waldur/router';
 import { showError, showSuccess } from '@waldur/store/notify';
+import { SUPPORT_OFFERING_TYPE } from '@waldur/support/constants';
 
-import * as api from '../../common/api';
+import { Resource } from '../types';
 
 import * as constants from './constants';
 
-function* redirectToDetailView(resource_type, resource_uuid) {
+function* redirectToDetailView(resource: Resource) {
   const state =
-    resource_type === 'Support.Offering'
-      ? 'offeringDetails'
+    resource.offering_type === SUPPORT_OFFERING_TYPE
+      ? 'project.support-details'
       : 'resource-details';
   if (router.globals.current.name !== state) {
     return;
   }
-  yield put(
-    triggerTransition(state, {
-      uuid: resource_uuid,
-      resource_type,
-      tab: 'orderItems',
-    }),
-  );
+  const params =
+    resource.offering_type === SUPPORT_OFFERING_TYPE
+      ? {
+          resource_uuid: resource.uuid,
+          uuid: resource.project_uuid,
+          tab: 'orderItems',
+        }
+      : {
+          uuid: resource.resource_uuid,
+          resource_type: resource.resource_type,
+          tab: 'orderItems',
+        };
+  yield put(triggerTransition(state, params));
 }
 
 function* handleSubmitUsage(action) {
@@ -57,14 +65,9 @@ function* handleSubmitUsage(action) {
 }
 
 function* handleSwitchPlan(action) {
-  const {
-    marketplace_resource_uuid,
-    resource_uuid,
-    resource_type,
-    plan_url,
-  } = action.payload;
+  const { resource, plan_url } = action.payload;
   try {
-    yield call(api.switchPlan, marketplace_resource_uuid, plan_url);
+    yield call(api.switchPlan, resource.uuid, plan_url);
     yield put(
       showSuccess(
         translate('Resource plan change request has been submitted.'),
@@ -72,7 +75,7 @@ function* handleSwitchPlan(action) {
     );
     yield put(constants.switchPlan.success());
     yield put(closeModalDialog());
-    yield redirectToDetailView(resource_type, resource_uuid);
+    yield redirectToDetailView(resource);
   } catch (error) {
     const errorMessage = `${translate(
       'Unable to submit plan change request.',
@@ -83,14 +86,9 @@ function* handleSwitchPlan(action) {
 }
 
 function* handleChangeLimits(action) {
-  const {
-    marketplace_resource_uuid,
-    resource_uuid,
-    resource_type,
-    limits,
-  } = action.payload;
+  const { resource, limits } = action.payload;
   try {
-    yield call(api.changeLimits, marketplace_resource_uuid, limits);
+    yield call(api.changeLimits, resource.uuid, limits);
     yield put(
       showSuccess(
         translate('Resource limits change request has been submitted.'),
@@ -98,7 +96,7 @@ function* handleChangeLimits(action) {
     );
     yield put(constants.changeLimits.success());
     yield put(closeModalDialog());
-    yield redirectToDetailView(resource_type, resource_uuid);
+    yield redirectToDetailView(resource);
   } catch (error) {
     const errorMessage = `${translate(
       'Unable to submit limits change request.',
@@ -109,13 +107,9 @@ function* handleChangeLimits(action) {
 }
 
 function* handleTerminateResource(action) {
-  const {
-    marketplace_resource_uuid,
-    resource_uuid,
-    resource_type,
-  } = action.payload;
+  const { resource } = action.payload;
   try {
-    yield call(api.terminateResource, marketplace_resource_uuid);
+    yield call(api.terminateResource, resource.uuid);
     yield put(
       showSuccess(
         translate('Resource termination request has been submitted.'),
@@ -123,7 +117,7 @@ function* handleTerminateResource(action) {
     );
     yield put(constants.terminateResource.success());
     yield put(closeModalDialog());
-    yield redirectToDetailView(resource_type, resource_uuid);
+    yield redirectToDetailView(resource);
   } catch (error) {
     const errorMessage = `${translate(
       'Unable to submit resource termination request.',

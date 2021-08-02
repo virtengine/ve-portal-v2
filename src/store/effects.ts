@@ -1,7 +1,6 @@
 import formActionSaga from 'redux-form-saga';
 
 import authSaga from '@waldur/auth/store/effects';
-import bookingSaga from '@waldur/booking/store/effects';
 import downloadLinkSaga from '@waldur/core/DownloadLink/effects';
 import customerDetailsSaga from '@waldur/customer/details/store/effects';
 import organizationsSaga from '@waldur/customer/list/store/effects';
@@ -16,14 +15,12 @@ import { effects as titleEffects } from '@waldur/navigation/title';
 import projectSaga from '@waldur/project/effects';
 import providerSaga from '@waldur/providers/effects';
 import serviceUsageSaga from '@waldur/providers/support/effects';
-import monitoringSaga from '@waldur/resource/monitoring/effects';
 import resourceSummarySaga from '@waldur/resource/summary/effects';
 import tableSaga from '@waldur/table/effects';
 import userSaga from '@waldur/user/support/effects';
 
 export default [
   authSaga,
-  bookingSaga,
   downloadLinkSaga,
   formActionSaga,
   projectSaga,
@@ -34,7 +31,6 @@ export default [
   issueCommentsSaga,
   securityIncidentSaga,
   tableSaga,
-  monitoringSaga,
   serviceUsageSaga,
   resourceSummarySaga,
   marketplaceSaga,

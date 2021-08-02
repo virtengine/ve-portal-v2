@@ -12,7 +12,8 @@ interface OfferingState {
   categories: Category[];
   offering: Offering;
   plugins: any;
-  isAddingScreenshot: boolean;
+  isAddingImage: boolean;
+  isUpdatingOffering: boolean;
 }
 
 const INITIAL_STATE: OfferingState = {
@@ -23,7 +24,8 @@ const INITIAL_STATE: OfferingState = {
   categories: [],
   plugins: {},
   offering: {} as Offering,
-  isAddingScreenshot: false,
+  isAddingImage: false,
+  isUpdatingOffering: false,
 };
 
 export const offeringReducer = (
@@ -46,10 +48,16 @@ export const offeringReducer = (
         erred: false,
       };
 
-    case constants.IS_ADDING_OFFERING_SCREENSHOT:
+    case constants.IS_ADDING_OFFERING_IMAGE:
       return {
         ...state,
-        isAddingScreenshot: payload.isAdding,
+        isAddingImage: payload.isAdding,
+      };
+
+    case constants.IS_UPDATING_OFFERING:
+      return {
+        ...state,
+        isUpdatingOffering: payload.isUpdating,
       };
 
     case constants.LOAD_DATA_SUCCESS:

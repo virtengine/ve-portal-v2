@@ -1,20 +1,22 @@
 import React from 'react';
 
-import { defaultCurrency } from '@waldur/core/formatCurrency';
 import { translate } from '@waldur/i18n';
 import { OfferingLimits } from '@waldur/marketplace/offerings/store/types';
+import { PriceField } from '@waldur/marketplace/resources/change-limits/PriceField';
 import { Plan } from '@waldur/marketplace/types';
 import { PriceTooltip } from '@waldur/price/PriceTooltip';
 
 import { ComponentRow } from './ComponentRow';
 import { StateProps } from './connector';
 
-interface Props extends StateProps {
+interface ChangeLimitsComponentProps extends StateProps {
   plan: Plan;
   offeringLimits: OfferingLimits;
 }
 
-export const ChangeLimitsComponent: React.FC<Props> = (props) => (
+export const ChangeLimitsComponent: React.FC<ChangeLimitsComponentProps> = (
+  props,
+) => (
   <div>
     {props.plan ? (
       <p>
@@ -30,6 +32,7 @@ export const ChangeLimitsComponent: React.FC<Props> = (props) => (
           <th>{translate('Usage')}</th>
           <th>{translate('Current limit')}</th>
           <th>{translate('New limit')}</th>
+          <th>{translate('Change')}</th>
           {props.periods.map((period, index) => (
             <th className="col-sm-1" key={index}>
               {period}
@@ -47,9 +50,14 @@ export const ChangeLimitsComponent: React.FC<Props> = (props) => (
           />
         ))}
         <tr>
-          <td colSpan={4}>{translate('Total')}</td>
+          <td colSpan={5}>{translate('Total')}</td>
           {props.totalPeriods.map((price, index) => (
-            <td key={index}>{defaultCurrency(price)}</td>
+            <td key={index}>
+              <PriceField
+                price={price}
+                changedPrice={props.changedTotalPeriods[index]}
+              />
+            </td>
           ))}
         </tr>
       </tbody>

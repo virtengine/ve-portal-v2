@@ -3,6 +3,10 @@ import moment from 'moment-timezone';
 import { useRef, useState, useEffect, FC } from 'react';
 import { useDispatch } from 'react-redux';
 
+import {
+  getNumberOfWeekendsInTheEvent,
+  removeWeekends,
+} from '@waldur/booking/components/calendar/utils';
 import { CURSOR_NOT_ALLOWED_CLASSNAME } from '@waldur/booking/constants';
 import { BookingProps } from '@waldur/booking/types';
 import {
@@ -18,7 +22,7 @@ import { showSuccess, showError } from '@waldur/store/notify';
 
 import { BookingModal } from '../modal/BookingModal';
 
-import { defaultOptions } from './defaultOptions';
+import { getDefaultOptions } from './defaultConfig';
 import './Calendar.scss';
 import './styles';
 
@@ -80,8 +84,31 @@ export const LazyCalendarComponent: FC<CalendarComponentProps> = (props) => {
     return setModal({ isOpen: true, el, event });
   };
   const addBooking = (event: BookingProps) => {
-    dispatch(showSuccess('Time slot has been added.'));
-    return props.addEventCb(event);
+    const isEventInPast = moment(moment(event.start)).isBefore();
+    if (isEventInPast) {
+      dispatch(showError(translate('Past time slots are not allowed.')));
+      return;
+    }
+    dispatch(showSuccess(translate('Time slot has been added.')));
+    if (!props.options.weekends && getNumberOfWeekendsInTheEvent(event) > 0) {
+      // If weekends toggle is on and an event contains weekend, extract weekends from the event
+      const splitEvents = removeWeekends(event);
+      splitEvents.forEach((splitEvent) => {
+        props.addEventCb(splitEvent);
+      });
+    } else {
+      const mStart = moment(event.start);
+      const mEnd = moment(event.end);
+      if (mEnd.diff(mStart, 'days') === 0) {
+        props.addEventCb({
+          ...event,
+          allDay: true,
+          end: mStart.add(1, 'days').startOf('day').toDate(),
+        });
+      } else {
+        props.addEventCb(event);
+      }
+    }
   };
 
   const updateEvent = (arg) => {
@@ -141,7 +168,16 @@ export const LazyCalendarComponent: FC<CalendarComponentProps> = (props) => {
 
   const calendarMountEffect = () => {
     const cal = new Calendar(elRef.current, {
-      ...defaultOptions,
+      ...getDefaultOptions(),
+      handleWindowResize: true,
+      progressiveEventRendering: true,
+      lazyFetching: false,
+      eventLimit: 6,
+      views: {
+        agenda: {
+          eventLimit: 3,
+        },
+      },
       ...props.options,
       eventClick,
       editable: !isCalType('read'),

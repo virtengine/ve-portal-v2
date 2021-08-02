@@ -4,8 +4,19 @@ import moment from 'moment-timezone';
 import { ENV } from '@waldur/configs/default';
 import { LanguageOption } from '@waldur/core/types';
 
+import { getLanguageKey, setLanguageKey } from './LanguageStorage';
+
 function getLocaleData(locale) {
   return import(`json-loader!po-loader?format=mf!../../locales/${locale}.po`);
+}
+
+function loadMomentLocale(locale: string) {
+  if (locale === 'en') {
+    locale = 'en-gb';
+  }
+  return import(`moment/locale/${locale}.js`).then(() => {
+    moment.locale(locale);
+  });
 }
 
 class LanguageUtilsServiceClass {
@@ -18,11 +29,11 @@ class LanguageUtilsServiceClass {
 
   setCurrentLanguage(language: LanguageOption) {
     this.currentLanguage = language;
-    localStorage.setItem('NG_TRANSLATE_LANG_KEY', language.code);
+    setLanguageKey(language.code);
     getLocaleData(language.code).then((mod) => {
       this.dictionary = mod.default;
     });
-    moment.locale(language.code);
+    loadMomentLocale(language.code);
     Axios.defaults.headers.common['Accept-Language'] = language.code;
   }
 
@@ -30,7 +41,7 @@ class LanguageUtilsServiceClass {
     // Check if current language is listed in choices and
     // switch to default language if current choice is invalid.
     // Fallback to first option in languageChoices list if defaultLanguage is invalid.
-    const code = localStorage.getItem('NG_TRANSLATE_LANG_KEY');
+    const code = getLanguageKey();
     const current =
       this.findLanguageByCode(code) ||
       this.findLanguageByCode(ENV.defaultLanguage) ||

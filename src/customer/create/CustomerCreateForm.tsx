@@ -3,12 +3,20 @@ import { useState, createElement, FunctionComponent } from 'react';
 import { ENV } from '@waldur/configs/default';
 import { translate } from '@waldur/i18n';
 
+import { CustomerCreateFormData } from './types';
 import { WizardFormFirstPage } from './WizardFormFirstPage';
 import { WizardFormSecondPage } from './WizardFormSecondPage';
 
 const WizardForms = [WizardFormFirstPage, WizardFormSecondPage];
 
-export const CustomerCreateForm: FunctionComponent<any> = (props) => {
+interface CustomerCreateFormProps {
+  onSubmit(formData: CustomerCreateFormData): void;
+  initialValues?: CustomerCreateFormData;
+}
+
+export const CustomerCreateForm: FunctionComponent<CustomerCreateFormProps> = (
+  props,
+) => {
   const [step, setStep] = useState(1);
   const steps = [translate('General information')];
   if (!ENV.hideOrganizationBillingStep) {
@@ -30,5 +38,6 @@ export const CustomerCreateForm: FunctionComponent<any> = (props) => {
     step: step - 1,
     steps,
     stepTitle,
+    initialValues: props.initialValues,
   });
 };

@@ -1,5 +1,6 @@
 import { useCurrentStateAndParams, useRouter } from '@uirouter/react';
-import { useState, useEffect, FunctionComponent } from 'react';
+import equal from 'fast-deep-equal';
+import { useState, useEffect, FunctionComponent, useContext } from 'react';
 import { useAsyncFn, useEffectOnce, useNetwork } from 'react-use';
 
 import { ENV } from '@waldur/configs/default';
@@ -7,13 +8,12 @@ import { LoadingSpinner } from '@waldur/core/LoadingSpinner';
 import { useRecursiveTimeout } from '@waldur/core/useRecursiveTimeout';
 import { translate } from '@waldur/i18n';
 import { useBreadcrumbsFn } from '@waldur/navigation/breadcrumbs/store';
-import { Layout } from '@waldur/navigation/Layout';
+import { LayoutContext } from '@waldur/navigation/context';
 import { useTitle } from '@waldur/navigation/title';
-import { ProjectSidebar } from '@waldur/project/ProjectSidebar';
 
+import { getResource } from './api';
 import { ResourceBreadcrumbsRegistry } from './breadcrumbs/ResourceBreadcrumbsRegistry';
 import { ResourceDetails } from './ResourceDetails';
-import { ResourcesService } from './ResourcesService';
 import { BaseResource } from './types';
 
 export const ResourceDetailsContainer: FunctionComponent = () => {
@@ -21,7 +21,7 @@ export const ResourceDetailsContainer: FunctionComponent = () => {
   const router = useRouter();
 
   const [asyncResult, refreshResource] = useAsyncFn(
-    () => ResourcesService.get(params.resource_type, params.uuid),
+    () => getResource(params.resource_type, params.resource_uuid),
     [params],
   );
 
@@ -39,7 +39,9 @@ export const ResourceDetailsContainer: FunctionComponent = () => {
   useEffect(() => {
     if (
       asyncResult.value &&
-      (!resource || resource.modified !== asyncResult.value.modified)
+      (!resource ||
+        resource.modified !== asyncResult.value.modified ||
+        !equal(resource.quotas, asyncResult.value.quotas))
     ) {
       setResource(asyncResult.value);
     }
@@ -49,6 +51,18 @@ export const ResourceDetailsContainer: FunctionComponent = () => {
     () => (resource ? ResourceBreadcrumbsRegistry.getItems(resource) : []),
     [resource],
   );
+
+  const layoutContext = useContext(LayoutContext);
+  useEffect(() => {
+    if (resource) {
+      layoutContext.setSidebarKey(
+        `marketplace_category_${resource.marketplace_category_uuid}`,
+      );
+    }
+    return () => {
+      layoutContext.setSidebarKey('');
+    };
+  }, [resource, layoutContext]);
 
   useTitle(resource ? resource.name : translate('Resource details'));
 
@@ -72,18 +86,11 @@ export const ResourceDetailsContainer: FunctionComponent = () => {
     }
   }, [asyncResult.error, resource, router.stateService]);
 
-  return (
-    <Layout sidebar={<ProjectSidebar />} pageClass="white-bg">
-      {resource ? (
-        <ResourceDetails
-          resource={resource}
-          refreshResource={refreshResource}
-        />
-      ) : asyncResult.loading ? (
-        <LoadingSpinner />
-      ) : asyncResult.error ? (
-        <>{translate('Unable to load resource.')}</>
-      ) : null}
-    </Layout>
-  );
+  return resource ? (
+    <ResourceDetails resource={resource} refreshResource={refreshResource} />
+  ) : asyncResult.loading ? (
+    <LoadingSpinner />
+  ) : asyncResult.error ? (
+    <>{translate('Unable to load resource.')}</>
+  ) : null;
 };

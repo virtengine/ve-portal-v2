@@ -13,19 +13,18 @@ export interface BaseComponent {
   description: string;
 }
 
-export type BillingType = 'usage' | 'fixed' | 'one' | 'few';
+export type BillingType = 'usage' | 'limit' | 'fixed' | 'one' | 'few';
 
 export interface OfferingComponent extends BaseComponent {
   billing_type: BillingType;
   limit_period?: 'month' | 'total';
   limit_amount?: number;
-  disable_quotas?: boolean;
-  use_limit_for_billing?: boolean;
   max_value?: number;
   min_value?: number;
   factor?: number;
   is_boolean?: boolean;
   default_limit?: number;
+  article_code?: string;
 }
 
 export interface Plan {
@@ -81,12 +80,26 @@ interface ReferredPids {
 
 type OfferingState = 'Draft' | 'Active' | 'Paused' | 'Archived';
 
+interface OfferingGoogleCalendar {
+  backend_id: string;
+  http_link: string;
+  public: boolean;
+}
+
+export interface Division {
+  uuid: string;
+  name: string;
+  type: string;
+  url: string;
+}
+
 export interface Offering extends GeolocationPoint {
   quotas?: Quota[];
   uuid?: string;
   url?: string;
   thumbnail: string;
   name: string;
+  backend_id?: string;
   terms_of_service?: string;
   rating: number;
   order_item_count: number;
@@ -95,7 +108,7 @@ export interface Offering extends GeolocationPoint {
   category_title?: string;
   category_uuid?: string;
   vendor_details?: string;
-  screenshots?: Screenshot[];
+  screenshots?: Image[];
   description?: string;
   full_description: string;
   customer_uuid?: string;
@@ -117,12 +130,12 @@ export interface Offering extends GeolocationPoint {
   datacite_doi?: string;
   citation_count?: number;
   referred_pids: ReferredPids[];
-  latitude: number;
-  longitude: number;
   google_calendar_is_public: boolean;
+  googlecalendar?: OfferingGoogleCalendar;
+  divisions: Division[];
 }
 
-export interface Screenshot {
+export interface Image {
   image: string;
   thumbnail: string;
   name: string;
@@ -201,6 +214,7 @@ export interface OfferingsListType {
 
 export interface ServiceProvider {
   customer_uuid?: string;
+  customer_name?: string;
   name: string;
   uuid: string;
   image?: string;

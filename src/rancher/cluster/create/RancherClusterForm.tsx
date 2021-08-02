@@ -5,12 +5,8 @@ import { formValueSelector } from 'redux-form';
 import { ENV } from '@waldur/configs/default';
 import { ExternalLink } from '@waldur/core/ExternalLink';
 import { required } from '@waldur/core/validators';
-import {
-  FormContainer,
-  SelectAsyncField,
-  StringField,
-  TextField,
-} from '@waldur/form';
+import { FormContainer, StringField, TextField } from '@waldur/form';
+import { AsyncSelectField } from '@waldur/form/AsyncSelectField';
 import { AwesomeCheckboxField } from '@waldur/form/AwesomeCheckboxField';
 import { translate } from '@waldur/i18n';
 import { FORM_ID } from '@waldur/marketplace/details/constants';
@@ -76,29 +72,19 @@ export const RancherClusterForm: React.FC<OfferingConfigurationFormProps> = (
           required={true}
         />
         <PlanField offering={props.offering} />
-        <PlanDetailsTable
-          offering={props.offering}
-          limits={props.limits}
-          viewMode={true}
-        />
+        <PlanDetailsTable offering={props.offering} viewMode={true} />
         <TextField
           label={translate('Cluster description')}
           name="attributes.description"
         />
         {!ENV.plugins.WALDUR_RANCHER.DISABLE_SSH_KEY_INJECTION && (
-          <SelectAsyncField
+          <AsyncSelectField
             name="attributes.ssh_public_key"
             label={translate('SSH public key')}
             getOptionValue={(option) => option.url}
             getOptionLabel={(option) => option.name}
-            defaultOptions
-            loadOptions={(query, prevOptions, { page }) =>
-              loadSshKeyOptions(query, prevOptions, page)
-            }
+            loadOptions={loadSshKeyOptions}
             isClearable={true}
-            additional={{
-              page: 1,
-            }}
           />
         )}
         <AwesomeCheckboxField
@@ -116,7 +102,7 @@ export const RancherClusterForm: React.FC<OfferingConfigurationFormProps> = (
             />
           }
         />
-        {props.project && <TenantSelector project={props.project} />}
+        <TenantSelector />
         {tenant && <TenantGroup tenant={tenant} offering={props.offering} />}
       </FormContainer>
     </form>

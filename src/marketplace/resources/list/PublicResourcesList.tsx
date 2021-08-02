@@ -5,7 +5,8 @@ import { getFormValues } from 'redux-form';
 
 import { formatDateTime } from '@waldur/core/dateUtils';
 import { translate } from '@waldur/i18n';
-import { ResourceOpenDetail } from '@waldur/marketplace/resources/list/ResourceOpenDetail';
+import { ExpandableResourceSummary } from '@waldur/marketplace/resources/list/ExpandableResourceSummary';
+import { PublicResourceActions } from '@waldur/marketplace/resources/list/PublicResourceActions';
 import { Category, Offering } from '@waldur/marketplace/types';
 import { RootState } from '@waldur/store/reducers';
 import { Table, connectTable, createFetcher } from '@waldur/table';
@@ -16,9 +17,10 @@ import {
 } from '@waldur/workspace/selectors';
 import { Customer } from '@waldur/workspace/types';
 
-import { ResourceUsageButton } from '../usage/ResourceUsageButton';
-
-import { TABLE_PUBLIC_RESOURCE } from './constants';
+import {
+  PUBLIC_RESOURCES_LIST_FILTER_FORM_ID,
+  TABLE_PUBLIC_RESOURCE,
+} from './constants';
 import { PublicResourceLink } from './PublicResourceLink';
 import { PublicResourcesListPlaceholder } from './PublicResourcesListPlaceholder';
 import { ResourceStateField } from './ResourceStateField';
@@ -75,7 +77,9 @@ export const TableComponent: FunctionComponent<any> = (props) => {
     },
     {
       title: translate('Actions'),
-      render: ResourceUsageButton,
+      render: ({ row }) => (
+        <PublicResourceActions resource={row} refreshList={props.fetch} />
+      ),
     },
   ];
 
@@ -89,7 +93,7 @@ export const TableComponent: FunctionComponent<any> = (props) => {
       initialSorting={{ field: 'created', mode: 'desc' }}
       hasQuery={true}
       showPageSizeSelector={true}
-      expandableRow={ResourceOpenDetail}
+      expandableRow={ExpandableResourceSummary}
     />
   );
 };
@@ -154,7 +158,9 @@ export const TableOptions = {
 
 const mapStateToProps = (state: RootState) => ({
   customer: getCustomer(state),
-  filter: getFormValues('PublicResourcesFilter')(state) as ResourceFilter,
+  filter: getFormValues(PUBLIC_RESOURCES_LIST_FILTER_FORM_ID)(
+    state,
+  ) as ResourceFilter,
   user: getUser(state),
   isServiceManager: isServiceManagerSelector(state),
 });

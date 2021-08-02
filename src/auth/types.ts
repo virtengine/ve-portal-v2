@@ -34,7 +34,6 @@ interface CoreConfiguration {
   VALIDATE_INVITATION_EMAIL: boolean;
   OWNER_CAN_MANAGE_CUSTOMER: boolean;
   OWNERS_CAN_MANAGE_OWNERS: boolean;
-  COMPANY_TYPES: string[];
   NATIVE_NAME_ENABLED: boolean;
   ONLY_STAFF_MANAGES_SERVICES: boolean;
   PROTECT_USER_DETAILS_FOR_REGISTRATION_METHODS: string[];
@@ -79,6 +78,11 @@ interface VMWareConfiguration {
   BASIC_MODE: boolean;
 }
 
+interface FreeIPAConfiguration {
+  USERNAME_PREFIX: string;
+  ENABLED: boolean;
+}
+
 export interface PluginConfiguration {
   WALDUR_AUTH_SAML2: Partial<SAML2AuthConfiguration>;
   WALDUR_AUTH_SOCIAL: Partial<SocialAuthConfiguration>;
@@ -90,4 +94,5 @@ export interface PluginConfiguration {
   WALDUR_MARKETPLACE_OPENSTACK: Partial<MarketplaceOpenStackTenantConfiguration>;
   WALDUR_RANCHER: RancherConfiguration;
   WALDUR_VMWARE: Partial<VMWareConfiguration>;
+  WALDUR_FREEIPA: Partial<FreeIPAConfiguration>;
 }

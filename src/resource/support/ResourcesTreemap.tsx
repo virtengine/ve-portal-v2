@@ -1,4 +1,4 @@
-import { connect } from 'react-redux';
+import { connect, useSelector } from 'react-redux';
 import { useAsync } from 'react-use';
 import { compose } from 'redux';
 
@@ -8,6 +8,7 @@ import { formatFilesize } from '@waldur/core/utils';
 import { TranslateProps, withTranslation, translate } from '@waldur/i18n';
 import { useReportingBreadcrumbs } from '@waldur/issues/workspace/SupportWorkspace';
 import { useTitle } from '@waldur/navigation/title';
+import { isVisible } from '@waldur/store/config';
 import { RootState } from '@waldur/store/reducers';
 
 import { loadData, parseProjects } from './api';
@@ -16,7 +17,7 @@ import { TreemapChart } from './TreemapChart';
 import { TreemapChartFilter } from './TreemapChartFilter';
 import { QuotaList, QuotaChoice } from './types';
 
-const getQuotas = (): QuotaList => [
+const getQuotas = (hidden: boolean): QuotaList => [
   {
     key: 'nc_resource_count',
     title: translate('Resources'),
@@ -25,11 +26,13 @@ const getQuotas = (): QuotaList => [
     key: 'current_price',
     title: translate('Current price per month'),
     tooltipValueFormatter: (value) => defaultCurrency(value),
+    hidden,
   },
   {
     key: 'estimated_price',
     title: translate('Esimated price per month'),
     tooltipValueFormatter: (value) => defaultCurrency(value),
+    hidden,
   },
   {
     key: 'vpc_cpu_count',
@@ -67,20 +70,6 @@ const getQuotas = (): QuotaList => [
     title: translate('Cloud block storage size'),
     tooltipValueFormatter: formatFilesize,
   },
-  {
-    key: 'nc_cpu_count',
-    title: translate('Batch vCPU'),
-  },
-  {
-    key: 'nc_ram_size',
-    title: translate('Batch RAM'),
-    tooltipValueFormatter: formatFilesize,
-  },
-  {
-    key: 'nc_storage_size',
-    title: translate('Batch block storage size'),
-    tooltipValueFormatter: formatFilesize,
-  },
 ];
 
 const calculateTotal = (data) =>
@@ -97,9 +86,13 @@ interface StateProps {
 const TreemapContainer = (props: StateProps & TranslateProps) => {
   useTitle(translate('Resources usage'));
   useReportingBreadcrumbs();
+  const shouldConcealPrices = useSelector((state: RootState) =>
+    isVisible(state, 'marketplace.conceal_prices'),
+  );
 
-  const quotas = getQuotas();
-  const keys = quotas.map((q) => q.key);
+  const quotas = getQuotas(shouldConcealPrices).filter(
+    (quota) => !quota.hidden,
+  );
   let tooltipValueFormatter;
 
   if (props.quota) {
@@ -108,13 +101,13 @@ const TreemapContainer = (props: StateProps & TranslateProps) => {
   }
 
   const { loading, error, value: data } = useAsync(
-    () => loadData(props.accounting_is_running),
-    [props.accounting_is_running],
+    () => loadData(props.quota?.key),
+    [props.quota],
   );
-  const chartData = data ? parseProjects(data, keys) : {};
+  const chartData = data ? parseProjects(data) : [];
   let total = 0;
   if (props.quota && data) {
-    total = calculateTotal(chartData[props.quota.key]);
+    total = calculateTotal(chartData);
   }
   return (
     <>
@@ -128,7 +121,7 @@ const TreemapContainer = (props: StateProps & TranslateProps) => {
           title={props.translate('Resource usage')}
           width="100%"
           height={500}
-          data={chartData[props.quota.key]}
+          data={chartData}
           tooltipValueFormatter={tooltipValueFormatter}
         />
       )}

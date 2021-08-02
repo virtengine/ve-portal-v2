@@ -1,23 +1,36 @@
 import { triggerTransition } from '@uirouter/redux';
-import { delay } from 'redux-saga';
-import { call, put, select, takeEvery, takeLatest } from 'redux-saga/effects';
+import {
+  call,
+  delay,
+  put,
+  select,
+  takeEvery,
+  takeLatest,
+} from 'redux-saga/effects';
 
+import { formatDate } from '@waldur/core/dateUtils';
 import { format } from '@waldur/core/ErrorMessageFormatter';
-import { isFeatureVisible } from '@waldur/features/connect';
+import { CustomerCreateFormData } from '@waldur/customer/create/types';
 import { translate } from '@waldur/i18n';
+import { createFlow } from '@waldur/marketplace-flows/api';
 import * as api from '@waldur/marketplace/common/api';
+import { ProjectCreateFormData } from '@waldur/project/ProjectCreateForm';
 import { showError, showSuccess } from '@waldur/store/notify';
 import {
   SET_CURRENT_PROJECT,
   SET_CURRENT_CUSTOMER,
 } from '@waldur/workspace/constants';
 import { getProject, getWorkspace } from '@waldur/workspace/selectors';
-import { WorkspaceType, ORGANIZATION_WORKSPACE } from '@waldur/workspace/types';
+import {
+  WorkspaceType,
+  ORGANIZATION_WORKSPACE,
+  USER_WORKSPACE,
+} from '@waldur/workspace/types';
 
 import * as actions from './actions';
 import * as constants from './constants';
 
-const flattenAttributes = (attributes) => {
+export const flattenAttributes = (attributes) => {
   let newAttributes = {};
   for (const [key, value] of Object.entries(attributes)) {
     newAttributes = {
@@ -49,11 +62,8 @@ const formatItemToUpdate = (item) => ({
 });
 
 function* initCart() {
-  if (!isFeatureVisible('marketplace')) {
-    return;
-  }
   // Wait a little bit to avoid race conditions
-  yield call(delay, 500);
+  yield delay(500);
   const project = yield select(getProject);
   if (!project) {
     yield put(actions.setItems([]));
@@ -73,7 +83,46 @@ function* initCart() {
   }
 }
 
+const formatProjectCreateRequest = (request: ProjectCreateFormData) => ({
+  ...request,
+  end_date: request.end_date ? formatDate(request.end_date) : undefined,
+});
+
+const formatCustomerCreateRequest = (request: CustomerCreateFormData) => ({
+  ...request,
+  country: request.country?.value,
+});
+
 function* addItem(action) {
+  const workspace = yield select(getWorkspace);
+  if (workspace === USER_WORKSPACE) {
+    const payload = {
+      resource_create_request: {
+        ...formatItemToCreate(action.payload.item),
+        name: action.payload.item.attributes.name,
+      },
+      project_create_request: formatProjectCreateRequest(
+        action.payload.item.project_create_request,
+      ),
+      customer: action.payload.item.customer?.url,
+      customer_create_request: action.payload.item.customer_create_request
+        ? formatCustomerCreateRequest(
+            action.payload.item.customer_create_request,
+          )
+        : undefined,
+    };
+    try {
+      yield call(createFlow, payload);
+      yield put(triggerTransition('profile.flows-list', {}));
+      yield put(
+        showSuccess(translate('Resource creation flow has been created.')),
+      );
+    } catch (e) {
+      yield put(showError(translate('Unable to submit data.')));
+      yield put(actions.addItemError());
+    }
+    return;
+  }
   try {
     const item = yield call(
       api.addCartItem,

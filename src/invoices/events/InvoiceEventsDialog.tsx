@@ -15,11 +15,17 @@ import { CloseDialogButton } from '@waldur/modal/CloseDialogButton';
 import { InvoiceEventItem } from './InvoiceEventItem';
 import { loadEvents } from './utils';
 
-export const InvoiceEventsDialog: FunctionComponent<{ resolve }> = ({
+interface InvoiceEventsDialogProps {
+  resolve: {
+    resource: string;
+  };
+}
+
+export const InvoiceEventsDialog: FunctionComponent<InvoiceEventsDialogProps> = ({
   resolve,
 }) => {
   const { loading, error, value: events, retry } = useAsyncRetry(() =>
-    loadEvents(resolve.item),
+    loadEvents(resolve.resource),
   );
 
   return (

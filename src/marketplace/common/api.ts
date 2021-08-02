@@ -13,8 +13,8 @@ import {
   deleteById,
   getSelectData,
   parseResultCount,
+  put,
 } from '@waldur/core/api';
-import { Customer } from '@waldur/customer/types';
 import { SubmitCartRequest } from '@waldur/marketplace/cart/types';
 import {
   Order,
@@ -29,11 +29,11 @@ import {
   PluginMetadata,
   ImportableResource,
 } from '@waldur/marketplace/types';
-import { Project } from '@waldur/workspace/types';
+import { Customer, Project } from '@waldur/workspace/types';
 
 import { OfferingDocument } from '../offerings/store/types';
 import { Resource } from '../resources/types';
-import { ResourcePlanPeriod } from '../resources/usage/types';
+import { ComponentUsage, ResourcePlanPeriod } from '../resources/usage/types';
 
 export const getPlugins = () =>
   get<PluginMetadata[]>('/marketplace-plugins/').then(
@@ -51,6 +51,11 @@ export const getCategoryUsages = (options?: {}) =>
     '/marketplace-category-component-usages/',
     options,
   );
+
+export const getComponentUsages = (resource_uuid: string) =>
+  getAll<ComponentUsage>('/marketplace-component-usages/', {
+    params: { resource_uuid },
+  });
 
 export const getCategory = (id: string, options?: AxiosRequestConfig) =>
   getById<Category>('/marketplace-categories/', id, options);
@@ -70,6 +75,12 @@ export const getOfferingsCount = (options?: {}) =>
     options,
   ).then((response) => parseResultCount(response));
 
+export const getResourcesCount = (options?: {}) =>
+  Axios.head(
+    `${ENV.apiEndpoint}api/marketplace-resources/`,
+    options,
+  ).then((response) => parseResultCount(response));
+
 export const getProviderOfferings = (customerUuid: string) =>
   getAllOfferings({ params: { customer_uuid: customerUuid } });
 
@@ -84,10 +95,37 @@ export const createOffering = (data) =>
 export const updateOffering = (offeringId, data) =>
   patch<Offering>(`/marketplace-offerings/${offeringId}/`, data);
 
+export const updateResource = (resourceId: string, data) =>
+  put<Resource>(`/marketplace-resources/${resourceId}/`, data);
+
+export const updateResourceEndDate = (resourceUuid: string, end_date: string) =>
+  patch<Resource>(`/marketplace-resources/${resourceUuid}/`, {
+    end_date,
+  });
+
+export const updateResourceEndDateByProvider = (
+  resourceUuid: string,
+  end_date: string,
+) =>
+  post(`/marketplace-resources/${resourceUuid}/set_end_date_by_provider/`, {
+    end_date,
+  });
+
+export const getResourceDetails = (resourceId: string) =>
+  get<any>(`/marketplace-resources/${resourceId}/details/`).then(
+    (response) => response.data,
+  );
+
 export const getResourcePlanPeriods = (resourceId: string) =>
   getAll<ResourcePlanPeriod>(
     `/marketplace-resources/${resourceId}/plan_periods/`,
   );
+
+export const submitReport = (resourceId: string, payload) =>
+  post(`/marketplace-resources/${resourceId}/submit_report/`, payload);
+
+export const setBackendId = (resourceId: string, payload) =>
+  post(`/marketplace-resources/${resourceId}/set_backend_id/`, payload);
 
 export const uploadOfferingThumbnail = (offeringId, thumbnail) =>
   sendForm<Offering>(
@@ -111,6 +149,9 @@ export const uploadOfferingDocument = (
 
 export const getCartItems = (projectUrl: string) =>
   getAll('/marketplace-cart-items/', { params: { project: projectUrl } });
+
+export const getCartItem = (id: string) =>
+  getById<OrderItemResponse>('/marketplace-cart-items/', id);
 
 export const addCartItem = (data: object) =>
   post('/marketplace-cart-items/', data).then((response) => response.data);
@@ -173,8 +214,6 @@ export const getDivisionTypesList = (params?: {}) =>
 
 export const getAllOrganizationDivisions = () => getAll('/divisions/', {});
 
-export const getCustomer = (id: string) => getById<Customer>('/customers/', id);
-
 export const getCustomersDivisionUuids = (accounting_is_running: boolean) =>
   getAll('/customers/', {
     params: { accounting_is_running, size: 200, field: ['division_uuid'] },
@@ -186,9 +225,9 @@ export const updateOfferingState = (offeringUuid, action, reason) =>
     reason && { paused_reason: reason },
   ).then((response) => response.data);
 
-export const uploadOfferingScreenshot = (formData, offering) => {
+export const uploadOfferingImage = (formData, offering) => {
   const reqData = {
-    image: formData.screenshots,
+    image: formData.images,
     name: formData.name,
     description: formData.description,
     offering: offering.url,
@@ -200,11 +239,13 @@ export const uploadOfferingScreenshot = (formData, offering) => {
   );
 };
 
-export const deleteOfferingScreenshot = (screenshotUuid: string) =>
-  deleteById('/marketplace-screenshots/', screenshotUuid);
+export const deleteOfferingImage = (imageUuid: string) =>
+  deleteById('/marketplace-screenshots/', imageUuid);
 
 export const getServiceProviderList = (params?: {}) =>
   getSelectData<ServiceProvider>('/marketplace-service-providers/', params);
+
+export const getUsers = (params?: {}) => getSelectData('/users/', params);
 
 export const createServiceProvider = (params) =>
   post<ServiceProvider>('/marketplace-service-providers/', params).then(
@@ -242,6 +283,13 @@ export const terminateResource = (resource_uuid: string) =>
     (response) => response.data,
   );
 
+export const moveResource = (resourceUuid: string, projectUrl: string) =>
+  post(`/marketplace-resources/${resourceUuid}/move_resource/`, {
+    project: {
+      url: projectUrl,
+    },
+  });
+
 export const changeLimits = (
   resource_uuid: string,
   limits: Record<string, number>,
@@ -275,3 +323,35 @@ export const unpublishGoogleCalendar = (uuid: string) =>
   post(`/booking-offerings/${uuid}/unshare_google_calendar/`).then(
     (response) => response.data,
   );
+
+export const updateOfferingConfirmationMessage = (
+  offeringUuid,
+  template_confirmation_comment,
+  secretOptions,
+) =>
+  patch(`/marketplace-offerings/${offeringUuid}/`, {
+    secret_options: {
+      ...secretOptions,
+      template_confirmation_comment,
+    },
+  });
+
+export const updateOfferingAccessPolicy = (
+  offeringUuid: string,
+  divisions: string[],
+) =>
+  post(`/marketplace-offerings/${offeringUuid}/update_divisions/`, {
+    divisions,
+  });
+
+export const updateOfferingLogo = (offeringUuid: string, formData) =>
+  sendForm(
+    'POST',
+    `${ENV.apiEndpoint}api/marketplace-offerings/${offeringUuid}/update_thumbnail/`,
+    {
+      thumbnail: formData.images,
+    },
+  );
+
+export const createOfferingUser = (payload) =>
+  post(`/marketplace-offering-users/`, payload);

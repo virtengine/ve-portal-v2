@@ -36,6 +36,7 @@ export interface OrderItemResponse {
   offering_terms_of_service: string;
   offering_shared: boolean;
   offering_billable: boolean;
+  output?: string;
   marketplace_resource_uuid?: string;
   resource_name?: string;
   resource_uuid?: string;
@@ -59,6 +60,7 @@ export interface OrderItemResponse {
   created: string;
   modified: string;
   error_message?: string;
+  error_traceback?: string;
   limits: Record<string, number>;
   current_usages?: Record<string, number>;
   scope?: string;

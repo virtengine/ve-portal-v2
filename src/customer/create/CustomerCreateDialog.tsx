@@ -28,7 +28,6 @@ const CUSTOMER_FIELDS = [
   'country',
   'address',
   'vat_code',
-  'type',
   'postal',
   'bank_name',
   'bank_account',
@@ -57,9 +56,6 @@ export const CustomerCreateDialog: React.FC<OwnProps> = ({ resolve }) => {
       }
       if (formData.country) {
         payload.country = formData.country.value;
-      }
-      if (formData.type) {
-        payload.type = formData.type.value;
       }
 
       try {

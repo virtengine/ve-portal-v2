@@ -1,10 +1,13 @@
 import React from 'react';
 import { Col } from 'react-bootstrap';
 
+import { AuthService } from '@waldur/auth/AuthService';
+import { OFFERING_TYPE_BOOKING } from '@waldur/booking/constants';
 import { formatDateTime } from '@waldur/core/dateUtils';
 import { Tooltip } from '@waldur/core/Tooltip';
 import { translate } from '@waldur/i18n';
 import { getLabel } from '@waldur/marketplace/common/registry';
+import { GoogleCalendarLinkField } from '@waldur/marketplace/offerings/details/GoogleCalendarLinkField';
 import { ReferralDetailsField } from '@waldur/marketplace/referral/ReferralDetailsField';
 import { Offering } from '@waldur/marketplace/types';
 import { Field } from '@waldur/resource/summary';
@@ -68,5 +71,9 @@ export const OfferingHeader: React.FC<OfferingHeaderProps> = (props) => (
 
       <ReferralDetailsField offering={props.offering} />
     </ResourceDetailsTable>
+    {AuthService.isAuthenticated() &&
+      props.offering.type === OFFERING_TYPE_BOOKING && (
+        <GoogleCalendarLinkField offering={props.offering} />
+      )}
   </Col>
 );

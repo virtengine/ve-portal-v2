@@ -25,6 +25,15 @@ const ResourceDetailsPageForServiceProvider = lazyComponent(
     ),
   'ResourceDetailsPageForServiceProvider',
 );
+const ResourceDetailsPageForProjectWorkspace = lazyComponent(
+  () =>
+    import(
+      /* webpackChunkName: "ResourceDetailsPageForProjectWorkspace" */
+
+      '@waldur/marketplace/resources/ResourceDetailsPageForProjectWorkspace'
+    ),
+  'ResourceDetailsPageForProjectWorkspace',
+);
 const AnonymousLayout = lazyComponent(
   () =>
     import(
@@ -104,12 +113,26 @@ const OfferingsListContainer = lazyComponent(
     ),
   'OfferingsListContainer',
 );
-const ScreenshotsContainer = lazyComponent(
+const ServiceProvider = lazyComponent(
   () =>
     import(
-      /* webpackChunkName: "OfferingScreenshotsContainer" */ './offerings/screenshots/ScreenshotsContainer'
+      /* webpackChunkName: "ServiceProvider" */ './offerings/ServiceProvider'
     ),
-  'ScreenshotsContainer',
+  'ServiceProvider',
+);
+const ServiceProvidersContainer = lazyComponent(
+  () =>
+    import(
+      /* webpackChunkName: "ServiceProvidersContainer" */ './offerings/ServiceProvidersContainer'
+    ),
+  'ServiceProvidersContainer',
+);
+const ImagesContainer = lazyComponent(
+  () =>
+    import(
+      /* webpackChunkName: "OfferingImagesContainer" */ './offerings/images/ImagesContainer'
+    ),
+  'ImagesContainer',
 );
 const OfferingUpdateContainer = lazyComponent(
   () =>
@@ -139,12 +162,12 @@ const OrderItemsContainer = lazyComponent(
     ),
   'OrderItemsContainer',
 );
-const SupportOrderItemsContainer = lazyComponent(
+const SupportOrdersContainer = lazyComponent(
   () =>
     import(
-      /* webpackChunkName: "SupportOrderItemsContainer" */ './orders/item/list/SupportOrderItemsContainer'
+      /* webpackChunkName: "SupportOrdersContainer" */ './orders/SupportOrdersContainer'
     ),
-  'SupportOrderItemsContainer',
+  'SupportOrdersContainer',
 );
 const OrderDetailsContainer = lazyComponent(
   () =>
@@ -209,7 +232,7 @@ const ProviderDetails = lazyComponent(
 
 export const states: StateDeclaration[] = [
   {
-    name: 'marketplace-landing',
+    name: 'marketplace-landing-project',
     url: 'marketplace/',
     component: MarketplaceLanding,
     parent: 'project',
@@ -223,6 +246,16 @@ export const states: StateDeclaration[] = [
     url: 'marketplace/',
     component: MarketplaceLanding,
     parent: 'organization',
+    data: {
+      hideBreadcrumbs: true,
+    },
+  },
+
+  {
+    name: 'marketplace-landing-user',
+    url: 'marketplace/',
+    component: MarketplaceLanding,
+    parent: 'profile',
     data: {
       hideBreadcrumbs: true,
     },
@@ -250,7 +283,7 @@ export const states: StateDeclaration[] = [
   },
 
   {
-    name: 'marketplace-offering',
+    name: 'marketplace-offering-project',
     url: 'marketplace-offering/:offering_uuid/',
     component: OfferingDetailsPage,
     parent: 'project',
@@ -261,6 +294,13 @@ export const states: StateDeclaration[] = [
     url: 'marketplace-offering/:offering_uuid/',
     component: OfferingDetailsPage,
     parent: 'organization',
+  },
+
+  {
+    name: 'marketplace-offering-user',
+    url: 'marketplace-offering/:offering_uuid/',
+    component: OfferingDetailsPage,
+    parent: 'profile',
   },
 
   {
@@ -287,7 +327,7 @@ export const states: StateDeclaration[] = [
   },
 
   {
-    name: 'marketplace-category',
+    name: 'marketplace-category-project',
     url: 'marketplace-category/:category_uuid/',
     component: CategoryPage,
     parent: 'project',
@@ -298,6 +338,13 @@ export const states: StateDeclaration[] = [
     url: 'marketplace-category/:category_uuid/',
     component: CategoryPage,
     parent: 'organization',
+  },
+
+  {
+    name: 'marketplace-category-user',
+    url: 'marketplace-category/:category_uuid/',
+    component: CategoryPage,
+    parent: 'profile',
   },
 
   {
@@ -326,9 +373,38 @@ export const states: StateDeclaration[] = [
     url: 'marketplace-offerings/',
     component: OfferingsListContainer,
     parent: 'organization',
+  },
+
+  {
+    name: 'marketplace-service-provider',
+    url: '/service-providers/',
+    abstract: true,
+    component: AnonymousLayout,
     data: {
-      sidebarKey: 'marketplace-services',
+      hideHeader: true,
     },
+  },
+
+  {
+    name: 'marketplace-service-provider.details',
+    url: ':uuid/',
+    component: ServiceProvider,
+  },
+
+  {
+    name: 'marketplace-service-providers',
+    url: '/service-providers/',
+    abstract: true,
+    component: AnonymousLayout,
+    data: {
+      hideHeader: true,
+    },
+  },
+
+  {
+    name: 'marketplace-service-providers.details',
+    url: '',
+    component: ServiceProvidersContainer,
   },
 
   {
@@ -336,9 +412,6 @@ export const states: StateDeclaration[] = [
     url: 'marketplace-my-offerings/',
     component: MyOfferingsListContainer,
     parent: 'organization',
-    data: {
-      sidebarKey: 'marketplace-services',
-    },
   },
 
   {
@@ -346,9 +419,6 @@ export const states: StateDeclaration[] = [
     url: 'marketplace-offering-create/',
     component: OfferingCreateContainer,
     parent: 'organization',
-    data: {
-      sidebarKey: 'marketplace-services',
-    },
   },
 
   {
@@ -359,13 +429,10 @@ export const states: StateDeclaration[] = [
   },
 
   {
-    name: 'marketplace-offering-screenshots',
-    url: 'marketplace-offering-screenshots/:offering_uuid/',
-    component: ScreenshotsContainer,
+    name: 'marketplace-offering-images',
+    url: 'marketplace-offering-images/:offering_uuid/',
+    component: ImagesContainer,
     parent: 'organization',
-    data: {
-      sidebarKey: 'marketplace-services',
-    },
   },
 
   {
@@ -401,9 +468,6 @@ export const states: StateDeclaration[] = [
     url: 'marketplace-order-items/',
     component: OrderItemsContainer,
     parent: 'organization',
-    data: {
-      sidebarKey: 'marketplace-services',
-    },
   },
 
   {
@@ -411,9 +475,6 @@ export const states: StateDeclaration[] = [
     url: 'marketplace-my-order-items/?filterState',
     component: MyOrderItemsContainer,
     parent: 'organization',
-    data: {
-      sidebarKey: 'marketplace-services',
-    },
   },
 
   {
@@ -421,9 +482,6 @@ export const states: StateDeclaration[] = [
     url: 'marketplace-customer-resources/',
     component: CustomerResourcesContainer,
     parent: 'organization',
-    data: {
-      sidebarKey: 'marketplace-services',
-    },
   },
 
   {
@@ -431,9 +489,6 @@ export const states: StateDeclaration[] = [
     url: 'marketplace-public-resources/',
     component: PublicResourcesContainer,
     parent: 'organization',
-    data: {
-      sidebarKey: 'marketplace-services',
-    },
   },
 
   {
@@ -441,9 +496,6 @@ export const states: StateDeclaration[] = [
     url: 'marketplace-public-resource-details/:resource_uuid/',
     component: ResourceDetailsPageForCustomer,
     parent: 'organization',
-    data: {
-      sidebarKey: 'marketplace-services',
-    },
   },
 
   {
@@ -451,9 +503,13 @@ export const states: StateDeclaration[] = [
     url: 'marketplace-service-provider-public-resource-details/:resource_uuid/',
     component: ResourceDetailsPageForServiceProvider,
     parent: 'organization',
-    data: {
-      sidebarKey: 'marketplace-services',
-    },
+  },
+
+  {
+    name: 'marketplace-project-resource-details',
+    url: 'marketplace-project-resource-details/:resource_uuid/',
+    component: ResourceDetailsPageForProjectWorkspace,
+    parent: 'project',
   },
 
   {
@@ -477,9 +533,9 @@ export const states: StateDeclaration[] = [
   },
 
   {
-    name: 'marketplace-support-order-items',
-    url: 'order-items/',
-    component: SupportOrderItemsContainer,
+    name: 'marketplace-support-orders',
+    url: 'orders/',
+    component: SupportOrdersContainer,
     parent: 'support',
     resolve: {
       permission: checkPermission,

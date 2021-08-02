@@ -50,7 +50,7 @@ const PureUserDetailsTable: FunctionComponent<UserDetailsTableProps> = (
         label={props.translate('Phone numbers')}
         value={props.user.phone_number}
       />
-      <Row label={props.translate('E-mail')} value={props.user.email} />
+      <Row label={props.translate('Email')} value={props.user.email} />
       <Row
         label={props.translate('Preferred language')}
         value={props.user.preferred_language}
@@ -77,6 +77,13 @@ const PureUserDetailsTable: FunctionComponent<UserDetailsTableProps> = (
         label={props.translate('Job position')}
         value={props.user.job_title}
       />
+      {Array.isArray(props.user.affiliations) &&
+      props.user.affiliations.length > 0 ? (
+        <Row
+          label={props.translate('Affiliations')}
+          value={props.user.affiliations.join(', ')}
+        />
+      ) : null}
       <Row
         label={props.translate('Status')}
         value={formatUserStatus(props.user)}

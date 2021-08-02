@@ -19,8 +19,10 @@ import {
   ProjectGroup,
   ResourceGroup,
 } from '@waldur/issues/create/IssueQuickCreate';
-import { REPORT_SECURITY_INCIDENT_FORM_ID } from '@waldur/issues/security-incident/constants';
-import { reportIncident } from '@waldur/issues/security-incident/store/actions';
+import {
+  REPORT_INCIDENT,
+  REPORT_SECURITY_INCIDENT_FORM_ID,
+} from '@waldur/issues/security-incident/constants';
 import {
   getSecurityIncidentTypeOptions,
   reportSecurityIncidentProjectSelector,
@@ -75,17 +77,21 @@ const PureReportSecurityIncidentDialog: FunctionComponent<any> = (props) => (
           maxLength={160}
         />
 
-        <ProjectGroup
-          disabled={props.submitting}
-          customer={useSelector(getCustomer)}
-          formId={REPORT_SECURITY_INCIDENT_FORM_ID}
-        />
+        {props.resolve.showProjectField && (
+          <ProjectGroup
+            disabled={props.submitting}
+            customer={useSelector(getCustomer)}
+            formId={REPORT_SECURITY_INCIDENT_FORM_ID}
+          />
+        )}
 
-        <ResourceGroup
-          disabled={props.submitting}
-          project={useSelector(reportSecurityIncidentProjectSelector)}
-          formId={REPORT_SECURITY_INCIDENT_FORM_ID}
-        />
+        {props.resolve.showResourceField && (
+          <ResourceGroup
+            disabled={props.submitting}
+            project={useSelector(reportSecurityIncidentProjectSelector)}
+            formId={REPORT_SECURITY_INCIDENT_FORM_ID}
+          />
+        )}
 
         <FormGroup>
           <ControlLabel>{translate('Attachments')}</ControlLabel>
@@ -101,7 +107,7 @@ const PureReportSecurityIncidentDialog: FunctionComponent<any> = (props) => (
 );
 
 const mapDispatchToProps = (dispatch) => ({
-  submitRequest: (formData) => dispatch(reportIncident(formData)),
+  submitRequest: (formData) => REPORT_INCIDENT(formData, dispatch),
 });
 
 const connector = connect(null, mapDispatchToProps);

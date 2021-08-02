@@ -1,39 +1,57 @@
 import { useCurrentStateAndParams, useRouter } from '@uirouter/react';
 import { FunctionComponent } from 'react';
 import { Col, Row } from 'react-bootstrap';
-import { useAsync } from 'react-use';
+import { useSelector } from 'react-redux';
+import { useAsyncFn, useEffectOnce } from 'react-use';
 
 import { LoadingSpinner } from '@waldur/core/LoadingSpinner';
 import { translate } from '@waldur/i18n';
 import { useBreadcrumbsFn } from '@waldur/navigation/breadcrumbs/store';
 import { BreadcrumbItem } from '@waldur/navigation/breadcrumbs/types';
 import { useTitle } from '@waldur/navigation/title';
-import { Customer } from '@waldur/workspace/types';
+import { getWorkspace } from '@waldur/workspace/selectors';
+import {
+  Customer,
+  PROJECT_WORKSPACE,
+  WorkspaceType,
+} from '@waldur/workspace/types';
 
 import { getResource } from '../common/api';
 
+import { ResourceActions } from './actions/ResourceActions';
 import { ResourceSummary } from './ResourceSummary';
 import { ResourceTabs } from './ResourceTabs';
 import { Resource } from './types';
 
 interface GetBreadcrumbsProps {
+  workspace: WorkspaceType;
   customer: Customer;
   resource: Resource;
 }
 
 const getBreadcrumbs = ({
+  workspace,
   customer,
   resource,
 }: GetBreadcrumbsProps): BreadcrumbItem[] => [
   {
-    label: translate('Organization workspace'),
-    state: 'organization.details',
+    label:
+      workspace === PROJECT_WORKSPACE
+        ? translate('Project workspace')
+        : translate('Organization workspace'),
+    state:
+      workspace === PROJECT_WORKSPACE
+        ? 'project.details'
+        : 'organization.details',
     params: {
       uuid: customer ? customer.uuid : resource.customer_uuid,
     },
   },
   {
-    label: translate('Public resources'),
+    label:
+      workspace === PROJECT_WORKSPACE
+        ? translate('Resources')
+        : translate('Public resources'),
   },
 ];
 
@@ -44,18 +62,27 @@ interface ResourceDetailsPageProps {
 export const ResourceDetailsPage: FunctionComponent<ResourceDetailsPageProps> = ({
   customer,
 }) => {
+  const workspace = useSelector(getWorkspace);
   const {
     params: { resource_uuid },
   } = useCurrentStateAndParams();
 
-  const state = useAsync(() => getResource(resource_uuid), [resource_uuid]);
+  const [state, reInitResource] = useAsyncFn(() => getResource(resource_uuid), [
+    resource_uuid,
+  ]);
+
+  useEffectOnce(() => {
+    reInitResource();
+  });
 
   useTitle(state.value ? state.value.name : translate('Resource details'));
 
   useBreadcrumbsFn(
     () =>
-      state.value ? getBreadcrumbs({ customer, resource: state.value }) : [],
-    [state.value, customer],
+      state.value
+        ? getBreadcrumbs({ workspace, customer, resource: state.value })
+        : [],
+    [workspace, state.value, customer],
   );
 
   const router = useRouter();
@@ -69,10 +96,22 @@ export const ResourceDetailsPage: FunctionComponent<ResourceDetailsPageProps> = 
     return <LoadingSpinner />;
   }
 
+  if (!state.value) {
+    return null;
+  }
+
   const resource = state.value;
   return (
-    <>
+    <div className="ibox-content">
       <Row className="m-b-md">
+        <Col sm={12}>
+          <ResourceActions
+            resource={resource}
+            reInitResource={reInitResource}
+          />
+        </Col>
+      </Row>
+      <Row>
         <Col sm={12}>
           <ResourceSummary resource={resource} />
         </Col>
@@ -82,6 +121,6 @@ export const ResourceDetailsPage: FunctionComponent<ResourceDetailsPageProps> = 
           <ResourceTabs resource={resource} />
         </Col>
       </Row>
-    </>
+    </div>
   );
 };

@@ -1,6 +1,7 @@
 import React, { FunctionComponent } from 'react';
 
 import { Link } from '@waldur/core/Link';
+import { BackendIdTooltip } from '@waldur/core/Tooltip';
 
 import { ResourceReference } from './types';
 
@@ -9,31 +10,19 @@ interface ResourceDetailsLinkProps {
   children?: React.ReactNode;
 }
 
-const supportOfferingTemplate = 'Support.Offering';
-
 export const ResourceDetailsLink: FunctionComponent<ResourceDetailsLinkProps> = (
   props,
-) => {
-  if (props.item.resource_type === supportOfferingTemplate) {
-    return (
-      <Link
-        state="offeringDetails"
-        params={{
-          uuid: props.item.resource_uuid,
-        }}
-        label={props.children}
-      />
-    );
-  } else {
-    return (
-      <Link
-        state="resource-details"
-        params={{
-          resource_type: props.item.resource_type,
-          uuid: props.item.resource_uuid,
-        }}
-        label={props.children}
-      />
-    );
-  }
-};
+) => (
+  <>
+    <Link
+      state="resource-details"
+      params={{
+        resource_type: props.item.resource_type,
+        resource_uuid: props.item.resource_uuid,
+        uuid: props.item.project_uuid,
+      }}
+      label={props.children}
+    />
+    <BackendIdTooltip backendId={props.item.backend_id} />
+  </>
+);

@@ -1,42 +1,25 @@
-import { FunctionComponent, useMemo } from 'react';
+import { FunctionComponent } from 'react';
 import Gravatar from 'react-gravatar';
 import { connect } from 'react-redux';
 import { compose } from 'redux';
 import { getFormValues } from 'redux-form';
 
 import { CUSTOMER_USERS_LIST_FILTER_FORM_ID } from '@waldur/customer/team/constants';
+import { CustomerUsersListExpandableRow } from '@waldur/customer/team/CustomerUsersListExpandableRow';
 import { translate } from '@waldur/i18n';
 import { RootState } from '@waldur/store/reducers';
 import { Table, connectTable } from '@waldur/table';
 import { TableOptionsType } from '@waldur/table/types';
-import { CustomerRole } from '@waldur/user/list/CustomerRole';
+import { CustomerRole } from '@waldur/user/dashboard/CustomerRole';
 import {
   getProject,
-  getUser,
-  isOwnerOrStaff as isOwnerOrStaffSelector,
+  isStaff as isStaffSelector,
   getCustomer,
 } from '@waldur/workspace/selectors';
 
 import { fetchCustomerUsers } from './api';
-import { ProjectRolesList } from './ProjectRolesList';
-import { UserDetailsButton } from './UserDetailsButton';
-import { UserEditButton } from './UserEditButton';
-import { UserRemoveButton } from './UserRemoveButton';
-import { getRoles } from './utils';
-
-const UserProjectRolesList = ({ row }) => {
-  const roles = useMemo(getRoles, []);
-  return (
-    <>
-      {roles.map((role) => (
-        <p key={role.value}>
-          <b>{translate('{label} in:', role)}</b>{' '}
-          <ProjectRolesList roleName={role.value} row={row} />
-        </p>
-      ))}
-    </>
-  );
-};
+import { CustomerUserAddButton } from './CustomerUserAddButton';
+import { CustomerUserRowActions } from './CustomerUserRowActions';
 
 const TableComponent: FunctionComponent<any> = (props) => {
   return (
@@ -53,7 +36,7 @@ const TableComponent: FunctionComponent<any> = (props) => {
           ),
         },
         {
-          title: translate('E-mail'),
+          title: translate('Email'),
           render: ({ row }) => row.email || 'N/A',
         },
         {
@@ -63,19 +46,18 @@ const TableComponent: FunctionComponent<any> = (props) => {
         {
           title: translate('Actions'),
           render: ({ row }) => (
-            <>
-              {props.isOwnerOrStaff || props.user.is_support ? (
-                <UserDetailsButton user={row} />
-              ) : null}
-              {props.isOwnerOrStaff ? <UserEditButton editUser={row} /> : null}
-              {props.isOwnerOrStaff ? <UserRemoveButton user={row} /> : null}
-            </>
+            <CustomerUserRowActions row={row} refreshList={props.fetch} />
           ),
         },
       ]}
       verboseName={translate('team members')}
       hasQuery={true}
-      expandableRow={UserProjectRolesList}
+      expandableRow={CustomerUsersListExpandableRow}
+      actions={
+        props.isStaff ? (
+          <CustomerUserAddButton refreshList={props.fetch} />
+        ) : null
+      }
     />
   );
 };
@@ -107,8 +89,7 @@ const TableOptions: TableOptionsType = {
 
 const mapStateToProps = (state: RootState) => ({
   project: getProject(state),
-  user: getUser(state),
-  isOwnerOrStaff: isOwnerOrStaffSelector(state),
+  isStaff: isStaffSelector(state),
   customer: getCustomer(state),
   filter: getFormValues(CUSTOMER_USERS_LIST_FILTER_FORM_ID)(state),
 });

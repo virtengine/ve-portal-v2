@@ -18,6 +18,13 @@ const CustomerListContainer = lazyComponent(
     ),
   'CustomerListContainer',
 );
+const CustomerRequestContainer = lazyComponent(
+  () =>
+    import(
+      /* webpackChunkName: "CustomerRequestContainer" */ '@waldur/marketplace-flows/CustomerRequestContainer'
+    ),
+  'CustomerRequestContainer',
+);
 const OrganizationUpdateContainer = lazyComponent(
   () =>
     import(
@@ -38,6 +45,13 @@ const SupportFeedback = lazyComponent(
       /* webpackChunkName: "SupportFeedback" */ '@waldur/issues/feedback/SupportFeedback'
     ),
   'SupportFeedback',
+);
+const SupportFeedbackListContainer = lazyComponent(
+  () =>
+    import(
+      /* webpackChunkName: "SupportFeedbackListContainer" */ '@waldur/issues/feedback/SupportFeedbackListContainer'
+    ),
+  'SupportFeedbackListContainer',
 );
 const SupportIssues = lazyComponent(
   () =>
@@ -78,12 +92,12 @@ const IssueDetailsContainer = lazyComponent(
   () => import(/* webpackChunkName: "IssueDetails" */ './IssueDetails'),
   'IssueDetails',
 );
-const NotificationsList = lazyComponent(
+const BroadcastList = lazyComponent(
   () =>
     import(
-      /* webpackChunkName: "NotificationsList" */ './notifications/NotificationsList'
+      /* webpackChunkName: "BroadcastList" */ './notifications/BroadcastList'
     ),
-  'NotificationsList',
+  'BroadcastList',
 );
 const IssuesDashboard = lazyComponent(
   () =>
@@ -163,7 +177,15 @@ export const states: StateDeclaration[] = [
     component: SupportFeedback,
     data: {
       feature: 'support',
-      bodyClass: 'old',
+    },
+  },
+
+  {
+    name: 'support.feedback',
+    url: 'feedback/',
+    component: SupportFeedbackListContainer,
+    resolve: {
+      permission: checkPermission,
     },
   },
 
@@ -173,6 +195,18 @@ export const states: StateDeclaration[] = [
     component: CustomerListContainer,
     data: {
       feature: 'support.organizations',
+    },
+    resolve: {
+      permission: checkPermission,
+    },
+  },
+
+  {
+    name: 'support.customers-requests',
+    url: 'customers-requests/',
+    component: CustomerRequestContainer,
+    data: {
+      feature: 'support.customers-requests',
     },
     resolve: {
       permission: checkPermission,
@@ -265,9 +299,9 @@ export const states: StateDeclaration[] = [
   },
 
   {
-    name: 'support.notifications',
-    url: 'notifications/',
-    component: NotificationsList,
+    name: 'support.broadcast',
+    url: 'broadcast/',
+    component: BroadcastList,
     resolve: {
       permission: checkPermission,
     },

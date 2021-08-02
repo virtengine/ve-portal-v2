@@ -7,7 +7,7 @@ import { LoadingSpinner } from '@waldur/core/LoadingSpinner';
 import { translate } from '@waldur/i18n';
 import { useTitle } from '@waldur/navigation/title';
 
-import { TABS } from '../create/OfferingCreateDialog';
+import { getTabLabel, TABS } from '../create/OfferingCreateDialog';
 import { Wizard } from '../create/Wizard';
 import { STEPS, OfferingStep } from '../types';
 import { getBreadcrumbs } from '../utils';
@@ -25,6 +25,7 @@ interface OfferingUpdateDialogProps
   goBack(): void;
   goNext(): void;
   loadOffering(offeringUuid: string): void;
+  setIsUpdatingOffering(state: boolean): void;
 }
 
 export const OfferingUpdateDialog: React.FC<OfferingUpdateDialogProps> = (
@@ -47,6 +48,7 @@ export const OfferingUpdateDialog: React.FC<OfferingUpdateDialogProps> = (
       return;
     }
     props.loadOffering(offering_uuid);
+    props.setIsUpdatingOffering(true);
     props.setStep(STEPS[0]);
     getBreadcrumbs();
   }, [offering_uuid, router]);
@@ -77,6 +79,8 @@ export const OfferingUpdateDialog: React.FC<OfferingUpdateDialogProps> = (
               tabs={TABS}
               {...rest}
               submitLabel={translate('Update')}
+              mountOnEnter={true}
+              getTabLabel={getTabLabel}
             />
           </form>
         </Col>

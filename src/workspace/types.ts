@@ -24,6 +24,7 @@ export interface UserDetails extends User {
   date_joined: string;
   organization: string;
   job_title: string;
+  affiliations?: string[];
   token: string;
   agreement_date: string;
   is_active: boolean;
@@ -53,22 +54,7 @@ export interface Payment {
   uuid: string;
   invoice_uuid?: string;
   invoice_period?: string;
-}
-
-export interface Customer {
-  billing_price_estimate?: {
-    total: string;
-  };
-  name: string;
-  uuid: string;
-  url: string;
-  owners: User[];
-  service_managers?: User[];
-  projects?: Project[];
-  is_service_provider?: boolean;
-  abbreviation?: string;
-  payment_profiles?: PaymentProfile[];
-  agreement_number?: string;
+  customer_uuid?: string;
 }
 
 export interface Permission {
@@ -82,10 +68,10 @@ export interface Quota {
 }
 
 interface BillingPriceEstimate {
-  total: number;
-  current: number;
-  limit: number;
-  threshold: number;
+  total: string;
+  current: string;
+  tax: string;
+  tax_current: string;
 }
 
 export interface Project {
@@ -98,6 +84,55 @@ export interface Project {
   customer_uuid?: string;
   customer_name?: string;
   customer_abbreviation?: string;
+  backend_id?: string;
+}
+
+export type PhoneNumber =
+  | string
+  | {
+      national_number: string;
+      country_code: string;
+    };
+
+// Customer has only two mandatory fields: name and email, rest are optional.
+export interface Customer {
+  url?: string;
+  uuid?: string;
+  email: string;
+  name: string;
+  display_name?: string;
+  abbreviation?: string;
+  access_subnets?: string;
+  accounting_start_date?: string;
+  address?: string;
+  agreement_number?: string;
+  sponsor_number?: string;
+  bank_account?: string;
+  bank_name?: string;
+  contact_details?: string;
+  country_name?: string;
+  country?: string;
+  default_tax_percent?: string;
+  native_name?: string;
+  phone_number?: PhoneNumber;
+  postal?: string;
+  registration_code?: string;
+  domain?: string;
+  homepage?: string;
+  vat_code?: string;
+  image?: string;
+  is_service_provider?: boolean;
+  created?: string;
+  division?: string;
+  division_name?: string;
+  division_parent_name?: string;
+  latitude?: number;
+  longitude?: number;
+  owners?: User[];
+  billing_price_estimate?: BillingPriceEstimate;
+  service_managers?: User[];
+  projects?: Project[];
+  payment_profiles?: PaymentProfile[];
 }
 
 export const ORGANIZATION_WORKSPACE = 'WORKSPACE/ORGANIZATION';

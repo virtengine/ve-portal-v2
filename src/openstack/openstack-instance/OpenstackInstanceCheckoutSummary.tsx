@@ -12,6 +12,7 @@ import { ShoppingCartButtonContainer } from '@waldur/marketplace/cart/ShoppingCa
 import { OfferingLogo } from '@waldur/marketplace/common/OfferingLogo';
 import { RatingStars } from '@waldur/marketplace/common/RatingStars';
 import { OfferingCompareButtonContainer } from '@waldur/marketplace/compare/OfferingCompareButtonContainer';
+import { FORM_ID } from '@waldur/marketplace/details/constants';
 import { OfferingDetailsProps } from '@waldur/marketplace/details/OfferingDetails';
 import { pricesSelector } from '@waldur/marketplace/details/plan/utils';
 import { formatOrderItemForCreate } from '@waldur/marketplace/details/utils';
@@ -20,6 +21,7 @@ import { Quota } from '@waldur/openstack/types';
 import { parseQuotas, parseQuotasUsage } from '@waldur/openstack/utils';
 import { PriceTooltip } from '@waldur/price/PriceTooltip';
 import { QuotaUsageBarChart } from '@waldur/quotas/QuotaUsageBarChart';
+import { isVisible } from '@waldur/store/config';
 import { RootState } from '@waldur/store/reducers';
 import { getCustomer, getProject } from '@waldur/workspace/selectors';
 
@@ -72,9 +74,6 @@ const getDailyPrice = (formData, components) => {
   }
 };
 
-const getMonthlyPrice = (formData, components) =>
-  getDailyPrice(formData, components) * 30;
-
 function extendVolumeTypeQuotas(formData, usages, limits) {
   const quotas = [];
   if (isFeatureVisible('openstack.volume-types')) {
@@ -93,7 +92,7 @@ function extendVolumeTypeQuotas(formData, usages, limits) {
   return quotas;
 }
 
-const getQuotas = ({ formData, usages, limits, project, components }) => {
+const getQuotas = ({ formData, usages, limits }) => {
   const quotas: Quota[] = [
     {
       name: 'vcpu',
@@ -115,25 +114,16 @@ const getQuotas = ({ formData, usages, limits, project, components }) => {
     },
     ...extendVolumeTypeQuotas(formData, usages, limits),
   ];
-  if (project && project.billing_price_estimate) {
-    quotas.push({
-      name: 'cost',
-      usage: project.billing_price_estimate.total,
-      limit: project.billing_price_estimate.limit,
-      required: getMonthlyPrice(formData, components),
-    });
-  }
   return quotas;
 };
 
 const formDataSelector = (state: RootState) =>
-  (getFormValues('marketplaceOffering')(state) || {}) as FormData;
+  (getFormValues(FORM_ID)(state) || {}) as FormData;
 
 const formHasFlavorSelector = (state: RootState) =>
   Boolean(formDataSelector(state).flavor);
 
-const formIsValidSelector = (state: RootState) =>
-  isValid('marketplaceOffering')(state);
+const formIsValidSelector = (state: RootState) => isValid(FORM_ID)(state);
 
 const formAttributesSelector = (state: RootState) => {
   const formData = formDataSelector(state);
@@ -150,6 +140,9 @@ export const OpenstackInstanceCheckoutSummary: React.FC<OfferingDetailsProps> = 
 }) => {
   const customer = useSelector(getCustomer);
   const project = useSelector(getProject);
+  const shouldConcealPrices = useSelector((state: RootState) =>
+    isVisible(state, 'marketplace.conceal_prices'),
+  );
   const formIsValid = useSelector(formIsValidSelector);
   const formHasFlavor = useSelector(formHasFlavorSelector);
   const formData = useSelector(formAttributesSelector);
@@ -172,10 +165,11 @@ export const OpenstackInstanceCheckoutSummary: React.FC<OfferingDetailsProps> = 
     components,
   ]);
 
-  const quotas = React.useMemo(
-    () => getQuotas({ formData, usages, limits, project, components }),
-    [formData, usages, limits, project, components],
-  );
+  const quotas = React.useMemo(() => getQuotas({ formData, usages, limits }), [
+    formData,
+    usages,
+    limits,
+  ]);
 
   const orderItem = React.useMemo(
     () =>
@@ -254,19 +248,23 @@ export const OpenstackInstanceCheckoutSummary: React.FC<OfferingDetailsProps> = 
               </td>
               <td>{formatFilesize(getTotalStorage(formData))}</td>
             </tr>
-            <tr>
-              <td>
-                <strong>{translate('Price per day')}</strong> <PriceTooltip />
-              </td>
-              <td>{defaultCurrency(dailyPrice)}</td>
-            </tr>
-            <tr>
-              <td>
-                <strong>{translate('Price per 30 days')}</strong>{' '}
-                <PriceTooltip />
-              </td>
-              <td>{defaultCurrency(30 * dailyPrice)}</td>
-            </tr>
+            {!shouldConcealPrices && (
+              <tr>
+                <td>
+                  <strong>{translate('Price per day')}</strong> <PriceTooltip />
+                </td>
+                <td>{defaultCurrency(dailyPrice)}</td>
+              </tr>
+            )}
+            {!shouldConcealPrices && (
+              <tr>
+                <td>
+                  <strong>{translate('Price per 30 days')}</strong>{' '}
+                  <PriceTooltip />
+                </td>
+                <td>{defaultCurrency(30 * dailyPrice)}</td>
+              </tr>
+            )}
             <tr>
               <td>
                 <strong>{translate('Invoiced to')}</strong>

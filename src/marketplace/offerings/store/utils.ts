@@ -1,12 +1,14 @@
 import { omit, pick } from '@waldur/core/utils';
-import { Customer } from '@waldur/customer/types';
 import { showOfferingLimits } from '@waldur/marketplace/common/registry';
+import { OFFERING_TABLE_NAME } from '@waldur/marketplace/offerings/store/constants';
 import {
   OptionField,
   Category,
   Attribute,
   OfferingComponent,
 } from '@waldur/marketplace/types';
+import { fetchListStart } from '@waldur/table/actions';
+import { Customer, User } from '@waldur/workspace/types';
 
 import { serializeLimitValues } from './limits';
 import {
@@ -41,7 +43,6 @@ const formatPlan = (
     unit: plan.unit.value,
     unit_price: plan.unit_price,
     article_code: plan.article_code,
-    product_code: plan.product_code,
   };
   if (plan.prices) {
     // Skip prices for invalid components
@@ -140,9 +141,37 @@ export const formatSchedules = (schedules) =>
     pick(['start', 'end', 'title', 'allDay', 'extendedProps', 'id']),
   );
 
+const mergeComponents = (
+  c1: OfferingComponent[],
+  c2: OfferingComponent[],
+): OfferingComponent[] => {
+  const result = [...c1];
+  for (const component of c2) {
+    // Skip extra component if it is already is in the result
+    if (result.some((c) => c.type == component.type)) {
+      continue;
+    }
+    result.push(component);
+  }
+  return result;
+};
+
+const formatPlans = (
+  plans: PlanFormData[],
+  allComponents: OfferingComponent[],
+): PlanRequest[] => {
+  const fixedComponents = allComponents
+    .filter((c) => getBillingTypeValue(c.billing_type) === 'fixed')
+    .map((c) => c.type);
+  const validComponents = allComponents.map((c) => c.type);
+  return plans.map((plan) =>
+    formatPlan(plan, fixedComponents, validComponents),
+  );
+};
+
 export const formatOfferingRequest = (
   request: OfferingFormData,
-  components: OfferingComponent[],
+  builtinComponents: OfferingComponent[],
   customer?: Customer,
 ) => {
   const result: OfferingRequest = {
@@ -154,14 +183,16 @@ export const formatOfferingRequest = (
     customer: customer ? customer.url : undefined,
     type: request.type ? request.type.value : undefined,
     service_attributes: request.service_settings,
+    backend_id: request.backend_id,
     shared: true,
   };
   if (request.attributes) {
     result.attributes = formatAttributes(request.category, request.attributes);
   }
-  if (request.components && components.length === 0) {
+  const customComponents = request.components;
+  if (customComponents) {
     // Serialize custom components only if there're no built-in components.
-    result.components = formatComponents(request.components);
+    result.components = formatComponents(customComponents);
   }
 
   if (request.schedules) {
@@ -175,16 +206,11 @@ export const formatOfferingRequest = (
   result.secret_options = request.secret_options;
 
   if (request.plans) {
-    const allComponents =
-      components.length > 0 ? components : request.components || [];
-    // Pick either built-in or custom fixed components.
-    const fixedComponents = allComponents
-      .filter((c) => getBillingTypeValue(c.billing_type) === 'fixed')
-      .map((c) => c.type);
-    const validComponents = allComponents.map((c) => c.type);
-    result.plans = request.plans.map((plan) =>
-      formatPlan(plan, fixedComponents, validComponents),
+    const allComponents = mergeComponents(
+      builtinComponents || [],
+      customComponents || [],
     );
+    result.plans = formatPlans(request.plans, allComponents);
   }
   if (request.options) {
     result.options = formatOptions(request.options);
@@ -200,3 +226,19 @@ export const formatOfferingRequest = (
   }
   return result;
 };
+
+export const updatePublicOfferingsList = (
+  customer: Customer,
+  shouldFilterByServiceManagerUuid: boolean,
+  user: User,
+  state: { value: string }[],
+) =>
+  fetchListStart(OFFERING_TABLE_NAME, {
+    billable: true,
+    shared: true,
+    customer_uuid: customer.uuid,
+    state: state.map((option) => option.value),
+    service_manager_uuid: shouldFilterByServiceManagerUuid
+      ? user.uuid
+      : undefined,
+  });

@@ -13,12 +13,12 @@ const AnonymousLayout = lazyComponent(
 );
 
 const TosPage = () => {
-  useTitle('Terms of service');
+  useTitle('Terms of Service');
   return <TemplateComponent url="views/tos/index.html" />;
 };
 
 const FreeipaPage = () => {
-  useTitle('Terms of service');
+  useTitle('Terms of Service');
   return <TemplateComponent url="views/tos/freeipa.html" />;
 };
 
@@ -44,19 +44,12 @@ export const states: StateDeclaration[] = [
     name: 'tos.index',
     url: '',
     component: TosPage,
-    data: {
-      bodyClass: 'old',
-    },
   },
 
   {
     name: 'tos.freeipa',
     url: 'freeipa-terms/',
     component: FreeipaPage,
-    data: {
-      bodyClass: 'old',
-      feature: 'freeipa',
-    },
   },
 
   {
@@ -70,9 +63,6 @@ export const states: StateDeclaration[] = [
     name: 'about.index',
     url: '',
     component: AboutPage,
-    data: {
-      bodyClass: 'old',
-    },
   },
 
   {
@@ -86,8 +76,5 @@ export const states: StateDeclaration[] = [
     name: 'policy.privacy',
     url: 'privacy/',
     component: PricacyPage,
-    data: {
-      bodyClass: 'old',
-    },
   },
 ];

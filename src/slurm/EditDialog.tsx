@@ -7,10 +7,12 @@ import { UpdateResourceDialog } from '@waldur/resource/actions/UpdateResourceDia
 
 import { updateAllocation } from './api';
 
+const getFields = () => [createNameField(), createDescriptionField()];
+
 export const EditDialog = ({ resolve: { resource } }) => {
   return (
     <UpdateResourceDialog
-      fields={[createNameField(), createDescriptionField()]}
+      fields={getFields()}
       resource={resource}
       initialValues={{
         name: resource.name,

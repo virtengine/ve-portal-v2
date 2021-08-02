@@ -1,12 +1,15 @@
+import { ActionItem } from './types';
+import { UnlinkActionItem } from './UnlinkActionItem';
+
 class ActionConfiguration {
-  private resources = {};
+  private resources: Record<string, ActionItem[]> = {};
 
   register(type, config: any) {
     this.resources[type] = config;
   }
 
   getActions(type) {
-    return this.resources[type];
+    return [...this.resources[type], UnlinkActionItem];
   }
 }
 

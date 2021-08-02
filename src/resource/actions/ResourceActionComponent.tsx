@@ -3,14 +3,18 @@ import { DropdownButton, MenuItem } from 'react-bootstrap';
 
 import { translate } from '@waldur/i18n';
 
+import { ActionItem } from './types';
+
 interface ResourceActionComponentProps {
   onToggle: (isOpen: boolean) => void;
   disabled?: boolean;
   open?: boolean;
   loading?: boolean;
   error?: object;
-  actions: any;
+  actions: ActionItem[];
   resource: any;
+  reInitResource?(): void;
+  refreshList?(): void;
 }
 
 export const ResourceActionComponent: FunctionComponent<ResourceActionComponentProps> = (
@@ -23,6 +27,7 @@ export const ResourceActionComponent: FunctionComponent<ResourceActionComponentP
     onToggle={props.onToggle}
     open={props.open}
     disabled={props.disabled}
+    pullRight={window.innerWidth > 768}
   >
     {props.open ? (
       props.loading ? (
@@ -32,7 +37,12 @@ export const ResourceActionComponent: FunctionComponent<ResourceActionComponentP
       ) : props.actions ? (
         <>
           {props.actions.map((ActionComponent, index) => (
-            <ActionComponent key={index} resource={props.resource} />
+            <ActionComponent
+              key={index}
+              resource={props.resource}
+              reInitResource={props.reInitResource}
+              refreshList={props.refreshList}
+            />
           ))}
         </>
       ) : (

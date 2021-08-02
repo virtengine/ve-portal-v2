@@ -9,16 +9,15 @@ import { getCustomer } from '@waldur/workspace/selectors';
 
 import { Component } from './types';
 
-interface Props {
+interface ComponentRowProps {
   offeringComponent: Component;
   className?: string;
 }
 
-export const ComponentRow: React.FC<Props> = (props) => {
+export const ComponentRow: React.FC<ComponentRowProps> = (props) => {
   const customer = useSelector(getCustomer);
-  const activeFixedPriceProfile = getActiveFixedPricePaymentProfile(
-    customer.payment_profiles,
-  );
+  const activeFixedPriceProfile =
+    customer && getActiveFixedPricePaymentProfile(customer.payment_profiles);
 
   return (
     <tr>

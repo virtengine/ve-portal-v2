@@ -1,6 +1,6 @@
 import { useCurrentStateAndParams } from '@uirouter/react';
 import { FunctionComponent } from 'react';
-import { useAsync } from 'react-use';
+import { useAsyncFn, useEffectOnce } from 'react-use';
 
 import { OFFERING_TYPE_BOOKING } from '@waldur/booking/constants';
 import { LoadingSpinner } from '@waldur/core/LoadingSpinner';
@@ -12,10 +12,12 @@ import { getTabs } from '@waldur/marketplace/details/OfferingTabs';
 import { Offering } from '@waldur/marketplace/types';
 import { useBreadcrumbsFn } from '@waldur/navigation/breadcrumbs/store';
 import { BreadcrumbItem } from '@waldur/navigation/breadcrumbs/types';
+import { useSidebarKey } from '@waldur/navigation/context';
 import { useTitle } from '@waldur/navigation/title';
 
 import { OfferingBookingTab } from './OfferingBookingTab';
 import { OfferingDetails } from './OfferingDetails';
+import { OfferingUsersTab } from './OfferingUsersTab';
 import { PlanUsageList } from './PlanUsageList';
 
 function getBreadcrumbs(offering: Offering): BreadcrumbItem[] {
@@ -66,6 +68,11 @@ async function loadData(offering_uuid: string) {
         </>
       ),
     },
+    {
+      visible: true,
+      title: translate('Users'),
+      component: () => <OfferingUsersTab offering={offering} />,
+    },
   ].filter((tab) => tab.visible);
   return { offering, tabs };
 }
@@ -75,15 +82,22 @@ export const OfferingContainer: FunctionComponent = () => {
     params: { offering_uuid },
   } = useCurrentStateAndParams();
 
-  const { loading, value, error } = useAsync(() => loadData(offering_uuid), [
-    offering_uuid,
-  ]);
+  const [{ loading, error, value }, reInitResource] = useAsyncFn(
+    () => loadData(offering_uuid),
+    [offering_uuid],
+  );
+
+  useEffectOnce(() => {
+    reInitResource();
+  });
 
   useBreadcrumbsFn(() => (value ? getBreadcrumbs(value.offering) : []), [
     value,
   ]);
 
   useTitle(value ? value.offering.name : translate('Offering details'));
+
+  useSidebarKey('marketplace-services');
 
   if (loading) {
     return <LoadingSpinner />;
@@ -93,5 +107,15 @@ export const OfferingContainer: FunctionComponent = () => {
     return <h3>{translate('Unable to load offering details.')}</h3>;
   }
 
-  return <OfferingDetails offering={value.offering} tabs={value.tabs} />;
+  if (!value) {
+    return null;
+  }
+
+  return (
+    <OfferingDetails
+      offering={value.offering}
+      tabs={value.tabs}
+      reInitResource={reInitResource}
+    />
+  );
 };

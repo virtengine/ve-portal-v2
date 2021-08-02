@@ -6,10 +6,15 @@ import { getFormValues } from 'redux-form';
 import { createSelector } from 'reselect';
 
 import { formatDateTime } from '@waldur/core/dateUtils';
+import { BackendIdTooltip } from '@waldur/core/Tooltip';
 import { withTranslation } from '@waldur/i18n';
+import { getLabel } from '@waldur/marketplace/common/registry';
 import { OfferingsListExpandableRow } from '@waldur/marketplace/offerings/expandable/OfferingsListExpandableRow';
 import { PreviewOfferingButton } from '@waldur/marketplace/offerings/PreviewOfferingButton';
-import { OFFERING_TABLE_NAME } from '@waldur/marketplace/offerings/store/constants';
+import {
+  OFFERING_TABLE_NAME,
+  PUBLIC_OFFERINGS_FILTER_FORM_ID,
+} from '@waldur/marketplace/offerings/store/constants';
 import { RootState } from '@waldur/store/reducers';
 import { Table, connectTable, createFetcher } from '@waldur/table';
 import {
@@ -22,13 +27,17 @@ import {
 
 import { Offering } from '../types';
 
-import { OfferingActions } from './actions/OfferingActions';
-import { OfferingCreateButton } from './actions/OfferingCreateButton';
+import { OfferingItemActions } from './actions/OfferingItemActions';
+import { OfferingListActions } from './actions/OfferingListActions';
 import { OfferingDetailsLink } from './details/OfferingDetailsLink';
 import { OfferingsListTablePlaceholder } from './OfferingsListTablePlaceholder';
+import { OfferingStateCell } from './OfferingStateCell';
 
 const OfferingNameColumn = ({ row }) => (
-  <OfferingDetailsLink offering_uuid={row.uuid}>{row.name}</OfferingDetailsLink>
+  <OfferingDetailsLink offering_uuid={row.uuid}>
+    {row.name}
+    <BackendIdTooltip backendId={row.backend_id} />
+  </OfferingDetailsLink>
 );
 
 export const TableComponent: FunctionComponent<any> = (props) => {
@@ -51,7 +60,11 @@ export const TableComponent: FunctionComponent<any> = (props) => {
     },
     {
       title: translate('State'),
-      render: ({ row }) => row.state,
+      render: OfferingStateCell,
+    },
+    {
+      title: translate('Type'),
+      render: ({ row }) => getLabel(row.type),
     },
   ];
 
@@ -61,7 +74,9 @@ export const TableComponent: FunctionComponent<any> = (props) => {
       render: ({ row }) => {
         return (
           <ButtonGroup>
-            {!props.isSupportOnly && <OfferingActions offering={row} />}
+            {!props.hideOfferingItemActions && (
+              <OfferingItemActions offering={row} />
+            )}
             <PreviewOfferingButton offering={row} />
           </ButtonGroup>
         );
@@ -75,7 +90,7 @@ export const TableComponent: FunctionComponent<any> = (props) => {
       placeholderComponent={<OfferingsListTablePlaceholder />}
       columns={columns}
       verboseName={translate('Offerings')}
-      actions={props.showOfferingCreateButton && <OfferingCreateButton />}
+      actions={props.showOfferingListActions && <OfferingListActions />}
       initialSorting={{ field: 'created', mode: 'desc' }}
       enableExport={true}
       expandableRow={OfferingsListExpandableRow}
@@ -100,7 +115,7 @@ const mapPropsToFilter = (props: StateProps) => {
   if (props.filter?.state) {
     filter.state = props.filter.state.map((option) => option.value);
   }
-  if (props.isServiceManager) {
+  if (props.isServiceManager && !props.isOwnerOrStaff) {
     filter.service_manager_uuid = props.user.uuid;
   }
   return filter;
@@ -115,11 +130,12 @@ export const TableOptions = {
     formatDateTime(row.created),
     row.category_title,
     row.state,
+    row.type,
   ],
-  exportFields: ['Name', 'Created', 'Category', 'State'],
+  exportFields: ['Name', 'Created', 'Category', 'State', 'Type'],
 };
 
-const showOfferingCreateButton = createSelector(
+const showOfferingListActions = createSelector(
   isOwnerOrStaff,
   getCustomer,
   (ownerOrStaff, customer) =>
@@ -130,10 +146,11 @@ const mapStateToProps = (state: RootState) => ({
   customer: getCustomer(state),
   user: getUser(state),
   isServiceManager: isServiceManagerSelector(state),
-  isSupportOnly: isSupportOnly(state),
+  isOwnerOrStaff: isOwnerOrStaff(state),
+  hideOfferingItemActions: isSupportOnly(state),
+  showOfferingListActions: showOfferingListActions(state),
   actionsDisabled: !isOwnerOrStaff(state),
-  showOfferingCreateButton: showOfferingCreateButton(state),
-  filter: getFormValues('OfferingsFilter')(state) as FilterData,
+  filter: getFormValues(PUBLIC_OFFERINGS_FILTER_FORM_ID)(state) as FilterData,
 });
 
 const enhance = compose(

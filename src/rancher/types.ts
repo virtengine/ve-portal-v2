@@ -53,7 +53,9 @@ export interface Cluster {
   uuid: string;
   marketplace_category_uuid: string;
   marketplace_offering_uuid: string;
-  service_project_link: string;
+  service_settings: string;
+  project: string;
+  project_uuid?: string;
   tenant_settings?: string;
 }
 

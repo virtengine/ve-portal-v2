@@ -8,7 +8,7 @@ import store from '@waldur/store/store';
 
 interface ReportIssueActionProps {
   issue: any;
-  state: string;
+  hideProjectAndResourceFields?: boolean;
 }
 
 export const getIssueAction = (props: ReportIssueActionProps) => {
@@ -19,6 +19,7 @@ export const getIssueAction = (props: ReportIssueActionProps) => {
         store.dispatch(
           openIssueCreateDialog({
             issue: props.issue,
+            hideProjectAndResourceFields: props.hideProjectAndResourceFields,
           }),
         );
       } else {

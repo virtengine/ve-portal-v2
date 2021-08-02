@@ -5,10 +5,15 @@ import { translate } from '@waldur/i18n';
 import { ProjectCreateButton } from '@waldur/project/ProjectCreateButton';
 import { RootState } from '@waldur/store/reducers';
 import { getWorkspace, getCustomer } from '@waldur/workspace/selectors';
-import { ORGANIZATION_WORKSPACE } from '@waldur/workspace/types';
+import {
+  ORGANIZATION_WORKSPACE,
+  USER_WORKSPACE,
+} from '@waldur/workspace/types';
 
 import { FormGroup } from '../offerings/FormGroup';
 
+import { CustomerCreateGroup } from './CustomerCreateGroup';
+import { ProjectCreateGroup } from './ProjectCreateGroup';
 import { ProjectSelectField } from './ProjectSelectField';
 
 const mapStateToProps = (state: RootState) => {
@@ -19,7 +24,7 @@ const mapStateToProps = (state: RootState) => {
       projects: customer.projects,
     };
   } else {
-    return {};
+    return { workspace };
   }
 };
 
@@ -29,7 +34,9 @@ type StateProps = ReturnType<typeof mapStateToProps>;
 
 type OwnProps = { previewMode?: boolean };
 
-const PureProjectField: FC<StateProps & OwnProps> = (props) =>
+type ProjectFieldProps = StateProps & OwnProps;
+
+const PureProjectField: FC<ProjectFieldProps> = (props) =>
   props.projects ? (
     <FormGroup
       labelClassName="control-label col-sm-3"
@@ -49,6 +56,11 @@ const PureProjectField: FC<StateProps & OwnProps> = (props) =>
         {translate('The project will be changed for all items in cart.')}
       </div>
     </FormGroup>
+  ) : props.workspace === USER_WORKSPACE ? (
+    <>
+      <CustomerCreateGroup />
+      <ProjectCreateGroup />
+    </>
   ) : null;
 
 export const ProjectField = connector(PureProjectField);

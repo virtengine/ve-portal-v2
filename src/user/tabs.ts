@@ -18,19 +18,38 @@ const KeysList = lazyComponent(
   'KeysList',
 );
 const UserDashboard = lazyComponent(
-  () => import(/* webpackChunkName: "UserDashboard" */ './list/UserDashboard'),
+  () =>
+    import(/* webpackChunkName: "UserDashboard" */ './dashboard/UserDashboard'),
   'UserDashboard',
 );
 const UserEventsWrapper = lazyComponent(
   () =>
     import(
-      /* webpackChunkName: "UserEventsWrapper" */ './list/UserEventsWrapper'
+      /* webpackChunkName: "UserEventsWrapper" */ './dashboard/UserEventsWrapper'
     ),
   'UserEventsWrapper',
 );
 const UserManage = lazyComponent(
   () => import(/* webpackChunkName: "UserManage" */ './UserManage'),
   'UserManage',
+);
+const UserOfferingList = lazyComponent(
+  () => import(/* webpackChunkName: "UserOfferingList" */ './UserOfferingList'),
+  'UserOfferingList',
+);
+const FlowListContainer = lazyComponent(
+  () =>
+    import(
+      /* webpackChunkName: "FlowListContainer" */ '@waldur/marketplace-flows/FlowListContainer'
+    ),
+  'FlowListContainer',
+);
+const FlowEditForm = lazyComponent(
+  () =>
+    import(
+      /* webpackChunkName: "FlowEditForm" */ '@waldur/marketplace-flows/FlowEditForm'
+    ),
+  'FlowEditForm',
 );
 
 export const tabs = {
@@ -39,6 +58,7 @@ export const tabs = {
     component: UserDashboard,
     data: {
       pageClass: 'gray-bg',
+      hideBreadcrumbs: true,
     },
   },
   events: {
@@ -60,9 +80,18 @@ export const tabs = {
   freeipa: {
     url: 'freeipa-account/',
     component: FreeIpaAccount,
-    data: {
-      feature: 'freeipa',
-    },
+  },
+  offerings: {
+    url: 'remote-accounts/',
+    component: UserOfferingList,
+  },
+  flowsList: {
+    url: 'resources/',
+    component: FlowListContainer,
+  },
+  flowEdit: {
+    url: 'resources/:flow_uuid/',
+    component: FlowEditForm,
   },
 };
 

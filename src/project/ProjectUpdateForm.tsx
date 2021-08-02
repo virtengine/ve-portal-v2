@@ -1,25 +1,34 @@
+import moment from 'moment-timezone';
 import { FunctionComponent } from 'react';
-import { InjectedFormProps, reduxForm } from 'redux-form';
+import { Field, InjectedFormProps, reduxForm } from 'redux-form';
 
 import {
   FieldError,
   FormContainer,
+  StringField,
   SubmitButton,
   TextField,
 } from '@waldur/form';
+import { DateField } from '@waldur/form/DateField';
 import { StaticField } from '@waldur/form/StaticField';
-import { TranslateProps } from '@waldur/i18n';
+import { datePickerOverlayContainerInDialogs } from '@waldur/form/utils';
+import { translate, TranslateProps } from '@waldur/i18n';
 
 import { ProjectNameField } from './ProjectNameField';
 
 interface ProjectUpdateFormData {
   name: string;
   description: string;
+  end_date: string;
+  backend_id: string;
 }
 
 interface ProjectUpdateFormProps extends TranslateProps, InjectedFormProps {
   updateProject(data: ProjectUpdateFormData): Promise<void>;
   project_type?: string;
+  isStaff: boolean;
+  isOwner: boolean;
+  isDisabled: boolean;
 }
 
 export const PureProjectUpdateForm: FunctionComponent<ProjectUpdateFormProps> = (
@@ -34,10 +43,11 @@ export const PureProjectUpdateForm: FunctionComponent<ProjectUpdateFormProps> = 
       labelClass="col-sm-3"
       controlClass="col-sm-9"
     >
-      {ProjectNameField(props)}
+      {ProjectNameField({ isDisabled: props.isDisabled })}
       <TextField
         label={props.translate('Project description')}
         name="description"
+        disabled={props.isDisabled}
       />
       {props.project_type && (
         <StaticField
@@ -45,13 +55,29 @@ export const PureProjectUpdateForm: FunctionComponent<ProjectUpdateFormProps> = 
           value={props.project_type}
         />
       )}
+      <Field
+        name="end_date"
+        label={translate('End date')}
+        description={translate(
+          'The date is inclusive. Once reached, all project resource will be scheduled for termination.',
+        )}
+        component={DateField}
+        {...datePickerOverlayContainerInDialogs()}
+        disabled={props.isDisabled}
+        minDate={moment().add(1, 'days').toISOString()}
+      />
+      <StringField
+        label={translate('Backend ID')}
+        name="backend_id"
+        disabled={props.isDisabled}
+      />
     </FormContainer>
     <div className="form-group">
       <div className="col-sm-offset-3 col-sm-9">
         <FieldError error={props.error} />
         <SubmitButton
           submitting={props.submitting}
-          disabled={props.invalid}
+          disabled={props.invalid || props.isDisabled}
           label={props.translate('Update project details')}
         />
       </div>

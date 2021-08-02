@@ -1,0 +1,6492 @@
+msgid ""
+msgstr ""
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Generator: Localazy (https://localazy.com)\n"
+"Project-Id-Version: waldur-homeport\n"
+"Language: sv\n"
+"Plural-Forms: nplurals=2; plural=(n==1) ? 0 : 1;\n"
+
+msgid "\"{trimmed}\" exceeds the {max_len} character FQDN limit"
+msgstr "”{trimmed}” överskrider gränsen för {max_len} tecken FQDN"
+
+msgid "<Link>Terms of Service</Link> have been accepted on <Date></Date>"
+msgstr "<Link>Användarvillkoren</Link> har godkänts på <Date></Date>"
+
+msgid "API URL"
+msgstr "API URL"
+
+msgid "API secret code:"
+msgstr "API-hemlig kod:"
+
+msgid "API token lifetime"
+msgstr "API-token livstid"
+
+msgid "A minimal expected configuration of worker is 4 vCPU and 4 GB RAM."
+msgstr "En minimal förväntad konfiguration av arbetaren är 4 vCPU och 4 GB RAM."
+
+msgid "A one-time fee applied on activation."
+msgstr "En engångsavgift tillämpas vid aktivering."
+
+msgid "A profile has been created."
+msgstr "En profil har skapats."
+
+msgid "Abbreviation"
+msgstr "Förkortning"
+
+msgid "Accept"
+msgstr "Acceptera"
+
+msgid "Accept booking"
+msgstr "Acceptera bokning"
+
+msgid "Accept invitation"
+msgstr "Acceptera inbjudan"
+
+msgid "Accepted"
+msgstr "Accepterad"
+
+msgid "Access"
+msgstr "Tillgång"
+
+msgid "Access subnets"
+msgstr "Delnät för åtkomst"
+
+msgid "Access token"
+msgstr "Åtkomsttoken"
+
+msgid "Accessible to all customers."
+msgstr "Tillgänglig för alla kunder."
+
+msgid "Account activation"
+msgstr "Aktivering av konto"
+
+msgid "Account has been activated."
+msgstr "Kontot har aktiverats."
+
+msgid "Account removal"
+msgstr "Kontoborttagning"
+
+msgid "Accounting"
+msgstr "Redovisning"
+
+msgid "Accounting period"
+msgstr "Redovisningsperiod"
+
+msgid "Accounting plans"
+msgstr "Redovisningsplaner"
+
+msgid "Accounting record"
+msgstr "Redovisning"
+
+msgid "Accounting records"
+msgstr "Redovisningsposter"
+
+msgid "Accounting running"
+msgstr "Redovisning körs"
+
+msgid "Accounting start date"
+msgstr "Startdatum för redovisning"
+
+msgid "Accounting type"
+msgstr "Typ av redovisning"
+
+msgid "Action has been applied."
+msgstr "Åtgärd har tillämpats."
+
+msgid "Actions"
+msgstr "Åtgärder"
+
+msgid "Activate"
+msgstr "Aktivera"
+
+msgid "Activating"
+msgstr "Aktiverar"
+
+msgid "Activation price"
+msgstr "Aktiveringspris"
+
+msgid "Active"
+msgstr "Aktiv"
+
+msgid "Active count"
+msgstr "Aktivt antal"
+
+msgid "Active plans"
+msgstr "Aktiva planer"
+
+msgid "Active user will be able to login into the portal."
+msgstr "Aktiv användare kommer att kunna logga in på portalen."
+
+msgid "Activity stream"
+msgstr "Aktivitetsflöde"
+
+msgid "Add"
+msgstr "Lägg till"
+
+msgid "Add SSH key"
+msgstr "Lägg till SSH-nyckel"
+
+msgid "Add Waldur user SSH keys to the FreeIPA profile"
+msgstr "Lägg till Waldur-användarens SSH-nycklar i FreeIPA-profilen"
+
+msgid "Add address"
+msgstr "Lägg till adress"
+
+msgid "Add comment"
+msgstr "Lägg till kommentar"
+
+msgid "Add component"
+msgstr "Lägg till komponent"
+
+msgid "Add data volume"
+msgstr "Lägg till datavolym"
+
+msgid "Add environment variable"
+msgstr "Lägg till miljövariabel"
+
+msgid "Add image"
+msgstr "Lägg till bild"
+
+msgid "Add item"
+msgstr "Lägg till objekt"
+
+msgid "Add key"
+msgstr "Lägg till nyckel"
+
+msgid "Add member"
+msgstr "Lägg till medlem"
+
+msgid "Add new"
+msgstr "Lägg till ny"
+
+msgid "Add new offering"
+msgstr "Lägg till nytt erbjudande"
+
+msgid "Add new organization"
+msgstr "Lägg till ny organisation"
+
+msgid "Add new project"
+msgstr "Lägg till nytt projekt"
+
+msgid "Add notification"
+msgstr "Lägg till meddelande"
+
+msgid "Add offering"
+msgstr "Lägg till erbjudande"
+
+msgid "Add organization"
+msgstr "Lägg till organisation"
+
+msgid "Add pair"
+msgstr "Lägg till par"
+
+msgid "Add payment"
+msgstr "Lägg till betalning"
+
+msgid "Add payment profile"
+msgstr "Lägg till betalningsprofil"
+
+msgid "Add plan"
+msgstr "Lägg till plan"
+
+msgid "Add project"
+msgstr "Lägg till projekt"
+
+msgid "Add project member"
+msgstr "Lägg till projektmedlem"
+
+msgid "Add resource"
+msgstr "Lägg till resurs"
+
+msgid "Add route"
+msgstr "Lägg till rutt"
+
+msgid "Add rule"
+msgstr "Lägg till regel"
+
+msgid "Add security group"
+msgstr "Lägg till säkerhetsgrupp"
+
+msgid "Add team member"
+msgstr "Lägg till teammedlem"
+
+msgid "Add to a new namespace"
+msgstr "Lägg till i ett nytt namnområde"
+
+msgid "Add to cart"
+msgstr "Lägg till i kundvagnen"
+
+msgid "Add to comparison"
+msgstr "Lägg till i jämförelse"
+
+msgid "Add user"
+msgstr "Lägg till användare"
+
+msgid "Add user input field"
+msgstr "Lägg till användarinmatningsfält"
+
+msgid "Additional data that will be added to instance on provisioning."
+msgstr "Ytterligare data som kommer att läggas till instans vid etablering."
+
+msgid "Additional space to apply to storage quota to be used by snapshots."
+msgstr "Ytterligare utrymme att använda för lagringskvoten som ska användas av ögonblicksbilder."
+
+msgid "Additionally service provider can charge for usage of the following components"
+msgstr "Dessutom kan tjänsteleverantören debitera för användning av följande komponenter"
+
+msgid "Address"
+msgstr "Adress"
+
+msgid "Admin password"
+msgstr "Admin-lösenord"
+
+msgid "Admin username"
+msgstr "Admin användarnamn"
+
+msgid "Affected resource"
+msgstr "Berörd resurs"
+
+msgid "Affiliations"
+msgstr "Anknytningar"
+
+msgid "After secret API code has been regenerated, it will not be possible to submit usage with the old key."
+msgstr "När hemlig API-kod har genererats om kommer det inte att vara möjligt att skicka användning med den gamla nyckeln."
+
+msgid "Agree with ToS"
+msgstr "Håller med ToS"
+
+msgid "Agreement number"
+msgstr "Avtalsnummer"
+
+msgid "Alert"
+msgstr "Varna"
+
+msgid "All"
+msgstr "Alla"
+
+msgid "All day"
+msgstr "Hela dagen"
+
+msgid "All resources have been imported."
+msgstr "Alla resurser har importerats."
+
+msgid "Allocation description"
+msgstr "Beskrivning av fördelningen"
+
+msgid "Allocation name"
+msgstr "Tilldelningsnamn"
+
+msgid "Allocation pools"
+msgstr "Tilldelningspooler"
+
+msgid "Allow bookings to be scheduled at weekends"
+msgstr "Tillåt att bokningar schemaläggs på helgerna"
+
+msgid "Allow to enable/disable component only"
+msgstr "Tillåt att endast aktivera/inaktivera komponent"
+
+msgid "Allowed address pairs update was scheduled."
+msgstr "Tillåtna uppdatering av adresspar planerades."
+
+msgid "Already have an account?"
+msgstr "Har du redan ett konto?"
+
+msgid "Amount"
+msgstr "Belopp"
+
+msgid "An error has occurred."
+msgstr "Ett fel har inträffat."
+
+msgid "An error occurred on project removal."
+msgstr "Ett fel uppstod vid borttagning av projekt."
+
+msgid "Annotations"
+msgstr "Anteckningar"
+
+msgid "Answer"
+msgstr "Svar"
+
+msgid "Answers"
+msgstr "Svar"
+
+msgid "Answers have been submitted"
+msgstr "Svar har lämnats in"
+
+msgid "Any"
+msgstr "Alla"
+
+msgid "Application catalogues"
+msgstr "Applikationskataloger"
+
+msgid "Application configuration"
+msgstr "Programkonfiguration"
+
+msgid "Application details"
+msgstr "Ansökningsinformation"
+
+msgid "Application has been created."
+msgstr "Programmet har skapats."
+
+msgid "Application templates"
+msgstr "Programmallar"
+
+msgid "Applications"
+msgstr "Applikationer"
+
+msgid "Apply"
+msgstr "Tillämpa"
+
+msgid "Approve"
+msgstr "Godkänna"
+
+msgid "Approve payment"
+msgstr "Godkänn betalning"
+
+msgid "Approved at"
+msgstr "Godkänd på"
+
+msgid "Approved by"
+msgstr "Godkänd av"
+
+msgid "Archive"
+msgstr "Arkiv"
+
+msgid "Archived"
+msgstr "Arkiverade"
+
+msgid "Archived plans"
+msgstr "Arkiverade planer"
+
+msgid "Are you sure you want to accept a {name}?"
+msgstr "Är du säker på att du vill acceptera en {name}?"
+
+msgid "Are you sure you want to cancel a {name}?"
+msgstr "Är du säker på att du vill avbryta en {name}?"
+
+msgid "Are you sure you want to delete a {name} {resourceType}?"
+msgstr "Är du säker på att du vill radera a {name} {resourceType}?"
+
+msgid "Are you sure you want to delete a {name} {resourceType} in an Erred state? A cleanup attempt will be performed if you choose so."
+msgstr "Är du säker på att du vill radera a {name} {resourceType} i ett Erred tillstånd? Ett rensningsförsök kommer att utföras om du väljer det."
+
+msgid "Are you sure you want to delete the image?"
+msgstr "Är du säker på att du vill ta bort bilden?"
+
+msgid "Are you sure you want to delete the payment?"
+msgstr "Är du säker på att du vill ta bort betalningen?"
+
+msgid "Are you sure you want to delete the payment profile?"
+msgstr "Är du säker på att du vill ta bort betalningsprofilen?"
+
+msgid "Are you sure you want to delete this {resourceType}?"
+msgstr "Är du säker på att du vill radera detta {resourceType}?"
+
+msgid "Are you sure you want to revoke this permission?"
+msgstr "Är du säker på att du vill återkalla den här behörigheten?"
+
+msgid "Are you sure you would like to delete Rancher catalog {catalog}?"
+msgstr "Är du säker på att du vill ta bort Rancher-katalogen {catalog}?"
+
+msgid "Are you sure you would like to delete project {projectName}?"
+msgstr "Är du säker på att du vill ta bort projektet {projectName}?"
+
+msgid "Are you sure you would like to delete the hook?"
+msgstr "Är du säker på att du vill ta bort kroken?"
+
+msgid "Are you sure you would like to delete the key?"
+msgstr "Är du säker på att du vill ta bort nyckeln?"
+
+msgid "Are you sure you would like to terminate resource {resourceName}?"
+msgstr "Är du säker på att du vill avsluta resursen {resourceName}?"
+
+msgid "Article code"
+msgstr "Artikel kod"
+
+msgid "Assigned to"
+msgstr "Tilldelad till"
+
+msgid "At least one plan must be entered"
+msgstr "Minst en plan måste anges"
+
+msgid "Attach"
+msgstr "Bifoga"
+
+msgid "Attach OpenStack Volume to Instance"
+msgstr "Anslut OpenStack-volym till instans"
+
+msgid "Attach has been scheduled."
+msgstr "Bifoga har schemalagts."
+
+msgid "Attach volume"
+msgstr "Bifoga volym"
+
+msgid "Attached to"
+msgstr "Bifogat till"
+
+msgid "Attaching"
+msgstr "Fästa"
+
+msgid "Attachments"
+msgstr "Bilagor"
+
+msgid "Attributes"
+msgstr "Attribut"
+
+msgid "Attributes are invalid."
+msgstr "Attribut är ogiltiga."
+
+msgid "Attributes filter"
+msgstr "Filtrera attribut"
+
+msgid "Audit log"
+msgstr "Granskningslogg"
+
+msgid "Audit logs"
+msgstr "Granskningsloggar"
+
+msgid "Authenticate using Mobile ID"
+msgstr "Autentisera med mobil-ID"
+
+msgid "Authentication events"
+msgstr "Autentisering händelser"
+
+msgid "Authentication token"
+msgstr "Autentiseringstoken"
+
+msgid "Authentication with Mobile ID has been canceled by user or timed out. Details:"
+msgstr "Autentisering med mobil-ID har avbrutits av användaren eller tidsgräns. Detaljer:"
+
+msgid "Author"
+msgstr "Författare"
+
+msgid "Authorized personnel"
+msgstr "Behörig personal"
+
+msgid "Auto-assign floating IP"
+msgstr "Tilldela flytande IP automatiskt"
+
+msgid "Auto-generated"
+msgstr "Automatiskt genererad"
+
+msgid "Auto approve in service provider projects"
+msgstr "Godkänn automatiskt i tjänsteleverantörsprojekt"
+
+msgid "Availability"
+msgstr "Tillgänglighet"
+
+msgid "Availability zone"
+msgstr "Tillgänglighetszon"
+
+msgid "Available quota usage: {usage}"
+msgstr "Tillgänglig kvotanvändning: {usage}"
+
+msgid "Average of all checklists"
+msgstr "Genomsnitt av alla checklistor"
+
+msgid "Average utilization"
+msgstr "Genomsnittligt utnyttjande"
+
+msgid "Average value"
+msgstr "Genomsnittligt värde"
+
+msgid "Azerbaijani"
+msgstr "Azerbajdzjanska"
+
+msgid "Azure Active Directory Application Secret"
+msgstr "Azure Active Directory-programhemlighet"
+
+msgid "Azure PostgreSQL database server"
+msgstr "Azure PostgreSQL-databasserver"
+
+msgid "Azure Virtual Machine"
+msgstr "Azure Virtuell Maskin"
+
+msgid "Azure provider"
+msgstr "Azure-leverantör"
+
+msgid "Back"
+msgstr "Tillbaka"
+
+msgid "Back to login"
+msgstr "Tillbaka till inloggning"
+
+msgid "Back to organization"
+msgstr "Tillbaka till organisationen"
+
+msgid "Back to personal dashboard"
+msgstr "Tillbaka till personlig instrumentpanel"
+
+msgid "Back to project"
+msgstr "Tillbaka till projektet"
+
+msgid "Back to shopping"
+msgstr "Tillbaka till shopping"
+
+msgid "Backend ID"
+msgstr "Bakdels-ID"
+
+msgid "Backend ID has been successfully set."
+msgstr "Backend-ID har ställts in."
+
+msgid "Backing up"
+msgstr "Säkerhetskopiera"
+
+msgid "Bank account"
+msgstr "Bankkonto"
+
+msgid "Bank name"
+msgstr "Banknamn"
+
+msgid "Base image name"
+msgstr "Basbildsnamn"
+
+msgid "Batch processing documentation"
+msgstr "Dokumentation för batchbearbetning"
+
+msgid "Become a customer of our portal. Provision IT services from the Marketplace and manage your team from one place."
+msgstr "Bli kund hos vår portal. Etablera IT-tjänster från Marketplace och hantera ditt team från ett och samma ställe."
+
+msgid "Billing"
+msgstr "Fakturering"
+
+msgid "Billing details"
+msgstr "Faktureringsuppgifter"
+
+msgid "Billing enabled"
+msgstr "Fakturering aktiverad"
+
+msgid "Billing period"
+msgstr "Faktureringsperiod"
+
+msgid "Booking"
+msgstr "Bokning"
+
+msgid "Booking description"
+msgstr "Bokningsbeskrivning"
+
+msgid "Booking has been accepted."
+msgstr "Bokning har accepterats."
+
+msgid "Booking has been cancelled."
+msgstr "Bokningen har annullerats."
+
+msgid "Booking is not allowed to overlap other bookings."
+msgstr "Bokning är inte tillåtet att överlappa andra bokningar."
+
+msgid "Booking management"
+msgstr "Bokningshantering"
+
+msgid "Bookings"
+msgstr "Bokningar"
+
+msgid "Bootable"
+msgstr "Startbar"
+
+msgid "Branch"
+msgstr "Gren"
+
+msgid "Browse"
+msgstr "Bläddra"
+
+msgid "Browse image"
+msgstr "Bläddra i bild"
+
+msgid "Business hours"
+msgstr "Öppettider"
+
+msgid "By setting token lifetime to indefinite you are allowing anyone who has the token to impersonate your actions till the token has been changed."
+msgstr "Genom att ställa in token livstid på obestämd tid tillåter du alla som har token att personifiera dina handlingar tills token har ändrats."
+
+msgid "By submitting the form you are agreeing to the <Link>Terms of Service</Link>."
+msgstr "Genom att skicka in formuläret godkänner du <Link>Användarvillkor</Link>."
+
+msgid "CIDR"
+msgstr "CIDR"
+
+msgid "CPU"
+msgstr "CPU"
+
+msgid "CPU limit (hours)"
+msgstr "CPU-gräns (timmar)"
+
+msgid "CPU usage"
+msgstr "CPU-användning"
+
+msgid "CSV"
+msgstr "CSV"
+
+msgid "Caller"
+msgstr "Uppringare"
+
+msgid "Cancel"
+msgstr "Avbryt"
+
+msgid "Cancel booking"
+msgstr "Avbryt bokningen"
+
+msgid "Cancel invitation"
+msgstr "Avbryta inbjudan"
+
+msgid "Cancel payment"
+msgstr "Avbryt betalningen"
+
+msgid "Cancel request"
+msgstr "Avbryt begäran"
+
+msgid "Canceled"
+msgstr "Avbruten"
+
+msgid "Cancelled"
+msgstr "Avbruten"
+
+msgid "Cannot create floating IP if tenant external network is not defined."
+msgstr "Det går inte att skapa flytande IP om klientens externa nätverk inte är definierat."
+
+msgid "Capacity"
+msgstr "Kapacitet"
+
+msgid "Catalog"
+msgstr "Katalog"
+
+msgid "Catalog URL"
+msgstr "Katalog URL"
+
+msgid "Catalog has been created."
+msgstr "Katalogen har skapats."
+
+msgid "Catalog has been deleted."
+msgstr "Katalogen har tagits bort."
+
+msgid "Catalogues"
+msgstr "Kataloger"
+
+msgid "Categories"
+msgstr "Kategorier"
+
+msgid "Category"
+msgstr "Kategori"
+
+msgid "Category is invalid."
+msgstr "Kategori är ogiltig."
+
+msgid "Category name"
+msgstr "Kategori namn"
+
+msgid "Challenge code"
+msgstr "Utmaningskod"
+
+msgid "Change"
+msgstr "Ändra"
+
+msgid "Change Request"
+msgstr "Ändringsbegäran"
+
+msgid "Change email"
+msgstr "Ändra e-post"
+
+msgid "Change flavor"
+msgstr "Ändra smak"
+
+msgid "Change limits"
+msgstr "Ändra gränser"
+
+msgid "Change plan"
+msgstr "Ändra plan"
+
+msgid "Change request - client’s request to perform a generic modification of data or service."
+msgstr "Ändringsbegäran - klientens begäran om att utföra en generisk ändring av data eller tjänst."
+
+msgid "Change resource limits"
+msgstr "Ändra resursgränser"
+
+msgid "Change resource plan"
+msgstr "Ändra resursplan"
+
+msgid "Change user email"
+msgstr "Ändra användares e-post"
+
+msgid "Changing flavor"
+msgstr "Ändra smak"
+
+msgid "Changing password"
+msgstr "Ändra lösenord"
+
+msgid "Charset"
+msgstr "Charset"
+
+msgid "Checklist setup"
+msgstr "Inställning av checklista"
+
+msgid "Checklists"
+msgstr "Checklistor"
+
+msgid "Choices as comma-separated list"
+msgstr "Val som kommaseparerad lista"
+
+msgid "Civil number"
+msgstr "Civilt nummer"
+
+msgid "Client ID"
+msgstr "Klient-ID"
+
+msgid "Client organization"
+msgstr "Kundorganisation"
+
+msgid "Client project"
+msgstr "Kundprojekt"
+
+msgid "Client secret"
+msgstr "Klienthemlighet"
+
+msgid "Close"
+msgstr "Stäng"
+
+msgid "Cloud RAM"
+msgstr "Cloud RAM"
+
+msgid "Cloud block storage size"
+msgstr "Lagringsstorlek för Cloud block"
+
+msgid "Cloud init template"
+msgstr "Cloud init-mall"
+
+msgid "Cloud vCPU"
+msgstr "Cloud vCPU"
+
+msgid "Cluster"
+msgstr "Kluster"
+
+msgid "Cluster IP"
+msgstr "Kluster IP"
+
+msgid "Cluster description"
+msgstr "Klusterbeskrivning"
+
+msgid "Cluster name"
+msgstr "Klusternamn"
+
+msgid "Cluster roles"
+msgstr "Klusterroller"
+
+msgid "Code is too short."
+msgstr "Koden är för kort."
+
+msgid "Code should consist of latin symbols or numbers."
+msgstr "Koden ska bestå av latinska symboler eller siffror."
+
+msgid "Collapse"
+msgstr "Kollaps"
+
+msgid "Collation"
+msgstr "Sortering"
+
+msgid "Comment"
+msgstr "Kommentar"
+
+msgid "Comments"
+msgstr "Kommentarer"
+
+msgid "Company data"
+msgstr "Företagsdata"
+
+msgid "Compare items"
+msgstr "Jämför objekt"
+
+msgid "Competence"
+msgstr "Kompetens"
+
+msgid "Compliance"
+msgstr "Överensstämmelse"
+
+msgid "Component #{index}"
+msgstr "Komponent #{index}"
+
+msgid "Component name"
+msgstr "Komponentnamn"
+
+msgid "Components"
+msgstr "Komponenter"
+
+msgid "Components are invalid."
+msgstr "Komponenterna är ogiltiga."
+
+msgid "Compute generation"
+msgstr "Beräkningsgenerering"
+
+msgid "Configuration"
+msgstr "Konfiguration"
+
+msgid "Configuration options"
+msgstr "Konfigurationsalternativ"
+
+msgid "Configure"
+msgstr "Konfigurera"
+
+msgid "Confirm deletion?"
+msgstr "Bekräfta radering?"
+
+msgid "Confirmation"
+msgstr "Bekräftelse"
+
+msgid "Confirmation mail has been sent. Please check your inbox!"
+msgstr "Bekräftelse e-post har skickats. Vänligen kolla din inkorg!"
+
+msgid "Confirmation notification template"
+msgstr "Mall för bekräftelsemeddelande"
+
+msgid "Confirming that data is correct"
+msgstr "Bekräfta att uppgifterna är korrekta"
+
+msgid "Connect"
+msgstr "Anslut"
+
+msgid "Connect subnet"
+msgstr "Anslut undernät"
+
+msgid "Connected subnets"
+msgstr "Anslutna undernät"
+
+msgid "Connection details"
+msgstr "Anslutningsdetaljer"
+
+msgid "Contact details"
+msgstr "Kontaktuppgifter"
+
+msgid "Contact email"
+msgstr "Kontakt e-post"
+
+msgid "Contact phone"
+msgstr "Kontakt telefon"
+
+msgid "Continue"
+msgstr "Fortsätt"
+
+msgid "Contract sum"
+msgstr "Kontraktssumma"
+
+msgid "Contract sum is"
+msgstr "Kontraktssumman är"
+
+msgid "Control plane"
+msgstr "Kontrollplan"
+
+msgid "Copy to clipboard"
+msgstr "Kopiera till Urklipp"
+
+msgid "Cost"
+msgstr "Kostnad"
+
+msgid "Could not create organization"
+msgstr "Det gick inte att skapa organisation"
+
+msgid "Country"
+msgstr "Land"
+
+msgid "Create"
+msgstr "Skapa"
+
+msgid "Create Network adapter"
+msgstr "Skapa nätverkskort"
+
+msgid "Create SQL database in PostgreSQL server"
+msgstr "Skapa SQL-databas i PostgreSQL-servern"
+
+msgid "Create VM snapshot for OpenStack instance"
+msgstr "Skapa VM-snapshot för OpenStack-instans"
+
+msgid "Create VM snapshot schedule for OpenStack instance"
+msgstr "Skapa schema för VM-snapshot för OpenStack-instans"
+
+msgid "Create an account"
+msgstr "Skapa ett konto"
+
+msgid "Create an availability"
+msgstr "Skapa en tillgänglighet"
+
+msgid "Create application"
+msgstr "Skapa program"
+
+msgid "Create catalog"
+msgstr "Skapa katalog"
+
+msgid "Create disk"
+msgstr "Skapa disk"
+
+msgid "Create horizontal pod autoscaler"
+msgstr "Skapa horisontell pod autoscaler"
+
+msgid "Create network for OpenStack tenant"
+msgstr "Skapa nätverk för OpenStack tenant"
+
+msgid "Create node"
+msgstr "Skapa nod"
+
+msgid "Create notification"
+msgstr "Skapa meddelande"
+
+msgid "Create organization"
+msgstr "Skapa organisation"
+
+msgid "Create port"
+msgstr "Skapa port"
+
+msgid "Create project"
+msgstr "Skapa projekt"
+
+msgid "Create request"
+msgstr "Skapa en begäran"
+
+msgid "Create security group for OpenStack tenant {name}"
+msgstr "Skapa säkerhetsgrupp för OpenStack tenant {name}"
+
+msgid "Create snapshot for OpenStack volume"
+msgstr "Skapa snapshot för OpenStack-volym"
+
+msgid "Create snapshot schedule for OpenStack volume"
+msgstr "Skapa snapshot schema för OpenStack-volym"
+
+msgid "Create subnet"
+msgstr "Skapa undernät"
+
+msgid "Create your first project"
+msgstr "Skapa ditt första projekt"
+
+msgid "Created"
+msgstr "Skapad"
+
+msgid "Created a new payment for {customer_link}."
+msgstr "Skapade en ny betalning för {customer_link}."
+
+msgid "Created at"
+msgstr "Skapad på"
+
+msgid "Created by"
+msgstr "Skapad av"
+
+msgid "Creating"
+msgstr "Skapa"
+
+msgid "Creating a backup schedule"
+msgstr "Skapa ett schema för säkerhetskopiering"
+
+msgid "Creating a floating IP"
+msgstr "Skapa en flytande IP"
+
+msgid "Creating a new network"
+msgstr "Skapa ett nytt nätverk"
+
+msgid "Creating a security group"
+msgstr "Skapa en säkerhetsgrupp"
+
+msgid "Creating a subnet"
+msgstr "Skapa ett undernät"
+
+msgid "Creating snapshot schedule"
+msgstr "Skapa snapshot-schema"
+
+msgid "Credentials"
+msgstr "Autentiseringsuppgifter"
+
+msgid "Current API token"
+msgstr "Aktuell API-token"
+
+msgid "Current cost"
+msgstr "Nuvarande kostnad"
+
+msgid "Current email"
+msgstr "Aktuell e-post"
+
+msgid "Current flavor"
+msgstr "Nuvarande smak"
+
+msgid "Current limit"
+msgstr "Nuvarande gräns"
+
+msgid "Current plan"
+msgstr "Aktuell plan"
+
+msgid "Current price per month"
+msgstr "Nuvarande pris per månad"
+
+msgid "Current replicas"
+msgstr "Aktuella repliker"
+
+msgid "Current size"
+msgstr "Aktuell storlek"
+
+msgid "Current type"
+msgstr "Nuvarande typ"
+
+msgid "Customer support satisfaction overall rating"
+msgstr "Övergripande bedömning av kundsupportnöjdhet"
+
+msgid "DNS name servers"
+msgstr "DNS-namnservrar"
+
+msgid "Daily available booking time range"
+msgstr "Dagligt tillgängligt tidsintervall för bokning"
+
+msgid "Dashboard"
+msgstr "Instrumentpanel"
+
+msgid "Data volume #{index}"
+msgstr "Datavolym #{index}"
+
+msgid "Data volume should have at least {size} GB."
+msgstr "Datavolymen bör ha minst {size} GB."
+
+msgid "Data volume size:"
+msgstr "Datavolymstorlek:"
+
+msgid "Data volume type"
+msgstr "Datavolymtyp"
+
+msgid "Databases"
+msgstr "Databaser"
+
+msgid "Datacite DOI"
+msgstr "Datacite DOI"
+
+msgid "Datastore"
+msgstr "Datalagring"
+
+msgid "Date"
+msgstr "Datum"
+
+msgid "Date and time of incident"
+msgstr "Datum och tidpunkt för incidenten"
+
+msgid "Date joined"
+msgstr "Datum anslutet"
+
+msgid "Date of reporting"
+msgstr "Datum för rapportering"
+
+msgid "Deactivate"
+msgstr "Inaktivera"
+
+msgid "Deactivating"
+msgstr "Inaktiverar"
+
+msgid "Default"
+msgstr "Standard"
+
+msgid "Default SLURM account for user"
+msgstr "Standard SLURM-konto för användare"
+
+msgid "Default account"
+msgstr "Standardkonto"
+
+msgid "Default availability zone for provisioned instances."
+msgstr "Standardtillgänglighetszon för etablerade instanser."
+
+msgid "Default cluster label"
+msgstr "Standardklusteretikett"
+
+msgid "Default tax percent"
+msgstr "Standardskattprocent"
+
+msgid "Default value"
+msgstr "Standardvärde"
+
+msgid "Delete"
+msgstr "Ta bort"
+
+msgid "Delete catalog"
+msgstr "Ta bort katalog"
+
+msgid "Delete volumes"
+msgstr "Ta bort volymer"
+
+msgid "Deleting PostgreSQL server will cause deletion of all databases created within server."
+msgstr "Om du tar bort PostgreSQL-servern raderas alla databaser som skapats på servern."
+
+msgid "Deploy Longhorn block storage after cluster is deployed"
+msgstr "Distribuera Longhorn-blocklagring efter att klustret har distribuerats"
+
+msgid "Description"
+msgstr "Beskrivning"
+
+msgid "Desired replicas"
+msgstr "Önskade repliker"
+
+msgid "Destination"
+msgstr "Destination"
+
+msgid "Destination URL"
+msgstr "Destinations-URL"
+
+msgid "Destination (CIDR)"
+msgstr "Destination (CIDR)"
+
+msgid "Destroy"
+msgstr "Förstör"
+
+msgid "Destroy resource"
+msgstr "Förstör resursen"
+
+msgid "Destroy {name} instance"
+msgstr "Förstör instansen {name}"
+
+msgid "Destroying"
+msgstr "Förstörande"
+
+msgid "Detach"
+msgstr "Lossa"
+
+msgid "Detaching"
+msgstr "Demontering"
+
+msgid "Details"
+msgstr "Detaljer"
+
+msgid "Device"
+msgstr "Enhet"
+
+msgid "Devops-friendly offering"
+msgstr "Devops-vänligt erbjudande"
+
+msgid "DigitalOcean provider"
+msgstr "DigitalOcean leverantör"
+
+msgid "Direction"
+msgstr "Riktning"
+
+msgid "Disable a profile in FreeIPA. Disabled profiles are not allowed for login into the Linux systems"
+msgstr "Inaktivera en profil i FreeIPA. Inaktiverade profiler är inte tillåtna för inloggning i Linux-systemen"
+
+msgid "Disable data volume"
+msgstr "Inaktivera datavolym"
+
+msgid "Disable gateway IP advertising via DHCP"
+msgstr "Inaktivera gateway IP-annonsering via DHCP"
+
+msgid "Disable profile"
+msgstr "Inaktivera profil"
+
+msgid "Disabled"
+msgstr "Inaktiverad"
+
+msgid "Disconnect subnet"
+msgstr "Koppla bort undernätet"
+
+msgid "Disk extension has been scheduled."
+msgstr "Disktillägget har schemalagts."
+
+msgid "Disk has been created."
+msgstr "Disken har skapats."
+
+msgid "Disks"
+msgstr "Diskar"
+
+msgid "Display name"
+msgstr "Visningsnamn"
+
+msgid "Division"
+msgstr "Divisionen"
+
+msgid "Division type"
+msgstr "Typ av division"
+
+msgid "Do not configure a gateway for this subnet"
+msgstr "Konfigurera inte en gateway för det här undernätet"
+
+msgid "Do not have an account?"
+msgstr "Har du inget konto?"
+
+msgid "Do you really want to delete comment?"
+msgstr "Vill du verkligen ta bort kommentar?"
+
+msgid "Do you want to unlink instance {name}?"
+msgstr "Vill du ta bort länken till instansen {name}?"
+
+msgid "Docker version"
+msgstr "Docker-version"
+
+msgid "Documentation"
+msgstr "Dokumentation"
+
+msgid "Documents"
+msgstr "Dokument"
+
+msgid "Domain"
+msgstr "Domän"
+
+msgid "Domain name"
+msgstr "Domännamn"
+
+msgid "Domain name. If not defined default domain will be used."
+msgstr "Domännamn. Om inte definierad kommer standarddomänen att användas."
+
+msgid "Done"
+msgstr "Klart"
+
+msgid "Download invoice"
+msgstr "Ladda ner faktura"
+
+msgid "Download order PDF file"
+msgstr "Ladda ner PDF-fil för beställning"
+
+msgid "Draft"
+msgstr "Utkast"
+
+msgid "Drop files to attach, or"
+msgstr "Släpp filer att bifoga, eller"
+
+msgid "Drop files to attach them to the issue."
+msgstr "Släpp filer för att bifoga dem till problemet."
+
+msgid "Droplet has been resized."
+msgstr "Droplet har ändrats."
+
+msgid "Due date"
+msgstr "Förfallodag"
+
+msgid "Dynamic — use separate volume types for tracking pricing"
+msgstr "Dynamisk — använd separata volymtyper för att spåra prissättning"
+
+msgid "EU VAT ID"
+msgstr "EU VAT ID"
+
+msgid "Each mount point should be used once at most."
+msgstr "Varje monteringspunkt ska användas högst en gång."
+
+msgid "Each usage report must be connected with a billing plan to assure correct calculation of accounting data."
+msgstr "Varje användningsrapport måste vara kopplad till en faktureringsplan för att säkerställa korrekt beräkning av redovisningsuppgifter."
+
+msgid "Edit"
+msgstr "Redigera"
+
+msgid "Edit YAML"
+msgstr "Redigera YAML"
+
+msgid "Edit an availability"
+msgstr "Redigera en tillgänglighet"
+
+msgid "Edit attributes"
+msgstr "Redigera attribut"
+
+msgid "Edit booking event"
+msgstr "Redigera bokningsevent"
+
+msgid "Edit offering"
+msgstr "Redigera erbjudande"
+
+msgid "Edit permissions"
+msgstr "Redigera behörigheter"
+
+msgid "Edit project member"
+msgstr "Redigera projektmedlem"
+
+msgid "Edit team member"
+msgstr "Redigera teammedlem"
+
+msgid "Egress"
+msgstr "Utgång"
+
+msgid "Email"
+msgstr "E-post"
+
+msgid "Email change request has been cancelled."
+msgstr "Begäran om ändring av e-post har avbrutits."
+
+msgid "Email has been updated."
+msgstr "E-postmeddelandet har uppdaterats."
+
+msgid "Email verification has been sent. Please check your inbox."
+msgstr "E-postverifiering har skickats. Vänligen kolla din inkorg."
+
+msgid "Enable"
+msgstr "Aktivera"
+
+msgid "Enable DHCP"
+msgstr "Aktivera DHCP"
+
+msgid "Enable a profile in FreeIPA. Only enabled profiles are allowed for login into the Linux systems"
+msgstr "Aktivera en profil i FreeIPA. Endast aktiverade profiler tillåts för inloggning i Linux-systemen"
+
+msgid "Enable by default"
+msgstr "Aktivera som standard"
+
+msgid "Enable limit"
+msgstr "Aktivera gräns"
+
+msgid "Enable profile"
+msgstr "Aktivera profil"
+
+msgid "Enable profile after creation"
+msgstr "Aktivera profil efter att ha skapats"
+
+msgid "Enabled"
+msgstr "Aktiverad"
+
+msgid "Enabled checklists have been updated."
+msgstr "Aktiverade checklistor har uppdaterats."
+
+msgid "Enabled default gateway"
+msgstr "Aktiverad standardgateway"
+
+msgid "Encountered an empty component"
+msgstr "En tom komponent har påträffats"
+
+msgid "End"
+msgstr "Slut"
+
+msgid "End date"
+msgstr "Slutdatum"
+
+msgid "End date must be after start date."
+msgstr "Slutdatum måste vara efter startdatum."
+
+msgid "End date of the agreement is"
+msgstr "Avtalets slutdatum är"
+
+msgid "End time"
+msgstr "Sluttid"
+
+msgid "English"
+msgstr "Engelska"
+
+msgid "Ensure this field has no more than 30 characters."
+msgstr "Se till att det här fältet inte har fler än 30 tecken."
+
+msgid "Enter IPv4 address."
+msgstr "Ange IPv4-adress."
+
+msgid "Enter address..."
+msgstr "Ange adress ..."
+
+msgid "Enter private IPv4 CIDR."
+msgstr "Ange privat IPv4 CIDR."
+
+msgid "Environment variables"
+msgstr "Miljövariabler"
+
+msgid "Erred"
+msgstr "Fel"
+
+msgid "Error message"
+msgstr "Felmeddelande"
+
+msgid "Error traceback"
+msgstr "Fel traceback"
+
+msgid "Esimated price per month"
+msgstr "Esimerat pris per månad"
+
+msgid "Estimated cost"
+msgstr "Beräknad kostnad"
+
+msgid "Estimated cost for the current month: {cost}"
+msgstr "Beräknad kostnad för innevarande månad: {cost}"
+
+msgid "Estimated monthly cost"
+msgstr "Beräknad månadskostnad"
+
+msgid "Estimated monthly fee will change from {old_estimate} to {new_estimate}. VAT is not included."
+msgstr "Beräknad månadsavgift ändras från {old_estimate} till {new_estimate}. Moms ingår ej."
+
+msgid "Estonian"
+msgstr "Estniska"
+
+msgid "Ethernet type"
+msgstr "Ethernet-typ"
+
+msgid "Evaluation"
+msgstr "Utvärdering"
+
+msgid "Event details"
+msgstr "Information om evenemanget"
+
+msgid "Event type"
+msgstr "Händelsetyp"
+
+msgid "Event types"
+msgstr "Händelsetyper"
+
+msgid "Events"
+msgstr "Händelser"
+
+msgid "Every"
+msgstr "Varje"
+
+msgid "Every day"
+msgstr "Varje dag"
+
+msgid "Every day at"
+msgstr "Varje dag på"
+
+msgid "Every hour"
+msgstr "Varje timme"
+
+msgid "Every hour at {minuteValues} past the hour"
+msgstr "Varje timme vid {minuteValues} efter timmen"
+
+msgid "Every minute"
+msgstr "Varje minut"
+
+msgid "Every month"
+msgstr "Varje månad"
+
+msgid "Every month on the {days} at {time}"
+msgstr "Varje månad på {days} vid {time}"
+
+msgid "Every month on the {days} of {months} at {time}"
+msgstr "Varje månad på {days} av {months} vid {time}"
+
+msgid "Every month service provider can report up to the amount requested by user."
+msgstr "Varje månad kan tjänsteleverantören rapportera upp till det belopp som användaren begär."
+
+msgid "Every week"
+msgstr "Varje vecka"
+
+msgid "Every week on {day} at {time}"
+msgstr "Varje vecka på {day} vid {time}"
+
+msgid "Every year"
+msgstr "Varje år"
+
+msgid "Example: [{\"header\": \"Database instance info\", \"body\": \"data\"}]"
+msgstr "Exempel: [{\"header\": \"Database instance info\", \"body\": \"data\"}]"
+
+msgid "Excel"
+msgstr "Excel"
+
+msgid "Executing"
+msgstr "Exekverar"
+
+msgid "Existing quota usage: {usage}"
+msgstr "Befintlig kvotanvändning: {usage}"
+
+msgid "Expand"
+msgstr "Utöka"
+
+msgid "Expiration time"
+msgstr "Utgångstid"
+
+msgid "Expired"
+msgstr "Utgångna"
+
+msgid "Expires at"
+msgstr "Utgår vid"
+
+msgid "Explore {deployment} Marketplace"
+msgstr "Utforska {deployment} Marketplace"
+
+msgid "Export as"
+msgstr "Exportera som"
+
+msgid "Extend"
+msgstr "Utöka"
+
+msgid "Extend OpenStack volume"
+msgstr "Utöka volymen OpenStack"
+
+msgid "Extend disk"
+msgstr "Utöka disk"
+
+msgid "Extending"
+msgstr "Utvidga"
+
+msgid "External IP"
+msgstr "Extern IP"
+
+msgid "External links"
+msgstr "Externa länkar"
+
+msgid "External network ID"
+msgstr "Extern nätverks-ID"
+
+msgid "Failed to operate with backend."
+msgstr "Det gick inte att arbeta med backend."
+
+msgid "Features"
+msgstr "Funktioner"
+
+msgid "Fee applied each time this plan is activated."
+msgstr "Avgift tillämpas varje gång denna plan aktiveras."
+
+msgid "Feedback"
+msgstr "Återkoppling"
+
+msgid "File"
+msgstr "Fil"
+
+msgid "File download has been started."
+msgstr "Filhämtning har startats."
+
+msgid "File has been copied"
+msgstr "Filen har kopierats"
+
+msgid "File has been downloaded."
+msgstr "Filen har laddats ner."
+
+msgid "Filename"
+msgstr "Filnamn"
+
+msgid "Files"
+msgstr "Filer"
+
+msgid "Filter"
+msgstr "Filtrera"
+
+msgid "Filter organizations"
+msgstr "Filtrera organisationer"
+
+msgid "Filter projects"
+msgstr "Filtrera projekt"
+
+msgid "Financial"
+msgstr "Finansiell"
+
+msgid "Financial overview"
+msgstr "Finansiell översikt"
+
+msgid "Find solution"
+msgstr "Hitta lösning"
+
+msgid "Fingerprint"
+msgstr "Fingeravtryck"
+
+msgid "Fixed-price contract"
+msgstr "Avtal om fast pris"
+
+msgid "Fixed price"
+msgstr "Fast pris"
+
+msgid "Fixed — use common storage quota"
+msgstr "Fast - använd gemensam lagringskvot"
+
+msgid "Flavor"
+msgstr "Smak"
+
+msgid "Flavor change has been scheduled."
+msgstr "Smakförändring har planerats."
+
+msgid "Flavor exclude regex"
+msgstr "Smak exkluderar regex"
+
+msgid "Flavor name"
+msgstr "Smaknamn"
+
+msgid "Flavor name: {flavor_name}"
+msgstr "Smak namn: {flavor_name}"
+
+msgid "Flavors"
+msgstr "Smaker"
+
+msgid "Flavors List"
+msgstr "Lista över smaker"
+
+msgid "Flavors matching this regex expression will not be pulled from the backend."
+msgstr "Smaker som matchar det här regex-uttrycket kommer inte att hämtas från gränssnittet."
+
+msgid "Flavors regex"
+msgstr "Smaker regex"
+
+msgid "Flexible"
+msgstr "Flexibel"
+
+msgid "Floating IP"
+msgstr "Flytande IP"
+
+msgid "Floating IP count"
+msgstr "Flytande IP-antal"
+
+msgid "Floating IPs"
+msgstr "Flytande IP-adresser"
+
+msgid "Floating IPs update has been scheduled."
+msgstr "Flytande IPS-uppdatering har schemalagts."
+
+msgid "Flowmap"
+msgstr "Flowmap"
+
+msgid "Folder"
+msgstr "Mapp"
+
+msgid "For"
+msgstr "För"
+
+msgid "Force destroy"
+msgstr "Tvinga förstöra"
+
+msgid "Force destroy {name} instance"
+msgstr "Tvinga förstöra {name} instans"
+
+msgid "FreeIPA account"
+msgstr "FreeIPA-konto"
+
+msgid "FreeIPA account needs to be set up."
+msgstr "FreeIPA-konto måste ställas in."
+
+msgid "FreeIPA extension is disabled."
+msgstr "FreeIPA-tillägget är inaktiverat."
+
+msgid "From"
+msgstr "Från"
+
+msgid "From port"
+msgstr "Från hamn"
+
+msgid "Full description"
+msgstr "Fullständig beskrivning"
+
+msgid "Full name"
+msgstr "Fullständigt namn"
+
+msgid "GB"
+msgstr "GB"
+
+msgid "GPU"
+msgstr "GPU"
+
+msgid "GPU limit (hours)"
+msgstr "GPU-gräns (timmar)"
+
+msgid "GPU usage"
+msgstr "GPU-användning"
+
+msgid "Gateway"
+msgstr "Inkörsport"
+
+msgid "Gateway IP"
+msgstr "Gateway IP"
+
+msgid "Gateway IP of this subnet"
+msgstr "Gateway-IP för detta undernät"
+
+msgid "General information"
+msgstr "Generell information"
+
+msgid "Generate Kubeconfig file"
+msgstr "Generera Kubeconfig fil"
+
+msgid "Generate password"
+msgstr "Generera lösenord"
+
+msgid "Go to marketplace"
+msgstr "Gå till marknadsplatsen"
+
+msgid "Go to my profile"
+msgstr "Gå till min profil"
+
+msgid "Go to profile"
+msgstr "Gå till profil"
+
+msgid "Google Calendar has been published successfully."
+msgstr "Google Kalender har publicerats framgångsrikt."
+
+msgid "Google Calendar has been synced successfully."
+msgstr "Google Calendar har synkroniserats framgångsrikt."
+
+msgid "Google Calendar has been unpublished successfully."
+msgstr "Google Calendar har avpublicerats framgångsrikt."
+
+msgid "Google Calendar link"
+msgstr "Google Kalender-länk"
+
+msgid "Got it!"
+msgstr "Jag förstår!"
+
+msgid "Grant permission"
+msgstr "Bevilja tillstånd"
+
+msgid "Growth"
+msgstr "Tillväxt"
+
+msgid "Guaranteed time of VM snapshot retention. If null - keep forever."
+msgstr "Garanterad tid för lagring av virtuella ögonblicksbilder. Om du är noll - behåll för alltid."
+
+msgid "Guaranteed time of snapshot retention. If null - keep forever."
+msgstr "Garanterad tid för kvarhållande av ögonblicksbild. Om du är noll - behåll för alltid."
+
+msgid "Guaranteed time of volume snapshot retention. If null - keep forever."
+msgstr "Garanterad tid för kvarhållande av ögonblicksbild av volym. Om du är noll - behåll för alltid."
+
+msgid "Guest OS"
+msgstr "Gäst-OS"
+
+msgid "HPA"
+msgstr "HPA"
+
+msgid "Heatmap"
+msgstr "Värmekarta"
+
+msgid "Helpdesk"
+msgstr "Helpdesk"
+
+msgid "Helpdesk dashboard"
+msgstr "Helpdesk dashboard"
+
+msgid "Hide controls"
+msgstr "Dölj kontroller"
+
+msgid "Hide diff"
+msgstr "Dölj diff"
+
+msgid "Home organization domain name"
+msgstr "Hemorganisations domännamn"
+
+msgid "Homepage"
+msgstr "Hemsida"
+
+msgid "Hook has been removed."
+msgstr "Kroken har tagits bort."
+
+msgid "Hook removal"
+msgstr "Ta bort krok"
+
+msgid "Horizontal pod autoscaler has been created."
+msgstr "Horizontal pod autoscaler har skapats."
+
+msgid "Horizontal pod autoscaler has been updated."
+msgstr "Horisontell pod autoscaler har uppdaterats."
+
+msgid "Host routes"
+msgstr "Värdvägar"
+
+msgid "Hostname"
+msgstr "Värdnamn"
+
+msgid "Hostname or IP address of gateway node"
+msgstr "Värdnamn eller IP-adress för gateway-noden"
+
+msgid "Hostname or IP address of master node"
+msgstr "Värdnamn eller IP-adress för huvudnoden"
+
+msgid "How to generate SSH key"
+msgstr "Hur man genererar SSH-nyckel"
+
+msgid "How to obtain credentials for Azure provider"
+msgstr "Hur du skaffar autentiseringsuppgifter för Azure provider"
+
+msgid "How to obtain credentials for DigitalOcean provider"
+msgstr "Hur du skaffar autentiseringsuppgifter för DigitalOcean leverantör"
+
+msgid "ID"
+msgstr "ID"
+
+msgid "ID code"
+msgstr "ID-kod"
+
+msgid "IP address"
+msgstr "IP-adress"
+
+msgid "IP address is already used by router."
+msgstr "IP-adressen används redan av routern."
+
+msgid "IP protocol"
+msgstr "IP-protokoll"
+
+msgid "IP version"
+msgstr "IP-version"
+
+msgid "I accept the <Link>Terms of Service</Link>."
+msgstr "Jag accepterar <Link>Användarvillkor</Link>."
+
+msgid "Icon"
+msgstr "Ikon"
+
+msgid "Identity provided has been selected via SAML2 discovery service. You will be redirected to the login page soon."
+msgstr "Den angivna identiteten har valts via SAML2-upptäcktstjänsten. Du kommer snart att omdirigeras till inloggningssidan."
+
+msgid "If you want user to provide additional details when ordering, please configure input form for the user below"
+msgstr "Om du vill att användaren ska ge ytterligare information vid beställning, vänligen konfigurera inmatningsformuläret för användaren nedan"
+
+msgid "Image"
+msgstr "Bild"
+
+msgid "Image:"
+msgstr "Bild:"
+
+msgid "Image has been added."
+msgstr "Bilden har lagts till."
+
+msgid "Image has been removed."
+msgstr "Bilden har tagits bort."
+
+msgid "Image here"
+msgstr "Bild här"
+
+msgid "Image name"
+msgstr "Bildnamn"
+
+msgid "Images"
+msgstr "Bilder"
+
+msgid "Import"
+msgstr "Importera"
+
+msgid "Import YAML"
+msgstr "Importera YAML"
+
+msgid "Import offering"
+msgstr "Importera erbjudande"
+
+msgid "Import resource"
+msgstr "Importera resurs"
+
+msgid "Importing resources"
+msgstr "Importera resurser"
+
+msgid "In the format of GUID"
+msgstr "I formatet GUID"
+
+msgid "Inactive user will not be able to login into the portal."
+msgstr "Inaktiv användare kommer inte att kunna logga in på portalen."
+
+msgid "Incident"
+msgstr "Incident"
+
+msgid "Incident - client issue with service usage or availability (interruptions, degradation of quality)."
+msgstr "Incident - klientproblem med tjänstanvändning eller tillgänglighet (avbrott, försämrad kvalitet)."
+
+msgid "Include weekends"
+msgstr "Inkludera helger"
+
+msgid "Incorrect organization details"
+msgstr "Felaktig organisationsinformation"
+
+msgid "Increase a droplet's RAM, CPU and SSD disk."
+msgstr "Öka en dropps RAM, CPU och SSD-disk."
+
+msgid "Increase a droplet's RAM and CPU only (not the storage)."
+msgstr "Öka endast RAM-minnet och processorn för en droppe (inte lagringsutrymmet)."
+
+msgid "Informational"
+msgstr "Informationsmässigt"
+
+msgid "Informational - client’s request to get or provide additional information related to a service."
+msgstr "Informativ - kundens begäran om att få eller tillhandahålla ytterligare information relaterad till en tjänst."
+
+msgid "Ingress"
+msgstr "Inträngning"
+
+msgid "Initial admin password"
+msgstr "Ursprungligt admin lösenord"
+
+msgid "Initial admin username"
+msgstr "Ursprungligt användarnamn för admin"
+
+msgid "Instance"
+msgstr "Instans"
+
+msgid "Instance deletion has been scheduled."
+msgstr "Instansen radering har schemalagts."
+
+msgid "Instance does not have any floating IPs yet."
+msgstr "Instansen har inte några flytande IP-adresser ännu."
+
+msgid "Instance does not have any security groups yet."
+msgstr "Instansen har ännu inga säkerhetsgrupper."
+
+msgid "Instance has been linked."
+msgstr "Instansen har länkats."
+
+msgid "Instance is already active."
+msgstr "Instansen är redan aktiv."
+
+msgid "Instance is already stopped."
+msgstr "Instansen är redan stoppad."
+
+msgid "Instance is not connected to any internal subnets yet. Please connect it to internal subnet first."
+msgstr "Instansen är inte ansluten till några interna undernät ännu. Anslut den till det interna undernätet först."
+
+msgid "Instance should be OK, or erred. Please contact support."
+msgstr "Instansen ska vara OK eller felaktig. Vänligen kontakta supporten."
+
+msgid "Instance should be OK. Please contact support."
+msgstr "Instansen ska vara OK. Vänligen kontakta supporten."
+
+msgid "Instance should be shutoff and OK or erred. Please contact support."
+msgstr "Instansen ska stängas av och OK eller felaktigt. Kontakta support."
+
+msgid "Instances count"
+msgstr "Instanser räknas"
+
+msgid "Internal"
+msgstr "Internt"
+
+msgid "Internal IP"
+msgstr "Intern IP"
+
+msgid "Internal IPs"
+msgstr "Interna IPs"
+
+msgid "Internal name"
+msgstr "Internt namn"
+
+msgid "Internal network ID"
+msgstr "Internt nätverks-ID"
+
+msgid "Internal network allocation pool"
+msgstr "Intern nätverksallokeringspool"
+
+msgid "Internal network mask (CIDR)"
+msgstr "Intern nätverksmask (CIDR)"
+
+msgid "Internal server error occurred. Please try again or contact support."
+msgstr "Internt serverfel inträffade. Försök igen eller kontakta supporten."
+
+msgid "Invalid URL. Unable to parse payment details."
+msgstr "Ogiltig URL. Det gick inte att tolka betalningsinformation."
+
+msgid "Invitation approval"
+msgstr "Godkännande av inbjudan"
+
+msgid "Invitation confirmation"
+msgstr "Inbjudan bekräftelse"
+
+msgid "Invitation could not be accepted"
+msgstr "Inbjudan kunde inte accepteras"
+
+msgid "Invitation email is:"
+msgstr "Inbjudan e-post är:"
+
+msgid "Invitation has been approved."
+msgstr "Inbjudan har godkänts."
+
+msgid "Invitation has been canceled."
+msgstr "Inbjudan har avbrutits."
+
+msgid "Invitation has been rejected."
+msgstr "Inbjudan har avslagits."
+
+msgid "Invitation has been sent again."
+msgstr "Inbjudan har skickats igen."
+
+msgid "Invitation is not found."
+msgstr "Inbjudan hittades inte."
+
+msgid "Invitation is not valid"
+msgstr "Inbjudan är inte giltig"
+
+msgid "Invitation is not valid."
+msgstr "Inbjudan är inte giltig."
+
+msgid "Invitation is not valid anymore."
+msgstr "Inbjudan är inte längre giltig."
+
+msgid "Invitation link"
+msgstr "Länk till inbjudan"
+
+msgid "Invitation rejection"
+msgstr "Avslag på inbjudan"
+
+msgid "Invitation token is not found."
+msgstr "Inbjudningstoken hittades inte."
+
+msgid "Invitations"
+msgstr "Inbjudningar"
+
+msgid "Invite team member"
+msgstr "Bjud in teammedlem"
+
+msgid "Invite user"
+msgstr "Bjud in användare"
+
+msgid "Invoice"
+msgstr "Faktura"
+
+msgid "Invoice No."
+msgstr "Faktura Nr."
+
+msgid "Invoice date"
+msgstr "Fakturadatum"
+
+msgid "Invoice events"
+msgstr "Faktura händelser"
+
+msgid "Invoice events timeline"
+msgstr "Tidslinje för fakturahändelser"
+
+msgid "Invoice for organization {customer_link} for the period of {period} has been created."
+msgstr "Faktura för organisationen {customer_link} för perioden {period} har skapats."
+
+msgid "Invoice for organization {customer_link} for the period of {period} has been updated."
+msgstr "Fakturan för organisationen {customer_link} för perioden {period} har uppdaterats."
+
+msgid "Invoice for organization {customer_name} for the period of {period} has been deleted."
+msgstr "Faktura för organisationen {customer_name} för perioden {period} har tagits bort."
+
+msgid "Invoice has been successfully linked to payment."
+msgstr "Fakturan har kopplats till betalningen."
+
+msgid "Invoice has been successfully unlinked from payment."
+msgstr "Fakturan har kopplats bort från betalningen."
+
+msgid "Invoice has not been sent to PayPal yet"
+msgstr "Faktura har ännu inte skickats till PayPal"
+
+msgid "Invoice number"
+msgstr "Fakturanummer"
+
+msgid "Invoice statistics"
+msgstr "Fakturastatistik"
+
+msgid "Invoiced to"
+msgstr "Faktureras till"
+
+msgid "Invoices list"
+msgstr "Fakturalista"
+
+msgid "Is active"
+msgstr "Är aktiv"
+
+msgid "Is external"
+msgstr "Är extern"
+
+msgid "Is official"
+msgstr "Är officiell"
+
+msgid "Is service provider"
+msgstr "Är tjänsteleverantör"
+
+msgid "Issue"
+msgstr "Fråga"
+
+msgid "Issue link"
+msgstr "Länk till problemet"
+
+msgid "Issue {issue_link} has been created by {caller_link}."
+msgstr "Problem {issue_link} har skapats av {caller_link}."
+
+msgid "Issues"
+msgstr "Frågor"
+
+msgid "Issues are trackable requests to the operator."
+msgstr "Frågor är spårbara förfrågningar till operatören."
+
+msgid "It is used to automatically assign floating IP to your virtual machine."
+msgstr "Den används för att automatiskt tilldela flytande IP till din virtuella dator."
+
+msgid "Item"
+msgstr "Objekt"
+
+msgid "Item has been added to shopping cart."
+msgstr "Artikeln har lagts till i varukorgen."
+
+msgid "Item has been removed from shopping cart."
+msgstr "Artikeln har tagits bort från kundvagnen."
+
+msgid "Item type"
+msgstr "Objekttyp"
+
+msgid "Job position"
+msgstr "Befattning"
+
+msgid "Job title"
+msgstr "Jobbtitel"
+
+msgid "Keep forever"
+msgstr "Håll för evigt"
+
+msgid "Keep until"
+msgstr "Behåll tills"
+
+msgid "Kept until"
+msgstr "Behålles till"
+
+msgid "Key"
+msgstr "Nyckel"
+
+msgid "Key name"
+msgstr "Nyckelnamn"
+
+msgid "Key removal"
+msgstr "Ta bort nycklar"
+
+msgid "Keys"
+msgstr "Nycklar"
+
+msgid "Keystone auth URL (e.g. http://keystone.example.com:5000/v3)"
+msgstr "Keystone auth URL (t.ex. http://keystone.example.com:5000/v3)"
+
+msgid "Kubeconfig file"
+msgstr "Kubeconfig fil"
+
+msgid "Kubernetes node #{index}"
+msgstr "Kubernetes-nod #{index}"
+
+msgid "Kubernetes nodes"
+msgstr "Kubernetes noder"
+
+msgid "Kubernetes version"
+msgstr "Kubernetes version"
+
+msgid "Label that is visible to users in Marketplace."
+msgstr "Etikett som är synlig för användare på Marketplace."
+
+msgid "Labels"
+msgstr "Etiketter"
+
+msgid "Latvian"
+msgstr "Lettiska"
+
+msgid "Learn more"
+msgstr "Läs mer"
+
+msgid "Leave blank if you want admin password to be auto-generated."
+msgstr "Lämna tomt om du vill att administratörslösenordet ska genereras automatiskt."
+
+msgid "Leave blank if you want admin username to be auto-generated."
+msgstr "Lämna tomt om du vill att administratörens användarnamn ska genereras automatiskt."
+
+msgid "Legal address"
+msgstr "Juridisk adress"
+
+msgid "Let’s get started"
+msgstr "Låt oss komma igång"
+
+msgid "Lifetime will be updated and reset upon saving the form."
+msgstr "Livstids uppdateras och återställs när formuläret sparas."
+
+msgid "Limit"
+msgstr "Begränsa"
+
+msgid "Limit amount"
+msgstr "Begränsa belopp"
+
+msgid "Limit period"
+msgstr "Begränsningsperiod"
+
+msgid "Limits"
+msgstr "Gränser"
+
+msgid "Limits are invalid."
+msgstr "Gränserna är ogiltiga."
+
+msgid "Link"
+msgstr "Länk"
+
+msgid "Link OpenStack Instance"
+msgstr "Länka OpenStack-instans"
+
+msgid "Link invoice"
+msgstr "Länk faktura"
+
+msgid "Lithuanian"
+msgstr "Litauiska"
+
+msgid "Loading"
+msgstr "Laddar"
+
+msgid "Loading actions"
+msgstr "Laddning åtgärder"
+
+msgid "Loading assets, please wait."
+msgstr "Laddar tillgångar, vänta."
+
+msgid "Loading invoices"
+msgstr "Laddar fakturor"
+
+msgid "Location"
+msgstr "Plats"
+
+msgid "Location has been saved successfully."
+msgstr "Platsen har sparats."
+
+msgid "Location of {offeringName} offering"
+msgstr "Plats för {offeringName} erbjudande"
+
+msgid "Log out"
+msgstr "Logga ut"
+
+msgid "Logging user in"
+msgstr "Logga in användare"
+
+msgid "Login"
+msgstr "Logga in"
+
+msgid "Login failed"
+msgstr "Inloggning misslyckades"
+
+msgid "Login with"
+msgstr "Logga in med"
+
+msgid "Logo"
+msgstr "Logotyp"
+
+msgid "Logo has been removed."
+msgstr "Logotypen har tagits bort."
+
+msgid "Logo has been uploaded."
+msgstr "Logotypen har laddats upp."
+
+msgid "Logout failed"
+msgstr "Utloggning misslyckades"
+
+msgid "Longhorn is a lightweight, reliable, and powerful distributed block storage system for Kubernetes."
+msgstr "Longhorn är ett lätt, pålitligt och kraftfullt distribuerat blocklagringssystem för Kubernetes."
+
+msgid "MAC address"
+msgstr "MAC-adress"
+
+msgid "MAC address (optional)"
+msgstr "MAC-adress (valfritt)"
+
+msgid "MTU"
+msgstr "MTU"
+
+msgid "Manage"
+msgstr "Hantera"
+
+msgid "Manage avatar at {link}"
+msgstr "Hantera avatar på {link}"
+
+msgid "Manage networks"
+msgstr "Hantera nätverk"
+
+msgid "Manage organization"
+msgstr "Hantera organisation"
+
+msgid "Manage security groups"
+msgstr "Hantera säkerhetsgrupper"
+
+msgid "Managed projects"
+msgstr "Förvaltade projekt"
+
+msgid "Management"
+msgstr "Förvaltning"
+
+msgid "Mark as paid"
+msgstr "Markera som betald"
+
+msgid "Mark invoice as paid"
+msgstr "Markera fakturan som betald"
+
+msgid "Marketplace"
+msgstr "Marknadsplats"
+
+msgid "Marketplace UUID"
+msgstr "Marketplace UUID"
+
+msgid "Marketplace offerings"
+msgstr "Marketplace-erbjudanden"
+
+msgid "Marketplace services can only be provisioned for a certain affiliation. You currently do not have any organizations or projects connected with your account."
+msgstr "Marketplace-tjänster kan endast etableras för en viss anslutning. Du har för närvarande inga organisationer eller projekt kopplade till ditt konto."
+
+msgid "Max # of VM snapshots"
+msgstr "Max # av VM ögonblicksbilder"
+
+msgid "Max # of snapshots"
+msgstr "Max # antal ögonblicksbilder"
+
+msgid "Max amount"
+msgstr "Maxbelopp"
+
+msgid "Max number of VM snapshots"
+msgstr "Maximalt antal ögonblicksbilder av VM"
+
+msgid "Max replicas"
+msgstr "Max repliker"
+
+msgid "Maximal number of resources"
+msgstr "Maximalt antal resurser"
+
+msgid "Maximal value"
+msgstr "Maximalt värde"
+
+msgid "Maximum RAM for each VM"
+msgstr "Maximal RAM för varje VM"
+
+msgid "Maximum allowed value"
+msgstr "Maximalt tillåtet värde"
+
+msgid "Maximum capacity for each disk"
+msgstr "Maximal kapacitet för varje disk"
+
+msgid "Maximum monthly"
+msgstr "Högsta månatliga"
+
+msgid "Maximum total"
+msgstr "Maximal totalsumma"
+
+msgid "Maximum total size of the disk space per VM"
+msgstr "Maximal total storlek på diskutrymmet per VM"
+
+msgid "Maximum username length with mandatory username prefix is 32 characters."
+msgstr "Maximal användarnamn längd med obligatoriskt användarnamn prefix är 32 tecken."
+
+msgid "Maximum vCPU for each VM"
+msgstr "Maximal vCPU för varje VM"
+
+msgid "Measured unit"
+msgstr "Uppmätt enhet"
+
+msgid "Member"
+msgstr "Medlem"
+
+msgid "Memory"
+msgstr "Minne"
+
+msgid "Memory per vCore"
+msgstr "Minne per vCore"
+
+msgid "Memory size in GiB"
+msgstr "Minnesstorlek i GiB"
+
+msgid "Message"
+msgstr "Meddelande"
+
+msgid "Method"
+msgstr "Metod"
+
+msgid "Metric"
+msgstr "Metriska"
+
+msgid "Metric name"
+msgstr "Metriskt namn"
+
+msgid "MiB"
+msgstr "MiB"
+
+msgid "Min RAM"
+msgstr "Min RAM"
+
+msgid "Min amount"
+msgstr "Min-belopp"
+
+msgid "Min replicas"
+msgstr "Min-repliker"
+
+msgid "Min storage"
+msgstr "Min. lagring"
+
+msgid "Minimal value"
+msgstr "Minimalt värde"
+
+msgid "Minimum allowed value"
+msgstr "Lägsta tillåtna värde"
+
+msgid "Minimum booking time slot duration."
+msgstr "Minsta bokningstid lucka varaktighet."
+
+msgid "Minimum username length is 3 characters."
+msgstr "Minsta användarnamn längd är 3 tecken."
+
+msgid "Mobile phone number"
+msgstr "Mobilnummer"
+
+msgid "Month"
+msgstr "Månad"
+
+msgid "Monthly cost"
+msgstr "Månadskostnad"
+
+msgid "Monthly invoices"
+msgstr "Månadsfakturor"
+
+msgid "More info"
+msgstr "Mer info"
+
+msgid "Mount point"
+msgstr "Monteringspunkt"
+
+msgid "Must be at least {min}"
+msgstr "Måste vara minst {min}"
+
+msgid "Must be at most {max}"
+msgstr "Måste vara som mest {max}"
+
+msgid "Must start with a country prefix ie EE34501234215"
+msgstr "Måste börja med ett landsprefix, dvs. EE34501234215"
+
+msgid "My offerings"
+msgstr "Mina erbjudanden"
+
+msgid "My orders"
+msgstr "Mina beställningar"
+
+msgid "My resources"
+msgstr "Mina resurser"
+
+msgid "My services"
+msgstr "Mina tjänster"
+
+msgid "N/A"
+msgstr "N/A"
+
+msgid "Name"
+msgstr "Namn"
+
+msgid "Name \"{label}\" must be 1-63 characters long, each of which can only be alphanumeric or a hyphen"
+msgstr "Namnet ”{label}” måste vara 1-63 tecken långt, som var och en endast kan vara alfanumeriskt eller bindestreck"
+
+msgid "Name \"{label}\" must not start or end with a hyphen"
+msgstr "Namn ”{label}” får inte börja eller sluta med ett bindestreck"
+
+msgid "Name is duplicated. Choose other name."
+msgstr "Namnet dupliceras. Välj ett annat namn."
+
+msgid "Name is not valid."
+msgstr "Namnet är inte giltigt."
+
+msgid "Name is required field."
+msgstr "Namnet är obligatoriskt fält."
+
+msgid "Name is too short, names should be at least two alphanumeric characters."
+msgstr "Namnet är för kort, namnen ska vara minst två alfanumeriska tecken."
+
+msgid "Name must consist of lower case alphanumeric characters."
+msgstr "Namnet måste bestå av gemener alfanumeriska tecken."
+
+msgid "Name must consist of lower case alphanumeric characters or '-', and must start and end with an alphanumeric character (e.g. 'my-name', or '123-abc')"
+msgstr "Namnet måste bestå av alfanumeriska gemener eller \"-\", och måste börja och sluta med ett alfanumeriskt tecken (t.ex. \"mitt namn\" eller \"123-abc\")"
+
+msgid "Name of your organization."
+msgstr "Namn på din organisation."
+
+msgid "Name should consist of latin symbols, numbers and dashes."
+msgstr "Namnet ska bestå av latinska symboler, siffror och bindestreck."
+
+msgid "Name should consist of latin symbols and numbers."
+msgstr "Namnet ska bestå av latinska symboler och siffror."
+
+msgid "Name should contain at least 3 symbols."
+msgstr "Namnet ska innehålla minst 3 symboler."
+
+msgid "Namespace"
+msgstr "Namnområde"
+
+msgid "Namespace should be unique."
+msgstr "Namnområdet ska vara unikt."
+
+msgid "Native name"
+msgstr "Ursprungligt namn"
+
+msgid "Negative"
+msgstr "Negativ"
+
+msgid "Network"
+msgstr "Nätverk"
+
+msgid "Network MTU has been updated."
+msgstr "Nätverk MTU har uppdaterats."
+
+msgid "Network adapters"
+msgstr "Nätverkskort"
+
+msgid "Network name"
+msgstr "Nätverksnamn"
+
+msgid "Networks"
+msgstr "Nätverk"
+
+msgid "New email"
+msgstr "Ny e-post"
+
+msgid "New flavor"
+msgstr "Ny smak"
+
+msgid "New limit"
+msgstr "Ny gräns"
+
+msgid "New plan"
+msgstr "Ny plan"
+
+msgid "New size"
+msgstr "Ny storlek"
+
+msgid "Next"
+msgstr "Nästa"
+
+msgid "Next hop (IP)"
+msgstr "Nästa hopp (IP)"
+
+msgid "Next trigger at"
+msgstr "Nästa utlösare på"
+
+msgid "No"
+msgstr "Nej"
+
+msgid "No, continue using current email"
+msgstr "Nej, fortsätt att använda aktuell e-post"
+
+msgid "No access info"
+msgstr "Ingen åtkomstinformation"
+
+msgid "No access info."
+msgstr "Ingen åtkomstinformation."
+
+msgid "No categories"
+msgstr "Inga kategorier"
+
+msgid "No countries"
+msgstr "Inga länder"
+
+msgid "No division types"
+msgstr "Inga divisionstyper"
+
+msgid "No divisions"
+msgstr "Inga divisioner"
+
+msgid "No entries to show here"
+msgstr "Inga poster att visa här"
+
+msgid "No invoice data available."
+msgstr "Inga fakturadata tillgängliga."
+
+msgid "No offerings"
+msgstr "Inga erbjudanden"
+
+msgid "No organizations"
+msgstr "Inga organisationer"
+
+msgid "No projects"
+msgstr "Inga projekt"
+
+msgid "No projects are assigned to this user."
+msgstr "Inga projekt tilldelas den här användaren."
+
+msgid "No providers"
+msgstr "Inga leverantörer"
+
+msgid "No results found"
+msgstr "Inga resultat hittades"
+
+msgid "No service providers"
+msgstr "Inga tjänsteleverantörer"
+
+msgid "No users"
+msgstr "Inga användare"
+
+msgid "Node"
+msgstr "Nod"
+
+msgid "Node has been created."
+msgstr "Nod har skapats."
+
+msgid "Node plan"
+msgstr "Nodplan"
+
+msgid "Nodes"
+msgstr "Noder"
+
+msgid "None"
+msgstr "Ingen"
+
+msgid "Not a service provider."
+msgstr "Inte en tjänsteleverantör."
+
+msgid "Not assigned"
+msgstr "Ej tilldelad"
+
+msgid "Not running accounting"
+msgstr "Körs inte redovisning"
+
+msgid "Note that this virtual machine will not be charged separately for {organization}."
+msgstr "Observera att den här virtuella datorn inte debiteras separat för {organization}."
+
+msgid "Note that this volume will not be charged separately for {organization}."
+msgstr "Observera att denna volym inte debiteras separat för {organization}."
+
+msgid "Nothing to see here"
+msgstr "Inget att se här"
+
+msgid "Nothing to show here"
+msgstr "Inget att visa här"
+
+msgid "Notification can be sent only for created invoice."
+msgstr "Meddelande kan endast skickas för en skapad faktura."
+
+msgid "Notification has been created."
+msgstr "Meddelandet har skapats."
+
+msgid "Notification has been updated."
+msgstr "Meddelandet har uppdaterats."
+
+msgid "Notification method"
+msgstr "Anmälningsmetod"
+
+msgid "Notifications"
+msgstr "Aviseringar"
+
+msgid "Notifications allow to be informed when a certain event has occurred."
+msgstr "Meddelanden gör det möjligt att informeras när en viss händelse har inträffat."
+
+msgid "Notifications has been sent to {count} users."
+msgstr "Meddelanden har skickats till {count} användare."
+
+msgid "Number of CPU cores per socket"
+msgstr "Antal CPU-kärnor per sockel"
+
+msgid "Number of CPU cores should be multiple of cores per socket."
+msgstr "Antal CPU-kärnor bör vara flera kärnor per socket."
+
+msgid "Number of control plane nodes"
+msgstr "Antal noder i kontrollplanet"
+
+msgid "Number of cores in a VM"
+msgstr "Antal kärnor i en VM"
+
+msgid "Number of created instances"
+msgstr "Antal skapade instanser"
+
+msgid "Number of etcd nodes"
+msgstr "Antal etcd-noder"
+
+msgid "Number of running instances"
+msgstr "Antal instanser som körs"
+
+msgid "Number of worker nodes"
+msgstr "Antal arbetsnoder"
+
+msgid "OK"
+msgstr "OK"
+
+msgid "Object is not found."
+msgstr "Objektet hittades inte."
+
+msgid "Offering"
+msgstr "Erbjudande"
+
+msgid "Offering components"
+msgstr "Erbjudande komponenter"
+
+msgid "Offering configuration"
+msgstr "Erbjuder konfiguration"
+
+msgid "Offering details"
+msgstr "Information om erbjudandet"
+
+msgid "Offering doesn't have images."
+msgstr "Erbjudandet har inga bilder."
+
+msgid "Offering has been created."
+msgstr "Erbjudandet har skapats."
+
+msgid "Offering has been imported."
+msgstr "Erbjudandet har importerats."
+
+msgid "Offering has been updated."
+msgstr "Erbjudandet har uppdaterats."
+
+msgid "Offering images"
+msgstr "Erbjuder bilder"
+
+msgid "Offering images ({name})"
+msgstr "Erbjudande bilder ({name})"
+
+msgid "Offering is not configured yet."
+msgstr "Erbjudandet är inte konfigurerat ännu."
+
+msgid "Offering logo"
+msgstr "Erbjudande logotyp"
+
+msgid "Offering name"
+msgstr "Erbjuder namn"
+
+msgid "Offering permissions"
+msgstr "Erbjuder behörigheter"
+
+msgid "Offering state has been updated."
+msgstr "Erbjudande tillstånd har uppdaterats."
+
+msgid "Offering type"
+msgstr "Typ av erbjudande"
+
+msgid "Offerings"
+msgstr "Erbjudanden"
+
+msgid "Offerings images"
+msgstr "Erbjudanden bilder"
+
+msgid "One-time"
+msgstr "Engångs"
+
+msgid "One-time on plan switch"
+msgstr "Engångsförseande på planbrytare"
+
+msgid "Only a created invoice can be marked as paid."
+msgstr "Endast en skapad faktura kan markeras som betald."
+
+msgid "Only customer owner or staff can invite users."
+msgstr "Endast kundägare eller personal kan bjuda in användare."
+
+msgid "Only pending and expired invitations can be sent again."
+msgstr "Endast väntande och utgångna inbjudningar kan skickas igen."
+
+msgid "Only pending invitation can be canceled."
+msgstr "Endast väntande inbjudan kan avbrytas."
+
+msgid "Only staff and organization users are allowed to open console."
+msgstr "Endast användare av personal och organisation får öppna konsolen."
+
+msgid "Only staff can manage OpenStack tenant."
+msgstr "Endast personal kan hantera OpenStack-hyresgästen."
+
+msgid "Only staff can remove organization."
+msgstr "Endast personal kan ta bort organisationen."
+
+msgid "Only staff users are allowed to perform this action."
+msgstr "Endast personalanvändare får utföra den här åtgärden."
+
+msgid "Open"
+msgstr "Öppna"
+
+msgid "OpenStack Images"
+msgstr "OpenStack-bilder"
+
+msgid "OpenStack Instance"
+msgstr "OpenStack-instans"
+
+msgid "OpenStack instance"
+msgstr "OpenStack-instans"
+
+msgid "OpenStack instance has been unlinked from Rancher node."
+msgstr "OpenStack-instansen har kopplats från Rancher-noden."
+
+msgid "OpenStack networks has been created."
+msgstr "OpenStack-nätverk har skapats."
+
+msgid "OpenStack package"
+msgstr "OpenStack-paket"
+
+msgid "OpenStack subnet"
+msgstr "OpenStack-undernät"
+
+msgid "OpenStack tenant"
+msgstr "OpenStack tenant"
+
+msgid "OpenStack volume"
+msgstr "OpenStack-volym"
+
+msgid "Open console"
+msgstr "Öppna konsol"
+
+msgid "Open in Service Desk"
+msgstr "Öppna i Service Desk"
+
+msgid "Open support portal"
+msgstr "Öppna supportportalen"
+
+msgid "Opened by {user} at {date}"
+msgstr "Öppnat av {user} på {date}"
+
+msgid "Opened by {user} from {organization} at {date}"
+msgstr "Öppnad av {user} från {organization} på {date}"
+
+msgid "Options are invalid."
+msgstr "Alternativ är ogiltiga."
+
+msgid "Or use social login"
+msgstr "Eller använd social inloggning"
+
+msgid "Order Summary"
+msgstr "Beställningsöversikt"
+
+msgid "Order details"
+msgstr "Orderdetaljer"
+
+msgid "Order has been approved."
+msgstr "Beställningen har godkänts."
+
+msgid "Order has been rejected."
+msgstr "Beställningen har avvisats."
+
+msgid "Order has been submitted."
+msgstr "Beställning har skickats."
+
+msgid "Order item details"
+msgstr "Beställningsinformation"
+
+msgid "Order item has been approved."
+msgstr "Beställningsartikeln har godkänts."
+
+msgid "Order item has been rejected."
+msgstr "Orderartikeln har avvisats."
+
+msgid "Order item has cancel has been scheduled."
+msgstr "Orderartikeln har annullerat har schemalagts."
+
+msgid "Order items"
+msgstr "Beställ artiklar"
+
+msgid "Order summary"
+msgstr "Beställningsöversikt"
+
+msgid "Orders"
+msgstr "Beställningar"
+
+msgid "Organization"
+msgstr "Organisation"
+
+msgid "Organization actions"
+msgstr "Organisationens åtgärder"
+
+msgid "Organization contains invoices. Please remove them first."
+msgstr "Organisationen innehåller fakturor. Ta bort dem först."
+
+msgid "Organization contains projects. Please remove them first."
+msgstr "Organisationen innehåller projekt. Ta bort dem först."
+
+msgid "Organization details"
+msgstr "Organisationsinformation"
+
+msgid "Organization events"
+msgstr "Organisation evenemang"
+
+msgid "Organization has been created."
+msgstr "Organisation har skapats."
+
+msgid "Organization has been updated successfully."
+msgstr "Organisationen har uppdaterats."
+
+msgid "Organization has signed a fixed price agreement"
+msgstr "Organisationen har tecknat ett fast pris avtal"
+
+msgid "Organization name"
+msgstr "Organisationens namn"
+
+msgid "Organization owner"
+msgstr "Organisationens ägare"
+
+msgid "Organization owner role expires on"
+msgstr "Organisationens ägarroll upphör att gälla på"
+
+msgid "Organization registration code"
+msgstr "Organisationens registreringsnummer"
+
+msgid "Organization removal"
+msgstr "Organisationens borttagning"
+
+msgid "Organization role"
+msgstr "Organisationens roll"
+
+msgid "Organization roles"
+msgstr "Organisationens roller"
+
+msgid "Organization update"
+msgstr "Organisationsuppdatering"
+
+msgid "Organization update ({name})"
+msgstr "Organisationsuppdatering ({name})"
+
+msgid "Organization users list"
+msgstr "Organisationens användarlista"
+
+msgid "Organization workspace"
+msgstr "Organisation arbetsyta"
+
+msgid "Organization {customer_link} has been created."
+msgstr "Organisation {customer_link} har skapats."
+
+msgid "Organization {customer_link} has been updated."
+msgstr "Organisation {customer_link} har uppdaterats."
+
+msgid "Organization {customer_name} has been deleted."
+msgstr "Organisationen {customer_name} har tagits bort."
+
+msgid "Organizations"
+msgstr "Organisationer"
+
+msgid "Organizations ({count})"
+msgstr "Organisationer ({count})"
+
+msgid "Organizations by divisions"
+msgstr "Organisationer efter divisioner"
+
+msgid "Organizations divisions"
+msgstr "Organisationsavdelningar"
+
+msgid "Others"
+msgstr "Andra"
+
+msgid "Output"
+msgstr "Utgång"
+
+msgid "Overview"
+msgstr "Översikt"
+
+msgid "Overview of {organization} organization"
+msgstr "Översikt över organisationen {organization}"
+
+msgid "Overview of {project} project"
+msgstr "Översikt över {project}-projektet"
+
+msgid "Owned organizations"
+msgstr "Ägda organisationer"
+
+msgid "Owner"
+msgstr "Ägare"
+
+msgid "PDF"
+msgstr "PDF"
+
+msgid "PID"
+msgstr "PID"
+
+msgid "Page is not found."
+msgstr "Sidan hittades inte."
+
+msgid "Page is not found. You've either entered invalid URL or trying to reach disabled feature."
+msgstr "Sidan hittades inte. Du har antingen angett ogiltig URL eller försöker nå inaktiverad funktion."
+
+msgid "Paid"
+msgstr "Betald"
+
+msgid "Password"
+msgstr "Lösenord"
+
+msgid "Password has been changed for user {affected_user_link}."
+msgstr "Lösenordet har ändrats för användaren {affected_user_link}."
+
+msgid "Past time slots are not allowed."
+msgstr "Tidigare tidsluckor är inte tillåtna."
+
+msgid "Pause"
+msgstr "Pausa"
+
+msgid "Pause offering"
+msgstr "Pausa erbjudandet"
+
+msgid "Paused"
+msgstr "Pausad"
+
+msgid "Pay invoice"
+msgstr "Betala faktura"
+
+msgid "Payment events"
+msgstr "Betalning händelser"
+
+msgid "Payment for {customer_link} has been approved."
+msgstr "Betalning för {customer_link} har godkänts."
+
+msgid "Payment for {customer_link} has been cancelled."
+msgstr "Betalningen för {customer_link} har annullerats."
+
+msgid "Payment gateways (monthly)"
+msgstr "Betalningsgateways (månadsvis)"
+
+msgid "Payment has been created."
+msgstr "Betalning har skapats."
+
+msgid "Payment has been deleted."
+msgstr "Betalningen har tagits bort."
+
+msgid "Payment has been processed successfully."
+msgstr "Betalningen har bearbetats framgångsrikt."
+
+msgid "Payment has been updated."
+msgstr "Betalningen har uppdaterats."
+
+msgid "Payment is being processed, please wait."
+msgstr "Betalningen behandlas, vänta."
+
+msgid "Payment pending"
+msgstr "Betalning väntande"
+
+msgid "Payment profile"
+msgstr "Betalningsprofil"
+
+msgid "Payment profile defines how invoices are processed."
+msgstr "Betalningsprofil definierar hur fakturor bearbetas."
+
+msgid "Payment profile has been created."
+msgstr "Betalningsprofilen har skapats."
+
+msgid "Payment profile has been created and enabled."
+msgstr "Betalningsprofil har skapats och aktiverats."
+
+msgid "Payment profile has been enabled."
+msgstr "Betalningsprofilen har aktiverats."
+
+msgid "Payment profile has been removed."
+msgstr "Betalningsprofilen har tagits bort."
+
+msgid "Payment profile has been updated."
+msgstr "Betalningsprofilen har uppdaterats."
+
+msgid "Payment profiles"
+msgstr "Betalningsprofiler"
+
+msgid "Payment type {type}"
+msgstr "Betalningstyp {type}"
+
+msgid "Payments connected with an active payment profile."
+msgstr "Betalningar kopplade till en aktiv betalningsprofil."
+
+msgid "Payments list"
+msgstr "Betalningslista"
+
+msgid "Pending"
+msgstr "Väntar"
+
+msgid "Pending approval for changing of"
+msgstr "Väntar på godkännande för ändring av"
+
+msgid "Pending approval for creation of"
+msgstr "Väntar på godkännande för skapande av"
+
+msgid "Pending approval for removal of"
+msgstr "Väntar på godkännande för avlägsnande av"
+
+msgid "Per day"
+msgstr "Per dag"
+
+msgid "Per half month"
+msgstr "Per halv månad"
+
+msgid "Per hour"
+msgstr "Per timme"
+
+msgid "Per month"
+msgstr "Per månad"
+
+msgid "Perform local logout"
+msgstr "Utför lokal utloggning"
+
+msgid "Perform review"
+msgstr "Utför granskning"
+
+msgid "Performed"
+msgstr "Utförs"
+
+msgid "Performed by"
+msgstr "Utförd av"
+
+msgid "Period"
+msgstr "Period"
+
+msgid "Periods"
+msgstr "Perioder"
+
+msgid "Permanent"
+msgstr "Permanent"
+
+msgid "Permission has been revoked."
+msgstr "Tillståndet har återkallats."
+
+msgid "Permissions log"
+msgstr "Behörighetslogg"
+
+msgid "Personal workspace"
+msgstr "Personlig arbetsyta"
+
+msgid "Phone"
+msgstr "Telefon"
+
+msgid "Phone number"
+msgstr "Telefonnummer"
+
+msgid "Phone numbers"
+msgstr "Telefonnummer"
+
+msgid "Plan"
+msgstr "Planera"
+
+msgid "Plan #{index}"
+msgstr "Planera #{index}"
+
+msgid "Plan capacity"
+msgstr "Planera kapacitet"
+
+msgid "Plan capacity is full."
+msgstr "Planens kapacitet är full."
+
+msgid "Plan component name"
+msgstr "Plan komponentnamn"
+
+msgid "Plan components"
+msgstr "Planera komponenter"
+
+msgid "Plan description"
+msgstr "Planbeskrivning"
+
+msgid "Plan details"
+msgstr "Plan detaljer"
+
+msgid "Plan does not have limit"
+msgstr "Planen har ingen gräns"
+
+msgid "Plan name"
+msgstr "Plannamn"
+
+msgid "Plan price"
+msgstr "Plan pris"
+
+msgid "Planned quota usage: {usage}"
+msgstr "Planerad kvotanvändning: {usage}"
+
+msgid "Plans are invalid."
+msgstr "Planerna är ogiltiga."
+
+msgid "Please, create and enable a payment profile to be able to manage payments."
+msgstr "Vänligen skapa och aktivera en betalningsprofil för att kunna hantera betalningar."
+
+msgid "Please, select a date."
+msgstr "Välj ett datum."
+
+msgid "Please add resource name before editing a schedule."
+msgstr "Lägg till resursnamn innan du redigerar ett schema."
+
+msgid "Please create a new one:"
+msgstr "Skapa en ny:"
+
+msgid "Please create a new one picking the profile that best matches your organization:"
+msgstr "Skapa en ny profil genom att välja den profil som bäst matchar din organisation:"
+
+msgid "Please enter desired values in the rows below:"
+msgstr "Ange önskade värden i raderna nedan:"
+
+msgid "Please enter reason why offering has been paused."
+msgstr "Ange anledningen till varför erbjudandet har pausats."
+
+msgid "Please enter username, password and email."
+msgstr "Ange användarnamn, lösenord och e-post."
+
+msgid "Please enter username and password."
+msgstr "Ange användarnamn och lösenord."
+
+msgid "Please enter volume size to see price estimate."
+msgstr "Ange volymstorlek för att se prisuppskattning."
+
+msgid "Please give us a moment to validate your invitation."
+msgstr "Vänligen ge oss en stund att validera din inbjudan."
+
+msgid "Please make sure you know what you are doing and set to 10 minutes if unsure."
+msgstr "Se till att du vet vad du gör och ställ in på 10 minuter om du är osäker."
+
+msgid "Please note that request should specify offering and provide a reason."
+msgstr "Observera att begäran bör ange erbjudandet och ange en anledning."
+
+msgid "Please note that request should specify tenant and provide a reason."
+msgstr "Observera att begäran bör ange hyresgästen och ange en anledning."
+
+msgid "Please note that request should specify user name and provide a reason."
+msgstr "Observera att begäran bör ange användarnamn och ange en anledning."
+
+msgid "Please open offering {offeringName} ({offeringUuid}) for editing. \nRequestor: {userName} / {userUuid}. \nService provider: {customerName} / {customerUuid}"
+msgstr "Öppna erbjudandet {offeringName} ({offeringUuid}) för redigering. \nBeställare: {userName} / {userUuid}. \nTjänsteleverantör: {customerName} / {customerUuid}"
+
+msgid "Please provide a reason"
+msgstr "Ange en anledning"
+
+msgid "Please provide registration code of your company."
+msgstr "Vänligen ange registreringskod för ditt företag."
+
+msgid "Please provide visual material describing the Offering"
+msgstr "Tillhandahåll visuellt material som beskriver Erbjudandet"
+
+msgid "Please provide your EU VAT ID if you are registered in the European Union."
+msgstr "Ange ditt EU-moms-ID om du är registrerad i Europeiska unionen."
+
+msgid "Please review and activate offering {offeringName} ({offeringUuid}). \nRequestor: {userName} / {userUuid}. \nService provider: {customerName} / {customerUuid}"
+msgstr "Granska och aktivera erbjudandet {offeringName} ({offeringUuid}). \nBeställare: {userName} / {userUuid}. \nTjänsteleverantör: {customerName} / {customerUuid}"
+
+msgid "Please review organization permissions"
+msgstr "Granska organisationens behörigheter"
+
+msgid "Please search for your organization"
+msgstr "Sök efter din organisation"
+
+msgid "Please select a username that you will use for login into the Linux systems."
+msgstr "Välj ett användarnamn som du kommer att använda för inloggning i Linux-systemen."
+
+msgid "Please select flavor to see price estimate."
+msgstr "Välj smak för att se prisuppskattning."
+
+msgid "Please select type in Management tab first."
+msgstr "Välj typ i fliken Hantering först."
+
+msgid "Please select your language"
+msgstr "Välj ditt språk"
+
+msgid "Please start instance first."
+msgstr "Starta instansen först."
+
+msgid "Please stop the instance before changing its flavor."
+msgstr "Stoppa instansen innan du ändrar dess smak."
+
+msgid "Please stop the instance before its removal."
+msgstr "Stoppa instansen innan den tas bort."
+
+msgid "Please use Latin letters without spaces only."
+msgstr "Använd endast latinska bokstäver utan mellanslag."
+
+msgid "Plugin options are invalid."
+msgstr "Plugin-alternativen är ogiltiga."
+
+msgid "Pods"
+msgstr "Skida"
+
+msgid "Port"
+msgstr "Hamn"
+
+msgid "Port has been created."
+msgstr "Port har skapats."
+
+msgid "Port range"
+msgstr "Portområde"
+
+msgid "Ports"
+msgstr "Hamnar"
+
+msgid "Positive"
+msgstr "Positiv"
+
+msgid "Postal"
+msgstr "Post"
+
+msgid "Postal code"
+msgstr "Postnummer"
+
+msgid "Powered by"
+msgstr "Drivs av"
+
+msgid "Preferred language"
+msgstr "Föredraget språk"
+
+msgid "Preview"
+msgstr "Förhandsvisning"
+
+msgid "Preview offering"
+msgstr "Förhandsgranska erbjudande"
+
+msgid "Previous"
+msgstr "Föregående"
+
+msgid "Price"
+msgstr "Pris"
+
+msgid "Price for consumption"
+msgstr "Pris för konsumtion"
+
+msgid "Price is estimated."
+msgstr "Priset är uppskattat."
+
+msgid "Price per 30 days"
+msgstr "Pris per 30 dagar"
+
+msgid "Price per 365 days"
+msgstr "Pris per 365 dagar"
+
+msgid "Price per day"
+msgstr "Pris per dag"
+
+msgid "Price per half-month"
+msgstr "Pris per halv månad"
+
+msgid "Price per half month"
+msgstr "Pris per halv månad"
+
+msgid "Price per hour"
+msgstr "Pris per timme"
+
+msgid "Price per month"
+msgstr "Pris per månad"
+
+msgid "Price per unit"
+msgstr "Pris per enhet"
+
+msgid "Price per year"
+msgstr "Pris per år"
+
+msgid "Pricing tier"
+msgstr "Prissättning nivå"
+
+msgid "Print invoice"
+msgstr "Skriv ut faktura"
+
+msgid "Print record"
+msgstr "Skriv ut post"
+
+msgid "Priority"
+msgstr "Prioritet"
+
+msgid "Privacy policy"
+msgstr "Integritetspolicy"
+
+msgid "Private clouds"
+msgstr "Privata moln"
+
+msgid "Project"
+msgstr "Projekt"
+
+msgid "Project aggregates and isolates teams and resources."
+msgstr "Projektaggregerar och isolerar grupper och resurser."
+
+msgid "Project could not be created."
+msgstr "Projektet kunde inte skapas."
+
+msgid "Project could not be updated."
+msgstr "Projektet kunde inte uppdateras."
+
+msgid "Project description"
+msgstr "Beskrivning av projektet"
+
+msgid "Project details"
+msgstr "Projekt detaljer"
+
+msgid "Project events"
+msgstr "Projektevenemang"
+
+msgid "Project has been created."
+msgstr "Projektet har skapats."
+
+msgid "Project has been removed successfully."
+msgstr "Projektet har tagits bort."
+
+msgid "Project has been renamed from {project_previous_name} to {project_link}."
+msgstr "Projektet har bytt namn från {project_previous_name} till {project_link}."
+
+msgid "Project has been updated."
+msgstr "Projektet har uppdaterats."
+
+msgid "Project is not selected."
+msgstr "Projektet är inte markerat."
+
+msgid "Project manager"
+msgstr "Projektledare"
+
+msgid "Project manager cannot edit users with same role."
+msgstr "Projektledare kan inte redigera användare med samma roll."
+
+msgid "Project member"
+msgstr "Projektmedlem"
+
+msgid "Project name"
+msgstr "Projektnamn"
+
+msgid "Project removal"
+msgstr "Projektborttagning"
+
+msgid "Project resources"
+msgstr "Projektets resurser"
+
+msgid "Project role"
+msgstr "Projektroll"
+
+msgid "Project roles"
+msgstr "Projektroller"
+
+msgid "Project type"
+msgstr "Projekttyp"
+
+msgid "Project workspace"
+msgstr "Projekts arbetsyta"
+
+msgid "Project {project_link} has been created."
+msgstr "Projektet {project_link} har skapats."
+
+msgid "Project {project_link} has been updated."
+msgstr "Projektet {project_link} har uppdaterats."
+
+msgid "Project {project_name} has been deleted."
+msgstr "Projekt {project_name} har tagits bort."
+
+msgid "Projects"
+msgstr "Projekt"
+
+msgid "Projects ({count})"
+msgstr "Projekt ({count})"
+
+msgid "Projects list"
+msgstr "Projektlista"
+
+msgid "Proof"
+msgstr "Bevis"
+
+msgid "Proof document"
+msgstr "Bevisdokument"
+
+msgid "Provided by {provider}"
+msgstr "Tillhandahålls av {provider}"
+
+msgid "Provider"
+msgstr "Leverantör"
+
+msgid "Provider details"
+msgstr "Information om leverantören"
+
+msgid "Provider does not comply with project policies"
+msgstr "Leverantören följer inte projektpolicyer"
+
+msgid "Provider has been updated."
+msgstr "Providern har uppdaterats."
+
+msgid "Provider location"
+msgstr "Leverantörens plats"
+
+msgid "Provider name"
+msgstr "Leverantörens namn"
+
+msgid "Provision new resource"
+msgstr "Tillhandahåll ny resurs"
+
+msgid "Public SSH keys will be injected into services that allow key-based access."
+msgstr "Offentliga SSH-nycklar kommer att injiceras i tjänster som tillåter nyckelbaserad åtkomst."
+
+msgid "Public key"
+msgstr "Offentlig nyckel"
+
+msgid "Public offerings"
+msgstr "Offentliga erbjudanden"
+
+msgid "Public orders"
+msgstr "Offentliga order"
+
+msgid "Public resources"
+msgstr "Offentliga resurser"
+
+msgid "Public services"
+msgstr "Offentliga tjänster"
+
+msgid "Publish as Google Calendar"
+msgstr "Publicera som Google Kalender"
+
+msgid "Published"
+msgstr "Publicerad"
+
+msgid "Publisher"
+msgstr "Utgivare"
+
+msgid "Pulling"
+msgstr "Dragande"
+
+msgid "Pulling quotas"
+msgstr "Dra kvoter"
+
+msgid "Purchase"
+msgstr "Inköp"
+
+msgid "Purchase and usage is invoiced."
+msgstr "Inköp och användning faktureras."
+
+msgid "Put this into ~/.kube/config:"
+msgstr "Lägg detta i ~/.kube/config:"
+
+msgid "Quantity"
+msgstr "Kvantitet"
+
+msgid "Question"
+msgstr "Fråga"
+
+msgid "Quota has been reached."
+msgstr "Kvot har uppnåtts."
+
+msgid "Quota usage exceeds available limit."
+msgstr "Kvotanvändning överskrider den tillgängliga gränsen."
+
+msgid "Quotas"
+msgstr "Kvoter"
+
+msgid "RAM"
+msgstr "RAM"
+
+msgid "RAM limit (GB-hours)"
+msgstr "RAM-gräns (GB-timmar)"
+
+msgid "RAM limit is exceeded"
+msgstr "RAM-gränsen överskrids"
+
+msgid "RAM usage"
+msgstr "RAM-användning"
+
+msgid "Rancher access key"
+msgstr "Rancher-åtkomstnyckel"
+
+msgid "Rancher cluster"
+msgstr "Rancher-kluster"
+
+msgid "Rancher secret key"
+msgstr "Rancher hemlig nyckel"
+
+msgid "Rancher server URL"
+msgstr "Rancher-server URL"
+
+msgid "Rating"
+msgstr "Betyg"
+
+msgid "Reason"
+msgstr "Orsak"
+
+msgid "Reason unknown, please contact support."
+msgstr "Orsak okänd, vänligen kontakta supporten."
+
+msgid "Reboot"
+msgstr "Starta om"
+
+msgid "Recent additions"
+msgstr "Senaste tilläggen"
+
+msgid "Recipients"
+msgstr "Mottagare"
+
+msgid "Record no."
+msgstr "Spela in nr."
+
+msgid "Record notification has been sent to organization owners."
+msgstr "Registreringsmeddelande har skickats till organisationsägare."
+
+msgid "Record number"
+msgstr "Rekordnummer"
+
+msgid "Record period"
+msgstr "Rekordperiod"
+
+msgid "Redeploy"
+msgstr "Distribuera om"
+
+msgid "Referral count"
+msgstr "Hänvisningsantal"
+
+msgid "Referrals for {name}"
+msgstr "Hänvisningar för {name}"
+
+msgid "Refresh"
+msgstr "Uppdatera"
+
+msgid "Regenerate"
+msgstr "Regenerera"
+
+msgid "Region"
+msgstr "Område"
+
+msgid "Region name"
+msgstr "Regionens namn"
+
+msgid "Register"
+msgstr "Registrera"
+
+msgid "Register as service provider"
+msgstr "Registrera dig som tjänsteleverantör"
+
+msgid "Register organization as service provider and remove organization."
+msgstr "Registrera organisationen som tjänsteleverantör och ta bort organisationen."
+
+msgid "Register to"
+msgstr "Registrera dig på"
+
+msgid "Register with {label}"
+msgstr "Registrera dig med {label}"
+
+msgid "Registered at:"
+msgstr "Registrerat på:"
+
+msgid "Registration code"
+msgstr "Registreringskod"
+
+msgid "Registration method"
+msgstr "Registreringsmetod"
+
+msgid "Registry code"
+msgstr "Registerkod"
+
+msgid "Regular expression to limit flavors list"
+msgstr "Regelbundet uttryck för att begränsa listan över smaker"
+
+msgid "Regular user"
+msgstr "Regelbunden användare"
+
+msgid "Reject"
+msgstr "Avvisa"
+
+msgid "Rejected"
+msgstr "Avvisade"
+
+msgid "Release floating IPs"
+msgstr "Släpp flytande IP-adresser"
+
+msgid "Reload"
+msgstr "Ladda om"
+
+msgid "Reload issue data"
+msgstr "Ladda om problemdata"
+
+msgid "Remaining"
+msgstr "Återstående"
+
+msgid "Remaining amount"
+msgstr "Återstående belopp"
+
+msgid "Remote CIDR"
+msgstr "Fjärr CIDR"
+
+msgid "Remote Waldur API URL"
+msgstr "Fjärr-URL för Waldur API"
+
+msgid "Remote accounts"
+msgstr "Fjärrkonton"
+
+msgid "Remote accounts are used for accessing external services you have access to."
+msgstr "Fjärrkonton används för åtkomst till externa tjänster som du har åtkomst till."
+
+msgid "Remote category"
+msgstr "Fjärrkontroll kategori"
+
+msgid "Remote offering"
+msgstr "Fjärrerbjudande"
+
+msgid "Remote security group"
+msgstr "Fjärrsäkerhetsgrupp"
+
+msgid "Remove"
+msgstr "Ta bort"
+
+msgid "Remove from comparison"
+msgstr "Ta bort från jämförelse"
+
+msgid "Remove logo"
+msgstr "Ta bort logotyp"
+
+msgid "Remove organization"
+msgstr "Ta bort organisation"
+
+msgid "Remove profile"
+msgstr "Ta bort profil"
+
+msgid "Removed organizations cannot be restored!"
+msgstr "Borttagna organisationer kan inte återställas!"
+
+msgid "Removing organization {organizationName}"
+msgstr "Tar bort organisationen {organizationName}"
+
+msgid "Removing the organization will delete all related resources."
+msgstr "Om du tar bort organisationen tas alla relaterade resurser bort."
+
+msgid "Report"
+msgstr "Rapportera"
+
+msgid "Report a security incident"
+msgstr "Rapportera en säkerhetsincident"
+
+msgid "Report an issue"
+msgstr "Rapportera ett problem"
+
+msgid "Report details"
+msgstr "Rapportera detaljer"
+
+msgid "Report has been submitted"
+msgstr "Rapporten har lämnats in"
+
+msgid "Report incorrect data"
+msgstr "Rapportera felaktiga uppgifter"
+
+msgid "Report is invalid."
+msgstr "Rapporten är ogiltig."
+
+msgid "Report security incident"
+msgstr "Rapportera säkerhetsincident"
+
+msgid "Report usage"
+msgstr "Rapportera användning"
+
+msgid "Reported by me"
+msgstr "Rapporterad av mig"
+
+msgid "Reported value is reused every month until changed."
+msgstr "Rapporterat värde återanvänds varje månad tills det ändras."
+
+msgid "Reporter"
+msgstr "Reporter"
+
+msgid "Reporting"
+msgstr "Rapportering"
+
+msgid "Request-based item"
+msgstr "Begärandebaserad post"
+
+msgid "Request-based item (without Service Desk)"
+msgstr "Begärandebaserad artikel (utan Service Desk)"
+
+msgid "Request account removal for {userName}."
+msgstr "Begär borttagning av konto för {userName}."
+
+msgid "Request an approval"
+msgstr "Begär ett godkännande"
+
+msgid "Request demo"
+msgstr "Begär demo"
+
+msgid "Request description"
+msgstr "Begäran beskrivning"
+
+msgid "Request detail"
+msgstr "Begär information"
+
+msgid "Request details"
+msgstr "Begär detaljer"
+
+msgid "Request direct access"
+msgstr "Begär direkt åtkomst"
+
+msgid "Request direct access to OpenStack Tenant"
+msgstr "Begär direkt åtkomst till OpenStack Tenant"
+
+msgid "Request direct access to {name}"
+msgstr "Begär direkt åtkomst till {name}"
+
+msgid "Request editing"
+msgstr "Begär redigering"
+
+msgid "Request for a change"
+msgstr "Begäran om ändring"
+
+msgid "Request for a termination"
+msgstr "Begäran om uppsägning"
+
+msgid "Request publishing"
+msgstr "Begär publicering"
+
+msgid "Request removal"
+msgstr "Begär borttagning"
+
+msgid "Request title"
+msgstr "Begär titel"
+
+msgid "Request type"
+msgstr "Begäran typ"
+
+msgid "Request {mode} of Public Offering"
+msgstr "Begär {mode} av offentligt erbjudande"
+
+msgid "Request {mode} of {name}"
+msgstr "Begär {mode} av {name}"
+
+msgid "Request {requestId} has been created."
+msgstr "Begäran {requestId} har skapats."
+
+msgid "Requested"
+msgstr "Begärt"
+
+msgid "Requested by"
+msgstr "Begärd av"
+
+msgid "Requested email"
+msgstr "Begärd e-post"
+
+msgid "Requesting of new resources has been temporarily paused"
+msgstr "Begäran om nya resurser har tillfälligt pausats"
+
+msgid "Required"
+msgstr "Krävs"
+
+msgid "Resend"
+msgstr "Skicka igen"
+
+msgid "Reserved slot"
+msgstr "Reserverad plats"
+
+msgid "Reserved slot by {name}"
+msgstr "Reserverad plats av {name}"
+
+msgid "Reset"
+msgstr "Återställ"
+
+msgid "Resize droplet"
+msgstr "Ändra storlek på droplet"
+
+msgid "Resolution"
+msgstr "Upplösning"
+
+msgid "Resource"
+msgstr "Resurs"
+
+msgid "Resource UUID"
+msgstr "Resurs UUID"
+
+msgid "Resource already has this plan."
+msgstr "Resursen har redan den här planen."
+
+msgid "Resource configuration"
+msgstr "Resurskonfiguration"
+
+msgid "Resource configuration is invalid. Please fix errors in form."
+msgstr "Resursinställningen är ogiltig. Åtgärda fel i formuläret."
+
+msgid "Resource deletion has been scheduled."
+msgstr "Radering av resurs har schemalagts."
+
+msgid "Resource description"
+msgstr "Beskrivning av resursen"
+
+msgid "Resource details"
+msgstr "Resursinformation"
+
+msgid "Resource does not have any plan."
+msgstr "Resursen har ingen plan."
+
+msgid "Resource does not have backend ID."
+msgstr "Resursen har inte backend-ID."
+
+msgid "Resource does not have plan."
+msgstr "Resursen har ingen plan."
+
+msgid "Resource events"
+msgstr "Resurs-händelser"
+
+msgid "Resource group"
+msgstr "Resursgrupp"
+
+msgid "Resource is in sync"
+msgstr "Resursen är synkroniserad"
+
+msgid "Resource is not connected to the marketplace yet."
+msgstr "Resursen är inte ansluten till marknadsplatsen ännu."
+
+msgid "Resource limits change request has been submitted."
+msgstr "Begäran om ändring av resursgränser har skickats."
+
+msgid "Resource link"
+msgstr "Resurslänk"
+
+msgid "Resource name"
+msgstr "Resursnamn"
+
+msgid "Resource plan change request has been submitted."
+msgstr "Begäran om ändring av resursplan har skickats."
+
+msgid "Resource schedule is already activated."
+msgstr "Resursschema är redan aktiverat."
+
+msgid "Resource schedule is already deactivated."
+msgstr "Resursschemat är redan inaktiverat."
+
+msgid "Resource termination request has been submitted."
+msgstr "Begäran om avslutning av resurser har skickats."
+
+msgid "Resource usage"
+msgstr "Resursanvändning"
+
+msgid "Resource usage for {resourceName}"
+msgstr "Resursanvändning för {resourceName}"
+
+msgid "Resource usage for {resource}"
+msgstr "Resursanvändning för {resource}"
+
+msgid "Resources"
+msgstr "Resurser"
+
+msgid "Resources import has failed."
+msgstr "Resursimporten misslyckades."
+
+msgid "Resources represent the services you are using."
+msgstr "Resurser representerar de tjänster du använder."
+
+msgid "Resources usage"
+msgstr "Resursanvändning"
+
+msgid "Restart"
+msgstr "Starta om"
+
+msgid "Restarting"
+msgstr "Startar om"
+
+msgid "Restore"
+msgstr "Återställ"
+
+msgid "Restore virtual machine from backup {name}"
+msgstr "Återställ virtuell maskin från säkerhetskopian {name}"
+
+msgid "Restore volume snapshot"
+msgstr "Återställa volym snapshot"
+
+msgid "Restored volumes"
+msgstr "Återställda volymer"
+
+msgid "Restricted, because of type."
+msgstr "Begränsad, på grund av typ."
+
+msgid "Restroing"
+msgstr "Vilande"
+
+msgid "Retention time"
+msgstr "Retentionstid"
+
+msgid "Retention time in days, if 0 - resource will be kept forever"
+msgstr "Retentionstid i dagar, om 0 - resurs kommer att hållas för evigt"
+
+msgid "Retry"
+msgstr "Försök igen"
+
+msgid "Retype"
+msgstr "Skriv om"
+
+msgid "Retype OpenStack Volume"
+msgstr "Skriv om OpenStack-volym"
+
+msgid "Review"
+msgstr "Omdöme"
+
+msgid "Review has been closed."
+msgstr "Granskningen har stängts."
+
+msgid "Review has been performed."
+msgstr "Granskning har utförts."
+
+msgid "Reviews"
+msgstr "Recensioner"
+
+msgid "Revoke"
+msgstr "Återkalla"
+
+msgid "Role"
+msgstr "Roll"
+
+msgid "Role expires on"
+msgstr "Rollen upphör att gälla den"
+
+msgid "Role in project"
+msgstr "Roll i projektet"
+
+msgid "Role management events"
+msgstr "Rollhanteringshändelser"
+
+msgid "Roles"
+msgstr "Roller"
+
+msgid "Routers"
+msgstr "Routrar"
+
+msgid "Rule count"
+msgstr "Antal regler"
+
+msgid "Rules"
+msgstr "Regler"
+
+msgid "Running accounting"
+msgstr "Löpande redovisning"
+
+msgid "Runtime state"
+msgstr "Körningstillstånd"
+
+msgid "Russian"
+msgstr "Ryska"
+
+msgid "SAML2 single logout has been started. Please wait until it completes."
+msgstr "SAML2-enstaka utloggning har startats. Vänta tills det är klart."
+
+msgid "SLURM allocation"
+msgstr "SLURM-tilldelning"
+
+msgid "SLURM allocation usage"
+msgstr "SLURM-allokeringsanvändning"
+
+msgid "SQL database has been created."
+msgstr "SQL-databas har skapats."
+
+msgid "SQL server description"
+msgstr "SQL-serverbeskrivning"
+
+msgid "SQL server name"
+msgstr "SQL-servernamn"
+
+msgid "SSH Keys"
+msgstr "SSH-nycklar"
+
+msgid "SSH key"
+msgstr "SSH-nyckel"
+
+msgid "SSH key has been removed."
+msgstr "SSH-nyckeln har tagits bort."
+
+msgid "SSH key management events"
+msgstr "SSH-nyckelhantering händelser"
+
+msgid "SSH key {ssh_key_name} has been created for user {user_link}"
+msgstr "SSH-nyckel {ssh_key_name} har skapats för användaren {user_link}"
+
+msgid "SSH key {ssh_key_name} has been deleted for user {user_link}"
+msgstr "SSH-nyckel {ssh_key_name} har tagits bort för användare {user_link}"
+
+msgid "SSH keys"
+msgstr "SSH-nycklar"
+
+msgid "SSH public key"
+msgstr "SSH offentlig nyckel"
+
+msgid "Sankey diagram"
+msgstr "Sankey diagram"
+
+msgid "Save"
+msgstr "Spara"
+
+msgid "Scale"
+msgstr "Skala"
+
+msgid "Schedule"
+msgstr "Schema"
+
+msgid "Schedules"
+msgstr "Scheman"
+
+msgid "Schedules are invalid."
+msgstr "Scheman är ogiltiga."
+
+msgid "Score"
+msgstr "Göra"
+
+msgid "Script for creation of a resource"
+msgstr "Skript för skapande av en resurs"
+
+msgid "Script for regular update of resource and its accounting"
+msgstr "Skript för regelbunden uppdatering av resurs och dess redovisning"
+
+msgid "Script for termination of a resource"
+msgstr "Skript för uppsägning av en resurs"
+
+msgid "Script for updating a resource on plan change"
+msgstr "Skript för uppdatering av en resurs vid planändring"
+
+msgid "Script language"
+msgstr "Skriptspråk"
+
+msgid "Search"
+msgstr "Sök"
+
+msgid "Search for offerings..."
+msgstr "Sök efter erbjudanden..."
+
+msgid "Security group creation has been scheduled."
+msgstr "Skapandet av säkerhetsgrupper har schemalagts."
+
+msgid "Security group does not contain any rule yet."
+msgstr "Säkerhetsgruppen innehåller ingen regel ännu."
+
+msgid "Security group rules update has been scheduled."
+msgstr "Uppdatering av säkerhetsgruppsregler har schemalagts."
+
+msgid "Security groups"
+msgstr "Säkerhetsgrupper"
+
+msgid "Security groups details"
+msgstr "Information om säkerhetsgrupper"
+
+msgid "Security incident date: {date}"
+msgstr "Datum för säkerhetsincident: {date}"
+
+msgid "Security incident type: {type}"
+msgstr "Säkerhetsincident typ: {type}"
+
+msgid "See all"
+msgstr "Se alla"
+
+msgid "Seems there's nothing here"
+msgstr "Det verkar inte finnas något här"
+
+msgid "Seems you don't have any public resources yet"
+msgstr "Verkar som om du inte har några offentliga resurser än"
+
+msgid "Seems you don't have any resources yet"
+msgstr "Verkar som om du inte har några resurser än"
+
+msgid "Segmentation ID"
+msgstr "Segmenterings-ID"
+
+msgid "Select"
+msgstr "Välj"
+
+msgid "Select accounting period"
+msgstr "Välj redovisningsperiod"
+
+msgid "Select affected resource..."
+msgstr "Välj berörd resurs..."
+
+msgid "Select affiliation"
+msgstr "Välj tillhörighet"
+
+msgid "Select an option..."
+msgstr "Välj ett alternativ..."
+
+msgid "Select assignee..."
+msgstr "Välj tilldelare..."
+
+msgid "Select available weekdays"
+msgstr "Välj tillgängliga vardagar"
+
+msgid "Select caller..."
+msgstr "Välj uppringare..."
+
+msgid "Select category..."
+msgstr "Välj kategori..."
+
+msgid "Select connected subnet"
+msgstr "Välj anslutet undernät"
+
+msgid "Select country..."
+msgstr "Välj land..."
+
+msgid "Select dates"
+msgstr "Välj datum"
+
+msgid "Select division..."
+msgstr "Välj division..."
+
+msgid "Select division type..."
+msgstr "Välj uppdelningstyp ..."
+
+msgid "Select evaluation..."
+msgstr "Välj utvärdering..."
+
+msgid "Select incident type"
+msgstr "Välj incidenttyp"
+
+msgid "Select instance..."
+msgstr "Välj instans..."
+
+msgid "Select issue template..."
+msgstr "Välj problemmall..."
+
+msgid "Select offering..."
+msgstr "Välj erbjudande..."
+
+msgid "Select offerings..."
+msgstr "Välj erbjudanden..."
+
+msgid "Select organization..."
+msgstr "Välj organisation..."
+
+msgid "Select organization roles"
+msgstr "Välj organisationsroller"
+
+msgid "Select organizations..."
+msgstr "Välj organisationer..."
+
+msgid "Select period..."
+msgstr "Välj period..."
+
+msgid "Select plan"
+msgstr "Välj plan"
+
+msgid "Select priority..."
+msgstr "Välj prioritet..."
+
+msgid "Select project"
+msgstr "Välj projekt"
+
+msgid "Select project..."
+msgstr "Välj projekt..."
+
+msgid "Select project roles"
+msgstr "Välj projektroller"
+
+msgid "Select projects..."
+msgstr "Välj projekt..."
+
+msgid "Select provider..."
+msgstr "Välj leverantör..."
+
+msgid "Select request type..."
+msgstr "Välj typ av begäran..."
+
+msgid "Select role"
+msgstr "Välj roll"
+
+msgid "Select security groups..."
+msgstr "Välj säkerhetsgrupper..."
+
+msgid "Select service provider"
+msgstr "Välj tjänsteleverantör"
+
+msgid "Select service provider..."
+msgstr "Välj tjänsteleverantör..."
+
+msgid "Select size..."
+msgstr "Välj storlek..."
+
+msgid "Select some files"
+msgstr "Välj några filer"
+
+msgid "Select state..."
+msgstr "Välj stat..."
+
+msgid "Select status"
+msgstr "Välj status"
+
+msgid "Select subnet"
+msgstr "Välj undernät"
+
+msgid "Select subnets to connect to..."
+msgstr "Välj undernät att ansluta till..."
+
+msgid "Select tenant..."
+msgstr "Välj hyresgäst..."
+
+msgid "Select tenants..."
+msgstr "Välj hyresgäster..."
+
+msgid "Select type..."
+msgstr "Välj typ..."
+
+msgid "Select user..."
+msgstr "Välj användare..."
+
+msgid "Select workspace"
+msgstr "Välj arbetsyta"
+
+msgid "Selected"
+msgstr "Vald"
+
+msgid "Selector"
+msgstr "Väljare"
+
+msgid "Send notification"
+msgstr "Skicka meddelande"
+
+msgid "Sent"
+msgstr "Skickat"
+
+msgid "Server"
+msgstr "Server"
+
+msgid "Service Provider"
+msgstr "Tjänsteleverantör"
+
+msgid "Service Request"
+msgstr "Serviceförfrågan"
+
+msgid "Service Request - client’s request to modify, add, change or remove partially or completely a particular service."
+msgstr "Serviceförfrågan - kundens begäran om att ändra, lägga till, ändra eller ta bort en viss tjänst helt eller delvis."
+
+msgid "Service provider"
+msgstr "Tjänsteleverantör"
+
+msgid "Service provider:"
+msgstr "Tjänsteleverantör:"
+
+msgid "Service provider API secret code has been generated."
+msgstr "Tjänstleverantörens API-hemliga kod har genererats."
+
+msgid "Service provider can charge for usage of the following components"
+msgstr "Tjänsteleverantören kan ta betalt för användning av följande komponenter"
+
+msgid "Service provider can report up to the requested amount over the whole active state of resource."
+msgstr "Tjänsteleverantören kan rapportera upp till det begärda beloppet över hela aktiva resurstillståndet."
+
+msgid "Service provider details"
+msgstr "Information om tjänsteleverantören"
+
+msgid "Service provider has been registered."
+msgstr "Tjänsteleverantören har registrerats."
+
+msgid "Service provider type"
+msgstr "Tjänsteleverantörstyp"
+
+msgid "Service settings are invalid."
+msgstr "Tjänsteinställningarna är ogiltiga."
+
+msgid "Service settings of this resource are in state erred."
+msgstr "Tjänstinställningarna för den här resursen är felaktiga."
+
+msgid "Service type"
+msgstr "Typ av tjänst"
+
+msgid "Services"
+msgstr "Tjänster"
+
+msgid "Set MTU"
+msgstr "Ställ in MTU"
+
+msgid "Set allowed address pairs"
+msgstr "Ställ in tillåtna adresspar"
+
+msgid "Set backend ID"
+msgstr "Ställ in backend-ID"
+
+msgid "Set limits"
+msgstr "Ange gränser"
+
+msgid "Set location"
+msgstr "Ställ in plats"
+
+msgid "Set rules"
+msgstr "Ange regler"
+
+msgid "Set rules in {name} security group"
+msgstr "Ange regler i {name} säkerhetsgrupp"
+
+msgid "Set static routes"
+msgstr "Ange statiska vägar"
+
+msgid "Set to draft"
+msgstr "Ställ in till utkast"
+
+msgid "Set to true to activate privilege escalation"
+msgstr "Ställ in till true för att aktivera utökning av privilegier"
+
+msgid "Shared"
+msgstr "Delad"
+
+msgid "Shared providers"
+msgstr "Delade leverantörer"
+
+msgid "Shopping cart is empty. You should add items to cart first."
+msgstr "Kundvagnen är tom. Du bör lägga till varor i kundvagnen först."
+
+msgid "Shopping cart item has been updated."
+msgstr "Kundvagnsartikeln har uppdaterats."
+
+msgid "Shopping cart item update"
+msgstr "Uppdatering av kundvagnsartikel"
+
+msgid "Show"
+msgstr "Visa"
+
+msgid "Show all"
+msgstr "Visa alla"
+
+msgid "Show chart"
+msgstr "Visa diagram"
+
+msgid "Show choices"
+msgstr "Visa val"
+
+msgid "Show console log"
+msgstr "Visa konsollogg"
+
+msgid "Show controls"
+msgstr "Visa kontroller"
+
+msgid "Show details"
+msgstr "Visa detaljer"
+
+msgid "Show diff"
+msgstr "Visa diff"
+
+msgid "Show events"
+msgstr "Visa evenemang"
+
+msgid "Show password"
+msgstr "Visa lösenord"
+
+msgid "Show private"
+msgstr "Visa privat"
+
+msgid "Show report"
+msgstr "Visa rapport"
+
+msgid "Show request"
+msgstr "Visa begäran"
+
+msgid "Show shared"
+msgstr "Visa delat"
+
+msgid "Show usage"
+msgstr "Visa användning"
+
+msgid "Show user details"
+msgstr "Visa användarinformation"
+
+msgid "Show with running accounting"
+msgstr "Visa med löpande redovisning"
+
+msgid "Showing {sliceStart} to {sliceEnd} of {resultCount} entries."
+msgstr "Visar {sliceStart} till {sliceEnd} av {resultCount} poster."
+
+msgid "Shutdown"
+msgstr "Avstängning"
+
+msgid "Sign in"
+msgstr "Logga in"
+
+msgid "Sign in with {label}"
+msgstr "Logga in med {label}"
+
+msgid "Size"
+msgstr "Storlek"
+
+msgid "Size name"
+msgstr "Storleksnamn"
+
+msgid "Size should be between 1 and 10240 GB."
+msgstr "Storleken ska vara mellan 1 och 10240 GB."
+
+msgid "Skip connection to external network"
+msgstr "Hoppa över anslutning till externt nätverk"
+
+msgid "Skip floating IP assignment"
+msgstr "Hoppa över flytande IP-tilldelning"
+
+msgid "Snapshot schedule for volume has been created."
+msgstr "Ögonblicksbildschema för volym har skapats."
+
+msgid "Snapshot schedules"
+msgstr "Snapshot scheman"
+
+msgid "Snapshot size limit"
+msgstr "Storleksgräns för ögonblicksbilder"
+
+msgid "Snapshots"
+msgstr "Ögonblicksbilder"
+
+msgid "Snapshots count"
+msgstr "Snapshots räknas"
+
+msgid "Sponsor number"
+msgstr "Sponsornummer"
+
+msgid "Staff"
+msgstr "Personal"
+
+msgid "Staff and Support user"
+msgstr "Personal och supportanvändare"
+
+msgid "Start"
+msgstr "Starta"
+
+msgid "Start day of accounting"
+msgstr "Startdag för redovisning"
+
+msgid "Start time"
+msgstr "Starttid"
+
+msgid "Starting"
+msgstr "Startar"
+
+msgid "State"
+msgstr "Stat"
+
+msgid "Static routes update was scheduled."
+msgstr "Uppdatering av statiska vägar var schemalagd."
+
+msgid "Status"
+msgstr "Status"
+
+msgid "Step 1. Select offering"
+msgstr "Steg 1. Välj erbjudande"
+
+msgid "Step 2. Select resources"
+msgstr "Steg 2. Välj resurser"
+
+msgid "Stop"
+msgstr "Stoppa"
+
+msgid "Stopping"
+msgstr "Stoppa"
+
+msgid "Storage"
+msgstr "Lagring"
+
+msgid "Storage mode"
+msgstr "Lagringsläge"
+
+msgid "Storage size"
+msgstr "Lagringsstorlek"
+
+msgid "Storage size in GiB"
+msgstr "Lagringsstorlek i GiB"
+
+msgid "Storage type"
+msgstr "Lagringstyp"
+
+msgid "Subject"
+msgstr "Ämne"
+
+msgid "Submit"
+msgstr "Skicka"
+
+msgid "Submit report"
+msgstr "Skicka rapport"
+
+msgid "Submit usage report"
+msgstr "Skicka användningsrapport"
+
+msgid "Submit with"
+msgstr "Skicka in med"
+
+msgid "Subnet"
+msgstr "Undernät"
+
+msgid "Subnet CIDR"
+msgstr "Undernät CIDR"
+
+msgid "Subnet has been created."
+msgstr "Undernät har skapats."
+
+msgid "Subnet name"
+msgstr "Undernätets namn"
+
+msgid "Subnets"
+msgstr "Undernät"
+
+msgid "Subnets from where connection to self-service is allowed."
+msgstr "Undernät där anslutning till självbetjäning är tillåten."
+
+msgid "Subscription ID"
+msgstr "Prenumeration ID"
+
+msgid "Subtotal"
+msgstr "Delsumma"
+
+msgid "Sum"
+msgstr "Summa"
+
+msgid "Summary"
+msgstr "Sammanfattning"
+
+msgid "Support"
+msgstr "Stöd"
+
+msgid "Support dashboard"
+msgstr "Instrumentpanel för support"
+
+msgid "Support request events"
+msgstr "Händelser med supportbegäran"
+
+msgid "Support requests"
+msgstr "Supportförfrågningar"
+
+msgid "Support user"
+msgstr "Stödanvändare"
+
+msgid "Support workspace"
+msgstr "Stöd arbetsyta"
+
+msgid "Sure? Form data would be lost"
+msgstr "Säker? Formulärdata skulle gå förlorade"
+
+msgid "Suspend"
+msgstr "Avbryta"
+
+msgid "Sync profile"
+msgstr "Synkroniseringsprofil"
+
+msgid "Sync with Google Calendar"
+msgstr "Synkronisera med Google Kalender"
+
+msgid "Synchronisation has been scheduled."
+msgstr "Synkronisering har schemalagts."
+
+msgid "Synchronise"
+msgstr "Synkronisera"
+
+msgid "System administrator"
+msgstr "Systemadministratör"
+
+msgid "System volume couldn't be detached."
+msgstr "Systemvolymen kunde inte lossas."
+
+msgid "System volume size"
+msgstr "Systemets volym storlek"
+
+msgid "System volume type"
+msgstr "Systemvolymtyp"
+
+msgid "TAX"
+msgstr "SKATT"
+
+msgid "TLD \"{tld}\" must not be all numeric"
+msgstr "TLD \"{tld}\" får inte vara numerisk"
+
+msgid "TOTAL"
+msgstr "TOTALT"
+
+msgid "Taking a snapshot"
+msgstr "Ta en ögonblicksbild"
+
+msgid "Target"
+msgstr "Mål"
+
+msgid "Target type"
+msgstr "Måltyp"
+
+msgid "Targets"
+msgstr "Mål"
+
+msgid "Tax"
+msgstr "Skatt"
+
+msgid "Tax number"
+msgstr "Skattenummer"
+
+msgid "Tax percent"
+msgstr "Skatt procent"
+
+msgid "Team"
+msgstr "Grupp"
+
+msgid "Team member has been removed."
+msgstr "Teammedlemmen har tagits bort."
+
+msgid "Team size"
+msgstr "Lagstorlek"
+
+msgid "Technical code used by accounting software."
+msgstr "Teknisk kod som används av redovisningsprogram."
+
+msgid "Technical name intended for integration and automated reporting. Please use Latin letters without spaces only."
+msgstr "Tekniskt namn avsett för integration och automatiserad rapportering. Använd latinska bokstäver utan mellanslag."
+
+msgid "Template"
+msgstr "Mall"
+
+msgid "Template details"
+msgstr "Malldetaljer"
+
+msgid "Template files"
+msgstr "Mallfiler"
+
+msgid "Tenant"
+msgstr "Hyresgäst"
+
+msgid "Tenant ID"
+msgstr "Hyresgäst-ID"
+
+msgid "Tenant description"
+msgstr "Hyresgästen beskrivning"
+
+msgid "Tenant name"
+msgstr "Hyresgästens namn"
+
+msgid "Tenant user password"
+msgstr "Hyresgästens användarlösenord"
+
+msgid "Tenant user username"
+msgstr "Användarnamn för hyresgästen"
+
+msgid "Terminate"
+msgstr "Avsluta"
+
+msgid "Terminate an existing resource"
+msgstr "Avsluta en befintlig resurs"
+
+msgid "Terminate resource {resourceName}"
+msgstr "Avsluta resurs {resourceName}"
+
+msgid "Terminated"
+msgstr "Avslutade"
+
+msgid "Terminating"
+msgstr "Avsluta"
+
+msgid "Terms of Service"
+msgstr "Användarvillkoren"
+
+msgid "Text has been copied"
+msgstr "Text har kopierats"
+
+msgid "Thank you for your response!"
+msgstr "Tack för ditt svar!"
+
+msgid "The date is inclusive. Once reached, all project resource will be scheduled for termination."
+msgstr "Datumet är inkluderande. När den har nåtts kommer alla projektresurser att schemaläggas för avslutning."
+
+msgid "The invoice has been marked as paid."
+msgstr "Fakturan har markerats som betald."
+
+msgid "The key has been created."
+msgstr "Nyckeln har skapats."
+
+msgid "The name can contain only letters, numbers, and hyphens. It should start with a letter and must end with a letter or a number"
+msgstr "Namnet kan endast innehålla bokstäver, siffror och bindestreck. Det bör börja med en bokstav och måste sluta med en bokstav eller ett nummer"
+
+msgid "The name can only be made up of lowercase letters, numbers and the hyphen. The hyphen may not lead or trail in the name."
+msgstr "Namnet kan endast bestå av små bokstäver, siffror och bindestreck. Breck får inte leda eller spår i namnet."
+
+msgid "The name must be shorter than 15 characters."
+msgstr "Namnet måste vara kortare än 15 tecken."
+
+msgid "The project will be changed for all items in cart."
+msgstr "Projektet kommer att ändras för alla artiklar i kundvagnen."
+
+msgid "The value is not valid IP v4 CIDR"
+msgstr "Värdet är inte giltigt IP v4 CIDR"
+
+msgid "The value is not valid IP v6 CIDR"
+msgstr "Värdet är inte giltigt IP v6 CIDR"
+
+msgid "The worker node is expected to have at least 4 vCPU and 4 GB RAM to run Longhorn."
+msgstr "Arbetarnoden förväntas ha minst 4 vCPU och 4 GB RAM för att köra Longhorn."
+
+msgid "Then download (if needed) and run kubectl"
+msgstr "Hämta sedan (om det behövs) och kör kubectl"
+
+msgid "There are no SSH keys yet."
+msgstr "Det finns inga SSH-nycklar ännu."
+
+msgid "There are no actions."
+msgstr "Det finns inga åtgärder."
+
+msgid "There are no available projects."
+msgstr "Det finns inga tillgängliga projekt."
+
+msgid "There are no available users."
+msgstr "Det finns inga tillgängliga användare."
+
+msgid "There are no categories."
+msgstr "Det finns inga kategorier."
+
+msgid "There are no categories in marketplace yet."
+msgstr "Det finns inga kategorier på marknaden ännu."
+
+msgid "There are no categories yet."
+msgstr "Det finns inga kategorier ännu."
+
+msgid "There are no charts yet."
+msgstr "Det finns inga diagram än."
+
+msgid "There are no checklist yet."
+msgstr "Det finns ingen checklista än."
+
+msgid "There are no checklists."
+msgstr "Det finns inga checklistor."
+
+msgid "There are no comments yet."
+msgstr "Det finns inga kommentarer än."
+
+msgid "There are no events for this resource."
+msgstr "Det finns inga händelser för den här resursen."
+
+msgid "There are no invoices."
+msgstr "Det finns inga fakturor."
+
+msgid "There are no matching checklists."
+msgstr "Det finns inga matchande checklistor."
+
+msgid "There are no offerings available."
+msgstr "Det finns inga erbjudanden tillgängliga."
+
+msgid "There are no offerings in marketplace yet."
+msgstr "Det finns inga erbjudanden på Marketplace ännu."
+
+msgid "There are no offerings yet."
+msgstr "Det finns inga erbjudanden ännu."
+
+msgid "There are no organizations matching filter."
+msgstr "Det finns inga organisationer som matchar filter."
+
+msgid "There are no organizations yet."
+msgstr "Det finns inga organisationer än."
+
+msgid "There are no other plans available."
+msgstr "Det finns inga andra planer tillgängliga."
+
+msgid "There are no other volume types available."
+msgstr "Det finns inga andra volymtyper tillgängliga."
+
+msgid "There are no projects matching filter."
+msgstr "Det finns inga projekt matchande filter."
+
+msgid "There are no projects yet for this organization."
+msgstr "Det finns ännu inga projekt för den här organisationen."
+
+msgid "There are no remote accounts yet."
+msgstr "Det finns inga fjärrkonton ännu."
+
+msgid "There are no requests yet."
+msgstr "Det finns inga förfrågningar ännu."
+
+msgid "There are no resources available."
+msgstr "Det finns inga resurser tillgängliga."
+
+msgid "There are no resources yet."
+msgstr "Det finns inga resurser ännu."
+
+msgid "There are no sections for comparison yet."
+msgstr "Det finns inga avsnitt för jämförelse ännu."
+
+msgid "There are no {verboseName} found matching the filter."
+msgstr "Det finns inga {verboseName} som matchar filtret."
+
+msgid "There are no {verboseName} yet."
+msgstr "Det finns inga {verboseName} än."
+
+msgid "There are not namespaces in this project yet."
+msgstr "Det finns inga namnområden i detta projekt än."
+
+msgid "There is no activity yet."
+msgstr "Det finns ingen aktivitet än."
+
+msgid "This field is required."
+msgstr "Det här fältet är obligatoriskt."
+
+msgid "This name will be visible in accounting data."
+msgstr "Detta namn kommer att synas i redovisningsuppgifter."
+
+msgid "This value is invalid JSON."
+msgstr "Det här värdet är ogiltigt JSON."
+
+msgid "This website uses cookies to ensure you get the best experience on our website."
+msgstr "Denna webbplats använder cookies för att säkerställa att du får den bästa upplevelsen på vår webbplats."
+
+msgid "Thumbnail"
+msgstr "Miniatyr"
+
+msgid "Time in progress"
+msgstr "Tiden pågår"
+
+msgid "Time slot"
+msgstr "Tidslucka"
+
+msgid "Time slot has been added."
+msgstr "Tidslucka har lagts till."
+
+msgid "Time slots"
+msgstr "Tidsluckor"
+
+msgid "Time zone"
+msgstr "Tidszon"
+
+msgid "Timestamp"
+msgstr "Tidsstämpel"
+
+msgid "Title"
+msgstr "Titel"
+
+msgid "To"
+msgstr "Till"
+
+msgid "To correct details of your organization, please send an email to {supportEmail} highlighting the errors in current details. Thank you!"
+msgstr "För att korrigera information om din organisation, skicka ett e-postmeddelande till {supportEmail} som markerar felen i aktuell information. Tack!"
+
+msgid "To get access, please send a request to {supportEmail}."
+msgstr "För att få åtkomst, skicka en begäran till {supportEmail}."
+
+msgid "To get your clouds under control, please fill in your data."
+msgstr "Fyll i dina data för att få dina moln under kontroll."
+
+msgid "To port"
+msgstr "Till port"
+
+msgid "To remove account, please send a request to {support}."
+msgstr "För att ta bort kontot, skicka en begäran till {support}."
+
+msgid "To remove your organization, please send an email to {supportEmail}. Thank you!"
+msgstr "Om du vill ta bort organisationen skickar du ett e-postmeddelande till {supportEmail}. Tack!"
+
+msgid "To report a security incident, please send an email to {supportEmail}."
+msgstr "Om du vill rapportera en säkerhetsincident skickar du ett e-postmeddelande till {supportEmail}."
+
+msgid "To report an issue, please send an email to {supportEmail}."
+msgstr "Om du vill rapportera ett problem skickar du ett e-postmeddelande till {supportEmail}."
+
+msgid "Today"
+msgstr "Idag"
+
+msgid "Total"
+msgstr "Totalt"
+
+msgid "Total: {total}"
+msgstr "Totalt: {total}"
+
+msgid "Total CPU"
+msgstr "Total CPU"
+
+msgid "Total CPU hours consumed this month"
+msgstr "Totalt antal CPU-timmar som konsumeras denna månad"
+
+msgid "Total GPU hours consumed this month"
+msgstr "Totalt antal GPU-timmar som förbrukats den här månaden"
+
+msgid "Total RAM GB-hours consumed this month"
+msgstr "Totalt RAM GB-timmar som förbrukats den här månaden"
+
+msgid "Total cost:"
+msgstr "Total kostnad:"
+
+msgid "Total memory"
+msgstr "Totalt minne"
+
+msgid "Total number of nodes"
+msgstr "Totalt antal noder"
+
+msgid "Total paid"
+msgstr "Totalt betald"
+
+msgid "Total price"
+msgstr "Totalt pris"
+
+msgid "Total storage"
+msgstr "Total lagring"
+
+msgid "Total storage limit is exceeded"
+msgstr "Den totala lagringsgränsen har överskridits"
+
+msgid "Tracked using UTC timezone, displayed with your browser’s timezone."
+msgstr "Spåras med UTC-tidszon, visas med webbläsarens tidszon."
+
+msgid "Try again"
+msgstr "Försök igen"
+
+msgid "Type"
+msgstr "Typ"
+
+msgid "Type is invalid."
+msgstr "Typ är ogiltig."
+
+msgid "Type of incident"
+msgstr "Typ av incident"
+
+msgid "URL"
+msgstr "URL"
+
+msgid "UUID"
+msgstr "UUID"
+
+msgid "Unable to accept booking."
+msgstr "Det går inte att acceptera bokningen."
+
+msgid "Unable to activate account."
+msgstr "Det gick inte att aktivera kontot."
+
+msgid "Unable to activate user."
+msgstr "Det gick inte att aktivera användaren."
+
+msgid "Unable to add image."
+msgstr "Det gick inte att lägga till bild."
+
+msgid "Unable to add item to shopping cart."
+msgstr "Det gick inte att lägga till artikel i kundvagnen."
+
+msgid "Unable to apply action."
+msgstr "Det gick inte att tillämpa åtgärden."
+
+msgid "Unable to approve invitation."
+msgstr "Det gick inte att godkänna inbjudan."
+
+msgid "Unable to approve order."
+msgstr "Det gick inte att godkänna beställningen."
+
+msgid "Unable to approve order item."
+msgstr "Det går inte att godkänna orderartikeln."
+
+msgid "Unable to attach volume."
+msgstr "Det gick inte att koppla volymen."
+
+msgid "Unable to attach volume to instance."
+msgstr "Det gick inte att koppla volym till instansen."
+
+msgid "Unable to authenticate using Mobile ID."
+msgstr "Det gick inte att autentisera med mobil-ID."
+
+msgid "Unable to bootstrap application."
+msgstr "Det gick inte att bootstrap-programmet."
+
+msgid "Unable to cancel booking."
+msgstr "Det går inte att avboka bokningen."
+
+msgid "Unable to cancel invitation."
+msgstr "Det gick inte att avbryta inbjudan."
+
+msgid "Unable to cancel order item."
+msgstr "Det gick inte att avbryta orderartikeln."
+
+msgid "Unable to cancel request."
+msgstr "Det gick inte att avbryta begäran."
+
+msgid "Unable to change email."
+msgstr "Det gick inte att ändra e-post."
+
+msgid "Unable to change flavor."
+msgstr "Det går inte att ändra smak."
+
+msgid "Unable to close review."
+msgstr "Det gick inte att stänga granskningen."
+
+msgid "Unable to confirm email."
+msgstr "Det gick inte att bekräfta e-postmeddelandet."
+
+msgid "Unable to create OpenStack networks."
+msgstr "Det gick inte att skapa OpenStack-nätverk."
+
+msgid "Unable to create SQL database."
+msgstr "Det gick inte att skapa SQL-databas."
+
+msgid "Unable to create VM snapshot."
+msgstr "Det gick inte att skapa ögonblicksbild av VM."
+
+msgid "Unable to create VM snapshot schedule."
+msgstr "Det går inte att skapa ett schema för VM-snapshot."
+
+msgid "Unable to create a FreeIPA profile."
+msgstr "Det gick inte att skapa en FreeIPA-profil."
+
+msgid "Unable to create application."
+msgstr "Det gick inte att skapa programmet."
+
+msgid "Unable to create catalog."
+msgstr "Det gick inte att skapa katalog."
+
+msgid "Unable to create disk."
+msgstr "Det gick inte att skapa disk."
+
+msgid "Unable to create horizontal pod autoscaler."
+msgstr "Det gick inte att skapa horisontell pod-autoskalare."
+
+msgid "Unable to create key."
+msgstr "Det gick inte att skapa nyckel."
+
+msgid "Unable to create node."
+msgstr "Det gick inte att skapa nod."
+
+msgid "Unable to create notification."
+msgstr "Det gick inte att skapa ett meddelande."
+
+msgid "Unable to create notifications."
+msgstr "Det gick inte att skapa meddelanden."
+
+msgid "Unable to create offering."
+msgstr "Det gick inte att skapa erbjudande."
+
+msgid "Unable to create payment."
+msgstr "Det gick inte att skapa betalning."
+
+msgid "Unable to create payment profile."
+msgstr "Det gick inte att skapa betalningsprofil."
+
+msgid "Unable to create port."
+msgstr "Det gick inte att skapa port."
+
+msgid "Unable to create request."
+msgstr "Det gick inte att skapa begäran."
+
+msgid "Unable to create security group."
+msgstr "Det gick inte att skapa säkerhetsgrupp."
+
+msgid "Unable to create snapshot schedule."
+msgstr "Det gick inte att skapa ett schema för ögonblicksbilder."
+
+msgid "Unable to create subnet."
+msgstr "Det gick inte att skapa undernät."
+
+msgid "Unable to create volume snapshot."
+msgstr "Det gick inte att skapa ögonblicksbilder av volymen."
+
+msgid "Unable to deactivate user."
+msgstr "Det gick inte att inaktivera användaren."
+
+msgid "Unable to delete attachment."
+msgstr "Det går inte att ta bort bilagan."
+
+msgid "Unable to delete catalog."
+msgstr "Det gick inte att ta bort katalogen."
+
+msgid "Unable to delete comment."
+msgstr "Det gick inte att ta bort kommentar."
+
+msgid "Unable to delete instance."
+msgstr "Det gick inte att ta bort instans."
+
+msgid "Unable to delete payment."
+msgstr "Det gick inte att ta bort betalningen."
+
+msgid "Unable to delete resource."
+msgstr "Det gick inte att ta bort resursen."
+
+msgid "Unable to delete team member."
+msgstr "Det gick inte att ta bort teammedlemmen."
+
+msgid "Unable to delete {resourceType}."
+msgstr "Det gick inte att ta bort {resourceType}."
+
+msgid "Unable to destroy instance."
+msgstr "Det går inte att förstöra instans."
+
+msgid "Unable to disable FreeIPA profile."
+msgstr "Det gick inte att inaktivera FreeIPA-profilen."
+
+msgid "Unable to edit comment."
+msgstr "Det gick inte att redigera kommentar."
+
+msgid "Unable to enable FreeIPA profile."
+msgstr "Det gick inte att aktivera FreeIPA-profilen."
+
+msgid "Unable to enable payment profile."
+msgstr "Det gick inte att aktivera betalningsprofilen."
+
+msgid "Unable to extend disk."
+msgstr "Det gick inte att förlänga disken."
+
+msgid "Unable to extend volume."
+msgstr "Det gick inte att utöka volymen."
+
+msgid "Unable to fetch attachment."
+msgstr "Det går inte att hämta bilagan."
+
+msgid "Unable to fetch comments."
+msgstr "Det gick inte att hämta kommentarer."
+
+msgid "Unable to fetch current user."
+msgstr "Det gick inte att hämta aktuell användare."
+
+msgid "Unable to fetch data."
+msgstr "Det gick inte att hämta data."
+
+msgid "Unable to find:"
+msgstr "Det gick inte att hitta:"
+
+msgid "Unable to generate service provider API secret code."
+msgstr "Det går inte att generera tjänsteleverantörens API-hemliga kod."
+
+msgid "Unable to get form's data."
+msgstr "Det gick inte att hämta formulärets data."
+
+msgid "Unable to get order item."
+msgstr "Det gick inte att hämta beställningsartikel."
+
+msgid "Unable to get service provider API secret code."
+msgstr "Det går inte att få fram tjänsteleverantörens API-hemliga kod."
+
+msgid "Unable to grant permission."
+msgstr "Det gick inte att bevilja behörighet."
+
+msgid "Unable to import YAML."
+msgstr "Det gick inte att importera YAML."
+
+msgid "Unable to import remote offering."
+msgstr "Det gick inte att importera fjärrerbjudande."
+
+msgid "Unable to initialize shopping cart."
+msgstr "Det gick inte att initiera kundvagnen."
+
+msgid "Unable to link instance."
+msgstr "Det gick inte att länka instans."
+
+msgid "Unable to link invoice to the payment."
+msgstr "Det går inte att länka fakturan till betalningen."
+
+msgid "Unable to load actions"
+msgstr "Det gick inte att ladda åtgärder"
+
+msgid "Unable to load application template details."
+msgstr "Det gick inte att ladda information om programmallen."
+
+msgid "Unable to load booked items."
+msgstr "Det gick inte att ladda bokade artiklar."
+
+msgid "Unable to load booking offerings."
+msgstr "Det gick inte att ladda bokningserbjudanden."
+
+msgid "Unable to load categories"
+msgstr "Det gick inte att ladda kategorier"
+
+msgid "Unable to load categories."
+msgstr "Det gick inte att ladda kategorier."
+
+msgid "Unable to load category sections."
+msgstr "Det gick inte att ladda kategorisektioner."
+
+msgid "Unable to load charts."
+msgstr "Det gick inte att ladda diagram."
+
+msgid "Unable to load checklists."
+msgstr "Det gick inte att ladda checklistor."
+
+msgid "Unable to load comments."
+msgstr "Det gick inte att läsa in kommentarer."
+
+msgid "Unable to load compliance overview."
+msgstr "Det gick inte att ladda efterlevnadsöversikt."
+
+msgid "Unable to load customer."
+msgstr "Det gick inte att ladda kunden."
+
+msgid "Unable to load customer support satisfaction overall rating."
+msgstr "Det går inte att läsa in kundsupportnöjdhetens övergripande betyg."
+
+msgid "Unable to load data"
+msgstr "Det gick inte att ladda data"
+
+msgid "Unable to load data."
+msgstr "Det gick inte att ladda data."
+
+msgid "Unable to load detail."
+msgstr "Det gick inte att ladda detaljer."
+
+msgid "Unable to load editor"
+msgstr "Det gick inte att ladda redigeraren"
+
+msgid "Unable to load events for this resource."
+msgstr "Det gick inte att ladda händelser för den här resursen."
+
+msgid "Unable to load file."
+msgstr "Det gick inte att ladda filen."
+
+msgid "Unable to load financial overview."
+msgstr "Det gick inte att ladda ekonomisk översikt."
+
+msgid "Unable to load form options."
+msgstr "Det gick inte att ladda formuläralternativ."
+
+msgid "Unable to load growth chart."
+msgstr "Det gick inte att ladda tillväxtdiagrammet."
+
+msgid "Unable to load invoices"
+msgstr "Det gick inte att ladda fakturor"
+
+msgid "Unable to load locations."
+msgstr "Det gick inte att ladda platser."
+
+msgid "Unable to load offering."
+msgstr "Det går inte att ladda erbjudandet."
+
+msgid "Unable to load offering cost chart."
+msgstr "Det gick inte att läsa in kostnadsdiagram för erbjudande."
+
+msgid "Unable to load offering details."
+msgstr "Det gick inte att ladda information om erbjudandet."
+
+msgid "Unable to load offerings"
+msgstr "Det gick inte att ladda erbjudanden"
+
+msgid "Unable to load order details."
+msgstr "Det gick inte att ladda orderinformation."
+
+msgid "Unable to load organization resources."
+msgstr "Det gick inte att ladda organisationens resurser."
+
+msgid "Unable to load organizations"
+msgstr "Det gick inte att ladda organisationer"
+
+msgid "Unable to load page"
+msgstr "Det gick inte att ladda sidan"
+
+msgid "Unable to load pending orders."
+msgstr "Det går inte att läsa in väntande beställningar."
+
+msgid "Unable to load plan details."
+msgstr "Det gick inte att läsa in detaljer om planen."
+
+msgid "Unable to load project resources."
+msgstr "Det gick inte att ladda projektresurser."
+
+msgid "Unable to load project types."
+msgstr "Det gick inte att ladda projekttyper."
+
+msgid "Unable to load provider details."
+msgstr "Det går inte att läsa in leverantörsinformation."
+
+msgid "Unable to load questions and answers."
+msgstr "Det går inte att ladda frågor och svar."
+
+msgid "Unable to load resource."
+msgstr "Det gick inte att ladda resursen."
+
+msgid "Unable to load sections for comparison."
+msgstr "Det går inte att ladda avsnitt för jämförelse."
+
+msgid "Unable to load service provider."
+msgstr "Det gick inte att ladda tjänsteleverantören."
+
+msgid "Unable to load service providers."
+msgstr "Det gick inte att ladda tjänsteleverantörer."
+
+msgid "Unable to load tenant."
+msgstr "Det gick inte att ladda hyresgästen."
+
+msgid "Unable to load tenant data."
+msgstr "Det går inte att läsa in hyresgästdata."
+
+msgid "Unable to load user."
+msgstr "Det gick inte att ladda användare."
+
+msgid "Unable to load user monthly activity data."
+msgstr "Det gick inte att ladda användarens månatliga aktivitetsdata."
+
+msgid "Unable to login via SAML2 protocol."
+msgstr "Det går inte att logga in via SAML2-protokollet."
+
+msgid "Unable to mark the invoice as paid."
+msgstr "Det går inte att markera fakturan som betald."
+
+msgid "Unable to open console."
+msgstr "Det går inte att öppna konsolen."
+
+msgid "Unable to open console. Error message: {message}"
+msgstr "Det går inte att öppna konsolen. Felmeddelande: {message}"
+
+msgid "Unable to open console log"
+msgstr "Det gick inte att öppna konsolloggen"
+
+msgid "Unable to perform review."
+msgstr "Det gick inte att utföra granskning."
+
+msgid "Unable to post comment."
+msgstr "Det gick inte att lägga upp en kommentar."
+
+msgid "Unable to process payment."
+msgstr "Det går inte att behandla betalningen."
+
+msgid "Unable to publish Google Calendar."
+msgstr "Det gick inte att publicera Google Kalender."
+
+msgid "Unable to register service provider."
+msgstr "Det gick inte att registrera tjänstleverantören."
+
+msgid "Unable to reject invitation."
+msgstr "Det gick inte att avvisa inbjudan."
+
+msgid "Unable to reject order."
+msgstr "Det går inte att avvisa beställningen."
+
+msgid "Unable to reject order item."
+msgstr "Det gick inte att avvisa beställningsartikel."
+
+msgid "Unable to remove SSH key."
+msgstr "Det gick inte att ta bort SSH-nyckeln."
+
+msgid "Unable to remove hook."
+msgstr "Det går inte att ta bort kroken."
+
+msgid "Unable to remove image."
+msgstr "Det gick inte att ta bort bilden."
+
+msgid "Unable to remove item from shopping cart."
+msgstr "Det går inte att ta bort artikel från kundvagnen."
+
+msgid "Unable to remove logo."
+msgstr "Det gick inte att ta bort logotypen."
+
+msgid "Unable to remove payment profile."
+msgstr "Det gick inte att ta bort betalningsprofilen."
+
+msgid "Unable to report security incident."
+msgstr "Det gick inte att rapportera säkerhetsincidenter."
+
+msgid "Unable to resend invitation."
+msgstr "Det gick inte att skicka inbjudan igen."
+
+msgid "Unable to resize droplet."
+msgstr "Det gick inte att ändra storlek på droplet."
+
+msgid "Unable to restore VM snapshot."
+msgstr "Det går inte att återställa VM-snapshot."
+
+msgid "Unable to restore volume snapshot."
+msgstr "Det gick inte att återställa ögonblicksbilden för volymen."
+
+msgid "Unable to retype volume."
+msgstr "Det gick inte att skriva om volymen."
+
+msgid "Unable to revoke permission."
+msgstr "Det gick inte att återkalla tillståndet."
+
+msgid "Unable to save location."
+msgstr "Det gick inte att spara plats."
+
+msgid "Unable to save user."
+msgstr "Det går inte att spara användare."
+
+msgid "Unable to send feedback."
+msgstr "Det gick inte att skicka feedback."
+
+msgid "Unable to send record notification."
+msgstr "Det går inte att skicka postmeddelande."
+
+msgid "Unable to set backend ID."
+msgstr "Det går inte att ställa in backend-ID."
+
+msgid "Unable to show console log."
+msgstr "Det går inte att visa konsolloggen."
+
+msgid "Unable to submit answers."
+msgstr "Det går inte att skicka svar."
+
+msgid "Unable to submit empty comment."
+msgstr "Det gick inte att skicka tom kommentar."
+
+msgid "Unable to submit limits change request."
+msgstr "Det går inte att skicka begäran om ändring av gränser."
+
+msgid "Unable to submit order."
+msgstr "Det gick inte att skicka beställningen."
+
+msgid "Unable to submit plan change request."
+msgstr "Det gick inte att skicka begäran om planändring."
+
+msgid "Unable to submit report."
+msgstr "Det gick inte att skicka rapport."
+
+msgid "Unable to submit resource termination request."
+msgstr "Det gick inte att skicka resursavslutningsbegäran."
+
+msgid "Unable to submit usage report."
+msgstr "Det går inte att skicka användningsrapport."
+
+msgid "Unable to sync FreeIPA profile."
+msgstr "Det gick inte att synkronisera FreeIPA-profilen."
+
+msgid "Unable to sync Google Calendar."
+msgstr "Det gick inte att synkronisera Google Kalender."
+
+msgid "Unable to synchronise resource."
+msgstr "Det gick inte att synkronisera resursen."
+
+msgid "Unable to unlink instance from node."
+msgstr "Det går inte att ta bort länken till instansen från noden."
+
+msgid "Unable to unlink invoice from the payment."
+msgstr "Det går inte att koppla från fakturan från betalningen."
+
+msgid "Unable to unpublish Google Calendar."
+msgstr "Det gick inte att avpublicera Google Kalender."
+
+msgid "Unable to update YAML."
+msgstr "Det gick inte att uppdatera YAML."
+
+msgid "Unable to update allowed address pairs."
+msgstr "Det gick inte att uppdatera tillåtna adresspar."
+
+msgid "Unable to update enabled checklists."
+msgstr "Det gick inte att uppdatera aktiverade checklistor."
+
+msgid "Unable to update floating IPs."
+msgstr "Det gick inte att uppdatera flytande IPs."
+
+msgid "Unable to update horizontal pod autoscaler."
+msgstr "Det går inte att uppdatera horisontell pod autoscaler."
+
+msgid "Unable to update internal IPs of OpenStack instance."
+msgstr "Det gick inte att uppdatera interna IP-adresser för OpenStack-instansen."
+
+msgid "Unable to update network MTU."
+msgstr "Det går inte att uppdatera MTU-nätverket."
+
+msgid "Unable to update notification."
+msgstr "Det gick inte att uppdatera aviseringen."
+
+msgid "Unable to update offering"
+msgstr "Det gick inte att uppdatera erbjudandet"
+
+msgid "Unable to update offering."
+msgstr "Det gick inte att uppdatera erbjudandet."
+
+msgid "Unable to update offering state."
+msgstr "Det gick inte att uppdatera erbjudna tillstånd."
+
+msgid "Unable to update organization."
+msgstr "Det gick inte att uppdatera organisationen."
+
+msgid "Unable to update payment."
+msgstr "Det gick inte att uppdatera betalningen."
+
+msgid "Unable to update payment profile."
+msgstr "Det gick inte att uppdatera betalningsprofilen."
+
+msgid "Unable to update provider."
+msgstr "Det går inte att uppdatera leverantören."
+
+msgid "Unable to update security group rules."
+msgstr "Det gick inte att uppdatera säkerhetsgruppsregler."
+
+msgid "Unable to update security groups of OpenStack instance."
+msgstr "Det går inte att uppdatera säkerhetsgrupper för OpenStack-instans."
+
+msgid "Unable to update shopping cart item."
+msgstr "Det gick inte att uppdatera kundvagnsartikeln."
+
+msgid "Unable to update static routes."
+msgstr "Det gick inte att uppdatera statiska vägar."
+
+msgid "Unable to update user."
+msgstr "Det gick inte att uppdatera användaren."
+
+msgid "Unable to update {verboseName}."
+msgstr "Det gick inte att uppdatera {verboseName}."
+
+msgid "Unable to upload attachment."
+msgstr "Det gick inte att ladda upp bilagan."
+
+msgid "Unable to upload logo."
+msgstr "Det gick inte att ladda upp logotypen."
+
+msgid "Unable to validate invitation token."
+msgstr "Det gick inte att validera inbjudningstoken."
+
+msgid "Unconfirmed"
+msgstr "Obekräftad"
+
+msgid "Unexpected exception happened during login process."
+msgstr "Oväntat undantag hände under inloggningsprocessen."
+
+msgid "Unfortunately, connection to server has failed. Please check if you can connect to {apiEndpoint} from your browser and contact support if the error continues."
+msgstr "Tyvärr misslyckades anslutningen till servern. Kontrollera om du kan ansluta till {apiEndpoint} från din webbläsare och kontakta support om felet kvarstår."
+
+msgid "Unique ID of a resource created via Marketplace"
+msgstr "Unikt ID för en resurs som skapats via Marketplace"
+
+msgid "Unique ID of a resource in a backend system"
+msgstr "Unikt ID för en resurs i ett backend-system"
+
+msgid "Unique ID of a resource within management plugin"
+msgstr "Unikt ID för en resurs inom hanteringsplugin"
+
+msgid "Unit"
+msgstr "Enhet"
+
+msgid "Unit price"
+msgstr "Enhetspris"
+
+msgid "Units"
+msgstr "Enheter"
+
+msgid "Unknown"
+msgstr "Okänd"
+
+msgid "Unlink instance"
+msgstr "Avlänka instans"
+
+msgid "Unlink invoice"
+msgstr "Ta bort länkningsfaktura"
+
+msgid "Unpaid"
+msgstr "Obetald"
+
+msgid "Unpause"
+msgstr "Avpausa"
+
+msgid "Unpublish as Google Calendar"
+msgstr "Avpublicera som Google Kalender"
+
+msgid "Update"
+msgstr "Uppdatera"
+
+msgid "Update floating IPs"
+msgstr "Uppdatera flytande IPs"
+
+msgid "Update floating IPs in {name} virtual machine"
+msgstr "Uppdatera flytande IP-adresser i {name} virtuell maskin"
+
+msgid "Update horizontal pod autoscaler"
+msgstr "Uppdatera horisontell pod autoscaler"
+
+msgid "Update internal IPs for OpenStack instance {name}"
+msgstr "Uppdatera interna IPs för OpenStack-instansen {name}"
+
+msgid "Update limits for an existing resource"
+msgstr "Uppdateringsgränser för en befintlig resurs"
+
+msgid "Update location"
+msgstr "Uppdatera plats"
+
+msgid "Update notification"
+msgstr "Uppdatera meddelande"
+
+msgid "Update of OpenStack instance internal IPs has been scheduled."
+msgstr "Uppdatering av OpenStack-instansinterna IPs har schemalagts."
+
+msgid "Update of OpenStack instance security groups has been scheduled."
+msgstr "Uppdatering av säkerhetsgrupper för OpenStack-instanser har schemalagts."
+
+msgid "Update payment"
+msgstr "Uppdatera betalning"
+
+msgid "Update payment profile"
+msgstr "Uppdatera betalningsprofil"
+
+msgid "Update plan for an existing resource"
+msgstr "Uppdatera plan för en befintlig resurs"
+
+msgid "Update profile"
+msgstr "Uppdatera profil"
+
+msgid "Update project details"
+msgstr "Uppdatera projektinformation"
+
+msgid "Update security groups"
+msgstr "Uppdatera säkerhetsgrupper"
+
+msgid "Update security groups for OpenStack instance {name}"
+msgstr "Uppdatera säkerhetsgrupper för OpenStack-instans {name}"
+
+msgid "Update service settings"
+msgstr "Uppdatera tjänstinställningar"
+
+msgid "Update static routes"
+msgstr "Uppdatera statiska vägar"
+
+msgid "Update your organization name, logo, accounting and contact details."
+msgstr "Uppdatera organisationens namn, logotyp, redovisning och kontaktuppgifter."
+
+msgid "Update {resourceType} {resourceName}"
+msgstr "Uppdatera {resourceType} {resourceName}"
+
+msgid "Updated"
+msgstr "Uppdaterad"
+
+msgid "Updating"
+msgstr "Uppdaterar"
+
+msgid "Updating floating IPs"
+msgstr "Uppdatera flytande IPs"
+
+msgid "Updating internal IPs"
+msgstr "Uppdatera interna IPs"
+
+msgid "Updating offering {name}"
+msgstr "Uppdaterar erbjudandet {name}"
+
+msgid "Updating quotas"
+msgstr "Uppdaterar kvoter"
+
+msgid "Updating rules"
+msgstr "Uppdaterar regler"
+
+msgid "Updating security groups"
+msgstr "Uppdaterar säkerhetsgrupper"
+
+msgid "Upload new"
+msgstr "Ladda upp nytt"
+
+msgid "Uptime"
+msgstr "Drifttid"
+
+msgid "Usage"
+msgstr "Användning"
+
+msgid "Usage-based"
+msgstr "Användningsbaserad"
+
+msgid "Usage information is not available."
+msgstr "Användningsinformation är inte tillgänglig."
+
+msgid "Usage overview"
+msgstr "Översikt över användning"
+
+msgid "Usage report has been submitted."
+msgstr "Användningsrapport har skickats."
+
+msgid "Usage reports"
+msgstr "Användningsrapporter"
+
+msgid "Usages"
+msgstr "Användningar"
+
+msgid "Use an existing namespace"
+msgstr "Använd ett befintligt namnområde"
+
+msgid "Use sudo"
+msgstr "Använd sudo"
+
+msgid "Used in the period {period} by:"
+msgstr "Används under perioden {period} av:"
+
+msgid "User"
+msgstr "Användare"
+
+msgid "User could not been updated"
+msgstr "Användaren kunde inte uppdateras"
+
+msgid "User dashboard"
+msgstr "Instrumentpanel för användare"
+
+msgid "User data"
+msgstr "Användardata"
+
+msgid "User details"
+msgstr "Användarinformation"
+
+msgid "User events this month"
+msgstr "Användarhändelser den här månaden"
+
+msgid "User has been activated."
+msgstr "Användaren har aktiverats."
+
+msgid "User has been deactivated."
+msgstr "Användaren har avaktiverats."
+
+msgid "User has been logged out. You will be redirected to the login page soon."
+msgstr "Användaren har loggat ut. Du kommer snart att omdirigeras till inloggningssidan."
+
+msgid "User has been updated"
+msgstr "Användaren har uppdaterats"
+
+msgid "User has been updated."
+msgstr "Användaren har uppdaterats."
+
+msgid "User input field #{index}"
+msgstr "Indatafält för användare #{index}"
+
+msgid "User management events"
+msgstr "Händelser för användarhantering"
+
+msgid "User profile"
+msgstr "Användarprofil"
+
+msgid "User status"
+msgstr "Användarstatus"
+
+msgid "User {affected_user_link} has been activated."
+msgstr "Användaren {affected_user_link} har aktiverats."
+
+msgid "User {affected_user_link} has been created."
+msgstr "Användaren {affected_user_link} har skapats."
+
+msgid "User {affected_user_link} has been deactivated."
+msgstr "Användare {affected_user_link} har inaktiverats."
+
+msgid "User {affected_user_link} has been updated."
+msgstr "Användare {affected_user_link} har uppdaterats."
+
+msgid "User {affected_user_name} has been deleted."
+msgstr "Användaren {affected_user_name} har tagits bort."
+
+msgid "User {user_link} authenticated successfully with Facebook."
+msgstr "Användaren {user_link} autentiserades framgångsrikt med Facebook."
+
+msgid "User {user_link} authenticated successfully with SAML2."
+msgstr "Användaren {user_link} autentiserades framgångsrikt med SAML2."
+
+msgid "User {user_link} authenticated successfully with Smart ID EE."
+msgstr "Användaren {user_link} verifierades framgångsrikt med Smart ID EE."
+
+msgid "User {user_link} authenticated successfully with username and password."
+msgstr "Användaren {user_link} verifierades framgångsrikt med användarnamn och lösenord."
+
+msgid "User {user_link} has granted organization owner role in {customer_link} to {affected_user_link}."
+msgstr "Användaren {user_link} har tilldelat organisationsägarrollen i {customer_link} till {affected_user_link}."
+
+msgid "User {user_link} has granted organization support role in {customer_link} to {affected_user_link}."
+msgstr "Användaren {user_link} har tilldelat organisationsstödrollen i {customer_link} till {affected_user_link}."
+
+msgid "User {user_link} has granted project administrator role in project {project_link} to {affected_user_link}."
+msgstr "Användaren {user_link} har tilldelat projektadministratörens roll i projektet {project_link} till {affected_user_link}."
+
+msgid "User {user_link} has granted project manager role in project {project_link} to {affected_user_link}."
+msgstr "Användaren {user_link} har tilldelat projektledaren roll i projektet {project_link} till {affected_user_link}."
+
+msgid "User {user_link} has granted role to {affected_user_link}."
+msgstr "Användaren {user_link} har tilldelat {affected_user_link} roll."
+
+msgid "User {user_link} has revoked organization owner {affected_user_link} from {customer_link}."
+msgstr "Användaren {user_link} har återkallat organisationsägaren {affected_user_link} från {customer_link}."
+
+msgid "User {user_link} has revoked organization support {affected_user_link} from {customer_link}."
+msgstr "Användaren {user_link} har återkallat organisationsstödet {affected_user_link} från {customer_link}."
+
+msgid "User {user_link} has revoked project administrator {affected_user_link} from project {project_link}."
+msgstr "Användaren {user_link} har återkallat projektadministratören {affected_user_link} från projektet {project_link}."
+
+msgid "User {user_link} has revoked project manager {affected_user_link} from project {project_link}."
+msgstr "Användaren {user_link} har återkallat projektledaren {affected_user_link} från projektet {project_link}."
+
+msgid "User {user_link} has revoked {affected_user_link}."
+msgstr "Användaren {user_link} har återkallat {affected_user_link}."
+
+msgid "User {user_link} logged out successfully with SAML2."
+msgstr "Användaren {user_link} loggade ut med SAML2."
+
+msgid "Username"
+msgstr "Användarnamn"
+
+msgid "Username is required."
+msgstr "Användarnamn krävs."
+
+msgid "Username prefix"
+msgstr "Användarnamn prefix"
+
+msgid "Usernames can contain letters (a-z), numbers (0-9), dashes (-), underscores (_) and periods (.)."
+msgstr "Användarnamn kan innehålla bokstäver (a-z), siffror (0-9), bindestreck (-), understreck (_) och punkter (.)."
+
+msgid "Users"
+msgstr "Användare"
+
+msgid "VAT"
+msgstr "MOMS"
+
+msgid "VAT code"
+msgstr "MOMS-kod"
+
+msgid "VAT is included"
+msgstr "Moms ingår"
+
+msgid "VAT is not included"
+msgstr "Moms ingår inte"
+
+msgid "VAT is not included."
+msgstr "Moms ingår inte."
+
+msgid "VAT rate"
+msgstr "Momssats"
+
+msgid "VM name"
+msgstr "VM-namn"
+
+msgid "VM snapshot"
+msgstr "VM-ögonblicksbild"
+
+msgid "VM snapshot has been created."
+msgstr "VM-ögonblicksbild har skapats."
+
+msgid "VM snapshot restoration has been scheduled."
+msgstr "Återställning av VM-snapshot har schemalagts."
+
+msgid "VM snapshot schedule"
+msgstr "VM-ögonblicksbild schema"
+
+msgid "VM snapshot schedule caveats"
+msgstr "VM-ögonblicksbild schema varningar"
+
+msgid "VM snapshot schedule has been created."
+msgstr "VM-ögonblicksbild schema har skapats."
+
+msgid "VM snapshot schedules"
+msgstr "VM-ögonblicksbildscheman"
+
+msgid "VM snapshots"
+msgstr "VM-ögonblicksbilder"
+
+msgid "VM type overview"
+msgstr "Översikt över VM-typ"
+
+msgid "VMs"
+msgstr "VMs"
+
+msgid "VMware Tools"
+msgstr "VMware-verktyg"
+
+msgid "VPC RAM"
+msgstr "VPC RAM"
+
+msgid "VPC block storage size"
+msgstr "Storlek för VPC-blocklagring"
+
+msgid "VPC floating IP count"
+msgstr "VPC-flytande IP-antal"
+
+msgid "VPC instance count"
+msgstr "Antal VPC-instanser"
+
+msgid "VPC vCPU"
+msgstr "VPC vCPU"
+
+msgid "Valid runtime states for operation: {validStates}."
+msgstr "Giltiga körtidstillstånd för drift: {validStates}."
+
+msgid "Valid states for operation: {validStates}."
+msgstr "Giltiga tillstånd för drift: {validStates}."
+
+msgid "Value"
+msgstr "Värde"
+
+msgid "Value should be positive integer"
+msgstr "Värde ska vara positivt heltal"
+
+msgid "Value should not be greater than {limit}."
+msgstr "Värde bör inte vara större än {limit}."
+
+msgid "Value should not be lesser than {limit}."
+msgstr "Värde bör inte vara lägre än {limit}."
+
+msgid "Value should not be negative."
+msgstr "Värde bör inte vara negativt."
+
+msgid "Variable #{index}"
+msgstr "Variabel #{index}"
+
+msgid "Verifying email change"
+msgstr "Verifiera ändring av e-post"
+
+msgid "Version"
+msgstr "Version"
+
+msgid "View YAML"
+msgstr "Visa YAML"
+
+msgid "Viewing image"
+msgstr "Visa bild"
+
+msgid "Virtual machines"
+msgstr "Virtuella maskiner"
+
+msgid "Virtual machines count"
+msgstr "Virtuella maskiner räknas"
+
+msgid "Volume"
+msgstr "Volym"
+
+msgid "Volume has been attached to instance."
+msgstr "Volymen har kopplats till instansen."
+
+msgid "Volume has been extended."
+msgstr "Volymen har utökats."
+
+msgid "Volume has been retyped."
+msgstr "Volymen har skrivits om."
+
+msgid "Volume name"
+msgstr "Volym namn"
+
+msgid "Volume should be in OK state."
+msgstr "Volymen ska vara i OK-läge."
+
+msgid "Volume size"
+msgstr "Volym storlek"
+
+msgid "Volume snapshot has been created."
+msgstr "Volymögonblicksbild har skapats."
+
+msgid "Volume snapshot has been restored."
+msgstr "Volymögonblicksbild har återställts."
+
+msgid "Volume snapshots"
+msgstr "Volymögonblicksbilder"
+
+msgid "Volume type"
+msgstr "Volymtyp"
+
+msgid "Volume type storage limit is exceeded"
+msgstr "Volymtyp lagringsgräns har överskridits"
+
+msgid "Volumes"
+msgstr "Volymer"
+
+msgid "Volumes count"
+msgstr "Volymer räknas"
+
+msgid "Webhook"
+msgstr "Webhook"
+
+msgid "Website URL"
+msgstr "Webbplats URL"
+
+msgid "Welcome, {user}!"
+msgstr "Välkommen, {user}!"
+
+msgid "Welcome to {pageTitle}!"
+msgstr "Välkommen till {pageTitle}!"
+
+msgid "Why do you need to remove organization with existing projects?"
+msgstr "Varför behöver du ta bort organisationen med befintliga projekt?"
+
+msgid "Why would you want to go away? Help us become better please!"
+msgstr "Varför skulle du vilja åka bort? Hjälp oss att bli bättre tack!"
+
+msgid "Worker"
+msgstr "Arbetstagare"
+
+msgid "Workload"
+msgstr "Arbetsbelastning"
+
+msgid "Workloads"
+msgstr "Arbetsbelastningar"
+
+msgid "Would you like to update your current email with the one from the invitation?"
+msgstr "Vill du uppdatera ditt nuvarande e-postmeddelande med det från inbjudan?"
+
+msgid "Write review"
+msgstr "Skriv omdöme"
+
+msgid "YAML has been imported."
+msgstr "YAML har importerats."
+
+msgid "YAML has been updated."
+msgstr "YAML har uppdaterats."
+
+msgid "Yes"
+msgstr "Ja"
+
+msgid "Yes, use invitation email"
+msgstr "Ja, använd e-postinbjudan"
+
+msgid "You've either entered invalid URL or don't have enough permissions to view this page."
+msgstr "Du har antingen angett ogiltig URL eller har inte tillräckligt med behörighet för att visa den här sidan."
+
+msgid "You can create issue by pressing the button below"
+msgstr "Du kan skapa problem genom att trycka på knappen nedan"
+
+msgid "You can find offerings to order in the marketplace"
+msgstr "Du kan hitta erbjudanden att beställa på marknaden"
+
+msgid "You can remove this organization by pressing the button"
+msgstr "Du kan ta bort denna organisation genom att trycka på knappen"
+
+msgid "You can start filling this table by creating your first offering."
+msgstr "Du kan börja fylla i denna tabell genom att skapa ditt första erbjudande."
+
+msgid "You cannot change your own role."
+msgstr "Du kan inte ändra din egen roll."
+
+msgid "You cannot manage other organization owner."
+msgstr "Du kan inte hantera andra organisationsägare."
+
+msgid "You do not belong to any organization yet"
+msgstr "Du tillhör inte någon organisation än"
+
+msgid "You do not currently have any organizations."
+msgstr "Du har för närvarande inga organisationer."
+
+msgid "You do not have any resources yet."
+msgstr "Du har inga resurser än."
+
+msgid "You don't have enough privileges to perform this operation."
+msgstr "Du har inte tillräcklig behörighet för att utföra den här åtgärden."
+
+msgid "You don't have permission to cancel this invitation."
+msgstr "Du har inte behörighet att avbryta den här inbjudan."
+
+msgid "You don't have permission to send this invitation."
+msgstr "Du har inte behörighet att skicka den här inbjudan."
+
+msgid "You have entered data in form. When dialog is closed form data would be lost."
+msgstr "Du har angett data i formuläret . När dialogrutan är stängd går formulärdata förlorade."
+
+msgid "You have exceeded maximum number of quotas."
+msgstr "Du har överskridit det maximala antalet kvoter."
+
+msgid "You have no notifications yet."
+msgstr "Du har inga meddelanden ännu."
+
+msgid "You have no quotas yet."
+msgstr "Du har inga kvoter än."
+
+msgid "You have not added any SSH keys to your <Link>profile</Link>."
+msgstr "Du har inte lagt till några SSH-nycklar till din <Link>profil</Link>."
+
+msgid "You have the right to purchase service without additional approval."
+msgstr "Du har rätt att köpa tjänst utan ytterligare godkännande."
+
+msgid "You haven't created any issues yet."
+msgstr "Du har inte skapat några problem än."
+
+msgid "You must agree with terms of service."
+msgstr "Du måste godkänna användarvillkoren."
+
+msgid "You must be staff to modify payment profiles"
+msgstr "Du måste vara personal för att ändra betalningsprofiler"
+
+msgid "You must be staff to modify payments"
+msgstr "Du måste vara personal för att ändra betalningar"
+
+msgid "You need approval to finish purchasing of services."
+msgstr "Du behöver godkännande för att slutföra inköp av tjänster."
+
+msgid "You will be redirected in a moment."
+msgstr "Du kommer att omdirigeras om ett ögonblick."
+
+msgid "Your FreeIPA has been removed in FreeIPA server."
+msgstr "Din FreeIPA har tagits bort i FreeIPA-servern."
+
+msgid "Your FreeIPA has been synced successfully."
+msgstr "Din FreeIPA har synkroniserats framgångsrikt."
+
+msgid "Your FreeIPA profile has been disabled."
+msgstr "Din FreeIPA-profil har inaktiverats."
+
+msgid "Your FreeIPA profile has been enabled."
+msgstr "Din FreeIPA-profil har aktiverats."
+
+msgid "Your account is not authorized to use this allocation"
+msgstr "Ditt konto har inte behörighet att använda den här allokeringen"
+
+msgid "Your current email is:"
+msgstr "Din nuvarande e-postadress är:"
+
+msgid "Your invitation is being processed."
+msgstr "Din inbjudan behandlas."
+
+msgid "Your invitation was accepted."
+msgstr "Din inbjudan accepterades."
+
+msgid "Your organization does not have any projects yet."
+msgstr "Din organisation har inga projekt ännu."
+
+msgid "Your session has expired, please enter credentials to continue."
+msgstr "Din session har upphört att gälla. Ange autentiseringsuppgifter för att fortsätta."
+
+msgid "Your single pane of control for all cloud services. Login in to see it in action."
+msgstr "Din enda kontrollruta för alla molntjänster. Logga in för att se det i aktion."
+
+msgid "(VAT is not included)"
+msgstr "(Moms ingår inte)"
+
+msgid "allocation users"
+msgstr "allokering användare"
+
+msgid "application"
+msgstr "Ansökan"
+
+msgid "application templates"
+msgstr "Programmallar"
+
+msgid "applications"
+msgstr "Applikationer"
+
+msgid "at"
+msgstr "på"
+
+msgid "bootable"
+msgstr "startbar"
+
+msgid "browse"
+msgstr "bläddra"
+
+msgid "catalogues"
+msgstr "kataloger"
+
+msgid "control plane"
+msgstr "kontrollplan"
+
+msgid "current state on backend: {resourceState}."
+msgstr "aktuellt tillstånd i backend: {resourceState}."
+
+msgid "databases"
+msgstr "databaser"
+
+msgid "day"
+msgstr "dag"
+
+msgid "disks"
+msgstr "diskar"
+
+msgid "e.g. MyApp"
+msgstr "t.ex. MyApp"
+
+msgid "entries"
+msgstr "poster"
+
+msgid "error message: {errorMessage}"
+msgstr "felmeddelande: {errorMessage}"
+
+msgid "estimated"
+msgstr "beräknad"
+
+msgid "etcd"
+msgstr "etcd"
+
+msgid "events"
+msgstr "händelser"
+
+msgid "failed"
+msgstr "misslyckades"
+
+msgid "fetching"
+msgstr "hämta"
+
+msgid "floating IPs"
+msgstr "Flytande IPs"
+
+msgid "generate automatically"
+msgstr "generera automatiskt"
+
+msgid "horizontal pod autoscaler"
+msgstr "horisontell pod autoscaler"
+
+msgid "horizontal pod autoscalers"
+msgstr "horisontella pod autoskalare"
+
+msgid "hour"
+msgstr "timme"
+
+msgid "hours"
+msgstr "timmar"
+
+msgid "ingresses"
+msgstr "intrång"
+
+msgid "internal IPs"
+msgstr "Interna IPs"
+
+msgid "invoices"
+msgstr "fakturor"
+
+msgid "items"
+msgstr "objekt"
+
+msgid "milli CPUs"
+msgstr "milli CPU:er"
+
+msgid "minute"
+msgstr "minuters"
+
+msgid "month"
+msgstr "månad"
+
+msgid "network"
+msgstr "nätverk"
+
+msgid "networks"
+msgstr "nätverk"
+
+msgid "of"
+msgstr "av"
+
+msgid "offering"
+msgstr "erbjudande"
+
+msgid "offering permissions"
+msgstr "erbjuder behörigheter"
+
+msgid "offering resources"
+msgstr "erbjuda resurser"
+
+msgid "offering users"
+msgstr "erbjuda användare"
+
+msgid "offerings"
+msgstr "erbjudanden"
+
+msgid "on"
+msgstr "på"
+
+msgid "on the"
+msgstr "på"
+
+msgid "order items"
+msgstr "beställ artiklar"
+
+msgid "organization"
+msgstr "organisation"
+
+msgid "organizations"
+msgstr "organisationer"
+
+msgid "owner"
+msgstr "ägare"
+
+msgid "past the hour"
+msgstr "förbi timmen"
+
+msgid "payment profiles"
+msgstr "betalningsprofiler"
+
+msgid "payments"
+msgstr "betalningar"
+
+msgid "permission reviews"
+msgstr "behörighetsgranskningar"
+
+msgid "plans"
+msgstr "planer"
+
+msgid "ports"
+msgstr "hamnar"
+
+msgid "project"
+msgstr "projekt"
+
+msgid "projects"
+msgstr "projekt"
+
+msgid "records"
+msgstr "uppgifter"
+
+msgid "referrals"
+msgstr "hänvisningar"
+
+msgid "remote accounts"
+msgstr "Fjärrkonton"
+
+msgid "resource"
+msgstr "resurs"
+
+msgid "resources"
+msgstr "resurser"
+
+msgid "restored volumes"
+msgstr "Återställda volymer"
+
+msgid "reviews"
+msgstr "recensioner"
+
+msgid "routers"
+msgstr "routrar"
+
+msgid "security group"
+msgstr "säkerhetsgrupp"
+
+msgid "security groups"
+msgstr "säkerhetsgrupper"
+
+msgid "services"
+msgstr "tjänster"
+
+msgid "snapshot schedules"
+msgstr "Ögonblicksbildscheman"
+
+msgid "snapshots"
+msgstr "ögonblicksbilder"
+
+msgid "storage"
+msgstr "lagring"
+
+msgid "subnets"
+msgstr "undernät"
+
+msgid "support"
+msgstr "stöd"
+
+msgid "support feedback"
+msgstr "stödja feedback"
+
+msgid "support requests"
+msgstr "supportförfrågningar"
+
+msgid "team invitations"
+msgstr "gruppinbjudningar"
+
+msgid "team members"
+msgstr "gruppmedlemmar"
+
+msgid "till"
+msgstr "tills"
+
+msgid "token will not timeout"
+msgstr "token kommer inte att ta timeout"
+
+msgid "users"
+msgstr "användare"
+
+msgid "vCPU"
+msgstr "vCPU"
+
+msgid "vCPU count"
+msgstr "vCPU-antal"
+
+msgid "vCPU limit is exceeded"
+msgstr "vCPU-gränsen har överskridits"
+
+msgid "vCores"
+msgstr "vCores"
+
+msgid "vSphere Virtual Machine"
+msgstr "vSphere Virtual Dator"
+
+msgid "virtual machine"
+msgstr "virtuell dator"
+
+msgid "volume snapshot"
+msgstr "volym ögonblicksbild"
+
+msgid "volume snapshot schedule"
+msgstr "volym ögonblicksbild schema"
+
+msgid "volume snapshots"
+msgstr "volymögonblicksbilder"
+
+msgid "volumes"
+msgstr "Volymer"
+
+msgid "week"
+msgstr "vecka"
+
+msgid "worker"
+msgstr "Arbetstagare"
+
+msgid "workloads"
+msgstr "arbetsbelastningar"
+
+msgid "year"
+msgstr "år"
+
+msgid "{category} resources"
+msgstr "{category} resurser"
+
+msgid "{count} user events in {date}"
+msgstr "{count} användarhändelser i {date}"
+
+msgid "{label} in:"
+msgstr "{label} i:"
+
+msgid "{name} ({questions_count} questions)"
+msgstr "{name} ({questions_count} frågor)"
+
+msgid "{name} ({size})"
+msgstr "{name} ({size})"
+
+msgid "{number} days"
+msgstr "{number} dagar"
+
+msgid "{relative} ago"
+msgstr "{relative} sedan"
+
+msgid "{relative} ago, {date}"
+msgstr "{relative} sedan, {date}"
+
+msgid "{resourceType} has been deleted."
+msgstr "{resourceType} har tagits bort."
+
+msgid "{resourceType} has state {resourceState}"
+msgstr "{resourceType} har tillstånd {resourceState}"
+
+msgid "{resource_link} creation has been scheduled by {user_link}."
+msgstr "{resource_link} skapande har planerats av {user_link}."
+
+msgid "{resource_link} creation has failed."
+msgstr "{resource_link} skapandet misslyckades."
+
+msgid "{resource_link} deletion has failed."
+msgstr "{resource_link} radering har misslyckats."
+
+msgid "{resource_link} has been created."
+msgstr "{resource_link} har skapats."
+
+msgid "{resource_link} has been imported by {user_link}."
+msgstr "{resource_link} har importerats av {user_link}."
+
+msgid "{resource_link} has been restarted."
+msgstr "{resource_link} har startats om."
+
+msgid "{resource_link} has been scheduled to deletion by {user_link}."
+msgstr "{resource_link} har planerats att tas bort av {user_link}."
+
+msgid "{resource_link} has been scheduled to restart by {user_link}."
+msgstr "{resource_link} har schemalagts att starta om av {user_link}."
+
+msgid "{resource_link} has been scheduled to start by {user_link}."
+msgstr "{resource_link} har planerats att starta av {user_link}."
+
+msgid "{resource_link} has been scheduled to stop by {user_link}."
+msgstr "{resource_link} har schemalagts att stoppas av {user_link}."
+
+msgid "{resource_link} has been started."
+msgstr "{resource_link} har startats."
+
+msgid "{resource_link} has been stopped."
+msgstr "{resource_link} har stoppats."
+
+msgid "{resource_link} has been updated by {user_link}."
+msgstr "{resource_link} har uppdaterats av {user_link}."
+
+msgid "{resource_link} restart has failed."
+msgstr "{resource_link} omstarten misslyckades."
+
+msgid "{resource_link} start has failed."
+msgstr "{resource_link} start har misslyckats."
+
+msgid "{resource_link} stop has failed."
+msgstr "{resource_link} stoppet har misslyckats."
+
+msgid "{resource_name} has been deleted."
+msgstr "{resource_name} har tagits bort."
+
+msgid "{role} in {project}"
+msgstr "{role} i {project}"
+
+msgid "{sender} has invited you to join {name} {type} in {role} role."
+msgstr "{sender} har bjudit in dig att gå med i {name} {type} i {role} roll."
+
+msgid "{usage} of {limit}"
+msgstr "{usage} av {limit}"
+
+msgid "{usage} of {limit} used"
+msgstr "{usage} av {limit} används"
+
+msgid "{user} commented:"
+msgstr "{user} kommenterade:"
+
+msgid "{user} commented on {issue}"
+msgstr "{user} kommenterade på {issue}"
+
+msgid "{user} has approved it on {date} at {time}."
+msgstr "{user} har godkänt det på {date} vid {time}."
+
+msgid "{user} has requested changing of limits from \"{old_limits}\" to \"{new_limits}\"."
+msgstr "{user} har begärt ändring av gränser från ”{old_limits}” till ”{new_limits} ”."
+
+msgid "{user} has requested changing of plan from \"{old_plan}\" to \"{new_plan}\"."
+msgstr "{user} har begärt ändring av planen från ”{old_plan}” till ”{new_plan} ”."
+
+msgid "{user} has requested provisioning of \"{resource_name}\" with plan \"{plan_name}\"."
+msgstr "{user} har begärt provisionering av ”{resource_name}” med planen ”{plan_name}”."
+
+msgid "{user} has requested termination of {resource_name} with active plan \"{plan_name}\"."
+msgstr "{user} har begärt uppsägning av {resource_name} med aktiv plan ”{plan_name}”."
+
+msgid "{value} at {date}"
+msgstr "{value} vid {date}"
+
+msgid "{value} at {date}, estimated"
+msgstr "{value} vid {date}, uppskattat"
+
+msgid "{verboseName} has been updated."
+msgstr "{verboseName} har uppdaterats."
+
+msgid "Сhoose the role please"
+msgstr "Сhoose rollen vänligen"

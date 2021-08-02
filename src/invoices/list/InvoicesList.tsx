@@ -22,7 +22,10 @@ const TableComponent: FunctionComponent<any> = (props) => {
     {
       title: translate('Invoice number'),
       render: ({ row }) => (
-        <Link state="billingDetails" params={{ uuid: row.uuid }}>
+        <Link
+          state="billingDetails"
+          params={{ uuid: props.customer.uuid, invoice_uuid: row.uuid }}
+        >
           {row.number}
         </Link>
       ),
@@ -76,6 +79,18 @@ const TableComponent: FunctionComponent<any> = (props) => {
 const mapPropsToFilter = (props) => ({
   ...props.stateFilter,
   customer: props.customer.url,
+  field: [
+    'uuid',
+    'state',
+    'due_date',
+    'month',
+    'year',
+    'invoice_date',
+    'number',
+    'price',
+    'tax',
+    'total',
+  ],
 });
 
 const TableOptions: TableOptionsType = {
@@ -83,6 +98,7 @@ const TableOptions: TableOptionsType = {
   fetchData: createFetcher('invoices'),
   mapPropsToFilter,
   queryField: 'number',
+  mapPropsToTableId: (props) => [props.customer.uuid],
 };
 
 const mapsStateToProps = (state: RootState) => ({

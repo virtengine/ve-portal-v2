@@ -20,10 +20,12 @@ import { TABLE_PUBLIC_ORDERS } from './constants';
 import { OrderItemApproveButton } from './OrderItemApproveButton';
 import { OrderItemRejectButton } from './OrderItemRejectButton';
 import { OrderItemslistTablePlaceholder } from './OrderItemsListPlaceholder';
+import { OrderItemStateCell } from './OrderItemStateCell';
+import { OrderItemTypeCell } from './OrderItemTypeCell';
 import { ResourceNameField } from './ResourceNameField';
 import { RowNameField } from './RowNameField';
 
-export const TableComponent: FunctionComponent<any> = (props) => {
+const TableComponent: FunctionComponent<any> = (props) => {
   const columns = [
     {
       title: translate('Offering'),
@@ -44,11 +46,11 @@ export const TableComponent: FunctionComponent<any> = (props) => {
     },
     {
       title: translate('Type'),
-      render: ({ row }) => row.type,
+      render: OrderItemTypeCell,
     },
     {
       title: translate('State'),
-      render: ({ row }) => row.state,
+      render: OrderItemStateCell,
     },
     {
       title: translate('Plan'),

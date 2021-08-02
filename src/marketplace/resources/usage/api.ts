@@ -1,17 +1,13 @@
 import moment from 'moment-timezone';
 
-import { getAll } from '@waldur/core/api';
 import { formatDateTime } from '@waldur/core/dateUtils';
 import {
+  getComponentUsages,
   getOffering,
   getResourcePlanPeriods,
 } from '@waldur/marketplace/common/api';
 
-import {
-  UsageReportContext,
-  ResourcePlanPeriod,
-  ComponentUsage,
-} from './types';
+import { UsageReportContext, ResourcePlanPeriod } from './types';
 
 export const getPeriodLabel = (
   period: Pick<ResourcePlanPeriod, 'start' | 'end' | 'plan_name'>,
@@ -30,11 +26,10 @@ export const getPeriodLabel = (
 };
 
 export const getUsageComponents = async (params: UsageReportContext) => {
-  const offering = await getOffering(params.offering_uuid);
-  const periods = await getResourcePlanPeriods(params.resource_uuid);
-  const components = offering.components.filter(
-    (component) => component.billing_type === 'usage',
+  const components = await getUsageBasedOfferingComponents(
+    params.offering_uuid,
   );
+  const periods = await getResourcePlanPeriods(params.resource_uuid);
   const options =
     periods.length > 0
       ? periods.map((period) => ({
@@ -52,18 +47,14 @@ export const getUsageComponents = async (params: UsageReportContext) => {
   };
 };
 
-const getComponentUsages = (resource_uuid: string) =>
-  getAll<ComponentUsage>('/marketplace-component-usages/', {
-    params: { resource_uuid },
-  });
-
 const getUsageBasedOfferingComponents = async (offering_uuid: string) => {
   if (!offering_uuid) {
     return null;
   }
   const offering = await getOffering(offering_uuid);
-  const components = offering.components.filter(
-    (component) => component.billing_type === 'usage',
+  const components = offering.components.filter((component) =>
+    // Allow to report usage for limit-based components
+    ['usage', 'limit'].includes(component.billing_type),
   );
   return components.sort((a, b) => a.name.localeCompare(b.name));
 };

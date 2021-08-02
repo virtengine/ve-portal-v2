@@ -1,20 +1,11 @@
 import { getAll } from '@waldur/core/api';
 
-import { getChartSpec } from './constants';
-
-export const getAllocationUsages = (params) =>
-  getAll('/slurm-allocation-usage/', { params });
+import { SlurmAssociation, UserUsage } from './types';
 
 export const getAllocationUserUsages = (params) =>
-  getAll('/slurm-allocation-user-usage/', { params });
+  getAll<UserUsage>('/slurm-allocation-user-usage/', { params });
 
-export const loadCharts = async (allocationUrl) => {
-  const usages = await getAllocationUsages({
-    allocation: allocationUrl,
+export const getSlurmAssociations = (allocation_uuid: string) =>
+  getAll<SlurmAssociation>('/slurm-associations/', {
+    params: { allocation_uuid },
   });
-  const userUsages = await getAllocationUserUsages({
-    allocation: allocationUrl,
-  });
-  const charts = getChartSpec();
-  return { charts, usages, userUsages };
-};

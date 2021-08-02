@@ -15,7 +15,6 @@ export interface PlanFormData {
   quotas: { [key: string]: number };
   description?: string;
   article_code?: string;
-  product_code?: string;
   uuid?: string;
 }
 
@@ -55,6 +54,7 @@ export interface OfferingFormData {
   service_settings?: any;
   thumbnail?: File;
   scope?: string;
+  backend_id?: string;
   document?: OfferingDocument;
   limits?: OfferingLimits;
 }
@@ -71,7 +71,6 @@ export interface PlanRequest {
   prices?: { [key: string]: number };
   description?: string;
   article_code?: string;
-  product_code?: string;
   uuid?: string;
 }
 
@@ -91,6 +90,7 @@ export interface OfferingRequest {
   secret_options?: Record<string, any>;
   schedules?: ScheduleFormData[];
   scope?: string;
+  backend_id?: string;
   service_attributes?: any;
   shared: boolean;
   limits?: OfferingLimits;

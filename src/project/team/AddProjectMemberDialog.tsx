@@ -14,6 +14,7 @@ import { PROJECT_ADMIN_ROLE } from '@waldur/core/constants';
 import { LoadingSpinner } from '@waldur/core/LoadingSpinner';
 import { CustomersService } from '@waldur/customer/services/CustomersService';
 import { ProjectPermissionsService } from '@waldur/customer/services/ProjectPermissionsService';
+import { FormContainer } from '@waldur/form';
 import { translate } from '@waldur/i18n';
 import { closeModalDialog } from '@waldur/modal/actions';
 import { CloseDialogButton } from '@waldur/modal/CloseDialogButton';
@@ -37,6 +38,7 @@ interface AddProjectMemberDialogResolve {
   currentCustomer: any;
   currentProject: any;
   isProjectManager: boolean;
+  refreshList;
 }
 
 interface AddProjectMemberDialogOwnProps {
@@ -69,6 +71,7 @@ const savePermissions = async (
       role: formData.role,
     });
   }
+  resolve.refreshList();
 };
 
 const loadValidUsers = (resolve: AddProjectMemberDialogResolve) =>
@@ -134,15 +137,16 @@ export const AddProjectMemberDialog = reduxForm<
         {loading ? (
           <LoadingSpinner />
         ) : (
-          <>
+          <FormContainer submitting={submitting}>
             <UserGroup
+              customerUuid={resolve.currentCustomer.uuid}
               editUser={resolve.editUser}
               users={users}
               disabled={submitting}
             />
             <RoleGroup isProjectManager={resolve.isProjectManager} />
             <ExpirationTimeGroup disabled={submitting} />
-          </>
+          </FormContainer>
         )}
       </ModalBody>
       <ModalFooter>
