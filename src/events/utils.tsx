@@ -1,55 +1,86 @@
 import { UISref } from '@uirouter/react';
 
-export const getLink = (route, params, label) => (
-  <UISref to={route} params={params}>
-    <a>{label}</a>
-  </UISref>
-);
+import { UserDetailsLink } from './UserDetailsLink';
 
-const getUserLink = (event) => {
-  const name = event.user_full_name || event.user_username;
-  const ctx = { uuid: event.user_uuid };
-  return getLink('users.details', ctx, name);
-};
+interface UserContext {
+  user_uuid: string;
+  user_full_name: string;
+  user_username: string;
+}
 
-const getAffectedUserLink = (event) => {
-  const name = event.affected_user_full_name || event.affected_user_username;
-  const ctx = { uuid: event.affected_user_uuid };
-  return getLink('users.details', ctx, name);
-};
+interface AffectedUserContext {
+  affected_user_uuid: string;
+  affected_user_full_name: string;
+  affected_user_username: string;
+}
 
-const getCallerLink = (event) => {
-  const name = event.caller_full_name || event.caller_username;
-  const ctx = { uuid: event.caller_uuid };
-  return getLink('users.details', ctx, name);
-};
+type UserEvent = Partial<UserContext> & Partial<AffectedUserContext>;
 
-const getCustomerLink = (event) => {
-  const ctx = { uuid: event.customer_uuid };
-  return getLink('organization.details', ctx, event.customer_name);
-};
+type ProjectRole = 'Administrator' | 'Manager' | 'Member';
 
-const getProjectLink = (event) => {
-  const ctx = { uuid: event.project_uuid };
-  return getLink('project.details', ctx, event.project_name);
-};
+type CustomerRole = 'Owner' | 'Support';
 
-export const getUserContext = (event) => ({
-  user_link: getUserLink(event),
+interface CustomerContext {
+  customer_uuid: string;
+  customer_name: string;
+}
+
+interface ProjectContext {
+  project_uuid: string;
+  project_name: string;
+}
+
+export interface ProjectRoleEvent extends UserEvent, ProjectContext {
+  structure_type: 'project';
+  role_name: ProjectRole;
+}
+
+export interface CustomerRoleEvent extends UserEvent, CustomerContext {
+  structure_type: 'customer';
+  role_name: CustomerRole;
+}
+
+export type RoleEvent = ProjectRoleEvent | CustomerRoleEvent;
+
+export const getUserContext = (event: UserContext) => ({
+  user_link: (
+    <UserDetailsLink
+      uuid={event.user_uuid}
+      name={event.user_full_name || event.user_username}
+    />
+  ),
 });
 
-export const getAffectedUserContext = (event) => ({
-  affected_user_link: getAffectedUserLink(event),
+export const getAffectedUserContext = (event: AffectedUserContext) => ({
+  affected_user_link: (
+    <UserDetailsLink
+      uuid={event.affected_user_uuid}
+      name={event.affected_user_full_name || event.affected_user_username}
+    />
+  ),
 });
 
-export const getCustomerContext = (event) => ({
-  customer_link: getCustomerLink(event),
+export const getCustomerContext = (event: CustomerContext) => ({
+  customer_link: (
+    <UISref to="organization.details" params={{ uuid: event.customer_uuid }}>
+      <a>{event.customer_name}</a>
+    </UISref>
+  ),
 });
 
-export const getProjectContext = (event) => ({
-  project_link: getProjectLink(event),
+export const getProjectContext = (event: ProjectContext) => ({
+  project_link: (
+    <UISref to="project.details" params={{ uuid: event.project_uuid }}>
+      <a>{event.project_name}</a>
+    </UISref>
+  ),
 });
 
 export const getCallerContext = (event) => ({
-  caller_link: getCallerLink(event),
+  caller_link: (
+    <UserDetailsLink
+      uuid={event.caller_uuid}
+      name={event.caller_full_name || event.caller_username}
+    />
+  ),
 });

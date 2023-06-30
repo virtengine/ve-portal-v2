@@ -7,7 +7,7 @@ import { ENV } from '@waldur/configs/default';
 import { LoadingSpinner } from '@waldur/core/LoadingSpinner';
 import { pick } from '@waldur/core/utils';
 import { translate } from '@waldur/i18n';
-import { showError, showSuccess } from '@waldur/store/notify';
+import { showErrorResponse, showSuccess } from '@waldur/store/notify';
 import { UserEditContainer } from '@waldur/user/support/UserEditContainer';
 import { UsersService } from '@waldur/user/UsersService';
 import { setCurrentUser } from '@waldur/workspace/actions';
@@ -26,9 +26,11 @@ const formatInitialData = pick([
 export const AuthInit: FunctionComponent = () => {
   const router = useRouter();
   const dispatch = useDispatch();
-  const { loading, error, value: user } = useAsync(() =>
-    UsersService.getCurrentUser(),
-  );
+  const {
+    loading,
+    error,
+    value: user,
+  } = useAsync(() => UsersService.getCurrentUser());
   const onSave = useCallback(
     async (user) => {
       try {
@@ -37,7 +39,7 @@ export const AuthInit: FunctionComponent = () => {
         router.stateService.go('profile.details');
         dispatch(showSuccess(translate('User has been updated.')));
       } catch (error) {
-        dispatch(showError(translate('Unable to save user.')));
+        dispatch(showErrorResponse(error, translate('Unable to save user.')));
       }
     },
     [dispatch, router.stateService],
@@ -56,7 +58,7 @@ export const AuthInit: FunctionComponent = () => {
         <div className="col-md-6 col-md-offset-3 col-xs-12 col-lg-6 col-lg-offset-3">
           <h2>
             {translate('Welcome to {pageTitle}!', {
-              pageTitle: ENV.shortPageTitle,
+              pageTitle: ENV.plugins.WALDUR_CORE.SHORT_PAGE_TITLE,
             })}
           </h2>
           <p>

@@ -8,7 +8,7 @@ import { LoadingSpinner } from '@waldur/core/LoadingSpinner';
 import { translate } from '@waldur/i18n';
 import { ShoppingCartUpdateButton } from '@waldur/marketplace/cart/ShoppingCartUpdateButton';
 import { flattenAttributes } from '@waldur/marketplace/cart/store/effects';
-import { getOffering, getPlugins } from '@waldur/marketplace/common/api';
+import { getFlowOffering, getPlugins } from '@waldur/marketplace/common/api';
 import { OfferingLogo } from '@waldur/marketplace/common/OfferingLogo';
 import { FORM_ID } from '@waldur/marketplace/details/constants';
 import {
@@ -20,15 +20,13 @@ import { ProviderLink } from '@waldur/marketplace/links/ProviderLink';
 import { Plan } from '@waldur/marketplace/types';
 import { useTitle } from '@waldur/navigation/title';
 import { router } from '@waldur/router';
-import { showError, showSuccess } from '@waldur/store/notify';
+import { showErrorResponse, showSuccess } from '@waldur/store/notify';
 
 import { getFlow, updateFlow } from './api';
 
 async function loadData(itemId) {
   const flow = await getFlow(itemId);
-  const offering = await getOffering(
-    flow.resource_create_request.offering_uuid,
-  );
+  const offering = await getFlowOffering(flow.uuid);
   const plugins = await getPlugins();
   const limits = plugins.find(
     (plugin) => plugin.offering_type === offering.type,
@@ -50,9 +48,10 @@ const FlowUpdateForm = reduxForm<{}, PureOfferingConfiguratorProps>({
 export const FlowEditForm = () => {
   useTitle(translate('Flow update'));
 
-  const state = useAsync(() => loadData(router.globals.params.flow_uuid), [
-    router.globals.params.flow_uuid,
-  ]);
+  const state = useAsync(
+    () => loadData(router.globals.params.flow_uuid),
+    [router.globals.params.flow_uuid],
+  );
   const formData = useSelector(getFormValues(FORM_ID));
   const formValid = useSelector(isValid(FORM_ID));
   const dispatch = useDispatch();
@@ -79,7 +78,7 @@ export const FlowEditForm = () => {
       });
       dispatch(showSuccess('Flow has been updated.'));
     } catch (e) {
-      dispatch(showError('Unable to update flow.'));
+      dispatch(showErrorResponse(e, 'Unable to update flow.'));
     }
   };
 

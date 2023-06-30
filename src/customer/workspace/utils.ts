@@ -1,3 +1,4 @@
+import { ENV } from '@waldur/configs/default';
 import { get } from '@waldur/core/api';
 import { translate } from '@waldur/i18n';
 import { getTabTitle } from '@waldur/invoices/utils';
@@ -26,7 +27,6 @@ export const getSidebarItems = (customer: Customer): MenuItemType[] => [
     params: {
       uuid: customer.uuid,
     },
-    feature: 'projects',
     countFieldKey: 'projects',
     index: 300,
   },
@@ -38,7 +38,7 @@ export const getSidebarItems = (customer: Customer): MenuItemType[] => [
     params: {
       uuid: customer.uuid,
     },
-    feature: 'project-requests',
+    feature: 'customer.project_requests',
     index: 310,
   },
   {
@@ -49,7 +49,7 @@ export const getSidebarItems = (customer: Customer): MenuItemType[] => [
     params: {
       uuid: customer.uuid,
     },
-    feature: 'resource-requests',
+    feature: 'customer.resource_requests',
     index: 310,
   },
   {
@@ -60,10 +60,10 @@ export const getSidebarItems = (customer: Customer): MenuItemType[] => [
     params: {
       uuid: customer.uuid,
     },
-    feature: 'eventlog',
+    feature: 'customer.events',
     index: 600,
   },
-  {
+  ENV.plugins.WALDUR_SUPPORT && {
     key: 'issues',
     label: translate('Issues'),
     icon: 'fa-question-circle',
@@ -71,7 +71,6 @@ export const getSidebarItems = (customer: Customer): MenuItemType[] => [
     params: {
       uuid: customer.uuid,
     },
-    feature: 'support',
     index: 700,
   },
   {
@@ -82,7 +81,7 @@ export const getSidebarItems = (customer: Customer): MenuItemType[] => [
     params: {
       uuid: customer.uuid,
     },
-    feature: 'team',
+    feature: 'customer.team',
     countFieldKey: 'users',
     index: 900,
   },
@@ -94,7 +93,7 @@ export const getSidebarItems = (customer: Customer): MenuItemType[] => [
     params: {
       uuid: customer.uuid,
     },
-    feature: 'billing',
+    feature: 'customer.billing',
     index: 1000,
   },
   {

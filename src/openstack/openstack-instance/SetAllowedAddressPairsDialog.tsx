@@ -2,12 +2,7 @@ import React from 'react';
 import { Button, Table } from 'react-bootstrap';
 import { connect, useDispatch } from 'react-redux';
 import { compose } from 'redux';
-import {
-  Field,
-  FieldArray,
-  reduxForm,
-  WrappedFieldArrayProps,
-} from 'redux-form';
+import { Field, FieldArray, reduxForm } from 'redux-form';
 
 import { post } from '@waldur/core/api';
 import { SubmitButton } from '@waldur/form';
@@ -20,6 +15,8 @@ import { ModalDialog } from '@waldur/modal/ModalDialog';
 import { showError, showSuccess } from '@waldur/store/notify';
 
 import { validatePrivateCIDR } from '../utils';
+
+import { formatAddressList } from './utils';
 
 interface AllowedAddressPair {
   ip_address: string;
@@ -69,7 +66,7 @@ const PairAddButton = ({ onClick }) => (
   </Button>
 );
 
-const PairsTable: React.FC<WrappedFieldArrayProps> = ({ fields }) =>
+const PairsTable: React.FC<any> = ({ fields }) =>
   fields.length > 0 ? (
     <>
       <Table
@@ -140,7 +137,13 @@ export const SetAllowedAddressPairsDialog = enhance(
         className="form-horizontal"
       >
         <ModalDialog
-          title={translate('Set allowed address pairs')}
+          title={translate(
+            'Set allowed address pairs ({instance} / {ipAddress})',
+            {
+              instance: resolve.instance.name,
+              ipAddress: formatAddressList(resolve.internalIp),
+            },
+          )}
           footer={
             <>
               <CloseDialogButton />

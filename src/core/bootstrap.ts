@@ -2,11 +2,8 @@ import Axios from 'axios';
 
 import { afterBootstrap } from '@waldur/afterBootstrap';
 import { ENV } from '@waldur/configs/default';
-import experimentalMode from '@waldur/configs/modes/experimental.json';
-import stableMode from '@waldur/configs/modes/stable.json';
 
 const CONFIG_FILE = 'scripts/configs/config.json';
-const modes = { stableMode, experimentalMode };
 
 export async function loadConfig() {
   let frontendSettings, backendSettings;
@@ -59,13 +56,10 @@ export async function loadConfig() {
       code,
       label,
     })),
+    defaultLanguage: backendSettings.LANGUAGE_CODE,
+    FEATURES: backendSettings.FEATURES,
   };
   Object.assign(ENV, config);
-  if (ENV.enableExperimental) {
-    Object.assign(ENV, modes.experimentalMode);
-  } else {
-    Object.assign(ENV, modes.stableMode);
-  }
   afterBootstrap();
   return true;
 }

@@ -5,8 +5,7 @@ if [ -z "$1" ]
 then
   export VERSION='latest'
 else
-  # Strip prefix from tag name so that v3.7.5 becomes 3.7.5
-  export VERSION=${1#v}
+  export VERSION=$1
 fi
 
 DOCKER_PASSWORD=${DOCKER_PASSWORD:-$WALDUR_DOCKER_HUB_PASSWORD}
@@ -26,6 +25,9 @@ then
   echo $CI_COMMIT_TAG > build-info/COMMIT_TAG
   cat build-info/COMMIT_TAG
 fi
+
+apk add git
+git clone -b next --single-branch "https://gitlab-ci-token:$GITLAB_TOKEN@$CI_SERVER_HOST/$CI_PROJECT_PATH.git" next
 
 echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin
 docker build -t opennode/waldur-homeport:$VERSION . --build-arg VERSION

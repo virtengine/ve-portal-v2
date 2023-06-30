@@ -12,13 +12,13 @@ import { renderFieldOrDash } from '@waldur/table/utils';
 import {
   getCustomer,
   getUser,
+  isOwnerOrStaff,
   isServiceManagerSelector,
 } from '@waldur/workspace/selectors';
 import { Customer } from '@waldur/workspace/types';
 
 import { TABLE_PUBLIC_ORDERS } from './constants';
-import { OrderItemApproveButton } from './OrderItemApproveButton';
-import { OrderItemRejectButton } from './OrderItemRejectButton';
+import { OrderItemActionsCell } from './OrderItemActionsCell';
 import { OrderItemslistTablePlaceholder } from './OrderItemsListPlaceholder';
 import { OrderItemStateCell } from './OrderItemStateCell';
 import { OrderItemTypeCell } from './OrderItemTypeCell';
@@ -58,17 +58,7 @@ const TableComponent: FunctionComponent<any> = (props) => {
     },
     {
       title: translate('Actions'),
-      render: ({ row }) =>
-        row.state === 'done' ? null : (
-          <>
-            {row.state === 'executing' && (
-              <OrderItemApproveButton uuid={row.uuid} />
-            )}
-            {row.state !== 'terminated' && row.state !== 'terminating' && (
-              <OrderItemRejectButton uuid={row.uuid} />
-            )}
-          </>
-        ),
+      render: OrderItemActionsCell,
     },
   ];
 
@@ -107,7 +97,7 @@ const OrderItemsListTableOptions = {
         filter.type = props.filter.type.value;
       }
     }
-    if (props.isServiceManager) {
+    if (props.isServiceManager && !props.isOwnerOrStaff) {
       filter.service_manager_uuid = props.user.uuid;
     }
     return filter;
@@ -129,6 +119,7 @@ const mapStateToProps = (state: RootState) => ({
   customer: getCustomer(state),
   user: getUser(state),
   isServiceManager: isServiceManagerSelector(state),
+  isOwnerOrStaff: isOwnerOrStaff(state),
 });
 
 const enhance = compose(

@@ -1,23 +1,23 @@
-import moment from 'moment';
+import { DateTime } from 'luxon';
 
-import { convertDateTimeToUTCString } from '@waldur/core/dateUtils';
+import { parseDate } from '@waldur/core/dateUtils';
 import { lazyComponent } from '@waldur/core/lazyComponent';
 import { translate } from '@waldur/i18n';
 import { registerOfferingType } from '@waldur/marketplace/common/registry';
 
+const BookingDetails = lazyComponent(
+  () =>
+    import(
+      /* webpackChunkName: "BookingDetails" */ '@waldur/booking/BookingDetails'
+    ),
+  'BookingDetails',
+);
 const BookingCheckoutSummary = lazyComponent(
   () =>
     import(
       /* webpackChunkName: "BookingCheckoutSummary" */ '@waldur/booking/BookingCheckoutSummary'
     ),
   'BookingCheckoutSummary',
-);
-const OfferingConfigurationDetails = lazyComponent(
-  () =>
-    import(
-      /* webpackChunkName: "OfferingConfigurationDetails" */ '@waldur/support/OfferingConfigurationDetails'
-    ),
-  'OfferingConfigurationDetails',
 );
 const OfferingConfigurationForm = lazyComponent(
   () =>
@@ -41,23 +41,31 @@ import { OFFERING_TYPE_BOOKING } from './constants';
  * sets the time to 20 minutes later in the future.
  * We add a small buffer that corresponds to max time spend on creating a booking
  */
+
 export const handlePastSlotsForBookingOffering = (attributes) => {
   if (!attributes.schedules) {
     return attributes;
   }
-  const currentTimePlus20Minutes = moment().utc().add(20, 'minutes').format();
   const schedules = attributes.schedules.map((schedule) => {
-    const utcSchedule = {
-      ...schedule,
-      start: convertDateTimeToUTCString(schedule.start),
-      end: convertDateTimeToUTCString(schedule.end),
-    };
-    return moment(utcSchedule.start).isSameOrBefore()
+    return parseDate(schedule.start) <= DateTime.now()
       ? {
-          ...utcSchedule,
-          start: currentTimePlus20Minutes,
+          ...schedule,
+          start: DateTime.utc()
+            .plus({ minutes: 20 })
+            .toISO({ suppressMilliseconds: true }),
+          end: parseDate(schedule.end)
+            .toUTC()
+            .toISO({ suppressMilliseconds: true }),
         }
-      : utcSchedule;
+      : {
+          ...schedule,
+          start: parseDate(schedule.start)
+            .toUTC()
+            .toISO({ suppressMilliseconds: true }),
+          end: parseDate(schedule.end)
+            .toUTC()
+            .toISO({ suppressMilliseconds: true }),
+        };
   });
   return {
     ...attributes,
@@ -75,7 +83,7 @@ registerOfferingType({
   checkoutSummaryComponent: BookingCheckoutSummary,
   component: OfferingConfigurationForm,
   pluginOptionsForm: OfferingPluginOptionsForm,
-  detailsComponent: OfferingConfigurationDetails,
+  detailsComponent: BookingDetails,
   showOptions: true,
   showComponents: true,
   schedulable: true,

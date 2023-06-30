@@ -1,4 +1,4 @@
-import moment from 'moment-timezone';
+import { DateTime } from 'luxon';
 import { useSelector } from 'react-redux';
 import { useAsync } from 'react-use';
 import { reduxForm } from 'redux-form';
@@ -11,10 +11,18 @@ import {
   FieldError,
   SubmitButton,
 } from '@waldur/form';
+import { AwesomeCheckboxField } from '@waldur/form/AwesomeCheckboxField';
 import { DateField } from '@waldur/form/DateField';
-import { datePickerOverlayContainerInDialogs } from '@waldur/form/utils';
+import {
+  datePickerOverlayContainerInDialogs,
+  reactSelectMenuPortaling,
+  validateMaxLength,
+} from '@waldur/form/utils';
 import { translate } from '@waldur/i18n';
-import { getCustomer } from '@waldur/workspace/selectors';
+import { isVisible } from '@waldur/store/config';
+import { RootState } from '@waldur/store/reducers';
+import { getCustomer, getWorkspace } from '@waldur/workspace/selectors';
+import { USER_WORKSPACE } from '@waldur/workspace/types';
 
 import * as api from './api';
 import { ProjectNameField } from './ProjectNameField';
@@ -28,8 +36,10 @@ export interface ProjectCreateFormData {
 
 const loadData = async () => {
   const projectTypes = await api.loadProjectTypes();
+  const oecdCodes = await api.loadOecdCodes();
   return {
     projectTypes,
+    oecdCodes,
   };
 };
 
@@ -41,6 +51,13 @@ export const ProjectCreateForm = reduxForm<
 })((props) => {
   const { loading, error, value } = useAsync(loadData);
   const customer = useSelector(getCustomer);
+  const workspace = useSelector(getWorkspace);
+  const showCode = useSelector((state: RootState) =>
+    isVisible(state, 'project.oecd_fos_2007_code'),
+  );
+  const showIndustry = useSelector((state: RootState) =>
+    isVisible(state, 'project.show_industry_flag'),
+  );
 
   if (loading) {
     return <LoadingSpinner />;
@@ -68,7 +85,31 @@ export const ProjectCreateForm = reduxForm<
         <TextField
           label={translate('Project description')}
           name="description"
+          validate={validateMaxLength}
         />
+        {showCode ? (
+          <SelectField
+            label={translate('OECD FoS code')}
+            help_text={translate(
+              'Please select OECD code corresponding to field of science and technology',
+            )}
+            name="oecd_fos_2007_code"
+            options={value.oecdCodes}
+            getOptionValue={(option) => option.value}
+            getOptionLabel={(option) => `${option.value}. ${option.label}`}
+            isClearable={true}
+            {...reactSelectMenuPortaling()}
+          />
+        ) : null}
+        {showIndustry && (
+          <AwesomeCheckboxField
+            name="is_industry"
+            label={translate(
+              'Please mark if project is aimed at industrial use',
+            )}
+            hideLabel={true}
+          />
+        )}
         {value.projectTypes.length >= 1 && (
           <SelectField
             label={translate('Project type')}
@@ -86,7 +127,7 @@ export const ProjectCreateForm = reduxForm<
             'The date is inclusive. Once reached, all project resource will be scheduled for termination.',
           )}
           {...datePickerOverlayContainerInDialogs()}
-          minDate={moment().add(1, 'days').toISOString()}
+          minDate={DateTime.now().plus({ days: 1 }).toISO()}
         />
       </FormContainer>
       <div className="form-group">
@@ -95,7 +136,11 @@ export const ProjectCreateForm = reduxForm<
           <SubmitButton
             disabled={props.invalid}
             submitting={props.submitting}
-            label={translate('Add project')}
+            label={
+              workspace === USER_WORKSPACE
+                ? translate('Edit request')
+                : translate('Add project')
+            }
           />
           <button
             type="button"

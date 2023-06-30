@@ -1,0 +1,32 @@
+@import '~sass/variables.scss';
+
+.grid {
+  width: 100%;
+
+  .grid__header {
+    display: flex;
+    align-items: center;
+    background-color: $white;
+    padding: 16px;
+    margin-bottom: 24px;
+    border-radius: 4px;
+    justify-content: space-between;
+
+    .grid__header__actions {
+      display: flex;
+      align-items: center;
+    }
+  }
+}
+
+@media only screen and (max-width: 1160px) {
+  .grid__header__actions .gridButtons {
+    display: none;
+  }
+}
+
+@media only screen and (max-width: 800px) {
+  .grid__header {
+    display: none !important;
+  }
+}

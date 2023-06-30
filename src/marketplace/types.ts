@@ -17,7 +17,7 @@ export type BillingType = 'usage' | 'limit' | 'fixed' | 'one' | 'few';
 
 export interface OfferingComponent extends BaseComponent {
   billing_type: BillingType;
-  limit_period?: 'month' | 'total';
+  limit_period?: 'month' | 'annual' | 'total';
   limit_amount?: number;
   max_value?: number;
   min_value?: number;
@@ -32,6 +32,7 @@ export interface Plan {
   uuid?: string;
   name: string;
   description: string;
+  divisions: Division[];
   unit_price: number | string;
   init_price?: number | string;
   switch_price?: number | string;
@@ -40,6 +41,8 @@ export interface Plan {
   prices: { [key: string]: number };
   is_active: boolean;
   archived: boolean;
+  price: number;
+  plan_type: string;
 }
 
 export interface OptionField {
@@ -101,6 +104,9 @@ export interface Offering extends GeolocationPoint {
   name: string;
   backend_id?: string;
   terms_of_service?: string;
+  terms_of_service_link?: string;
+  privacy_policy_link?: string;
+  access_url?: string;
   rating: number;
   order_item_count: number;
   reviews: number;
@@ -113,6 +119,7 @@ export interface Offering extends GeolocationPoint {
   full_description: string;
   customer_uuid?: string;
   customer_name?: string;
+  customer_image?: string;
   attributes: AttributesType;
   components: OfferingComponent[];
   options?: OfferingOptions;
@@ -131,6 +138,8 @@ export interface Offering extends GeolocationPoint {
   citation_count?: number;
   referred_pids: ReferredPids[];
   google_calendar_is_public: boolean;
+  google_calendar_link?: string;
+  image?: string;
   googlecalendar?: OfferingGoogleCalendar;
   divisions: Division[];
 }
@@ -213,14 +222,18 @@ export interface OfferingsListType {
 }
 
 export interface ServiceProvider {
-  customer_uuid?: string;
-  customer_name?: string;
+  customer_uuid: string;
+  customer_name: string;
   name: string;
   uuid: string;
   image?: string;
+  customer_image?: string;
   description?: string;
   service_offerings?: Offering[];
   created: string;
+  customer_abbreviation?: string;
+  country?: string;
+  division?: string;
 }
 
 export interface OfferingConfigurationFormProps extends InjectedFormProps {
@@ -260,4 +273,26 @@ export interface PluginMetadata {
 export interface ImportableResource {
   backend_id: string;
   name: string;
+}
+
+export interface OfferingInfo {
+  offering_name: string;
+  offering_uuid: string;
+}
+
+export interface OfferingsByServiceProvider {
+  customer_name: string;
+  customer_uuid: string;
+  offerings: OfferingInfo[];
+}
+
+export interface PlanComponent {
+  amount: number;
+  billing_type: BillingType;
+  component_name: string;
+  measured_unit: string;
+  offering_name: string;
+  plan_name: string;
+  plan_unit: string;
+  price: string;
 }

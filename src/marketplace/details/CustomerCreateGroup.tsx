@@ -47,14 +47,11 @@ export const CustomerCreateGroup = () => {
             component={(fieldProps) => (
               <AsyncPaginate
                 placeholder={translate('Select organization...')}
-                loadOptions={(query, prevOptions, additional) =>
-                  organizationAutocomplete(
-                    query,
-                    prevOptions,
-                    additional,
-                    null,
-                    ['name', 'url'],
-                  )
+                loadOptions={(query, prevOptions, { page }) =>
+                  organizationAutocomplete(query, prevOptions, page, {
+                    field: ['name', 'url'],
+                    o: 'name',
+                  })
                 }
                 defaultOptions
                 value={fieldProps.input.value}
@@ -80,7 +77,9 @@ export const CustomerCreateGroup = () => {
             <i className="fa fa-plus" />
           )}{' '}
           {initialValues
-            ? translate('Edit organization request')
+            ? translate('Edit organization request ({name})', {
+                name: initialValues.name,
+              })
             : translate('Create organization request')}
         </Button>
       </div>

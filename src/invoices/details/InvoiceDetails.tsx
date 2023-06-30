@@ -11,10 +11,17 @@ import { CustomerDetails } from './CustomerDetails';
 import { ResourceRow } from './ResourceRow';
 import { getActiveFixedPricePaymentProfile, groupInvoiceItems } from './utils';
 
-export const InvoiceDetails = ({ invoice }: { invoice: Invoice }) => {
-  const projects = useMemo(() => groupInvoiceItems(invoice.items), [
-    invoice.items,
-  ]);
+export const InvoiceDetails = ({
+  invoice,
+  refreshInvoiceItems,
+}: {
+  invoice: Invoice;
+  refreshInvoiceItems(): void;
+}) => {
+  const projects = useMemo(
+    () => groupInvoiceItems(invoice.items),
+    [invoice.items],
+  );
   const customer = useSelector(getCustomer);
   const showPrice = !getActiveFixedPricePaymentProfile(
     customer.payment_profiles,
@@ -57,6 +64,7 @@ export const InvoiceDetails = ({ invoice }: { invoice: Invoice }) => {
                   <tr>
                     <th colSpan={showPrice ? 5 : 6}>{translate('Item')}</th>
                     <th>{translate('Price')}</th>
+                    <th></th>
                   </tr>
                 </thead>
                 {projects.map((project, projectIndex) => (
@@ -78,10 +86,12 @@ export const InvoiceDetails = ({ invoice }: { invoice: Invoice }) => {
                     {project.resources.map((resource, resourceIndex) => (
                       <ResourceRow
                         key={resourceIndex}
+                        invoice={invoice}
                         resource={resource}
                         customer={customer}
                         showPrice={showPrice}
                         showVat={invoice.issuer_details.vat_code}
+                        refreshInvoiceItems={refreshInvoiceItems}
                       />
                     ))}
                   </tbody>

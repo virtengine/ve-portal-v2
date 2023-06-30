@@ -19,14 +19,14 @@ export const getPrivateUserTabs = () => [
     icon: 'fa-key',
     state: 'profile.keys',
     key: 'keys',
-    feature: 'user.ssh-keys',
+    feature: 'user.ssh_keys',
   },
   {
     label: translate('Notifications'),
     icon: 'fa-envelope',
     state: 'profile.notifications',
     key: 'notifications',
-    feature: 'notifications',
+    feature: 'user.notifications',
   },
   {
     label: translate('Manage'),
@@ -53,7 +53,14 @@ export const getPrivateUserTabs = () => [
     icon: 'fa-plus',
     state: 'profile.flows-list',
     key: 'flows-list',
-    feature: 'marketplace-flows',
+    feature: 'marketplace.flows',
+  },
+  {
+    label: translate('Permission requests'),
+    icon: 'fa-file',
+    state: 'profile.permission-requests',
+    key: 'permission-requests',
+    feature: 'invitations.show_group_invitations',
   },
 ];
 
@@ -75,10 +82,14 @@ export const getPublicUserTabs = (user) => [
     params: {
       uuid: user.uuid,
     },
-    feature: 'user.ssh-keys',
+    feature: 'user.ssh_keys',
   },
 ];
 
 export const SELECT_AFFILIATION_FORM_ID = 'SelectAffiliation';
 export const ORGANIZATION_ROUTE = 'marketplace-category-customer';
 export const PROJECT_ROUTE = 'marketplace-category-project';
+export const USER_PERMISSION_REQUESTS_TABLE_ID =
+  'user-permission-requests-table';
+export const USER_PERMISSION_REQUESTS_FILTER_FORM_ID =
+  'user-permission-requests-table-filter-form';

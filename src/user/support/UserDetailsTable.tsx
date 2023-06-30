@@ -29,6 +29,7 @@ interface StateProps {
 
 interface OwnProps {
   user: UserDetails;
+  profile?: any;
 }
 
 export type UserDetailsTableProps = TranslateProps & StateProps & OwnProps;
@@ -50,6 +51,7 @@ const PureUserDetailsTable: FunctionComponent<UserDetailsTableProps> = (
         label={props.translate('Phone numbers')}
         value={props.user.phone_number}
       />
+      <Row label={props.translate('Username')} value={props.user.username} />
       <Row label={props.translate('Email')} value={props.user.email} />
       <Row
         label={props.translate('Preferred language')}
@@ -88,6 +90,11 @@ const PureUserDetailsTable: FunctionComponent<UserDetailsTableProps> = (
         label={props.translate('Status')}
         value={formatUserStatus(props.user)}
         isVisible={props.isVisibleForSupportOrStaff}
+      />
+      <Row
+        label={props.translate('FreeIPA')}
+        value={props.profile?.username}
+        isVisible={props.profile?.is_active}
       />
     </tbody>
   </Table>

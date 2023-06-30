@@ -123,12 +123,12 @@ const TableOptions = {
   mapPropsToTableId: (props) => [props.project.uuid, props.category_uuid],
   fetchData: createFetcher('marketplace-resources'),
   mapPropsToFilter,
-  queryField: 'name',
+  queryField: 'query',
 };
 
 const mapStateToProps = (state: RootState) => ({
   project: getProject(state),
-  importVisible: isVisible(state, 'import'),
+  importVisible: isVisible(state, 'marketplace.import_resources'),
   filter: getFormValues('ProjectResourcesFilter')(state),
 });
 

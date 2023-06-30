@@ -10,7 +10,11 @@ import { Category } from '@waldur/marketplace/types';
 import { handleMarketplaceErrorResponse } from '@waldur/marketplace/utils';
 import { closeModalDialog } from '@waldur/modal/actions';
 import { router } from '@waldur/router';
-import { showError, showSuccess } from '@waldur/store/notify';
+import {
+  showError,
+  showErrorResponse,
+  showSuccess,
+} from '@waldur/store/notify';
 import { updateEntity } from '@waldur/table/actions';
 import {
   getCustomer,
@@ -30,6 +34,7 @@ import { PUBLIC_OFFERINGS_FILTER_FORM_ID } from './constants';
 import { getPlans, getAttributes, getOfferingComponents } from './selectors';
 import { OfferingFormData, OfferingUpdateFormData } from './types';
 import {
+  filterPluginsData,
   formatOfferingRequest,
   planWithoutComponent,
   planWithoutQuotas,
@@ -39,10 +44,7 @@ import {
 function* loadCategories() {
   const categories: Category[] = yield call(api.getCategories);
   const pluginsData = yield call(api.getPlugins);
-  const plugins = pluginsData.reduce(
-    (result, plugin) => ({ ...result, [plugin.offering_type]: plugin }),
-    {},
-  );
+  const plugins = filterPluginsData(pluginsData);
   return { categories, plugins };
 }
 
@@ -95,7 +97,7 @@ function* createOffering(action: Action<OfferingFormData>) {
   try {
     const components = yield select(getOfferingComponents, rest.type.value);
     const offeringRequest = formatOfferingRequest(rest, components, customer);
-    const response = yield call(api.createOffering, offeringRequest);
+    const response = yield call(api.createProviderOffering, offeringRequest);
     if (thumbnail) {
       const offeringId = response.data.uuid;
       yield call(api.uploadOfferingThumbnail, offeringId, thumbnail);
@@ -124,7 +126,7 @@ function* updateOffering(action: Action<OfferingUpdateFormData>) {
   const components = yield select(getOfferingComponents, rest.type.value);
   try {
     const offeringRequest = formatOfferingRequest(rest, components);
-    yield call(api.updateOffering, offeringUuid, offeringRequest);
+    yield call(api.updateProviderOffering, offeringUuid, offeringRequest);
     if (thumbnail instanceof File || thumbnail === '') {
       yield call(api.uploadOfferingThumbnail, offeringUuid, thumbnail);
     }
@@ -144,10 +146,11 @@ function* updateOffering(action: Action<OfferingUpdateFormData>) {
 }
 
 function* updateOfferingState(action) {
-  const { offering, stateAction, reason } = action.payload;
+  const { offering, stateAction, reason, isPublic, refreshOffering } =
+    action.payload;
   try {
     const response = yield call(
-      api.updateOfferingState,
+      api.updateProviderOfferingState,
       offering.uuid,
       stateAction,
       reason,
@@ -159,6 +162,9 @@ function* updateOfferingState(action) {
       }),
     );
     yield put(showSuccess(translate('Offering state has been updated.')));
+    if (isPublic) {
+      refreshOffering();
+    }
     if (stateAction === 'pause') {
       yield put(closeModalDialog());
     }
@@ -174,7 +180,7 @@ function* loadOffering(action) {
   const { offeringUuid } = action.payload;
   try {
     const data = yield loadCategories();
-    const offering = yield call(api.getOffering, offeringUuid);
+    const offering = yield call(api.getProviderOffering, offeringUuid);
     yield put(loadDataSuccess({ offering, ...data }));
   } catch {
     yield put(loadDataError());
@@ -225,7 +231,7 @@ function* removeOfferingImage(action: Action<any>) {
 function* addOfferingLocation(action: Action<any>) {
   try {
     const { offering } = action.payload;
-    yield call(api.updateOffering, offering.uuid, offering);
+    yield call(api.updateProviderOffering, offering.uuid, offering);
     const customer = yield select(getCustomer);
     const isServiceManager = yield select(isServiceManagerSelector);
     const isOwnerOrStaff = yield select(isOwnerOrStaffSelector);
@@ -233,14 +239,16 @@ function* addOfferingLocation(action: Action<any>) {
     const formData = yield select(
       getFormValues(PUBLIC_OFFERINGS_FILTER_FORM_ID),
     );
-    yield put(
-      updatePublicOfferingsList(
-        customer,
-        isServiceManager && !isOwnerOrStaff,
-        user,
-        formData.state,
-      ),
-    );
+    if (formData) {
+      yield put(
+        updatePublicOfferingsList(
+          customer,
+          isServiceManager && !isOwnerOrStaff,
+          user,
+          formData.state,
+        ),
+      );
+    }
     yield put(showSuccess(translate('Location has been saved successfully.')));
     yield put(closeModalDialog());
   } catch (error) {
@@ -303,15 +311,126 @@ function* googleCalendarUnpublish(action: Action<any>) {
   }
 }
 
+function* pullRemoteOfferingDetails(action: Action<any>) {
+  const { uuid } = action.payload;
+  try {
+    yield call(api.pullRemoteOfferingDetails, uuid);
+    yield put(
+      showSuccess(
+        translate('Offering details synchronization has been scheduled.'),
+      ),
+    );
+  } catch (error) {
+    yield put(
+      showErrorResponse(
+        error,
+        translate('Unable to synchronize offering details.'),
+      ),
+    );
+  }
+}
+
+function* pullRemoteOfferingUsers(action: Action<any>) {
+  const { uuid } = action.payload;
+  try {
+    yield call(api.pullRemoteOfferingUsers, uuid);
+    yield put(
+      showSuccess(
+        translate('Offering users synchronization has been scheduled.'),
+      ),
+    );
+  } catch (error) {
+    yield put(
+      showErrorResponse(
+        error,
+        translate('Unable to synchronize offering users.'),
+      ),
+    );
+  }
+}
+
+function* pullRemoteOfferingUsage(action: Action<any>) {
+  const { uuid } = action.payload;
+  try {
+    yield call(api.pullRemoteOfferingUsage, uuid);
+    yield put(
+      showSuccess(
+        translate('Offering usage synchronization has been scheduled.'),
+      ),
+    );
+  } catch (error) {
+    yield put(
+      showErrorResponse(
+        error,
+        translate('Unable to synchronize offering usage.'),
+      ),
+    );
+  }
+}
+
+function* pullRemoteOfferingResources(action: Action<any>) {
+  const { uuid } = action.payload;
+  try {
+    yield call(api.pullRemoteOfferingResources, uuid);
+    yield put(
+      showSuccess(
+        translate('Offering resources synchronization has been scheduled.'),
+      ),
+    );
+  } catch (error) {
+    yield put(
+      showErrorResponse(
+        error,
+        translate('Unable to synchronize offering resources.'),
+      ),
+    );
+  }
+}
+
+function* pullRemoteOfferingOrderItems(action: Action<any>) {
+  const { uuid } = action.payload;
+  try {
+    yield call(api.pullRemoteOfferingOrderItems, uuid);
+    yield put(
+      showSuccess(
+        translate('Offering order items synchronization has been scheduled.'),
+      ),
+    );
+  } catch (error) {
+    yield put(
+      showErrorResponse(
+        error,
+        translate('Unable to synchronize offering order items.'),
+      ),
+    );
+  }
+}
+
+function* pullRemoteOfferingInvoices(action: Action<any>) {
+  const { uuid } = action.payload;
+  try {
+    yield call(api.pullRemoteOfferingInvoices, uuid);
+    yield put(
+      showSuccess(
+        translate('Offering invoices synchronization has been scheduled.'),
+      ),
+    );
+  } catch (error) {
+    yield put(
+      showErrorResponse(
+        error,
+        translate('Unable to synchronize offering invoices.'),
+      ),
+    );
+  }
+}
+
 function* updateConfirmationMessage(action: Action<any>) {
-  const {
-    offeringUuid,
-    templateConfirmationMessage,
-    secretOptions,
-  } = action.payload;
+  const { offeringUuid, templateConfirmationMessage, secretOptions } =
+    action.payload;
   try {
     yield call(
-      api.updateOfferingConfirmationMessage,
+      api.updateProviderOfferingConfirmationMessage,
       offeringUuid,
       templateConfirmationMessage,
       secretOptions,
@@ -335,7 +454,7 @@ function* updateConfirmationMessage(action: Action<any>) {
 function* updateAccessPolicy(action: Action<any>) {
   const { offeringUuid, divisions } = action.payload;
   try {
-    yield call(api.updateOfferingAccessPolicy, offeringUuid, divisions);
+    yield call(api.updateProviderOfferingAccessPolicy, offeringUuid, divisions);
     const customer = yield select(getCustomer);
     const isServiceManager = yield select(isServiceManagerSelector);
     const isOwnerOrStaff = yield select(isOwnerOrStaffSelector);
@@ -343,14 +462,16 @@ function* updateAccessPolicy(action: Action<any>) {
     const formData = yield select(
       getFormValues(PUBLIC_OFFERINGS_FILTER_FORM_ID),
     );
-    yield put(
-      updatePublicOfferingsList(
-        customer,
-        isServiceManager && !isOwnerOrStaff,
-        user,
-        formData.state,
-      ),
-    );
+    if (formData) {
+      yield put(
+        updatePublicOfferingsList(
+          customer,
+          isServiceManager && !isOwnerOrStaff,
+          user,
+          formData.state,
+        ),
+      );
+    }
     yield put(
       showSuccess(translate('Access policy has been updated successfully.')),
     );
@@ -368,7 +489,7 @@ function* updateAccessPolicy(action: Action<any>) {
 function* updateOfferingLogo(action: Action<any>) {
   const { offeringUuid, formData } = action.payload;
   try {
-    yield call(api.updateOfferingLogo, offeringUuid, formData);
+    yield call(api.updateProviderOfferingLogo, offeringUuid, formData);
     const customer = yield select(getCustomer);
     const isServiceManager = yield select(isServiceManagerSelector);
     const isOwnerOrStaff = yield select(isOwnerOrStaffSelector);
@@ -411,6 +532,31 @@ export default function* () {
   yield takeEvery(constants.GOOGLE_CALENDAR_SYNC, googleCalendarSync);
   yield takeEvery(constants.GOOGLE_CALENDAR_PUBLISH, googleCalendarPublish);
   yield takeEvery(constants.GOOGLE_CALENDAR_UNPUBLISH, googleCalendarUnpublish);
+  yield takeEvery(constants.GOOGLE_CALENDAR_UNPUBLISH, googleCalendarUnpublish);
+  yield takeEvery(
+    constants.PULL_REMOTE_OFFERING_DETAILS,
+    pullRemoteOfferingDetails,
+  );
+  yield takeEvery(
+    constants.PULL_REMOTE_OFFERING_USERS,
+    pullRemoteOfferingUsers,
+  );
+  yield takeEvery(
+    constants.PULL_REMOTE_OFFERING_USAGE,
+    pullRemoteOfferingUsage,
+  );
+  yield takeEvery(
+    constants.PULL_REMOTE_OFFERING_RESOURCES,
+    pullRemoteOfferingResources,
+  );
+  yield takeEvery(
+    constants.PULL_REMOTE_OFFERING_ORDER_ITEMS,
+    pullRemoteOfferingOrderItems,
+  );
+  yield takeEvery(
+    constants.PULL_REMOTE_OFFERING_INVOICES,
+    pullRemoteOfferingInvoices,
+  );
   yield takeEvery(
     constants.updateConfirmationMessage.REQUEST,
     updateConfirmationMessage,

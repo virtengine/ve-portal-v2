@@ -6,6 +6,7 @@ import { getFormValues } from 'redux-form';
 
 import { CUSTOMER_OWNER_ROLE } from '@waldur/core/constants';
 import { Tooltip } from '@waldur/core/Tooltip';
+import { translate } from '@waldur/i18n';
 import { RootState } from '@waldur/store/reducers';
 import { BooleanField } from '@waldur/table/BooleanField';
 import { DASH_ESCAPE_CODE } from '@waldur/table/constants';
@@ -13,6 +14,7 @@ import { Table, connectTable, createFetcher } from '@waldur/table/index';
 
 import { UserActivateButton } from './UserActivateButton';
 import { UserDetailsButton } from './UserDetailsButton';
+import { UserTableActions } from './UserTableActions';
 
 const UserActionsButton: FunctionComponent<any> = (props) => (
   <ButtonGroup>
@@ -50,7 +52,11 @@ const OrganizationRolesField = ({ row }) => {
     return row.customer_permissions.map((permission, index) => {
       return (
         <span key={index}>
-          <Tooltip key={index} label={permission.role} id="customer-role">
+          <Tooltip
+            key={index}
+            label={translate(permission.role)}
+            id="customer-role"
+          >
             {permission.customer_name} <i className="fa fa-question-circle" />
           </Tooltip>
           <br />
@@ -69,7 +75,10 @@ const ProjectRolesField = ({ row }) => {
         <span key={index}>
           <Tooltip
             key={index}
-            label={`${permission.role} (${permission.customer_name})`}
+            label={translate('{role} ({name})', {
+              role: permission.role,
+              name: permission.customer_name,
+            })}
             id="project-role"
           >
             {permission.project_name} <i className="fa fa-question-circle" />
@@ -96,6 +105,7 @@ const TableComponent: FunctionComponent<any> = (props) => {
         {
           title: translate('Full name'),
           render: FullNameField,
+          orderField: 'full_name',
         },
         {
           title: translate('Email'),
@@ -143,6 +153,7 @@ const TableComponent: FunctionComponent<any> = (props) => {
       showPageSizeSelector={true}
       verboseName={translate('users')}
       enableExport={true}
+      actions={<UserTableActions refreshList={props.fetch} />}
     />
   );
 };

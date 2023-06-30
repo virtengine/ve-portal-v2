@@ -1,4 +1,5 @@
 import * as Sentry from '@sentry/react';
+import { BrowserTracing } from '@sentry/tracing';
 import ReactGA from 'react-ga';
 
 import { initAuthToken } from './auth/interceptor';
@@ -9,16 +10,31 @@ import { initConfig } from './store/config';
 import store from './store/store';
 import { attachTransitions } from './transitions';
 
-export function afterBootstrap() {
-  document.title = ENV.modePageTitle;
-  if (ENV.GoogleAnalyticsID) {
-    ReactGA.initialize(ENV.GoogleAnalyticsID);
-  }
-  if (ENV.SENTRY_DSN) {
+function initSentry() {
+  if (ENV.plugins.WALDUR_CORE.HOMEPORT_SENTRY_DSN) {
+    const { hostname } = new URL(ENV.apiEndpoint);
     Sentry.init({
-      dsn: ENV.SENTRY_DSN,
+      release: `waldur-homeport@${ENV.buildId}`,
+      dsn: ENV.plugins.WALDUR_CORE.HOMEPORT_SENTRY_DSN,
+      integrations: [
+        new BrowserTracing({
+          tracePropagationTargets: [hostname, /^\//],
+        }),
+      ],
+      environment:
+        ENV.plugins.WALDUR_CORE.HOMEPORT_SENTRY_ENVIRONMENT || 'unknown',
+      tracesSampleRate:
+        ENV.plugins.WALDUR_CORE.HOMEPORT_SENTRY_TRACES_SAMPLE_RATE || 0.2,
     });
   }
+}
+
+export function afterBootstrap() {
+  document.title = ENV.plugins.WALDUR_CORE.FULL_PAGE_TITLE;
+  if (ENV.plugins.WALDUR_CORE.GOOGLE_ANALYTICS_ID) {
+    ReactGA.initialize(ENV.plugins.WALDUR_CORE.GOOGLE_ANALYTICS_ID);
+  }
+  initSentry();
   loadInspinia();
   initAuthToken();
   store.dispatch(initConfig(ENV));

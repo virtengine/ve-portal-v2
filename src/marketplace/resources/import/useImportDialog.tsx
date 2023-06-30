@@ -4,19 +4,19 @@ import { useAsync, useAsyncFn } from 'react-use';
 
 import { translate } from '@waldur/i18n';
 import {
-  getAllOfferings,
+  getAllProviderOfferings,
   getImportableResources,
   importResource,
 } from '@waldur/marketplace/common/api';
 import { ImportableResource, Offering, Plan } from '@waldur/marketplace/types';
 import { closeModalDialog } from '@waldur/modal/actions';
-import { showError, showSuccess } from '@waldur/store/notify';
+import { showErrorResponse, showSuccess } from '@waldur/store/notify';
 import { createEntity } from '@waldur/table/actions';
 
 import { ImportDialogProps } from './types';
 
 const getOfferingsForImport = (resolve) =>
-  getAllOfferings({ params: { ...resolve, importable: true } });
+  getAllProviderOfferings({ params: { ...resolve, importable: true } });
 
 const toggleElement = (element, list) =>
   list.includes(element)
@@ -86,9 +86,9 @@ export const useImportDialog = (props: ImportDialogProps) => {
         );
       }
       dispatch(showSuccess(translate('All resources have been imported.')));
-    } catch {
+    } catch (e) {
       setSubmitting(false);
-      dispatch(showError(translate('Resources import has failed.')));
+      dispatch(showErrorResponse(e, translate('Resources import has failed.')));
       return;
     }
     dispatch(closeModalDialog());

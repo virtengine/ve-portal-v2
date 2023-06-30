@@ -30,9 +30,20 @@ const PureOpenStackInstanceSummary = (
         label={translate('Security groups')}
         value={formatSecurityGroups(props)}
       />
+      {props.resource.server_group && (
+        <Field
+          label={translate('Server group')}
+          value={props.resource.server_group.name}
+          helpText={props.resource.server_group.policy}
+        />
+      )}
       <Field
         label={translate('Availability zone')}
         value={props.resource.availability_zone_name}
+      />
+      <Field
+        label={translate('Hypervisor')}
+        value={props.resource.hypervisor_hostname}
       />
       {props.resource.rancher_cluster && (
         <Field

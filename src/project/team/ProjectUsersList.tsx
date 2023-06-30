@@ -5,6 +5,10 @@ import { useSelector } from 'react-redux';
 import { useAsync } from 'react-use';
 
 import { ENV } from '@waldur/configs/default';
+import {
+  PROJECT_ADMIN_ROLE,
+  PROJECT_MEMBER_ROLE,
+} from '@waldur/core/constants';
 import { LoadingSpinner } from '@waldur/core/LoadingSpinner';
 import { translate } from '@waldur/i18n';
 import { Table, connectTable } from '@waldur/table';
@@ -24,7 +28,6 @@ import { UserDetailsButton } from './UserDetailsButton';
 import { UserRemoveButton } from './UserRemoveButton';
 
 const TableComponent: FunctionComponent<any> = (props) => {
-  const { translate } = props;
   return (
     <Table
       {...props}
@@ -44,7 +47,7 @@ const TableComponent: FunctionComponent<any> = (props) => {
         },
         {
           title: translate('Role in project'),
-          render: ({ row }) => ENV.roles[row.role] || 'N/A',
+          render: ({ row }) => translate(ENV.roles[row.role]) || 'N/A',
         },
         {
           title: translate('Actions'),
@@ -63,8 +66,13 @@ const TableComponent: FunctionComponent<any> = (props) => {
               ) : null}
               {props.isOwnerOrStaff || props.isProjectManager ? (
                 <UserRemoveButton
-                  user={row}
-                  isProjectManager={props.isProjectManager}
+                  permission={row.permission}
+                  isDisabled={
+                    !props.isOwnerOrStaff &&
+                    (!props.isProjectManager ||
+                      (row.role !== PROJECT_ADMIN_ROLE &&
+                        row.role !== PROJECT_MEMBER_ROLE))
+                  }
                   refreshList={props.fetch}
                 />
               ) : null}
@@ -75,7 +83,7 @@ const TableComponent: FunctionComponent<any> = (props) => {
       actions={
         <ButtonGroup>
           {props.isStaff && <AddUserButton refreshList={props.fetch} />}
-          {props.isOwnerOrStaff || props.isProjectManager ? (
+          {props.isOwnerOrStaff ? (
             <AddMemberButton
               users={props.rows}
               project={props.project}
@@ -86,7 +94,7 @@ const TableComponent: FunctionComponent<any> = (props) => {
           ) : null}
         </ButtonGroup>
       }
-      verboseName={translate('team members')}
+      verboseName={translate('Team members')}
     />
   );
 };
@@ -116,7 +124,7 @@ export const ProjectUsersList: FunctionComponent = () => {
   const isStaff = useSelector(isStaffSelector);
   const isOwnerOrStaff = useSelector(isOwnerOrStaffSelector);
   const customer = useSelector(getCustomer);
-  const isProjectManager = value && value.length > 0 && isOwnerOrStaff;
+  const isProjectManager = value && value.length > 0;
   if (loading) {
     return <LoadingSpinner />;
   }

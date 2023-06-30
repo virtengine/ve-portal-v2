@@ -1,5 +1,4 @@
-import classNames from 'classnames';
-import React, { FunctionComponent } from 'react';
+import { FunctionComponent } from 'react';
 import { connect } from 'react-redux';
 import { compose } from 'redux';
 import { getFormValues } from 'redux-form';
@@ -14,11 +13,11 @@ import { ResourceShowUsageButton } from '@waldur/marketplace/resources/usage/Res
 import { Category } from '@waldur/marketplace/types';
 import { RootState } from '@waldur/store/reducers';
 import { Table, connectTable, createFetcher } from '@waldur/table';
-import { wrapTooltip } from '@waldur/table/ActionButton';
 import { getCustomer } from '@waldur/workspace/selectors';
 import { Customer, Project } from '@waldur/workspace/types';
 
 import { CustomerResourcesListPlaceholder } from './CustomerResourcesListPlaceholder';
+import { ExpandableResourceSummary } from './ExpandableResourceSummary';
 import { ResourceNameField } from './ResourceNameField';
 import { ResourceStateField } from './ResourceStateField';
 
@@ -63,21 +62,8 @@ export const TableComponent: FunctionComponent<any> = (props) => {
     },
     {
       title: translate('Actions'),
-      render: ({ row }) => {
-        const body = (
-          <div className={classNames({ disabled: !row.is_usage_based })}>
-            <ResourceShowUsageButton resource={row} />
-          </div>
-        );
-        if (!row.is_usage_based) {
-          return wrapTooltip(
-            translate('Usage information is not available.'),
-            body,
-          );
-        } else {
-          return body;
-        }
-      },
+      render: ({ row }) =>
+        row.is_usage_based && <ResourceShowUsageButton resource={row} />,
     },
   ];
 
@@ -91,6 +77,7 @@ export const TableComponent: FunctionComponent<any> = (props) => {
       enableExport={true}
       hasQuery={true}
       showPageSizeSelector={true}
+      expandableRow={ExpandableResourceSummary}
     />
   );
 };
@@ -132,7 +119,7 @@ const TableOptions = {
   mapPropsToFilter,
   exportRow,
   exportFields,
-  queryField: 'name',
+  queryField: 'query',
 };
 
 const mapStateToProps = (state: RootState) => ({

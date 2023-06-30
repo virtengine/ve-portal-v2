@@ -1,0 +1,27 @@
+@import '~sass/inspinia/_variables.scss';
+@import '~sass/variables.scss';
+
+.publicOfferingPricing {
+  display: flex;
+  column-gap: 40px;
+  margin: 0 150px;
+  border: 1px solid $border-color;
+  border-radius: 4px;
+  background-color: $white;
+  padding: 24px;
+  color: #000000;
+
+  &__info {
+    width: 33%;
+
+    &__description {
+      font-size: 14px;
+      line-height: 24px;
+    }
+
+    button {
+      max-width: 120px;
+      margin-top: 24px;
+    }
+  }
+}

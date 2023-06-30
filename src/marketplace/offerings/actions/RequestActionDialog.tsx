@@ -7,7 +7,7 @@ import {
 } from 'react-bootstrap';
 import { useDispatch, useSelector } from 'react-redux';
 
-import { isFeatureVisible } from '@waldur/features/connect';
+import { ENV } from '@waldur/configs/default';
 import { translate } from '@waldur/i18n';
 import { openIssueCreateDialog } from '@waldur/issues/create/actions';
 import { ISSUE_IDS } from '@waldur/issues/types/constants';
@@ -22,13 +22,13 @@ export const RequestActionDialog: FunctionComponent<{
   const customer = useSelector(getCustomer);
   const user = useSelector(getUser);
   useEffect(() => {
-    if (isFeatureVisible('support')) {
+    if (ENV.plugins.WALDUR_SUPPORT) {
       close();
       dispatch(
         openIssueCreateDialog({
           issue: {
             type: ISSUE_IDS.SERVICE_REQUEST,
-            summary: translate('Request {mode} of Public Offering', {
+            summary: translate('Request {mode} of public offering', {
               mode: offeringRequestMode,
             }),
             description:
@@ -66,7 +66,7 @@ export const RequestActionDialog: FunctionComponent<{
             offeringRequestMode,
           },
           options: {
-            title: translate('Request {mode} of Public Offering', {
+            title: translate('Request {mode} of public offering', {
               mode: offeringRequestMode,
             }),
             descriptionPlaceholder: translate('Please provide a reason'),

@@ -1,3 +1,4 @@
+import { Alert } from 'react-bootstrap';
 import { useSelector } from 'react-redux';
 import { useAsync } from 'react-use';
 import { Field } from 'redux-form';
@@ -11,19 +12,27 @@ import { importOfferingSelector } from './selectors';
 
 export const SelectOrganizationTab = () => {
   const formData = useSelector(importOfferingSelector);
-  const { loading, error, value: organizations } = useAsync(
-    () => loadRemoteOrganizations(formData),
-    [],
-  );
+  const {
+    loading,
+    error,
+    value: organizations,
+  } = useAsync(() => {
+    if (!formData?.api_url || !formData?.token) {
+      return Promise.reject(
+        new Error(translate('Please check the credentials again.')),
+      );
+    }
+    return loadRemoteOrganizations(formData);
+  }, []);
   if (loading) {
     return <LoadingSpinner />;
   }
   if (error) {
     return (
-      <>
-        {translate('Unable to load organizations')}{' '}
-        {typeof error === 'string' ? <div>{error}</div> : null}
-      </>
+      <Alert bsStyle="danger">
+        <h4>{translate('Unable to load organizations')}</h4>
+        {error?.message && <p>{error.message}</p>}
+      </Alert>
     );
   }
   if (organizations.length === 0) {

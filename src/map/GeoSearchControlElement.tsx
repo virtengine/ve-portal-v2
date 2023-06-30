@@ -7,6 +7,8 @@ export const GeoSearchControlElement: FunctionComponent<any> = (props) => {
   const map = useMap();
 
   useEffect(() => {
+    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+    // @ts-ignore
     const searchControl = new GeoSearchControl(props);
 
     map.addControl(searchControl);

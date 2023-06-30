@@ -1,4 +1,4 @@
-import { isFeatureVisible } from '@waldur/features/connect';
+import { ENV } from '@waldur/configs/default';
 import { translate } from '@waldur/i18n';
 import { SidebarExtensionService } from '@waldur/navigation/sidebar/SidebarExtensionService';
 import { MenuItemType } from '@waldur/navigation/sidebar/types';
@@ -52,14 +52,20 @@ const getReportItems = (): MenuItemType[] => [
     icon: 'fa-building',
     state: 'support.customers',
     key: 'support.customers',
-    feature: 'support.organizations',
+    feature: 'support.customers_list',
+  },
+  {
+    label: translate('Projects'),
+    icon: 'fa-bookmark',
+    state: 'support.projects',
+    key: 'support.projects',
   },
   {
     label: translate('Organization requests'),
     icon: 'fa-building',
     state: 'support.customers-requests',
     key: 'support.customers-requests',
-    feature: 'support.customers-requests',
+    feature: 'support.customers_requests',
   },
   {
     label: translate('Broadcast'),
@@ -89,7 +95,14 @@ const getReportItems = (): MenuItemType[] => [
         icon: 'fa-university',
         state: 'support.organizations',
         key: 'support.organizations',
-        feature: 'support.organizations',
+        feature: 'support.customers_list',
+      },
+      {
+        label: translate('Pricelist'),
+        icon: 'fa-table',
+        state: 'support.pricelist',
+        key: 'support.pricelist',
+        feature: 'support.pricelist',
       },
       {
         label: translate('Growth'),
@@ -108,14 +121,14 @@ const getReportItems = (): MenuItemType[] => [
         icon: 'fa-building',
         state: 'support.organizations-divisions',
         key: 'support.organizations-divisions',
-        feature: 'support.organizations',
+        feature: 'support.customers_list',
       },
       {
         label: translate('Resources usage'),
         icon: 'fa-map',
         state: 'support.resources-treemap',
         key: 'support.resources-treemap',
-        feature: 'support.resources-treemap',
+        feature: 'support.resources_treemap',
       },
       {
         label: translate('Usage reports'),
@@ -148,14 +161,14 @@ const getReportItems = (): MenuItemType[] => [
     icon: 'fa-random',
     state: 'support.shared-providers',
     key: 'support.shared-providers',
-    feature: 'support.shared-providers',
+    feature: 'support.shared_providers',
   },
   {
     label: translate('Usage overview'),
     icon: 'fa-map',
     state: 'support.usage',
     key: 'support.usage',
-    feature: 'support.usage',
+    feature: 'support.resource_usage',
     children: [
       {
         label: translate('Flowmap'),
@@ -176,7 +189,7 @@ const getReportItems = (): MenuItemType[] => [
         icon: 'fa-code-fork',
         state: 'support.sankey-diagram',
         key: 'support.sankey-diagram',
-        feature: 'support.sankey-diagram',
+        feature: 'support.sankey_diagram',
       },
     ],
   },
@@ -185,7 +198,12 @@ const getReportItems = (): MenuItemType[] => [
     icon: 'fa-desktop',
     state: 'support.vm-type-overview',
     key: 'vm-type-overview',
-    feature: 'support.vm-type-overview',
+    feature: 'support.vm_type_overview',
+  },
+  {
+    label: translate('Features'),
+    state: 'support.features',
+    icon: 'fa-desktop',
   },
 ];
 
@@ -197,14 +215,14 @@ class IssueNavigationServiceClass {
   prevWorkspace;
 
   get isVisible() {
-    if (isFeatureVisible('support')) {
+    if (ENV.plugins.WALDUR_SUPPORT) {
       return true;
     }
     return isOwnerOrStaff(store.getState());
   }
 
   gotoDashboard() {
-    if (!isFeatureVisible('support')) {
+    if (!ENV.plugins.WALDUR_SUPPORT) {
       return router.stateService.go('marketplace-support-resources');
     }
     return UsersService.getCurrentUser().then((user) => {
@@ -220,7 +238,7 @@ class IssueNavigationServiceClass {
     return UsersService.getCurrentUser()
       .then((user) => {
         this.currentUser = user;
-        if (!isFeatureVisible('support')) {
+        if (!ENV.plugins.WALDUR_SUPPORT) {
           return [];
         }
         const dashboardItems = filterItems(getDashboardItems());

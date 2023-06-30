@@ -46,9 +46,11 @@ export const WysiwygEditor: FunctionComponent<any> = (props) => {
 
   const contentRef = useRef();
 
-  const { loading, error, value: moduleValue } = useAsync<DraftModule>(
-    loadModule,
-  );
+  const {
+    loading,
+    error,
+    value: moduleValue,
+  } = useAsync<DraftModule>(loadModule);
 
   useEffect(() => {
     if (!moduleValue) {
@@ -59,9 +61,8 @@ export const WysiwygEditor: FunctionComponent<any> = (props) => {
       const contentState = moduleValue.ContentState.createFromBlockArray(
         contentBlock.contentBlocks,
       );
-      const editorState = moduleValue.EditorState.createWithContent(
-        contentState,
-      );
+      const editorState =
+        moduleValue.EditorState.createWithContent(contentState);
       setEditorState(editorState);
     }
   }, [moduleValue]);
@@ -72,7 +73,12 @@ export const WysiwygEditor: FunctionComponent<any> = (props) => {
         moduleValue.convertToRaw(editorState.getCurrentContent()),
       );
       if (contentRef.current != htmlValue) {
-        props.input.onChange(htmlValue);
+        // check if the html is empty or not
+        if (editorState.getCurrentContent().getPlainText().trim().length) {
+          props.input.onChange(htmlValue);
+        } else {
+          props.input.onChange('');
+        }
         contentRef.current = htmlValue;
       }
       setEditorState(editorState);
@@ -95,6 +101,7 @@ export const WysiwygEditor: FunctionComponent<any> = (props) => {
         editorState={editorState}
         wrapperClassName="demo-wrapper"
         editorClassName="demo-editor"
+        readOnly={props.readOnly}
         onEditorStateChange={onEditorStateChange}
         localization={{
           locale: LanguageUtilsService.getCurrentLanguage().code,

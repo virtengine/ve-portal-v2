@@ -6,6 +6,8 @@ import { LoadingSpinner } from '@waldur/core/LoadingSpinner';
 import { formatFilesize } from '@waldur/core/utils';
 import { translate } from '@waldur/i18n';
 
+import { isImage } from '../comments/utils';
+
 import * as actions from './actions';
 import './IssueAttachment.scss';
 import { getIsDeleting } from './selectors';
@@ -20,7 +22,7 @@ interface PureIssueAttachmentProps {
 }
 
 const getThumbnail = (attachment: Attachment, openModalHandler) => {
-  if (attachment.file.match(/\.(png|jpg|jpeg|gif)/g)) {
+  if (isImage(attachment.mime_type)) {
     return <img src={attachment.file} onClick={openModalHandler} />;
   } else {
     return (
@@ -31,60 +33,59 @@ const getThumbnail = (attachment: Attachment, openModalHandler) => {
   }
 };
 
-export const PureIssueAttachment: FunctionComponent<PureIssueAttachmentProps> = (
-  props,
-) => {
-  const { attachment, isDeleting, deleteAttachment, openModal } = props;
+export const PureIssueAttachment: FunctionComponent<PureIssueAttachmentProps> =
+  (props) => {
+    const { attachment, isDeleting, deleteAttachment, openModal } = props;
 
-  return (
-    <div className="attachment-item">
-      {isDeleting && (
-        <div className="attachment-item__overlay">
-          <LoadingSpinner />
-        </div>
-      )}
-      {attachment.file ? (
-        <>
-          <div className="attachment-item__thumb">
-            {getThumbnail(attachment, openModal)}
+    return (
+      <div className="attachment-item">
+        {isDeleting && (
+          <div className="attachment-item__overlay">
+            <LoadingSpinner />
           </div>
-          <div className="attachment-item__description">
-            <div className="attachment-item__description-name">
-              <a href={attachment.file} download="true">
-                {utils.getFileName(attachment.file)}
-              </a>
-              <div
-                className="attachment-item__delete"
-                onClick={deleteAttachment}
-              >
-                <i className="fa fa-trash" aria-hidden="true" />
+        )}
+        {attachment.file ? (
+          <>
+            <div className="attachment-item__thumb">
+              {getThumbnail(attachment, openModal)}
+            </div>
+            <div className="attachment-item__description">
+              <div className="attachment-item__description-name">
+                <a href={attachment.file} download="true">
+                  {attachment.file_name}
+                </a>
+                <div
+                  className="attachment-item__delete"
+                  onClick={deleteAttachment}
+                >
+                  <i className="fa fa-trash" aria-hidden="true" />
+                </div>
+              </div>
+              <div className="attachment-item__description-info">
+                <div className="attachment-item__description-date">
+                  {formatDateTime(attachment.created)}
+                </div>
+                <div className="attachment-item__description-size">
+                  {formatFilesize(attachment.file_size, 'B')}
+                </div>
               </div>
             </div>
-            <div className="attachment-item__description-info">
-              <div className="attachment-item__description-date">
-                {formatDateTime(new Date(attachment.created))}
-              </div>
-              <div className="attachment-item__description-size">
-                {formatFilesize(attachment.file_size, 'B')}
+          </>
+        ) : (
+          <>
+            <div className="attachment-item__thumb">
+              <i className="fa fa-exclamation-triangle"></i>
+            </div>
+            <div className="attachment-item__description">
+              <div className="attachment-item__description-name">
+                {translate('Attachment is broken.')}
               </div>
             </div>
-          </div>
-        </>
-      ) : (
-        <>
-          <div className="attachment-item__thumb">
-            <i className="fa fa-exclamation-triangle"></i>
-          </div>
-          <div className="attachment-item__description">
-            <div className="attachment-item__description-name">
-              {translate('Attachment is broken.')}
-            </div>
-          </div>
-        </>
-      )}
-    </div>
-  );
-};
+          </>
+        )}
+      </div>
+    );
+  };
 
 const mapStateToProps = (state, ownProps) => ({
   isDeleting: getIsDeleting(state, ownProps),
@@ -95,7 +96,12 @@ const mapDispatchToProps = (dispatch, ownProps) => {
     deleteAttachment: (): void =>
       dispatch(actions.issueAttachmentsDelete(ownProps.attachment.uuid)),
     openModal: (): void =>
-      dispatch(utils.openAttachmentModal(ownProps.attachment.file)),
+      dispatch(
+        utils.openAttachmentModal(
+          ownProps.attachment.file,
+          ownProps.attachment.file_name,
+        ),
+      ),
   };
 };
 

@@ -23,6 +23,7 @@ interface DataDeclaration {
   workspace: string;
   /** Page class name is applied to page wrapper element automatically */
   pageClass: string;
+  skipAuth: boolean;
 }
 
 export interface StateDeclaration extends BaseStateDeclaration {
@@ -36,11 +37,34 @@ export interface LanguageOption {
   display_code?: string;
 }
 
-export interface ApplicationConfigurationOptions extends Record<string, any> {
+export interface ApplicationConfigurationOptions {
   apiEndpoint: string;
   plugins?: PluginConfiguration;
-  languageChoices: LanguageOption[];
-  defaultLanguage: string;
+  // Language choices and default language are fetched from MasterMind
+  languageChoices?: LanguageOption[];
+  defaultLanguage?: string;
+  FEATURES?: Record<string, boolean>;
+  marketplaceLandingPageTitle: string;
+  pageSizes: number[];
+  pageSize: number;
+  defaultErrorMessage: string;
+  buildId: string;
+  accountingMode: string;
+  defaultPullInterval: number;
+  countersTimerInterval: number;
+  roles: Record<string, string>;
+  invitationRedirectTime: number;
+  excludedAttachmentTypes: string[];
+  enforceLatinName: boolean;
+  authStorage: string;
+  defaultFont: string;
+  fontFamilies: Record<
+    string,
+    {
+      normal: string;
+      bold: string;
+    }
+  >;
 }
 
 // Polyfill taken from https://stackoverflow.com/a/63984409

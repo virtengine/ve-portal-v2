@@ -4,9 +4,10 @@ import { ENV } from '@waldur/configs/default';
 import { formatDateTime } from '@waldur/core/dateUtils';
 import eventsRegistry from '@waldur/events/registry';
 import { Table, connectTable, createFetcher } from '@waldur/table';
+import { TableOptionsType } from '@waldur/table/types';
 
-import { EventDetailsButton } from './EventDetailsButton';
 import { EventTypesButton } from './EventTypesButton';
+import { ExpandableEventDetails } from './ExpandableEventDetails';
 
 const EventDateField = ({ row }) => <>{formatDateTime(row.created)}</>;
 
@@ -25,22 +26,17 @@ const TableComponent: FunctionComponent<any> = (props) => {
           render: EventDateField,
           orderField: 'created',
         },
-        {
-          title: translate('Actions'),
-          render: EventDetailsButton,
-          className: 'text-center col-md-2',
-          visible: props.showActions,
-        },
       ])}
       hasQuery={true}
       verboseName={translate('events')}
       actions={<EventTypesButton />}
       enableExport={true}
+      expandableRow={ExpandableEventDetails}
     />
   );
 };
 
-export const getEventsList = (extraOptions?) => {
+export const getEventsList = (extraOptions?: Partial<TableOptionsType>) => {
   const TableOptions = {
     table: 'events',
     fetchData: createFetcher('events'),

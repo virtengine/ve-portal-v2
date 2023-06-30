@@ -55,7 +55,7 @@ export const TableComponent: FunctionComponent<any> = (props) => {
     },
     {
       title: translate('Estimated cost'),
-      feature: 'projectCostDetails',
+      feature: 'project.estimated_cost',
       render: ProjectCostField,
     },
     {
@@ -106,6 +106,8 @@ const TableOptions = {
       'type_name',
       'end_date',
       'backend_id',
+      'oecd_fos_2007_code',
+      'is_industry',
     ];
 
     return filter;

@@ -125,11 +125,10 @@ export function attachTransitions() {
   });
 
   router.transitionService.onSuccess({}, (transition) => {
-    if (
-      AuthService.isAuthenticated() &&
-      transition.to().name !== 'marketplace-public-offering.details'
-    ) {
-      tryAcceptInvitation();
+    if (AuthService.isAuthenticated() && !transition.to().data?.skipAuth) {
+      if (router.urlService.path().split('/')[1] !== 'user-group-invitations') {
+        tryAcceptInvitation();
+      }
     }
   });
 
@@ -144,7 +143,7 @@ export function attachTransitions() {
   });
 
   router.transitionService.onSuccess({}, () => {
-    if (ENV.GoogleAnalyticsID) {
+    if (ENV.plugins.WALDUR_CORE.GOOGLE_ANALYTICS_ID) {
       ReactGA.pageview(location.pathname);
     }
   });

@@ -1,3 +1,5 @@
+import { UIView } from '@uirouter/react';
+
 import { lazyComponent } from '@waldur/core/lazyComponent';
 import { StateDeclaration } from '@waldur/core/types';
 
@@ -43,5 +45,13 @@ export const states: StateDeclaration[] = [
   {
     name: 'errorPage.limitQuota',
     component: InvalidQuotaPage,
+  },
+
+  {
+    name: 'next',
+    component: UIView,
+    onEnter: () => {
+      window.location.pathname = '/';
+    },
   },
 ];

@@ -21,6 +21,7 @@ const ProjectUpdateComponent = (props) =>
     <ProjectDetails
       name={props.project.name}
       description={props.project.description}
+      end_date={props.project.end_date}
       translate={props.translate}
     />
   );
@@ -32,6 +33,11 @@ const mapStateToProps = (state, ownProps) => ({
     name: ownProps.project.name,
     description: ownProps.project.description,
     end_date: ownProps.project.end_date,
+    backend_id: ownProps.project.backend_id,
+    oecd_fos_2007_code: ownProps.oecdCodes.find(
+      (option) => option.value === ownProps.project.oecd_fos_2007_code,
+    ),
+    is_industry: ownProps.project.is_industry,
   },
   project_type: ownProps.project.type_name,
   canManage: isOwnerOrStaff(state),

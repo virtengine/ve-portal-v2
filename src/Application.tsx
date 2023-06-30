@@ -18,6 +18,7 @@ export const Application: FunctionComponent = () => {
   if (!value) {
     return <LoadingScreen loading={loading} error={error} />;
   }
+
   return (
     <Provider store={store}>
       <NotificationContainer />

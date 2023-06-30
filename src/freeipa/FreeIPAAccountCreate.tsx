@@ -5,18 +5,20 @@ import { reduxForm, change } from 'redux-form';
 
 import { SubmitButton } from '@waldur/auth/SubmitButton';
 import { translate } from '@waldur/i18n';
-import { showSuccess, showError } from '@waldur/store/notify';
+import {
+  showSuccess,
+  showError,
+  showErrorResponse,
+} from '@waldur/store/notify';
 import { getUser } from '@waldur/workspace/selectors';
 
 import { createProfile } from './api';
-import { TosGroup } from './TosGroup';
 import { UsernameGroup } from './UsernameGroup';
 
 const FORM_ID = 'FreeIPAAccountCreate';
 
 interface FreeIPAAccountCreateFormData {
   username: string;
-  agree_with_policy: boolean;
 }
 
 interface FreeIPAAccountCreateOwnProps {
@@ -43,14 +45,19 @@ export const FreeIPAAccountCreate = reduxForm<
     const callback = useCallback(
       async (formData) => {
         try {
-          await createProfile(formData.username, formData.agree_with_policy);
+          await createProfile(formData.username);
           dispatch(showSuccess(translate('A profile has been created.')));
           onProfileAdded();
         } catch (response) {
           if (response.data && response.data.username) {
             dispatch(showError(response.data.username));
           }
-          dispatch(showError(translate('Unable to create a FreeIPA profile.')));
+          dispatch(
+            showErrorResponse(
+              response,
+              translate('Unable to create a FreeIPA profile.'),
+            ),
+          );
         }
       },
       [dispatch, onProfileAdded],
@@ -59,7 +66,6 @@ export const FreeIPAAccountCreate = reduxForm<
     return (
       <form className="form-horizontal" onSubmit={handleSubmit(callback)}>
         <UsernameGroup />
-        <TosGroup />
         <FormGroup>
           <Col smOffset={3} sm={5}>
             <SubmitButton

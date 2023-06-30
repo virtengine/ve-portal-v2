@@ -1,0 +1,26 @@
+import { ENV } from '@waldur/configs/default';
+import { formatDate } from '@waldur/core/dateUtils';
+import { Tooltip } from '@waldur/core/Tooltip';
+import { translate } from '@waldur/i18n';
+
+export const EndDateTooltip = ({ end_date }) => {
+  if (!end_date) {
+    return null;
+  }
+  if (!ENV.plugins.WALDUR_MARKETPLACE.ENABLE_RESOURCE_END_DATE) {
+    return null;
+  }
+  return (
+    <>
+      {' '}
+      <Tooltip
+        id="end-date"
+        label={translate('Termination date: {date}', {
+          date: formatDate(end_date),
+        })}
+      >
+        <i className="fa fa-clock-o" />
+      </Tooltip>
+    </>
+  );
+};

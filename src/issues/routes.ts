@@ -18,6 +18,13 @@ const CustomerListContainer = lazyComponent(
     ),
   'CustomerListContainer',
 );
+const PriceListContainer = lazyComponent(
+  () =>
+    import(
+      /* webpackChunkName: "PriceListContainer" */ '@waldur/marketplace/offerings/PriceListContainer'
+    ),
+  'PriceListContainer',
+);
 const CustomerRequestContainer = lazyComponent(
   () =>
     import(
@@ -38,6 +45,13 @@ const SupportCustomersContainer = lazyComponent(
       /* webpackChunkName: "SupportCustomersContainer" */ '@waldur/customer/list/SupportCustomersContainer'
     ),
   'SupportCustomersContainer',
+);
+const SupportProjectsList = lazyComponent(
+  () =>
+    import(
+      /* webpackChunkName: "SupportProjectsList" */ '@waldur/project/SupportProjectsList'
+    ),
+  'SupportProjectsList',
 );
 const SupportFeedback = lazyComponent(
   () =>
@@ -120,6 +134,11 @@ const SupportWorkspace = lazyComponent(
     ),
   'SupportWorkspace',
 );
+const FeaturesList = lazyComponent(
+  () =>
+    import(/* webpackChunkName: "FeaturesList" */ './workspace/FeaturesList'),
+  'FeaturesList',
+);
 
 export const states: StateDeclaration[] = [
   {
@@ -140,7 +159,6 @@ export const states: StateDeclaration[] = [
     component: IssuesDashboard,
     data: {
       hideBreadcrumbs: true,
-      feature: 'support',
     },
   },
 
@@ -148,36 +166,24 @@ export const states: StateDeclaration[] = [
     name: 'support.helpdesk',
     url: 'helpdesk/',
     component: IssuesHelpdesk,
-    data: {
-      feature: 'support',
-    },
   },
 
   {
     name: 'support.detail',
     url: 'issue/:uuid/',
     component: IssueDetailsContainer,
-    data: {
-      feature: 'support',
-    },
   },
 
   {
     name: 'support.list',
     url: 'list/',
     component: SupportIssues,
-    data: {
-      feature: 'support',
-    },
   },
 
   {
     name: 'supportFeedback',
     url: '/support/feedback/?token&evaluation',
     component: SupportFeedback,
-    data: {
-      feature: 'support',
-    },
   },
 
   {
@@ -194,7 +200,19 @@ export const states: StateDeclaration[] = [
     url: 'organizations/',
     component: CustomerListContainer,
     data: {
-      feature: 'support.organizations',
+      feature: 'support.customers_list',
+    },
+    resolve: {
+      permission: checkPermission,
+    },
+  },
+
+  {
+    name: 'support.pricelist',
+    url: 'pricelist/',
+    component: PriceListContainer,
+    data: {
+      feature: 'support.pricelist',
     },
     resolve: {
       permission: checkPermission,
@@ -206,7 +224,7 @@ export const states: StateDeclaration[] = [
     url: 'customers-requests/',
     component: CustomerRequestContainer,
     data: {
-      feature: 'support.customers-requests',
+      feature: 'support.customers_requests',
     },
     resolve: {
       permission: checkPermission,
@@ -218,7 +236,7 @@ export const states: StateDeclaration[] = [
     url: 'organizations-divisions/',
     component: CustomersDivisionsContainer,
     data: {
-      feature: 'support.organizations',
+      feature: 'support.customers_list',
     },
     resolve: {
       permission: checkPermission,
@@ -242,7 +260,7 @@ export const states: StateDeclaration[] = [
     url: 'customers/',
     component: SupportCustomersContainer,
     data: {
-      feature: 'support.organizations',
+      feature: 'support.customers_list',
     },
     resolve: {
       permission: checkPermission,
@@ -254,7 +272,19 @@ export const states: StateDeclaration[] = [
     url: 'customer-update/:customer_uuid/',
     component: OrganizationUpdateContainer,
     data: {
-      feature: 'support.organizations',
+      feature: 'support.customers_list',
+      pageClass: 'white-bg',
+    },
+    resolve: {
+      permission: checkPermission,
+    },
+  },
+
+  {
+    name: 'support.projects',
+    url: 'projects/',
+    component: SupportProjectsList,
+    data: {
       pageClass: 'white-bg',
     },
     resolve: {
@@ -291,7 +321,7 @@ export const states: StateDeclaration[] = [
     url: 'sankey-diagram/',
     component: SankeyDiagramContainer,
     data: {
-      feature: 'support.sankey-diagram',
+      feature: 'support.sankey_diagram',
     },
     resolve: {
       permission: checkPermission,
@@ -302,6 +332,15 @@ export const states: StateDeclaration[] = [
     name: 'support.broadcast',
     url: 'broadcast/',
     component: BroadcastList,
+    resolve: {
+      permission: checkPermission,
+    },
+  },
+
+  {
+    name: 'support.features',
+    url: 'features/',
+    component: FeaturesList,
     resolve: {
       permission: checkPermission,
     },

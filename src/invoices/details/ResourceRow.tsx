@@ -8,7 +8,14 @@ import { InvoiceItem } from '../types';
 import { ComponentRow } from './ComponentRow';
 import { ResourceHeader } from './ResourceHeader';
 
-export const ResourceRow = ({ resource, customer, showPrice, showVat }) => {
+export const ResourceRow = ({
+  invoice,
+  resource,
+  customer,
+  showPrice,
+  showVat,
+  refreshInvoiceItems,
+}) => {
   const [toggled, onToggle] = useBoolean(false);
   return (
     <>
@@ -61,13 +68,16 @@ export const ResourceRow = ({ resource, customer, showPrice, showVat }) => {
                 <th>{translate('Price')}</th>
               </>
             )}
+            <th></th>
           </tr>
           {resource.items.map((item: InvoiceItem, itemIndex: number) => (
             <ComponentRow
               key={itemIndex}
+              invoice={invoice}
               item={item}
               showPrice={showPrice}
               showVat={showVat}
+              refreshInvoiceItems={refreshInvoiceItems}
             />
           ))}
         </>

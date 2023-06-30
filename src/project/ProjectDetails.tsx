@@ -1,3 +1,4 @@
+import { formatDate } from '@fullcalendar/core';
 import { FunctionComponent } from 'react';
 
 import { TranslateProps } from '@waldur/i18n';
@@ -5,6 +6,7 @@ import { TranslateProps } from '@waldur/i18n';
 interface ProjectDetailsProps extends TranslateProps {
   name: string;
   description: string;
+  end_date?: string;
 }
 
 export const ProjectDetails: FunctionComponent<ProjectDetailsProps> = (
@@ -16,5 +18,12 @@ export const ProjectDetails: FunctionComponent<ProjectDetailsProps> = (
 
     <dt className="m-t-sm">{props.translate('Description')}:</dt>
     <dd className="m-t-sm">{props.description || 'N/A'}</dd>
+
+    {props.end_date ? (
+      <>
+        <dt className="m-t-sm">{props.translate('End date')}:</dt>
+        <dd className="m-t-sm">{formatDate(props.end_date)}</dd>
+      </>
+    ) : null}
   </dl>
 );

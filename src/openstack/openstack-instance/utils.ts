@@ -1,4 +1,5 @@
 import { translate } from '@waldur/i18n';
+import { InternalIP } from '@waldur/resource/types';
 import { formatFlavor } from '@waldur/resource/utils';
 
 import { VolumeType } from '../types';
@@ -30,11 +31,14 @@ export const calculateSystemVolumeSize = (formData) => {
   return Math.max(currentValue, minValue);
 };
 
+export const formatVolumeTypeLabel = (volumeType: VolumeType): string =>
+  volumeType.description
+    ? `${volumeType.name} (${volumeType.description})`
+    : volumeType.name;
+
 export const formatVolumeTypeChoices = (volumeTypes: VolumeType[]): any[] =>
   volumeTypes.map((volumeType) => ({
-    label: volumeType.description
-      ? `${volumeType.name} (${volumeType.description})`
-      : volumeType.name,
+    label: formatVolumeTypeLabel(volumeType),
     value: volumeType.url,
     name: volumeType.name,
     is_default: volumeType.is_default,
@@ -135,3 +139,6 @@ export function flavorValidator(model, choice) {
   }
   return false;
 }
+
+export const formatAddressList = (row: InternalIP) =>
+  row.fixed_ips.map((fip) => fip.ip_address).join(', ') || 'N/A';

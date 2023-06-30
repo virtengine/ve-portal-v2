@@ -9,7 +9,9 @@ import {
   getUser,
   isOwnerOrStaff as isOwnerOrStaffSelector,
   getCustomer,
+  isManager,
 } from '@waldur/workspace/selectors';
+import { Project } from '@waldur/workspace/types';
 
 const InvitationCreateDialog = lazyComponent(
   () =>
@@ -21,10 +23,13 @@ const InvitationCreateDialog = lazyComponent(
 
 export const InvitationCreateButton: FunctionComponent<{
   refreshList(): void;
-}> = ({ refreshList }) => {
+  project?: Project;
+}> = ({ refreshList, project }) => {
   const user = useSelector(getUser);
   const customer = useSelector(getCustomer);
   const isOwnerOrStaff = useSelector(isOwnerOrStaffSelector);
+  const isProjectManager = useSelector(isManager);
+  const isAllowed = isOwnerOrStaff || isProjectManager;
   const dispatch = useDispatch();
   const callback = () =>
     dispatch(
@@ -34,6 +39,7 @@ export const InvitationCreateButton: FunctionComponent<{
             customer,
             user,
             refreshList,
+            project,
           },
         },
       }),
@@ -43,10 +49,12 @@ export const InvitationCreateButton: FunctionComponent<{
       action={callback}
       title={translate('Invite user')}
       icon="fa fa-plus"
-      disabled={!isOwnerOrStaff}
+      disabled={!isAllowed}
       tooltip={
-        !isOwnerOrStaff &&
-        translate('Only customer owner or staff can invite users.')
+        !isAllowed &&
+        translate(
+          'Only customer owner, project manager or staff can invite users.',
+        )
       }
     />
   );

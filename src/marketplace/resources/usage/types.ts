@@ -5,14 +5,14 @@ export interface UsageReport {
   resource_name: string;
   name: string;
   created: string;
+  date: string;
   usage: number;
   measured_unit: string;
   description?: string;
 }
 
 export interface UsageReportRequest {
-  date_after?: string;
-  date_before?: string;
+  billing_period?: string;
   customer_uuid?: string;
   project_uuid?: string;
   offering_uuid?: string;
@@ -35,6 +35,7 @@ export interface ComponentUsage {
   date: string;
   description: string;
   billing_period: string;
+  recurring: boolean;
 }
 
 export interface ResourcePlanPeriod {

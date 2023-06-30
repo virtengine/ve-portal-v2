@@ -1,7 +1,7 @@
 import { FunctionComponent } from 'react';
 
 import { AuthService } from '@waldur/auth/AuthService';
-import { ENV } from '@waldur/configs/default';
+import { fixURL } from '@waldur/core/api';
 import { translate } from '@waldur/i18n';
 import { UsersService } from '@waldur/user/UsersService';
 
@@ -13,13 +13,11 @@ export const SiteHeader: FunctionComponent = () => {
   return (
     <div className="border-bottom">
       <nav className="navbar navbar-static-top white-bg m-b-none">
-        {ENV.loginLogo && (
-          <div className="navbar-header m-l-sm-xl">
-            <a className="header-logo" onClick={goBack}>
-              <img src={ENV.loginLogo} />
-            </a>
-          </div>
-        )}
+        <div className="navbar-header m-l-sm-xl">
+          <a className="header-logo" onClick={goBack}>
+            <img src={fixURL('/icons/login_logo')} />
+          </a>
+        </div>
         <ul className="nav navbar-top-links pull-right">
           {AuthService.isAuthenticated() && UsersService.isCurrentUserValid() && (
             <li>

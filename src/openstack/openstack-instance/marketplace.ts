@@ -6,6 +6,13 @@ import { parseQuotas, parseQuotasUsage } from '@waldur/openstack/utils';
 
 import { getVolumeTypeRequirements } from './utils';
 
+const OpenstackInstanceDetails = lazyComponent(
+  () =>
+    import(
+      /* webpackChunkName: "OpenstackInstanceDetails" */ '@waldur/openstack/openstack-instance/OpenstackInstanceDetails'
+    ),
+  'OpenstackInstanceDetails',
+);
 const OpenstackInstanceCheckoutSummary = lazyComponent(
   () =>
     import(
@@ -60,6 +67,13 @@ const serializeSecurityGroups = (groups) => {
   }));
 };
 
+const serializeServerGroup = (group) => {
+  if (!group) {
+    return undefined;
+  }
+  return group.url;
+};
+
 const serializer = ({
   name,
   description,
@@ -73,7 +87,9 @@ const serializer = ({
   data_volume_type,
   ssh_public_key,
   security_groups,
+  server_group,
   availability_zone,
+  connect_directly_to_external_network,
 }) => ({
   name,
   description,
@@ -82,6 +98,7 @@ const serializer = ({
   flavor: flavor ? flavor.url : undefined,
   ssh_public_key: ssh_public_key ? ssh_public_key.url : undefined,
   security_groups: serializeSecurityGroups(security_groups),
+  server_group: serializeServerGroup(server_group),
   internal_ips_set: serializeInternalIps(networks),
   floating_ips: serializeFloatingIPs(networks),
   system_volume_size,
@@ -89,6 +106,7 @@ const serializer = ({
   system_volume_type: system_volume_type && system_volume_type.value,
   data_volume_type: data_volume_type && data_volume_type.value,
   availability_zone,
+  connect_directly_to_external_network: connect_directly_to_external_network,
 });
 
 const formValidator = (props) => {
@@ -128,7 +146,7 @@ const formValidator = (props) => {
       'Total storage limit is exceeded',
     );
   }
-  if (isFeatureVisible('openstack.volume-types')) {
+  if (isFeatureVisible('openstack.volume_types')) {
     const required = getVolumeTypeRequirements(attributes);
     for (const name in required) {
       if (limits[name] !== -1 && required[name] + usages[name] > limits[name]) {
@@ -147,9 +165,24 @@ registerOfferingType({
     return translate('OpenStack instance');
   },
   component: OpenstackInstanceCreateForm,
+  detailsComponent: OpenstackInstanceDetails,
   checkoutSummaryComponent: OpenstackInstanceCheckoutSummary,
   serializer,
   formValidator,
   disableOfferingCreation: true,
   allowToUpdateService: true,
+});
+
+registerOfferingType({
+  type: 'OpenStackTenant.SharedInstance',
+  get label() {
+    return translate('OpenStack shared instance');
+  },
+  component: OpenstackInstanceCreateForm,
+  detailsComponent: OpenstackInstanceDetails,
+  checkoutSummaryComponent: OpenstackInstanceCheckoutSummary,
+  serializer,
+  formValidator,
+  allowToUpdateService: true,
+  providerType: 'OpenStackTenant',
 });

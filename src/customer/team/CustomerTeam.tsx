@@ -4,6 +4,7 @@ import { useSelector } from 'react-redux';
 
 import { CustomerUsersListFilter } from '@waldur/customer/team/CustomerUsersListFilter';
 import { translate } from '@waldur/i18n';
+import { GroupInvitationsList } from '@waldur/invitations/GroupInvitationsList';
 import { InvitationsList } from '@waldur/invitations/InvitationsList';
 import { useTitle } from '@waldur/navigation/title';
 import { getCustomer } from '@waldur/workspace/selectors';
@@ -34,6 +35,14 @@ export const CustomerTeam: FunctionComponent = () => {
         <Tab title={translate('Invitations')} eventKey="invitations">
           <PanelBody>
             <InvitationsList />
+          </PanelBody>
+        </Tab>
+        <Tab
+          title={translate('Group invitations')}
+          eventKey="group-invitations"
+        >
+          <PanelBody>
+            <GroupInvitationsList />
           </PanelBody>
         </Tab>
         <Tab title={translate('Permissions log')} eventKey="permissions">

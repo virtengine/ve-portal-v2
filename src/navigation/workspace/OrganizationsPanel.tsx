@@ -1,7 +1,6 @@
 import { useState, useCallback, FunctionComponent } from 'react';
 import { Col } from 'react-bootstrap';
 
-import { ENV } from '@waldur/configs/default';
 import { translate } from '@waldur/i18n';
 
 import { getCustomersPage } from './api';
@@ -24,15 +23,18 @@ const EmptyOrganizationListPlaceholder: FunctionComponent = () => (
   </span>
 );
 
+const VIRTUALIZED_SELECTOR_PAGE_SIZE = 20;
+
 export const OrganizationsPanel: FunctionComponent<{
   selectedOrganization;
   selectOrganization;
   organizationsCount;
 }> = ({ selectedOrganization, selectOrganization, organizationsCount }) => {
   const [filter, setFilter] = useState('');
-  const getPage = useCallback((page) => getCustomersPage(filter, page), [
-    filter,
-  ]);
+  const getPage = useCallback(
+    (page) => getCustomersPage(filter, page, VIRTUALIZED_SELECTOR_PAGE_SIZE),
+    [filter],
+  );
 
   return (
     <Col className="workspace-listing m-b-md" md={6} xs={12}>
@@ -49,7 +51,7 @@ export const OrganizationsPanel: FunctionComponent<{
         itemSize={40}
         getPage={getPage}
         key={filter}
-        elementsPerPage={ENV.pageSize}
+        elementsPerPage={VIRTUALIZED_SELECTOR_PAGE_SIZE}
         noResultsRenderer={EmptyOrganizationListPlaceholder}
       >
         {(listItemProps) => {

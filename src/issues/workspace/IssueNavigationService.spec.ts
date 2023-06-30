@@ -6,6 +6,10 @@ import { User } from '@waldur/workspace/types';
 import { IssueNavigationService } from './IssueNavigationService';
 jest.mock('@waldur/user/UsersService');
 jest.mock('@waldur/router');
+jest.mock('@waldur/configs/default', () => ({
+  ENV: { plugins: { WALDUR_SUPPORT: { ENABLED: true }, FEATURES: {} } },
+}));
+
 jest.mock('@waldur/features/connect', () => ({
   isFeatureVisible: () => true,
 }));

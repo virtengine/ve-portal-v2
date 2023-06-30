@@ -1,3 +1,4 @@
+import { ENV } from '@waldur/configs/default';
 import { translate } from '@waldur/i18n';
 import { getCategories } from '@waldur/marketplace/common/api';
 import { SidebarExtensionService } from '@waldur/navigation/sidebar/SidebarExtensionService';
@@ -41,6 +42,14 @@ export const getPublicServices = (customerId: string): MenuItemType => ({
         uuid: customerId,
       },
     },
+    ENV.plugins.WALDUR_AUTH_SOCIAL.ENABLE_EDUTEAMS_SYNC && {
+      icon: 'fa-file',
+      label: translate('Project updates'),
+      state: 'marketplace-organization-project-update-requests',
+      params: {
+        uuid: customerId,
+      },
+    },
   ],
 });
 
@@ -68,7 +77,7 @@ export const getDefaultItems = (customerUuid: string): MenuItemType[] => [
         params: {
           uuid: customerUuid,
         },
-        feature: 'marketplace.my-offerings',
+        feature: 'marketplace.private_offerings',
       },
       {
         key: 'marketplace',
@@ -114,7 +123,12 @@ SidebarExtensionService.register(
 SidebarExtensionService.register(PROJECT_WORKSPACE, async () => {
   const project = getProject(store.getState());
   const categories = await getCategories({
-    params: { field: ['uuid', 'title'] },
+    params: {
+      field: ['uuid', 'title'],
+      allowed_customer_uuid: project.customer_uuid,
+      project_uuid: project.uuid,
+      has_offerings: true,
+    },
   });
 
   return [
@@ -149,6 +163,14 @@ SidebarExtensionService.register(PROJECT_WORKSPACE, async () => {
         key: `marketplace_category_${category.uuid}`,
         countFieldKey: `marketplace_category_${category.uuid}`,
       })),
+    },
+    ENV.plugins.WALDUR_AUTH_SOCIAL.ENABLE_EDUTEAMS_SYNC && {
+      icon: 'fa-file',
+      label: translate('Project updates'),
+      state: 'marketplace-project-update-requests',
+      params: {
+        uuid: project.uuid,
+      },
     },
   ];
 });

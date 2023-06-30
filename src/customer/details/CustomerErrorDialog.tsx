@@ -8,7 +8,6 @@ import {
 import { useDispatch } from 'react-redux';
 
 import { ENV } from '@waldur/configs/default';
-import { isFeatureVisible } from '@waldur/features/connect';
 import { translate, formatJsxTemplate } from '@waldur/i18n';
 import { openIssueCreateDialog } from '@waldur/issues/create/actions';
 import { ISSUE_IDS } from '@waldur/issues/types/constants';
@@ -20,7 +19,7 @@ export const CustomerErrorDialog: FunctionComponent<{ resolve }> = ({
 }) => {
   const dispatch = useDispatch();
   useEffect(() => {
-    if (isFeatureVisible('support') || !ENV.supportEmail) {
+    if (ENV.plugins.WALDUR_SUPPORT) {
       dispatch(closeModalDialog());
       dispatch(
         openIssueCreateDialog({
@@ -39,12 +38,14 @@ export const CustomerErrorDialog: FunctionComponent<{ resolve }> = ({
         <ModalTitle>{translate('Incorrect organization details')}</ModalTitle>
       </ModalHeader>
       <ModalBody>
-        {ENV.supportEmail
+        {ENV.plugins.WALDUR_CORE.SITE_EMAIL
           ? translate(
               'To correct details of your organization, please send an email to {supportEmail} highlighting the errors in current details. Thank you!',
               {
                 supportEmail: (
-                  <a href={`mailto:${ENV.supportEmail}`}>{ENV.supportEmail}</a>
+                  <a href={`mailto:${ENV.plugins.WALDUR_CORE.SITE_EMAIL}`}>
+                    {ENV.plugins.WALDUR_CORE.SITE_EMAIL}
+                  </a>
                 ),
               },
               formatJsxTemplate,

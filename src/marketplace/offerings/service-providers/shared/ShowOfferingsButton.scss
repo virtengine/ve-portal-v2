@@ -1,0 +1,11 @@
+@import '~sass/variables.scss';
+@import '~sass/inspinia/_variables.scss';
+
+.showOfferingsButtonContainer {
+  align-self: stretch;
+  margin-top: 24px;
+  display: flex;
+  height: 100%;
+  justify-content: flex-end;
+  flex-direction: column;
+}

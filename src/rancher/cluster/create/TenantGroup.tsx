@@ -51,18 +51,12 @@ interface TenantGroupProps {
 }
 
 export const TenantGroup: React.FC<TenantGroupProps> = (props) => {
-  const resourceProps = useAsync(() => loadData(props.tenant, props.offering), [
-    props.tenant,
-    props.offering,
-  ]);
+  const resourceProps = useAsync(
+    () => loadData(props.tenant, props.offering),
+    [props.tenant, props.offering],
+  );
 
   const dispatch = useDispatch();
-  const updateNodesCount = React.useCallback(
-    (nodes) => {
-      dispatch(change(FORM_ID, 'limits.node', nodes));
-    },
-    [dispatch],
-  );
 
   const template = useSelector<any, ClusterTemplate>(getTemplate);
 
@@ -100,7 +94,6 @@ export const TenantGroup: React.FC<TenantGroupProps> = (props) => {
           }),
         );
       }
-      dispatch(change(FORM_ID, 'limits.node', template.nodes.length));
     });
   }, [dispatch, template]);
 
@@ -172,7 +165,6 @@ export const TenantGroup: React.FC<TenantGroupProps> = (props) => {
           <FieldArray
             name={NODES_FIELD_ARRAY}
             component={NodeList}
-            onChange={updateNodesCount}
             flavors={resourceProps.value.flavors}
             volumeTypes={resourceProps.value.volumeTypes}
             mountPoints={resourceProps.value.mountPoints}

@@ -58,6 +58,7 @@ export const TableComponent: FunctionComponent<any> = (props) => {
       columns={columns}
       verboseName={translate('Organizations')}
       hasQuery={true}
+      enableExport={true}
       showPageSizeSelector={true}
     />
   );
@@ -108,10 +109,20 @@ const TableOptions = {
       'vat_code',
       'domain',
       'is_service_provider',
+      'division_name',
+      'division_parent_name',
     ];
 
     return filter;
   },
+  exportFields: [
+    translate('Organization'),
+    translate('Abbreviation'),
+    translate('Contact email'),
+    translate('Contact phone'),
+  ],
+  exportAll: true,
+  exportRow: (row) => [row.name, row.abbreviation, row.email, row.phone_number],
 };
 
 const mapStateToProps = (state: RootState) => ({

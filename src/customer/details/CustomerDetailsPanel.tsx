@@ -1,30 +1,27 @@
 import React from 'react';
 import { connect } from 'react-redux';
 
+import { ENV } from '@waldur/configs/default';
 import { formatDateTime } from '@waldur/core/dateUtils';
+import { isFeatureVisible } from '@waldur/features/connect';
 import { translate } from '@waldur/i18n';
 import { Field } from '@waldur/resource/summary';
 import { ResourceDetailsTable } from '@waldur/resource/summary/ResourceDetailsTable';
-import { getConfig, getNativeNameVisible } from '@waldur/store/config';
+import { getNativeNameVisible } from '@waldur/store/config';
 import { RootState } from '@waldur/store/reducers';
 import { getCustomer } from '@waldur/workspace/selectors';
 import { Customer } from '@waldur/workspace/types';
 
 import { CustomerAccordion } from './CustomerAccordion';
-import { CustomerLogoUpdateContainer } from './CustomerLogoUpdateContainer';
 
 interface CustomerDetailsProps {
   customer: Partial<Customer>;
-  organizationSubnetsVisible: boolean;
-  organizationDomainVisible: boolean;
   nativeNameVisible: boolean;
 }
 
 export const PureCustomerDetails: React.FC<CustomerDetailsProps> = ({
   customer,
-  organizationSubnetsVisible,
   nativeNameVisible,
-  organizationDomainVisible,
 }) => {
   return (
     <CustomerAccordion
@@ -48,7 +45,7 @@ export const PureCustomerDetails: React.FC<CustomerDetailsProps> = ({
           value={customer.abbreviation}
         />
 
-        {organizationDomainVisible && (
+        {isFeatureVisible('customer.show_domain') && (
           <Field
             label={translate('Home organization domain name')}
             value={customer.domain}
@@ -96,7 +93,10 @@ export const PureCustomerDetails: React.FC<CustomerDetailsProps> = ({
           label={translate(
             'Subnets from where connection to self-service is allowed.',
           )}
-          value={organizationSubnetsVisible && customer.access_subnets}
+          value={
+            ENV.plugins.WALDUR_CORE.ORGANIZATION_SUBNETS_VISIBLE &&
+            customer.access_subnets
+          }
         />
 
         <Field label={translate('Country')} value={customer.country_name} />
@@ -110,19 +110,14 @@ export const PureCustomerDetails: React.FC<CustomerDetailsProps> = ({
           value={customer.bank_account}
         />
       </ResourceDetailsTable>
-
-      <CustomerLogoUpdateContainer customer={customer} />
     </CustomerAccordion>
   );
 };
 
 const mapStateToProps = (state: RootState) => ({
   customer: getCustomer(state),
-  organizationSubnetsVisible: getConfig(state).organizationSubnetsVisible,
-  organizationDomainVisible: getConfig(state).organizationDomainVisible,
   nativeNameVisible: getNativeNameVisible(state),
 });
 
-export const CustomerDetailsPanel = connect(mapStateToProps)(
-  PureCustomerDetails,
-);
+export const CustomerDetailsPanel =
+  connect(mapStateToProps)(PureCustomerDetails);

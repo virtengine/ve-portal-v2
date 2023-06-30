@@ -4,20 +4,18 @@ include:
   - project: "waldur/waldur-pipelines"
     file: "/templates/release/publish.yml"
   - project: "waldur/waldur-pipelines"
-    file: "/templates/release/sync-to-github.yml"
-  - project: "waldur/waldur-pipelines"
     file: "/templates/validate/docker-compose-trigger.yml"
   - project: "waldur/waldur-pipelines"
     file: "/templates/test/lint-docker-image.yaml"
   - project: "waldur/waldur-pipelines"
     file: "/templates/test/lint-dockerfile.yaml"
   - project: "waldur/waldur-pipelines"
+    file: "/templates/test/lint-md-files.yml"
+  - project: "waldur/waldur-pipelines"
     file: "/templates/deploy/dev-env-update.yml"
 
 variables:
   COMPONENT_VERSION: "latest"
-  GITHUB_OPENNODE_REPO_URL: "git@github.com:opennode/waldur-homeport.git"
-  GITHUB_WALDUR_REPO_URL: "git@github.com:waldur/waldur-homeport.git"
 
 image: registry.hpc.ut.ee/mirror/library/node:lts-alpine
 
@@ -29,6 +27,7 @@ cache:
     - node_modules/
 
 before_script:
+  - apk add git || echo "Non-Alpine image, skipping"
   - yarn config set cache-folder .yarn
   - yarn install --frozen-lockfile
 
@@ -57,14 +56,15 @@ Run jest tests:
     # If event is related to a created merge request
     - if: '$CI_PIPELINE_SOURCE == "merge_request_event"'
   script:
-    - npm install -g jest
-    - jest --verbose --runInBand --coverage --reporters=jest-junit
+    - yarn jest --verbose --runInBand --coverage --reporters=jest-junit
   coverage: /All\sfiles.*?\s+(\d+.\d+)/
   artifacts:
     when: always
     reports:
       junit: junit.xml
-      cobertura: coverage/cobertura-coverage.xml
+      coverage_report:
+        coverage_format: cobertura
+        path: coverage/cobertura-coverage.xml
 
 Run E2E tests:
   image:
@@ -134,7 +134,7 @@ Upload translatable strings:
     - if: '$CI_COMMIT_BRANCH == "develop"'
     - if: '$CI_COMMIT_BRANCH == "master"'
   image:
-    name: registry.hpc.ut.ee/mirror/localazy/cli:latest
+    name: registry.hpc.ut.ee/mirror/localazy/cli:v1.6.3
   script:
     - sed 's/{\([^}]*\)\}/{__\1__}/g' locales/template.pot > template-for-localazy.pot
     - localazy upload source -w $LOCALAZY_WRITE_KEY -r $LOCALAZY_READ_KEY
@@ -151,15 +151,14 @@ Download translation:
     - apt update && apt install -y git
     - git config --global user.name "$GITLAB_USER_NAME"
     - git config --global user.email "$GITLAB_USER_EMAIL"
-    - echo https://gitlab-ci-token:$GIT_ACCESS_TOKEN@$CI_SERVER_HOST/$CI_PROJECT_PATH.git
-    - git remote set-url origin "https://gitlab-ci-token:$GITLAB_TOKEN@$CI_SERVER_HOST/$CI_PROJECT_PATH.git"
+    - git remote set-url origin "https://$GROUP_LOCALIZE_TOKEN_NAME:$GROUP_LOCALIZE_TOKEN_PASSWORD@$CI_SERVER_HOST/$CI_PROJECT_PATH.git"
     - git fetch
     - git branch -D new-translations  || echo "No translation branch" # cleanup
     - localazy download -w $LOCALAZY_WRITE_KEY -r $LOCALAZY_READ_KEY
     - find locales -type f -name '*.po' -exec sed -i 's/{__\([^}]*\)__\}/{\1}/g' {} \;
     - git status
     - git add locales/*
-    - git commit locales -m "Updates translations [skip ci]" || exit 0
+    - git commit locales -m "Updates translations" || exit 0
     - git status
     - echo "Committing updated translations"
     - git branch new-translations

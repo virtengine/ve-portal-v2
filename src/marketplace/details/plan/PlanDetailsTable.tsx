@@ -1,4 +1,5 @@
 import { FunctionComponent } from 'react';
+import { Table } from 'react-bootstrap';
 import { connect, useSelector } from 'react-redux';
 
 import { defaultCurrency } from '@waldur/core/formatCurrency';
@@ -10,14 +11,21 @@ import { getCustomer } from '@waldur/workspace/selectors';
 import { ComponentEditRow } from './ComponentEditRow';
 import { ComponentRow } from './ComponentRow';
 import { LimitlessComponentsTable } from './LimitlessComponentsTable';
+import { TotalLimitComponentsTable } from './TotalLimitComponentsTable';
 import { Component, PlanDetailsTableProps } from './types';
 import { pricesSelector } from './utils';
 
-const HeaderRow = (props: { periods: string[] }) => (
+const HeaderRow = (props: { periods?: string[] }) => (
   <tr>
-    <th className="col-sm-1">{translate('Component name')}</th>
-    <th className="col-sm-1">{translate('Quantity')}</th>
-    <th className="col-sm-1">{translate('Unit')}</th>
+    <th className="col-sm-1" style={{ width: '5%' }}>
+      {translate('Component name')}
+    </th>
+    <th className="col-sm-1" style={{ width: '5%' }}>
+      {translate('Quantity')}
+    </th>
+    <th className="col-sm-1" style={{ width: '5%' }}>
+      {translate('Unit')}
+    </th>
     {props.periods.map((period, index) => (
       <th className="col-sm-1" key={index}>
         {period}
@@ -37,11 +45,7 @@ const FixedRows = (props: { components: Component[] }) => (
   </>
 );
 
-const UsageRows = (props: {
-  periods: string[];
-  components: Component[];
-  viewMode: boolean;
-}) =>
+const UsageRows = (props: { components: Component[]; viewMode: boolean }) =>
   props.viewMode ? (
     <FixedRows components={props.components} />
   ) : (
@@ -78,13 +82,23 @@ export const PureDetailsTable: FunctionComponent<PlanDetailsTableProps> = (
   const limitedRows = props.components.filter(
     (component) => component.billing_type === 'limit',
   );
-  const hasExtraRows = fixedRows.length > 0 || limitedRows.length > 0;
+  const totalLimitedRows = limitedRows.filter(
+    (component) => component.limit_period === 'total',
+  );
+  const otherLimitedRows = limitedRows.filter(
+    (component) => component.limit_period !== 'total',
+  );
+  const totalLimitTotal = totalLimitedRows.reduce(
+    (subTotal, component) => subTotal + component.subTotal,
+    0,
+  );
+  const hasExtraRows = fixedRows.length > 0 || otherLimitedRows.length > 0;
 
   return (
     <div className={props.formGroupClassName}>
       <div className={props.columnClassName}>
         {hasExtraRows && (
-          <table className="table table-bordered">
+          <Table bordered={true}>
             <thead>
               <HeaderRow
                 periods={!activeFixedPriceProfile ? props.periods : []}
@@ -93,7 +107,7 @@ export const PureDetailsTable: FunctionComponent<PlanDetailsTableProps> = (
             <tbody>
               {fixedRows.length > 0 && <FixedRows components={fixedRows} />}
               {!props.viewMode &&
-                limitedRows.length > 0 &&
+                otherLimitedRows.length > 0 &&
                 fixedRows.length > 0 && (
                   <tr className="text-center">
                     <td colSpan={3 + props.periods.length}>
@@ -103,10 +117,9 @@ export const PureDetailsTable: FunctionComponent<PlanDetailsTableProps> = (
                     </td>
                   </tr>
                 )}
-              {limitedRows.length > 0 && (
+              {otherLimitedRows.length > 0 && (
                 <UsageRows
-                  components={limitedRows}
-                  periods={props.periods}
+                  components={otherLimitedRows}
                   viewMode={props.viewMode}
                 />
               )}
@@ -119,7 +132,7 @@ export const PureDetailsTable: FunctionComponent<PlanDetailsTableProps> = (
                 </tr>
               ) : null}
             </tbody>
-          </table>
+          </Table>
         )}
         {usageRows.length > 0 && (
           <>
@@ -133,6 +146,20 @@ export const PureDetailsTable: FunctionComponent<PlanDetailsTableProps> = (
                   )}
             </p>
             <LimitlessComponentsTable components={usageRows} />
+          </>
+        )}
+        {totalLimitedRows.length > 0 && (
+          <>
+            <p>
+              {translate(
+                'Fee applied according to the maximum value reported by service provider over the whole active state of resource.',
+              )}
+            </p>
+            <TotalLimitComponentsTable
+              components={totalLimitedRows}
+              total={totalLimitTotal}
+              viewMode={props.viewMode}
+            />
           </>
         )}
         {initialRows.length > 0 && (

@@ -1,5 +1,6 @@
 import { createSelector } from 'reselect';
 
+import { ENV } from '@waldur/configs/default';
 import { get } from '@waldur/core/api';
 import { translate } from '@waldur/i18n';
 import { SidebarExtensionService } from '@waldur/navigation/sidebar/SidebarExtensionService';
@@ -37,10 +38,10 @@ const getDefaultItems = (project) => [
     },
     icon: 'fa-bell-o',
     label: translate('Audit logs'),
-    feature: 'eventlog',
+    feature: 'project.events',
     index: 500,
   },
-  {
+  ENV.plugins.WALDUR_SUPPORT && {
     key: 'support',
     state: 'project.issues',
     params: {
@@ -48,7 +49,6 @@ const getDefaultItems = (project) => [
     },
     icon: 'fa-question-circle',
     label: translate('Issues'),
-    feature: 'support',
     index: 600,
   },
   {
@@ -58,7 +58,7 @@ const getDefaultItems = (project) => [
     params: {
       uuid: project.uuid,
     },
-    feature: 'team',
+    feature: 'project.team',
     key: 'team',
     countFieldKey: 'users',
     index: 800,
@@ -90,10 +90,10 @@ export const getSidebarItems = createSelector<
           state: 'organization.dashboard',
           params: { uuid: customer.uuid },
         },
-        ...getDefaultItems(project),
+        ...getDefaultItems(project).filter(Boolean),
       ];
     } else {
-      return getDefaultItems(project);
+      return getDefaultItems(project).filter(Boolean);
     }
   },
 );

@@ -2,10 +2,11 @@ import { Component } from 'react';
 import { connect } from 'react-redux';
 import { Field } from 'redux-form';
 
+import { ENV } from '@waldur/configs/default';
 import { LoadingSpinner } from '@waldur/core/LoadingSpinner';
 import { required } from '@waldur/core/validators';
 import { isFeatureVisible } from '@waldur/features/connect';
-import { TextField, StringField } from '@waldur/form';
+import { TextField, StringField, AwesomeCheckboxField } from '@waldur/form';
 import { renderValidationWrapper } from '@waldur/form/FieldValidationWrapper';
 import { translate, TranslateProps } from '@waldur/i18n';
 import { getUser } from '@waldur/issues/comments/selectors';
@@ -18,6 +19,7 @@ import {
   getDefaultFloatingIps,
 } from '@waldur/openstack/openstack-instance/OpenstackInstanceNetworks';
 import { OpenstackInstanceSecurityGroups } from '@waldur/openstack/openstack-instance/OpenstackInstanceSecurityGroups';
+import { OpenstackInstanceServerGroups } from '@waldur/openstack/openstack-instance/OpenstackInstanceServerGroups';
 import {
   Subnet,
   FloatingIp,
@@ -36,6 +38,7 @@ import {
   validateOpenstackInstanceName,
 } from '@waldur/openstack/openstack-instance/utils';
 import { SecurityGroup } from '@waldur/openstack/openstack-security-groups/types';
+import { ServerGroup } from '@waldur/openstack/openstack-server-groups/types';
 import { RootState } from '@waldur/store/reducers';
 import { User } from '@waldur/workspace/types';
 
@@ -55,6 +58,7 @@ interface OpenstackInstanceCreateFormState {
   loading: boolean;
   loaded: boolean;
   securityGroups: SecurityGroup[];
+  serverGroups: ServerGroup[];
   subnets: Subnet[];
   floatingIps: FloatingIp[];
   images: ServiceComponent[];
@@ -63,6 +67,7 @@ interface OpenstackInstanceCreateFormState {
   availabilityZones: AvailabilityZone[];
   volumeTypes: any[];
   isDataVolumeActive: boolean;
+  connect_directly_to_external_network: boolean;
 }
 
 interface OpenstackInstanceCreateFormComponentProps {
@@ -84,6 +89,7 @@ export class OpenstackInstanceCreateFormComponent extends Component<
     loading: false,
     loaded: false,
     securityGroups: [],
+    serverGroups: [],
     subnets: [],
     floatingIps: [],
     images: [],
@@ -92,6 +98,7 @@ export class OpenstackInstanceCreateFormComponent extends Component<
     availabilityZones: [],
     volumeTypes: [],
     isDataVolumeActive: false,
+    connect_directly_to_external_network: false,
   };
 
   async loadData() {
@@ -102,6 +109,7 @@ export class OpenstackInstanceCreateFormComponent extends Component<
       const flavors = await api.loadFlavors(scopeUuid);
       const sshKeys = await api.loadSshKeys(this.props.currentUser.uuid);
       const securityGroups = await api.loadSecurityGroups(scopeUuid);
+      const serverGroups = await api.loadServerGroups(scopeUuid);
       const subnets = await api.loadSubnets(scopeUuid);
       const floatingIps = await api.loadFloatingIps(scopeUuid);
       const availabilityZones = await api.loadInstanceAvailabilityZones(
@@ -111,7 +119,7 @@ export class OpenstackInstanceCreateFormComponent extends Component<
       let volumeTypeChoices = [];
       let defaultVolumeType;
 
-      if (isFeatureVisible('openstack.volume-types')) {
+      if (isFeatureVisible('openstack.volume_types')) {
         const volumeTypes = await api.loadVolumeTypes(scopeUuid);
         volumeTypeChoices = formatVolumeTypeChoices(volumeTypes);
         defaultVolumeType = getDefaultVolumeType(volumeTypeChoices);
@@ -120,6 +128,7 @@ export class OpenstackInstanceCreateFormComponent extends Component<
         loading: false,
         loaded: true,
         securityGroups,
+        serverGroups,
         subnets,
         floatingIps,
         images,
@@ -135,6 +144,10 @@ export class OpenstackInstanceCreateFormComponent extends Component<
         const security_groups = initial.security_groups.map((s) =>
           securityGroups.find((g) => g.url === s.url),
         );
+        const server_group = serverGroups.find(
+          (s) => s.url === initial.server_group,
+        );
+        const connect_directly_to_external_network = false;
         const availability_zone =
           initial.availability_zone &&
           availabilityZones.find((s) => s.url === initial.availability_zone);
@@ -162,7 +175,7 @@ export class OpenstackInstanceCreateFormComponent extends Component<
         });
         let system_volume_type = defaultVolumeType;
         let data_volume_type = defaultVolumeType;
-        if (isFeatureVisible('openstack.volume-types')) {
+        if (isFeatureVisible('openstack.volume_types')) {
           system_volume_type = volumeTypeChoices.find(
             (volumeType) => volumeType.value === initial.system_volume_type,
           );
@@ -175,10 +188,12 @@ export class OpenstackInstanceCreateFormComponent extends Component<
           flavor,
           image,
           security_groups,
+          server_group,
           availability_zone,
           networks,
           system_volume_type,
           data_volume_type,
+          connect_directly_to_external_network,
         };
         this.props.initialize({ attributes, project: this.props.project });
       } else {
@@ -236,13 +251,10 @@ export class OpenstackInstanceCreateFormComponent extends Component<
   setDataVolumeActive = (value) => this.setState({ isDataVolumeActive: value });
 
   shouldComponentUpdate(prevProps) {
-    if (
+    return !(
       prevProps.valid !== this.props.valid ||
       prevProps.invalid !== this.props.invalid
-    ) {
-      return false;
-    }
-    return true;
+    );
   }
 
   render() {
@@ -297,6 +309,19 @@ export class OpenstackInstanceCreateFormComponent extends Component<
             )}
           />
         </CreateResourceFormGroup>
+        {this.state.serverGroups.length > 0 ? (
+          <CreateResourceFormGroup label={translate('Server group')}>
+            <Field
+              name="attributes.server_group"
+              component={(fieldProps) => (
+                <OpenstackInstanceServerGroups
+                  serverGroups={this.state.serverGroups}
+                  input={fieldProps.input}
+                />
+              )}
+            />
+          </CreateResourceFormGroup>
+        ) : null}
         <CreateResourceFormGroup label={translate('Networks')}>
           <Field
             name="attributes.networks"
@@ -309,6 +334,23 @@ export class OpenstackInstanceCreateFormComponent extends Component<
             )}
           />
         </CreateResourceFormGroup>
+        {ENV.plugins.WALDUR_OPENSTACK_TENANT
+          .ALLOW_DIRECT_EXTERNAL_NETWORK_CONNECTION ? (
+          <CreateResourceFormGroup label={translate('External network')}>
+            <Field
+              name="attributes.connect_directly_to_external_network"
+              component={(fieldProps) => (
+                <AwesomeCheckboxField
+                  label={translate(
+                    'Connect instance directly to external network',
+                  )}
+                  {...fieldProps.input}
+                />
+              )}
+              hideLabel={true}
+            />
+          </CreateResourceFormGroup>
+        ) : null}
         <CreateResourceFormGroup label={translate('Description')}>
           <Field
             name="attributes.description"

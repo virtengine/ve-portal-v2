@@ -2,7 +2,6 @@
   "WALDUR_CORE": {
     "VALIDATE_INVITATION_EMAIL": false,
     "OWNER_CAN_MANAGE_CUSTOMER": true,
-    "ALLOW_SIGNUP_WITHOUT_INVITATION": true,
     "INVITATIONS_ENABLED": true,
     "NATIVE_NAME_ENABLED": false,
     "AUTHENTICATION_METHODS": ["LOCAL_SIGNIN"],
@@ -13,14 +12,25 @@
       "Government owned company"
     ],
     "ONLY_STAFF_MANAGES_SERVICES": false,
-    "OWNERS_CAN_MANAGE_OWNERS": false
+    "OWNERS_CAN_MANAGE_OWNERS": false,
+    "USER_REGISTRATION_HIDDEN_FIELDS": [
+      "registration_method",
+      "job_title",
+      "phone_number",
+      "organization"
+    ],
+    "USER_MANDATORY_FIELDS": ["full_name", "email"]
   },
   "WALDUR_AUTH_SOCIAL": {
-    "SMARTIDEE_CLIENT_ID": "SMARTIDEE_CLIENT_ID",
-    "FACEBOOK_CLIENT_ID": "FACEBOOK_CLIENT_ID"
+    "SMARTIDEE_CLIENT_ID": "SMARTIDEE_CLIENT_ID"
   },
   "WALDUR_OPENSTACK": {
     "TENANT_CREDENTIALS_VISIBLE": true
+  },
+  "WALDUR_OPENSTACK_TENANT":{
+    "ALLOW_CUSTOMER_USERS_OPENSTACK_CONSOLE_ACCESS": true,
+    "REQUIRE_AVAILABILITY_ZONE": false,
+    "ALLOW_DIRECT_EXTERNAL_NETWORK_CONNECTION": true
   },
   "WALDUR_AUTH_VALIMO": {
     "MOBILE_PREFIX": "+372",
@@ -42,5 +52,17 @@
     "ENABLED": true,
     "USERNAME_PREFIX": "waldur_"
   },
-  "LANGUAGES": [["en", "English"]]
+  "WALDUR_SUPPORT": {
+    "ENABLED": true
+  },
+  "LANGUAGES": [["en", "English"]],
+  "FEATURES": {
+    "support": {
+      "customers_list": true
+    },
+    "user": {
+      "ssh_keys": true,
+      "notifications": true
+    }
+  }
 }

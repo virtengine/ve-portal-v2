@@ -1,6 +1,5 @@
 import { ENV } from '@waldur/configs/default';
 import { MessageDialog } from '@waldur/core/MessageDialog';
-import { isFeatureVisible } from '@waldur/features/connect';
 import { translate, formatJsxTemplate } from '@waldur/i18n';
 import { openIssueCreateDialog } from '@waldur/issues/create/actions';
 import { openModalDialog } from '@waldur/modal/actions';
@@ -15,7 +14,7 @@ export const getIssueAction = (props: ReportIssueActionProps) => {
   return {
     title: translate('Report an issue'),
     onClick() {
-      if (isFeatureVisible('support')) {
+      if (ENV.plugins.WALDUR_SUPPORT) {
         store.dispatch(
           openIssueCreateDialog({
             issue: props.issue,
@@ -31,8 +30,8 @@ export const getIssueAction = (props: ReportIssueActionProps) => {
                 'To report an issue, please send an email to {supportEmail}.',
                 {
                   supportEmail: (
-                    <a href={`mailto:${ENV.supportEmail}`}>
-                      {ENV.supportEmail}
+                    <a href={`mailto:${ENV.plugins.WALDUR_CORE.SITE_EMAIL}`}>
+                      {ENV.plugins.WALDUR_CORE.SITE_EMAIL}
                     </a>
                   ),
                 },

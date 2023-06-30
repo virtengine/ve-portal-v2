@@ -7,10 +7,10 @@ import {
   post,
   getSelectData,
   deleteById,
-  remove,
   get,
 } from '@waldur/core/api';
 import { returnReactSelectAsyncPaginateObject } from '@waldur/core/utils';
+import { terminateResource } from '@waldur/marketplace/common/api';
 import {
   Flavor,
   FloatingIp,
@@ -20,6 +20,7 @@ import {
   OpenStackInstance,
 } from '@waldur/openstack/openstack-instance/types';
 import { SecurityGroup } from '@waldur/openstack/openstack-security-groups/types';
+import { ServerGroup } from '@waldur/openstack/openstack-server-groups/types';
 
 import {
   AvailabilityZone,
@@ -49,6 +50,7 @@ interface CreateSecurityGroupRuleRequestBody {
   protocol: SecurityGroupProtocol;
   from_port: number;
   to_port: number;
+  port_range?: { min: number; max: number };
   cidr: string;
   remote_group?: string;
   description?: string;
@@ -60,6 +62,11 @@ export interface CreateSecurityGroupRequestBody {
   rules: CreateSecurityGroupRuleRequestBody[];
 }
 
+export interface CreateServerGroupRequestBody {
+  name: string;
+  policy: string;
+}
+
 export interface UpdateInternalIpsRequestBody {
   internal_ips_set: {
     subnet: string;
@@ -68,6 +75,12 @@ export interface UpdateInternalIpsRequestBody {
 
 export interface UpdateSecurityGroupsRequestBody {
   security_groups: {
+    url: string;
+  }[];
+}
+
+export interface UpdateServerGroupsRequestBody {
+  server_groups: {
     url: string;
   }[];
 }
@@ -110,8 +123,14 @@ export const destroySubnet = (id: string) =>
 export const pullSecurityGroup = (id: string) =>
   post(`/openstack-security-groups/${id}/pull/`);
 
+export const pullServerGroup = (id: string) =>
+  post(`/openstack-server-groups/${id}/pull/`);
+
 export const destroySecurityGroup = (id: string) =>
   deleteById('/openstack-security-groups/', id);
+
+export const destroyServerGroup = (id: string) =>
+  deleteById('/openstack-server-groups/', id);
 
 export const pullNetwork = (id: string) =>
   post(`/openstack-networks/${id}/pull/`);
@@ -148,14 +167,25 @@ export const loadSecurityGroups = (settings_uuid: string) =>
     params: { settings_uuid },
   });
 
+export const loadServerGroups = (settings_uuid: string) =>
+  getAll<ServerGroup>('/openstacktenant-server-groups/', {
+    params: { settings_uuid },
+  });
+
 export const loadSecurityGroupsResources = (params?) =>
   getAll<SecurityGroup>('/openstack-security-groups/', { params });
+
+export const loadServerGroupsResources = (params?) =>
+  getAll<ServerGroup>('/openstack-server-groups/', { params });
 
 export const updateSecurityGroup = (id: string, data) =>
   put(`/openstack-security-groups/${id}/`, data);
 
 export const setSecurityGroupRules = (id: string, data) =>
   post(`/openstack-security-groups/${id}/set_rules/`, data);
+
+export const updateServerGroup = (id: string, data) =>
+  put(`/openstack-server-groups/${id}/`, data);
 
 export const loadVolumeAvailabilityZones = (settings_uuid: string) =>
   getAll<AvailabilityZone>('/openstacktenant-volume-availability-zones/', {
@@ -207,6 +237,11 @@ export const updateSecurityGroups = (
   data: UpdateSecurityGroupsRequestBody,
 ) => post(`/openstacktenant-instances/${id}/update_security_groups/`, data);
 
+export const updateServerGroups = (
+  id: string,
+  data: UpdateServerGroupsRequestBody,
+) => post(`/openstacktenant-instances/${id}/update_server_groups/`, data);
+
 export const loadSshKeys = (user_uuid: string) =>
   getAll<SshKey>('/keys/', { params: { user_uuid } });
 
@@ -257,11 +292,19 @@ export const createSecurityGroup = (
   data: CreateSecurityGroupRequestBody,
 ) => post(`/openstack-tenants/${id}/create_security_group/`, data);
 
+export const createServerGroup = (
+  id: string,
+  data: CreateServerGroupRequestBody,
+) => post(`/openstack-tenants/${id}/create_server_group/`, data);
+
 export const createNetwork = (id: string, data: CreateNetworkRequestBody) =>
   post(`/openstack-tenants/${id}/create_network/`, data);
 
 export const pullTenantSecurityGroups = (id: string) =>
   post(`/openstack-tenants/${id}/pull_security_groups/`);
+
+export const pullTenantServerGroups = (id: string) =>
+  post(`/openstack-tenants/${id}/pull_server_groups/`);
 
 export const pullTenantFloatingIps = (id: string) =>
   post(`/openstack-tenants/${id}/pull_floating_ips/`);
@@ -287,19 +330,26 @@ export const updateInstance = (id: string, data) =>
 export const changeFlavor = (id: string, data: ChangeFlavorRequestBody) =>
   post(`/openstacktenant-instances/${id}/change_flavor/`, data);
 
-export const destroyInstance = (id: string, params: DestroyInstanceParams) =>
-  deleteById('/openstacktenant-instances/', id, { params });
+export const destroyInstance = (
+  id: string,
+  attributes: DestroyInstanceParams,
+) => terminateResource(id, { attributes });
 
 export const forceDestroyInstance = (
   id: string,
-  params: DestroyInstanceParams,
-) => remove(`/openstacktenant-instances/${id}/force_destroy/`, { params });
+  attributes: DestroyInstanceParams,
+) =>
+  terminateResource(id, {
+    attributes: { action: 'force_destroy', ...attributes },
+  });
+
+export const destroyPort = (id: string) => deleteById('/openstack-ports/', id);
 
 export const updateVolume = (id: string, data) =>
   put(`/openstacktenant-volumes/${id}/`, data);
 
 export const retypeVolume = (id: string, data) =>
-  put(`/openstacktenant-volumes/${id}/retype/`, data);
+  post(`/openstacktenant-volumes/${id}/retype/`, data);
 
 export const updateSnapshot = (id: string, data) =>
   put(`/openstacktenant-snapshots/${id}/`, data);
@@ -327,9 +377,6 @@ export const pullVolume = (id: string) =>
 
 export const detachVolume = (id: string) =>
   post(`/openstacktenant-volumes/${id}/detach/`);
-
-export const destroyVolume = (id: string) =>
-  deleteById('/openstacktenant-volumes/', id);
 
 export const createBackupSchedule = (id: string, data) =>
   post(`/openstacktenant-instances/${id}/create_backup_schedule/`, data);

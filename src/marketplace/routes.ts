@@ -1,6 +1,7 @@
 import { lazyComponent } from '@waldur/core/lazyComponent';
 import { StateDeclaration } from '@waldur/core/types';
 import { checkPermission } from '@waldur/issues/utils';
+import { ANONYMOUS_LAYOUT_ROUTE_CONFIG } from '@waldur/marketplace/constants';
 
 const SupportOfferingsContainer = lazyComponent(
   () =>
@@ -92,12 +93,12 @@ const OfferingContainer = lazyComponent(
     ),
   'OfferingContainer',
 );
-const PublicOfferingDetails = lazyComponent(
+const PublicOfferingDetailsContainer = lazyComponent(
   () =>
     import(
-      /* webpackChunkName: "PublicOfferingDetails" */ './offerings/details/PublicOfferingDetails'
+      /* webpackChunkName: "PublicOfferingDetailsContainer" */ './offerings/details/PublicOfferingDetailsContainer'
     ),
-  'PublicOfferingDetails',
+  'PublicOfferingDetailsContainer',
 );
 const MyOfferingsListContainer = lazyComponent(
   () =>
@@ -113,17 +114,17 @@ const OfferingsListContainer = lazyComponent(
     ),
   'OfferingsListContainer',
 );
-const ServiceProvider = lazyComponent(
+const PublicServiceProviderDetails = lazyComponent(
   () =>
     import(
-      /* webpackChunkName: "ServiceProvider" */ './offerings/ServiceProvider'
+      /* webpackChunkName: "PublicServiceProviderDetails" */ './offerings/service-providers/PublicServiceProviderDetails'
     ),
-  'ServiceProvider',
+  'PublicServiceProviderDetails',
 );
 const ServiceProvidersContainer = lazyComponent(
   () =>
     import(
-      /* webpackChunkName: "ServiceProvidersContainer" */ './offerings/ServiceProvidersContainer'
+      /* webpackChunkName: "ServiceProvidersContainer" */ './offerings/service-providers/ServiceProvidersContainer'
     ),
   'ServiceProvidersContainer',
 );
@@ -315,15 +316,13 @@ export const states: StateDeclaration[] = [
     url: '/marketplace-public-offering/',
     abstract: true,
     component: AnonymousLayout,
-    data: {
-      hideHeader: true,
-    },
+    data: ANONYMOUS_LAYOUT_ROUTE_CONFIG,
   },
 
   {
     name: 'marketplace-public-offering.details',
     url: ':uuid/',
-    component: PublicOfferingDetails,
+    component: PublicOfferingDetailsContainer,
   },
 
   {
@@ -370,7 +369,7 @@ export const states: StateDeclaration[] = [
 
   {
     name: 'marketplace-vendor-offerings',
-    url: 'marketplace-offerings/',
+    url: 'marketplace-provider-offerings/',
     component: OfferingsListContainer,
     parent: 'organization',
   },
@@ -380,15 +379,13 @@ export const states: StateDeclaration[] = [
     url: '/service-providers/',
     abstract: true,
     component: AnonymousLayout,
-    data: {
-      hideHeader: true,
-    },
+    data: ANONYMOUS_LAYOUT_ROUTE_CONFIG,
   },
 
   {
     name: 'marketplace-service-provider.details',
     url: ':uuid/',
-    component: ServiceProvider,
+    component: PublicServiceProviderDetails,
   },
 
   {
@@ -396,9 +393,7 @@ export const states: StateDeclaration[] = [
     url: '/service-providers/',
     abstract: true,
     component: AnonymousLayout,
-    data: {
-      hideHeader: true,
-    },
+    data: ANONYMOUS_LAYOUT_ROUTE_CONFIG,
   },
 
   {

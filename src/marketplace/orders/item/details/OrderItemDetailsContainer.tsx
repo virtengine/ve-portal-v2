@@ -70,7 +70,7 @@ function getBreadcrumbs(orderItem: OrderItemDetailsType): BreadcrumbItem[] {
 
 async function loadOrderItem(order_item_uuid) {
   const orderItem = await api.getOrderItem(order_item_uuid);
-  const offering = await api.getOffering(orderItem.offering_uuid);
+  const offering = await api.getOrderItemOffering(order_item_uuid);
   const plugins = await api.getPlugins();
   const limits = plugins.find(
     (plugin) => plugin.offering_type === offering.type,
@@ -100,9 +100,8 @@ export const OrderItemDetailsContainer: React.FC = () => {
     loadData();
   });
 
-  const [asyncValue, setAsyncValue] = useState<
-    Await<ReturnType<typeof loadData>>
-  >();
+  const [asyncValue, setAsyncValue] =
+    useState<Await<ReturnType<typeof loadData>>>();
 
   const { online } = useNetwork();
 

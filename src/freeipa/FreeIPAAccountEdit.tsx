@@ -1,12 +1,8 @@
 import classNames from 'classnames';
 import React from 'react';
 
-import { formatDateTime } from '@waldur/core/dateUtils';
-import { Link } from '@waldur/core/Link';
-import { formatJsx, translate } from '@waldur/i18n';
+import { translate } from '@waldur/i18n';
 
-import { DisableProfile } from './DisableProfile';
-import { EnableProfile } from './EnableProfile';
 import { SyncProfile } from './SyncProfile';
 
 interface FreeIPAAccountEditOwnProps {
@@ -23,24 +19,6 @@ const UsernameGroup = ({ profile }) => (
   </div>
 );
 
-const TosGroup = ({ profile }) => (
-  <div className="form-group">
-    <div className="col-sm-offset-3 col-sm-5">
-      <p className="form-control-static">
-        {translate(
-          '<Link>Terms of Service</Link> have been accepted on <Date></Date>',
-          {
-            Link: (s) => <Link state="tos.freeipa" label={s} />,
-            // eslint-disable-next-line @typescript-eslint/no-unused-vars
-            Date: (_) => formatDateTime(profile.agreement_date),
-          },
-          formatJsx,
-        )}
-      </p>
-    </div>
-  </div>
-);
-
 export const FreeIPAAccountEdit: React.FC<FreeIPAAccountEditOwnProps> = ({
   profile,
   refreshProfile,
@@ -50,7 +28,6 @@ export const FreeIPAAccountEdit: React.FC<FreeIPAAccountEditOwnProps> = ({
     <div className={classNames('row', { disabled: loading })}>
       <div className="form-horizontal">
         <UsernameGroup profile={profile} />
-        <TosGroup profile={profile} />
         <div className="form-group">
           <div className="col-sm-offset-3 col-sm-5">
             <SyncProfile
@@ -58,16 +35,9 @@ export const FreeIPAAccountEdit: React.FC<FreeIPAAccountEditOwnProps> = ({
               setLoading={setLoading}
               refreshProfile={refreshProfile}
             />
-            <DisableProfile
-              profile={profile}
-              setLoading={setLoading}
-              refreshProfile={refreshProfile}
-            />
-            <EnableProfile
-              profile={profile}
-              setLoading={setLoading}
-              refreshProfile={refreshProfile}
-            />
+            {profile.is_active
+              ? translate('Profile is enabled.')
+              : translate('Profile is disabled.')}
           </div>
         </div>
       </div>

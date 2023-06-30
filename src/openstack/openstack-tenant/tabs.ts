@@ -36,6 +36,13 @@ const SecurityGroupsList = lazyComponent(
     ),
   'SecurityGroupsList',
 );
+const ServerGroupsList = lazyComponent(
+  () =>
+    import(
+      /* webpackChunkName: "ServerGroupsList" */ '../openstack-server-groups/ServerGroupsList'
+    ),
+  'ServerGroupsList',
+);
 const TenantPortsList = lazyComponent(
   () => import(/* webpackChunkName: "TenantPortsList" */ './TenantPortsList'),
   'TenantPortsList',
@@ -61,6 +68,11 @@ ResourceTabsConfiguration.register('OpenStack.Tenant', () => [
     key: 'security_groups',
     title: translate('Security groups'),
     component: SecurityGroupsList,
+  },
+  {
+    key: 'server_groups',
+    title: translate('Server groups'),
+    component: ServerGroupsList,
   },
   {
     key: 'floating_ips',

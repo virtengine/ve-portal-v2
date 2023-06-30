@@ -4,7 +4,7 @@ import { useDispatch } from 'react-redux';
 import { titleCase } from '@waldur/core/utils';
 import { translate } from '@waldur/i18n';
 import { closeModalDialog } from '@waldur/modal/actions';
-import { showSuccess, showError } from '@waldur/store/notify';
+import { showSuccess, showErrorResponse } from '@waldur/store/notify';
 import { updateEntity, createEntity } from '@waldur/table/actions';
 
 import { getEventGroups, updateHook, createHook } from './api';
@@ -31,19 +31,18 @@ export const formatEventTitle = (choice) => {
   return choice + ' events';
 };
 
-export const loadEventGroupsOptions: () => Promise<
-  EventGroupOption[]
-> = async () => {
-  const groups = await getEventGroups();
-  const options = Object.keys(groups)
-    .map((key) => ({
-      key,
-      title: formatEventTitle(key),
-      help_text: groups[key].join(', '),
-    }))
-    .sort((a, b) => a.title.localeCompare(b.title));
-  return options;
-};
+export const loadEventGroupsOptions: () => Promise<EventGroupOption[]> =
+  async () => {
+    const groups = await getEventGroups();
+    const options = Object.keys(groups)
+      .map((key) => ({
+        key,
+        title: formatEventTitle(key),
+        help_text: groups[key].join(', '),
+      }))
+      .sort((a, b) => a.title.localeCompare(b.title));
+    return options;
+  };
 
 export const getInitialValue = (hook) =>
   hook
@@ -92,7 +91,9 @@ export const useHookForm = (hook?: HookResponse) => {
           dispatch(showSuccess(translate('Notification has been updated.')));
           dispatch(closeModalDialog());
         } catch (e) {
-          dispatch(showError(translate('Unable to update notification.')));
+          dispatch(
+            showErrorResponse(e, translate('Unable to update notification.')),
+          );
         }
       } else {
         try {
@@ -106,7 +107,9 @@ export const useHookForm = (hook?: HookResponse) => {
           dispatch(showSuccess(translate('Notification has been created.')));
           dispatch(closeModalDialog());
         } catch (e) {
-          dispatch(showError(translate('Unable to create notification.')));
+          dispatch(
+            showErrorResponse(e, translate('Unable to create notification.')),
+          );
         }
       }
     },

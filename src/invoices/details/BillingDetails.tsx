@@ -1,6 +1,6 @@
 import { useCurrentStateAndParams, useRouter } from '@uirouter/react';
 import { useEffect, FunctionComponent, useContext } from 'react';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { useAsyncFn } from 'react-use';
 
 import { ENV } from '@waldur/configs/default';
@@ -12,15 +12,15 @@ import { useBreadcrumbsFn } from '@waldur/navigation/breadcrumbs/store';
 import { BreadcrumbItem } from '@waldur/navigation/breadcrumbs/types';
 import { LayoutContext } from '@waldur/navigation/context';
 import { useTitle } from '@waldur/navigation/title';
+import { showError, showSuccess } from '@waldur/store/notify';
 import { getCustomer as getCustomerSelector } from '@waldur/workspace/selectors';
 
 import { Invoice } from '../types';
 import { formatPeriod } from '../utils';
 
 import { BillingRecordDetails } from './BillingRecordDetails';
-import { DownloadInvoiceButton } from './DownloadInvoiceButton';
+import { InvoiceDetailActions } from './InvoiceDetailActions';
 import { InvoiceDetails } from './InvoiceDetails';
-import { PrintInvoiceButton } from './PrintInvoiceButton';
 
 import './BillingDetails.scss';
 
@@ -66,7 +66,7 @@ export const BillingDetails: FunctionComponent = () => {
 
   const router = useRouter();
   const {
-    params: { invoice_uuid: invoiceId },
+    params: { invoice_uuid: invoiceId, status },
   } = useCurrentStateAndParams();
 
   const [{ loading, error, value: invoice }, callback] = useAsyncFn(
@@ -96,13 +96,7 @@ export const BillingDetails: FunctionComponent = () => {
 
   const layoutContext = useContext(LayoutContext);
   useEffect(() => {
-    layoutContext.setActions(
-      invoice?.pdf ? (
-        <DownloadInvoiceButton invoice={invoice} />
-      ) : (
-        <PrintInvoiceButton />
-      ),
-    );
+    layoutContext.setActions(<InvoiceDetailActions invoice={invoice} />);
     layoutContext.setSidebarClass('hidden-print');
     return () => {
       layoutContext.setActions(null);
@@ -110,13 +104,24 @@ export const BillingDetails: FunctionComponent = () => {
     };
   }, [invoice, layoutContext]);
 
+  const dispatch = useDispatch();
+  useEffect(() => {
+    if (status === 'succeeded') {
+      dispatch(showSuccess(translate('Payment succeeded.')));
+    } else if (status === 'failed') {
+      dispatch(showError(translate('Payment failed.')));
+    } else if (status === 'skipped') {
+      dispatch(showSuccess(translate('Payment has already been done.')));
+    }
+  }, [status, dispatch]);
+
   return loading ? (
     <LoadingSpinner />
   ) : error ? (
     <>{translate('Unable to load data.')}</>
   ) : !invoice ? null : ENV.accountingMode === 'accounting' ? (
-    <BillingRecordDetails invoice={invoice} />
+    <BillingRecordDetails invoice={invoice} refreshInvoiceItems={callback} />
   ) : (
-    <InvoiceDetails invoice={invoice} />
+    <InvoiceDetails invoice={invoice} refreshInvoiceItems={callback} />
   );
 };

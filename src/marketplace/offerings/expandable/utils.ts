@@ -1,7 +1,6 @@
-import moment from 'moment-timezone';
+import { DateTime } from 'luxon';
 
 import { ENV } from '@waldur/configs/default';
-import { formatDate } from '@waldur/core/dateUtils';
 import { translate } from '@waldur/i18n';
 
 export const formatOfferingCostsChart = (offeringCostsChartData) => {
@@ -11,7 +10,7 @@ export const formatOfferingCostsChart = (offeringCostsChartData) => {
       feature: {
         saveAsImage: {
           title: translate('Save'),
-          name: `offering-costs-chart-${formatDate(moment())}`,
+          name: `offering-costs-chart-${DateTime.now().toISODate()}`,
           show: true,
         },
       },
@@ -42,7 +41,7 @@ export const formatOfferingCostsChart = (offeringCostsChartData) => {
         max: null,
         interval: null,
         axisLabel: {
-          formatter: `${ENV.currency}{value}`,
+          formatter: `${ENV.plugins.WALDUR_CORE.CURRENCY_NAME}{value}`,
         },
       },
     ],

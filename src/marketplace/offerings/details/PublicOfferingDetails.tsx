@@ -1,68 +1,31 @@
-import { useCurrentStateAndParams } from '@uirouter/react';
 import { FunctionComponent } from 'react';
-import { Col, Row } from 'react-bootstrap';
-import { useAsync } from 'react-use';
 
-import { LoadingSpinner } from '@waldur/core/LoadingSpinner';
-import { translate } from '@waldur/i18n';
-import { getOffering, getCategory } from '@waldur/marketplace/common/api';
-import { OfferingLogo } from '@waldur/marketplace/common/OfferingLogo';
-import { getTabs } from '@waldur/marketplace/details/OfferingTabs';
-import { OfferingTabsComponent } from '@waldur/marketplace/details/OfferingTabsComponent';
-import { useTitle } from '@waldur/navigation/title';
-import { ANONYMOUS_CONFIG } from '@waldur/table/api';
+import { Category, Offering } from '@waldur/marketplace/types';
 
-import { OfferingHeader } from './OfferingHeader';
+import { PublicOfferingDetailsBreadcrumbs } from './PublicOfferingDetailsBreadcrumbs';
+import { PublicOfferingDetailsHeader } from './PublicOfferingDetailsHeader';
+import { PublicOfferingInfo } from './PublicOfferingInfo';
+import { PublicOfferingLocation } from './PublicOfferingLocation';
+import { PublicOfferingPricing } from './PublicOfferingPricing';
+import './PublicOfferingDetails.scss';
 
-export const PublicOfferingDetails: FunctionComponent = () => {
-  const {
-    params: { uuid },
-  } = useCurrentStateAndParams();
-  const state = useAsync(async () => {
-    const offering = await getOffering(uuid, ANONYMOUS_CONFIG);
-    const category = await getCategory(
-      offering.category_uuid,
-      ANONYMOUS_CONFIG,
-    );
-    const tabs = getTabs({ offering, sections: category.sections });
-    return { offering, tabs };
-  }, [uuid]);
-  useTitle(
-    state.value ? state.value.offering.name : translate('Offering details'),
+interface PublicOfferingDetailsProps {
+  offering: Offering;
+  category: Category;
+  refreshOffering;
+}
+
+export const PublicOfferingDetails: FunctionComponent<PublicOfferingDetailsProps> =
+  ({ offering, category, refreshOffering }) => (
+    <div className="publicOfferingDetails m-b">
+      <PublicOfferingDetailsHeader
+        offering={offering}
+        category={category}
+        refreshOffering={refreshOffering}
+      />
+      <PublicOfferingDetailsBreadcrumbs offering={offering} />
+      <PublicOfferingInfo offering={offering} category={category} />
+      <PublicOfferingPricing offering={offering} />
+      <PublicOfferingLocation offering={offering} />
+    </div>
   );
-
-  if (state.loading) {
-    return <LoadingSpinner />;
-  } else if (state.error) {
-    return <h3>{translate('Unable to load offering details.')}</h3>;
-  } else if (state.value) {
-    const { offering, tabs } = state.value;
-    return (
-      <div className="wrapper wrapper-content">
-        <div className="white-box">
-          <div style={{ display: 'flex' }} className="m-b-lg">
-            <OfferingLogo
-              src={offering.thumbnail}
-              style={{ maxWidth: 64, maxHeight: 64 }}
-            />
-            <div className="m-l-sm">
-              <h2 style={{ marginTop: 0 }}>{offering.name}</h2>
-              <p>
-                {translate('Provided by {provider}', {
-                  provider: offering.customer_name,
-                })}
-              </p>
-            </div>
-          </div>
-          <OfferingHeader offering={offering} hideName={true} />
-          <Row>
-            <Col lg={12}>
-              <OfferingTabsComponent tabs={tabs} />
-            </Col>
-          </Row>
-        </div>
-      </div>
-    );
-  }
-  return null;
-};

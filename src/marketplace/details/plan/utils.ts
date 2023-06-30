@@ -21,16 +21,24 @@ export const combinePrices = (
     const offeringLimits = parseOfferingLimits(offering);
     const offeringComponents = filterOfferingComponents(offering);
     const components: Component[] = offeringComponents.map((component) => {
-      let amount = 0;
+      let amount = 1;
       if (
         component.billing_type === 'limit' &&
         limits &&
         limits[component.type]
       ) {
         amount = limits[component.type];
-      } else if (component.billing_type === 'usage') {
+      } else if (
+        component.billing_type === 'usage' &&
+        usages &&
+        usages[component.type]
+      ) {
         amount = usages[component.type] || 0;
-      } else if (component.billing_type === 'fixed') {
+      } else if (
+        component.billing_type === 'fixed' &&
+        plan.quotas &&
+        plan.quotas[component.type]
+      ) {
         amount = plan.quotas[component.type] || 0;
       }
       const price = plan.prices[component.type] || 0;
@@ -63,7 +71,15 @@ export const combinePrices = (
       0,
     );
 
-    const subscriptionSubTotal = usageSubTotal + fixedSubTotal;
+    const limitComponents = components.filter(
+      (component) => component.billing_type === 'limit',
+    );
+    const limitSubTotal = limitComponents.reduce(
+      (result, item) => result + item.subTotal,
+      0,
+    );
+
+    const subscriptionSubTotal = usageSubTotal + fixedSubTotal + limitSubTotal;
     const totalPeriods = multipliers.map(
       (mult) => mult * subscriptionSubTotal || 0,
     );
@@ -76,7 +92,12 @@ export const combinePrices = (
 
     return { components, periods, total, totalPeriods };
   } else {
-    return { components: [], periods: [], total: 0, totalPeriods: [] };
+    return {
+      components: [],
+      periods: [],
+      total: 0,
+      totalPeriods: [],
+    };
   }
 };
 
@@ -104,7 +125,7 @@ const getLimits = (state, props) => {
 };
 
 export const pricesSelector = (state, props): PricesData => {
-  const plan: Plan = getPlan(state, props);
+  const plan: Plan = getPlan(state, props) || props.plan;
   const limits: Limits = getLimits(state, props);
   return combinePrices(plan, limits, {}, props.offering);
 };

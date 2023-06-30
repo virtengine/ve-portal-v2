@@ -2,9 +2,9 @@ import { useMemo, FunctionComponent } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 
 import { translate } from '@waldur/i18n';
-import { showSuccess, showError } from '@waldur/store/notify';
+import { showSuccess, showErrorResponse } from '@waldur/store/notify';
 import { ActionButton } from '@waldur/table/ActionButton';
-import { getCustomer, getUser } from '@waldur/workspace/selectors';
+import { getCustomer, getProject, getUser } from '@waldur/workspace/selectors';
 
 import { InvitationService } from '../InvitationService';
 
@@ -17,6 +17,7 @@ export const InvitationCancelButton: FunctionComponent<{
   const dispatch = useDispatch();
   const user = useSelector(getUser);
   const customer = useSelector(getCustomer);
+  const project = useSelector(getProject);
 
   const callback = async () => {
     try {
@@ -24,14 +25,14 @@ export const InvitationCancelButton: FunctionComponent<{
       dispatch(showSuccess(translate('Invitation has been canceled.')));
       refreshList();
     } catch (e) {
-      dispatch(showError(translate('Unable to cancel invitation.')));
+      dispatch(showErrorResponse(e, translate('Unable to cancel invitation.')));
     }
   };
 
   const isDisabled = useMemo(() => {
     if (
       !InvitationPolicyService.canManageInvitation(
-        { user, customer },
+        { user, customer, project },
         invitation,
       )
     ) {
@@ -46,7 +47,7 @@ export const InvitationCancelButton: FunctionComponent<{
   const tooltip = useMemo(() => {
     if (
       !InvitationPolicyService.canManageInvitation(
-        { user, customer },
+        { user, customer, project },
         invitation,
       )
     ) {

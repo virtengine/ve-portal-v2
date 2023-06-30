@@ -21,6 +21,13 @@ export function getLimitPeriods(): LimitPeriodOption[] {
       ),
     },
     {
+      value: 'annual',
+      label: translate('Maximum annually'),
+      description: translate(
+        'Every year service provider can report up to the amount requested by user.',
+      ),
+    },
+    {
       value: 'total',
       label: translate('Maximum total'),
       description: translate(
@@ -34,23 +41,22 @@ interface ComponentLimitPeriodFieldProps {
   limitPeriod: LimitPeriodOption;
 }
 
-export const ComponentLimitPeriodField: FunctionComponent<ComponentLimitPeriodFieldProps> = (
-  props,
-) => (
-  <FormGroup label={translate('Limit period')}>
-    <Field
-      name="limit_period"
-      component={(fieldProps) => (
-        <Select
-          value={fieldProps.input.value}
-          onChange={(value) => fieldProps.input.onChange(value)}
-          options={getLimitPeriods()}
-          isClearable={false}
-        />
+export const ComponentLimitPeriodField: FunctionComponent<ComponentLimitPeriodFieldProps> =
+  (props) => (
+    <FormGroup label={translate('Limit period')}>
+      <Field
+        name="limit_period"
+        component={(fieldProps) => (
+          <Select
+            value={fieldProps.input.value}
+            onChange={(value) => fieldProps.input.onChange(value)}
+            options={getLimitPeriods()}
+            isClearable={false}
+          />
+        )}
+      />
+      {props.limitPeriod && (
+        <div className="help-text m-t-sm">{props.limitPeriod.description}</div>
       )}
-    />
-    {props.limitPeriod && (
-      <div className="help-text m-t-sm">{props.limitPeriod.description}</div>
-    )}
-  </FormGroup>
-);
+    </FormGroup>
+  );

@@ -1,10 +1,16 @@
+import { isEmpty } from 'lodash';
 import { memo } from 'react';
 import { Col, Panel, PanelGroup, Row } from 'react-bootstrap';
 
+import { formatDate } from '@waldur/core/dateUtils';
 import { titleCase } from '@waldur/core/utils';
 import { translate } from '@waldur/i18n';
-import { getDetailsComponent } from '@waldur/marketplace/common/registry';
+import {
+  getDetailsComponent,
+  getFormLimitParser,
+} from '@waldur/marketplace/common/registry';
 import { PlanDetails } from '@waldur/marketplace/details/plan/PlanDetails';
+import { OrderItemLimits } from '@waldur/marketplace/orders/item/details/OrderItemLimits';
 import { ResourceReference } from '@waldur/marketplace/resources/types';
 import { OrderItemDetailsProps } from '@waldur/marketplace/types';
 
@@ -20,6 +26,8 @@ let OrderItemDetails = (
   props: OrderItemDetailsProps & { loadData(): void },
 ) => {
   const DetailsComponent = getDetailsComponent(props.orderItem.offering_type);
+  const limitParser = getFormLimitParser(props.orderItem.offering_type);
+  const limits = limitParser(props.orderItem.limits);
   return (
     <Row>
       <Col md={9}>
@@ -33,6 +41,14 @@ let OrderItemDetails = (
               <Panel.Title toggle={true}>{translate('Summary')}</Panel.Title>
             </Panel.Heading>
             <Panel.Body collapsible={true}>
+              <OrderItemDetailsField label={translate('Project name')}>
+                {props.orderItem.project_name}
+              </OrderItemDetailsField>
+              {props.orderItem.project_description && (
+                <OrderItemDetailsField label={translate('Project description')}>
+                  {props.orderItem.project_description}
+                </OrderItemDetailsField>
+              )}
               <OrderItemDetailsField label={translate('Description')}>
                 <OrderItemSummary
                   orderItem={props.orderItem}
@@ -55,7 +71,7 @@ let OrderItemDetails = (
                   {props.orderItem.error_traceback}
                 </OrderItemDetailsField>
               )}
-              {props.orderItem.resource_uuid && (
+              {props.orderItem.marketplace_resource_uuid && (
                 <OrderItemDetailsField label={translate('Resource')}>
                   <OrderItemDetailsResourceLink
                     item={props.orderItem as ResourceReference}
@@ -70,6 +86,17 @@ let OrderItemDetails = (
                     uuid={props.orderItem.uuid}
                     loadData={props.loadData}
                   />
+                </OrderItemDetailsField>
+              )}
+              {props.orderItem.reviewed_by && (
+                <OrderItemDetailsField label={translate('Reviewed by')}>
+                  {props.orderItem.reviewed_by_full_name ||
+                    props.orderItem.reviewed_by}
+                </OrderItemDetailsField>
+              )}
+              {props.orderItem.reviewed_at && (
+                <OrderItemDetailsField label={translate('Reviewed at')}>
+                  {formatDate(props.orderItem.reviewed_at)}
                 </OrderItemDetailsField>
               )}
             </Panel.Body>
@@ -88,6 +115,19 @@ let OrderItemDetails = (
                   orderItem={props.orderItem}
                   offering={props.offering}
                   limits={props.limits}
+                />
+              </Panel.Body>
+            </Panel>
+          )}
+          {props.offering.components.length > 0 && !isEmpty(limits) && (
+            <Panel eventKey="limits">
+              <Panel.Heading>
+                <Panel.Title toggle={true}>{translate('Limits')}</Panel.Title>
+              </Panel.Heading>
+              <Panel.Body collapsible={true}>
+                <OrderItemLimits
+                  components={props.offering.components}
+                  limits={limits}
                 />
               </Panel.Body>
             </Panel>

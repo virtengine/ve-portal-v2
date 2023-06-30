@@ -6,6 +6,7 @@ import { ResourceShowUsageButton } from '@waldur/marketplace/resources/usage/Res
 import { OpenStackInstanceTenantButton } from '@waldur/openstack/openstack-instance/OpenStackInstanceTenantButton';
 
 import { ActionButtonResource } from './actions/ActionButtonResource';
+import { ResourceAccessButton } from './ResourceAccessButton';
 import { ResourceRefreshButton } from './ResourceRefreshButton';
 import { ResourceSummary } from './summary/ResourceSummary';
 import { ResourceTabs } from './tabs/ResourceTabs';
@@ -28,16 +29,17 @@ let ResourceDetails: FunctionComponent<{ resource; refreshResource }> = ({
       <div className="ibox-content">
         <div className="row m-b-md">
           <div className="col-lg-12">
-            <div className="pull-right">
+            <div className="pull-right btn-group">
+              <ResourceAccessButton resource={resource} />
               <ActionButtonResource
                 url={resource.url}
                 refreshResource={refreshResource}
               />
               <ResourceRefreshButton refreshResource={refreshResource} />
               <OpenStackInstanceTenantButton resource={resource} />
-              {resource.marketplace_offering_uuid && (
+              {resource.marketplace_resource_uuid && (
                 <OfferingDetailsButton
-                  offering={resource.marketplace_offering_uuid}
+                  resource={resource.marketplace_resource_uuid}
                 />
               )}
               {resource.is_usage_based && (

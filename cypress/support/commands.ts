@@ -4,9 +4,10 @@ declare global {
   // eslint-disable-next-line @typescript-eslint/no-namespace
   namespace Cypress {
     interface Chainable {
-      mockUser(): Chainable;
+      mockUser(userName?: string): Chainable;
       mockCustomer(): Chainable;
       mockChecklists(): Chainable;
+      mockConfigs(): Chainable;
       fillAndSubmitLoginForm(username?: string, password?: string): Chainable;
       setToken(): Chainable;
       openDropdownByLabel(value: string): Chainable;
@@ -24,7 +25,7 @@ declare global {
 import '../integration/openstack/instance/commands';
 
 Cypress.Commands.add('setToken', () => {
-  window.localStorage.setItem('AUTH_TOKEN', 'valid');
+  window.localStorage.setItem('waldur/auth/token', 'valid');
 });
 
 // Fill and sumbit login form
@@ -95,13 +96,27 @@ Cypress.Commands.add('openWorkspaceSelector', () => {
     .waitForSpinner();
 });
 
-Cypress.Commands.add('mockUser', () => {
+Cypress.Commands.add('mockConfigs', () => {
   cy.intercept('GET', '/api/configuration/', {
     fixture: 'configuration.json',
   })
+    .intercept('GET', '/api/customer-permissions/', [])
+    .intercept('GET', '/api/project-permissions/', [])
+    .intercept('GET', '/api/events/', []);
+});
+
+Cypress.Commands.add('mockUser', (userName) => {
+  const userData = userName === 'admin' ? 'admin.json' : 'alice.json';
+
+  const userConfiguration =
+    userName === 'admin' ? 'configuration-admin.json' : 'configuration.json';
+
+  cy.intercept('GET', '/api/configuration/', {
+    fixture: userConfiguration,
+  })
     .intercept('POST', '/api-auth/password/', { token: 'valid' })
     .intercept('GET', '/api/users/me/', {
-      fixture: 'users/alice.json',
+      fixture: `users/${userData}`,
     })
     .intercept('GET', '/api/customer-permissions/', [])
     .intercept('GET', '/api/project-permissions/', [])

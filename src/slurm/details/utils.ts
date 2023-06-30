@@ -1,7 +1,8 @@
-import moment from 'moment';
+import { DateTime } from 'luxon';
 
 import { translate } from '@waldur/i18n';
 import { getComponentUsages } from '@waldur/marketplace/common/api';
+import { ComponentUsage } from '@waldur/marketplace/resources/usage/types';
 import { getChartSpec, palette } from '@waldur/slurm/details/constants';
 
 import { getAllocationUserUsages } from './api';
@@ -71,10 +72,8 @@ const getDistinctUsers = (userUsages: UserUsage[]): UserUsage[] => {
 const getLastSixMonths = (): string[] => {
   const lastSixMonths: string[] = [];
   for (let i = 5; i >= 0; i--) {
-    const date = moment().subtract(i, 'months');
-    const month = date.month() + 1;
-    const year = date.year();
-    lastSixMonths.push(`${month} - ${year}`);
+    const date = DateTime.now().minus({ months: i });
+    lastSixMonths.push(`${date.month} - ${date.year}`);
   }
   return lastSixMonths;
 };
@@ -154,12 +153,13 @@ const fillUserUsages = (option, periods, userUsages, chart) => {
 
 const filterUsagesBySixMonthsPeriod = (usages: Usage[]): Usage[] =>
   usages.filter((usage) => {
-    const sixMonthsAgo = moment().subtract(6, 'months');
-    const usageDate = moment()
-      .date(1)
-      .month(usage.month - 1)
-      .year(usage.year);
-    return sixMonthsAgo <= usageDate && usageDate <= moment();
+    const sixMonthsAgo = DateTime.now().minus({ months: 6 });
+    const usageDate = DateTime.fromObject({
+      day: 1,
+      month: usage.month,
+      year: usage.year,
+    });
+    return sixMonthsAgo <= usageDate && usageDate <= DateTime.now();
   });
 
 const fillSeriesAndLegendWithDistinctUsers = (
@@ -208,15 +208,17 @@ export const loadCharts = async (
   const componentUsages = await getComponentUsages(resourceUuid);
   const periodUsages = {};
   componentUsages.forEach((component) => {
-    const period = moment(component.billing_period).format('YYYY-MM');
+    const period = DateTime.fromISO(component.billing_period).toFormat(
+      'yyyy-MM',
+    );
     periodUsages[period] = periodUsages[period] || {};
     periodUsages[period][component.type] = component.usage;
   });
   const usages: Usage[] = Object.keys(periodUsages).map((period) => {
-    const date = moment(period, 'YYYY-MM');
+    const date = DateTime.fromFormat(period, 'yyyy-MM');
     return {
-      year: date.year(),
-      month: date.month() + 1,
+      year: date.year,
+      month: date.month,
       cpu_usage: periodUsages[period].cpu,
       gpu_usage: periodUsages[period].gpu,
       ram_usage: periodUsages[period].ram,
@@ -229,4 +231,15 @@ export const loadCharts = async (
     ...chart,
     options: getEChartOptions(chart, usages, userUsages),
   }));
+};
+
+export const parseSlurmUsage = (record: ComponentUsage): ComponentUsage => {
+  if (record.type === 'ram') {
+    return {
+      ...record,
+      usage: convertMinuteToHour(convertMBToGB(record.usage)),
+    };
+  } else {
+    return { ...record, usage: convertMinuteToHour(record.usage) };
+  }
 };

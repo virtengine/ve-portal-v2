@@ -18,7 +18,7 @@ import { RESOURCE_ACTION_FORM } from './constants';
 interface ResourceActionDialogOwnProps {
   submitForm(formData): void;
   dialogTitle: string;
-  fields: any[];
+  formFields?: any[];
   loading?: boolean;
   error?: Error;
 }
@@ -42,7 +42,7 @@ export const ResourceActionDialog = reduxForm<{}, ResourceActionDialogOwnProps>(
     dialogTitle,
     loading,
     error,
-    fields,
+    formFields: fields,
   }) => {
     return (
       <ActionDialog
@@ -67,13 +67,14 @@ export const ResourceActionDialog = reduxForm<{}, ResourceActionDialogOwnProps>(
               description: field.help_text,
             };
             if (field.component) {
-              return <field.component key={index} />;
+              return <field.component {...props} />;
             } else if (field.type === 'string') {
               return (
                 <StringField
                   {...props}
                   maxLength={field.maxlength}
                   pattern={field.pattern?.source}
+                  validate={field.validate}
                   autoFocus
                 />
               );

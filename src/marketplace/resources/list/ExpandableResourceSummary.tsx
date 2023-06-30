@@ -1,9 +1,11 @@
 import { FunctionComponent } from 'react';
 import { useAsync } from 'react-use';
 
+import { ENV } from '@waldur/configs/default';
 import { LoadingSpinner } from '@waldur/core/LoadingSpinner';
 import { translate } from '@waldur/i18n';
 import { getResourceDetails } from '@waldur/marketplace/common/api';
+import { PlanDetailsLink } from '@waldur/marketplace/details/plan/PlanDetailsLink';
 import { Field } from '@waldur/resource/summary';
 import { ResourceDetailsTable } from '@waldur/resource/summary/ResourceDetailsTable';
 import { ResourceSummary as ResourceSummaryResources } from '@waldur/resource/summary/ResourceSummary';
@@ -17,6 +19,10 @@ import { KeyValueButton } from '../KeyValueButton';
 const StaticResourceSummary: FunctionComponent<{ row }> = ({ row }) => (
   <ResourceDetailsTable>
     <Field label={translate('Plan')} value={row.plan_name || 'N/A'} />
+    <Field
+      label={translate('Plan details')}
+      value={row.plan_uuid && <PlanDetailsLink resource={row.uuid} />}
+    />
     <Field label={translate('UUID')} value={row.uuid} valueClass="ellipsis" />
     <Field
       label={translate('Attributes')}
@@ -26,7 +32,9 @@ const StaticResourceSummary: FunctionComponent<{ row }> = ({ row }) => (
         )
       }
     />
-    <Field label={translate('End date')} value={row.end_date} />
+    {ENV.plugins.WALDUR_MARKETPLACE.ENABLE_RESOURCE_END_DATE ? (
+      <Field label={translate('Termination date')} value={row.end_date} />
+    ) : null}
   </ResourceDetailsTable>
 );
 

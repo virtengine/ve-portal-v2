@@ -1,5 +1,7 @@
 import { FunctionComponent } from 'react';
 
+import { ENV } from '@waldur/configs/default';
+import { formatDate } from '@waldur/core/dateUtils';
 import { translate } from '@waldur/i18n';
 import { Field } from '@waldur/resource/summary';
 import { CreatedField } from '@waldur/resource/summary/CreatedField';
@@ -26,14 +28,19 @@ export const ResourceSummary: FunctionComponent<{ resource: Resource }> = ({
       label={translate('Created')}
       value={<CreatedField resource={resource} />}
     />
+    {ENV.plugins.WALDUR_MARKETPLACE.ENABLE_RESOURCE_END_DATE ? (
+      <Field
+        label={translate('Termination date')}
+        value={resource.end_date ? formatDate(resource.end_date) : null}
+      />
+    ) : null}
     <Field
       label={translate('UUID')}
       value={resource.uuid}
       valueClass="ellipsis"
     />
-    {resource.backend_id ? (
-      <Field label={translate('Backend ID')} value={resource.backend_id} />
-    ) : null}
+    <Field label={translate('Backend ID')} value={resource.backend_id} />
+    <Field label={translate('Effective ID')} value={resource.effective_id} />
     <Field
       label={translate('State')}
       value={<MarketplaceResourceStateField resource={resource} />}
@@ -56,5 +63,6 @@ export const ResourceSummary: FunctionComponent<{ resource: Resource }> = ({
         }
       />
     ) : null}
+    <Field label={translate('Username')} value={resource.username} />
   </ResourceDetailsTable>
 );

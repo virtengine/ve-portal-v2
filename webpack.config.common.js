@@ -1,5 +1,5 @@
-const webpack = require('webpack');
 const path = require('path');
+const webpack = require('webpack');
 const CopyWebpackPlugin = require('copy-webpack-plugin');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
@@ -17,15 +17,20 @@ module.exports = {
   },
   output: {
     path: utils.formatPath('.'),
-    publicPath: '',
-    filename: 'scripts/[name].bundle.js?[hash]',
+    publicPath: utils.ASSET_PATH,
+    filename: 'scripts/[name].bundle.js?[contenthash]',
     chunkFilename: 'scripts/[name].js?[chunkhash]',
   },
+  cache: { type: 'filesystem' },
   resolve: {
     extensions: ['.js', '.jsx', '.ts', '.tsx'],
     alias: {
       '@waldur': path.resolve('./src/'),
       sass: path.resolve('./src/sass/'),
+    },
+    fallback: {
+      stream: require.resolve('stream-browserify'),
+      buffer: require.resolve('buffer/'),
     },
   },
   devtool: 'source-map',
@@ -36,9 +41,6 @@ module.exports = {
         exclude: /node_modules/,
         use: [
           {
-            loader: 'cache-loader',
-          },
-          {
             loader: 'babel-loader',
           },
         ],
@@ -46,9 +48,6 @@ module.exports = {
       {
         test: /\.tsx?$/,
         use: [
-          {
-            loader: 'cache-loader',
-          },
           {
             loader: 'ts-loader',
             options: {
@@ -62,6 +61,12 @@ module.exports = {
                     },
                     {
                       libraryName: 'react-use',
+                      camel2DashComponentName: false,
+                    },
+                    {
+                      style: false,
+                      libraryName: 'lodash',
+                      libraryDirectory: null,
                       camel2DashComponentName: false,
                     },
                   ]),
@@ -86,9 +91,6 @@ module.exports = {
         test: /\.scss$/,
         use: [
           utils.isProd ? MiniCssExtractPlugin.loader : 'style-loader',
-          {
-            loader: 'cache-loader',
-          },
           {
             loader: 'css-loader',
             options: {
@@ -141,36 +143,18 @@ module.exports = {
         exclude: /\.module\.css$/,
       },
       {
-        test: /\.font\.js/,
-        use: [
-          utils.isProd ? MiniCssExtractPlugin.loader : 'style-loader',
-          'css-loader',
-          'webfonts-loader',
-        ],
-      },
-      {
         test: /\.(eot|svg|otf|ttf|woff|woff2)(\?v=\d+\.\d+\.\d+)?/,
-        use: [
-          {
-            loader: 'file-loader',
-            options: {
-              publicPath: '../',
-              name: 'fonts/[name].[ext]?[hash]',
-            },
-          },
-        ],
+        type: 'asset/resource',
+        generator: {
+          filename: 'fonts/[name][ext]?[hash]',
+        },
       },
       {
         test: /\.(png|jpg|jpeg|gif|ico)$/,
-        use: [
-          {
-            loader: 'file-loader',
-            options: {
-              publicPath: '../',
-              name: 'images/[name].[ext]?[hash]',
-            },
-          },
-        ],
+        type: 'asset/resource',
+        generator: {
+          filename: 'images/[name][ext]?[hash]',
+        },
       },
       {
         test: /\.md$/,
@@ -183,6 +167,43 @@ module.exports = {
           },
         ],
       },
+      {
+        test: /\.po$/,
+        use: [
+          {
+            loader: 'json-loader',
+          },
+          {
+            loader: 'po-loader',
+            options: {
+              format: 'mf',
+              mfOptions: {
+                replacements: [
+                  {
+                    pattern: /%(\d+)(?:\$\w)?/g,
+                    replacement: (_, n) => `{${n - 1}}`,
+                  },
+                  {
+                    pattern: /%\((\w+)\)\w/g,
+                    replacement: '{$1}',
+                  },
+                  {
+                    pattern: /%\w/g,
+                    replacement: function () {
+                      return `{${this.n++}}`;
+                    },
+                    state: { n: 0 },
+                  },
+                  {
+                    pattern: /%%/g,
+                    replacement: '%',
+                  },
+                ],
+              },
+            },
+          },
+        ],
+      },
     ],
   },
   plugins: [
@@ -191,12 +212,13 @@ module.exports = {
       // available options are documented at https://github.com/Microsoft/monaco-editor-webpack-plugin#options
       languages: ['json', 'yaml', 'shell', 'python'],
     }),
-
-    // Ignore all locale files of moment.js
-    new webpack.IgnorePlugin(/^\.\/locale$/, /moment$/),
-
+    new webpack.DefinePlugin({
+      'process.env': {
+        ASSET_PATH: JSON.stringify(utils.ASSET_PATH),
+      },
+    }),
     new HtmlWebpackPlugin({
-      template: './src/index-template.html',
+      template: './src/index.ejs',
       filename: utils.formatPath('index.html'),
       inject: 'body',
       chunks: ['index'],
@@ -209,40 +231,33 @@ module.exports = {
       filename: 'css/[name]-bundle.css?[contenthash]',
     }),
     // some files are not referenced explicitly, copy them.
-    new CopyWebpackPlugin([
-      { from: './src/views', to: utils.formatPath('./views') },
-      {
-        from: path.resolve(imagesPath, './appstore'),
-        to: utils.formatPath('images/appstore'),
-      },
-      {
-        from: path.resolve(imagesPath, './help'),
-        to: utils.formatPath('images/help'),
-      },
-      {
-        from: path.resolve(imagesPath, './waldur'),
-        to: utils.formatPath('images/waldur'),
-      },
-      {
-        from: path.resolve(imagesPath, './service-providers'),
-        to: utils.formatPath('images/service-providers'),
-      },
-      // favicon is a part of white-labeling, store such resources separately.
-      // https://opennode.atlassian.net/wiki/display/WD/HomePort+configuration#HomePortconfiguration-White-labeling
-      {
-        from: path.resolve(imagesPath, './favicon.ico'),
-        to: utils.formatPath('images/favicon.ico'),
-        toType: 'file',
-      },
-      // manifest.json is an experimental feature that is currently breaking caching
-      // {from:  './app/manifest.json', to: utils.formatPath('manifest.json'), toType: 'file'},
-    ]),
+    new CopyWebpackPlugin({
+      patterns: [
+        {
+          from: path.resolve(imagesPath, './appstore'),
+          to: utils.formatPath('images/appstore'),
+        },
+        {
+          from: path.resolve(imagesPath, './help'),
+          to: utils.formatPath('images/help'),
+        },
+        {
+          from: path.resolve(imagesPath, './service-providers'),
+          to: utils.formatPath('images/service-providers'),
+        },
+        // favicon is a part of white-labeling, store such resources separately.
+        // https://docs.waldur.com/admin-guide/deployment/helm/docs/whitelabeling/
+        {
+          from: path.resolve(imagesPath, './favicon.ico'),
+          to: utils.formatPath('images/favicon.ico'),
+          toType: 'file',
+        },
+        {
+          from: path.resolve(imagesPath, './login_logo.png'),
+          to: utils.formatPath('images/login_logo.png'),
+        },
+      ],
+    }),
   ],
-  stats: {
-    children: false,
-    hash: false,
-    version: false,
-    warnings: false,
-    errorDetails: true,
-  },
+  stats: 'minimal',
 };

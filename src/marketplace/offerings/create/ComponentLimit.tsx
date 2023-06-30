@@ -1,4 +1,3 @@
-import React from 'react';
 import { formValues } from 'redux-form';
 
 import { BillingType } from '@waldur/marketplace/types';
@@ -11,6 +10,7 @@ import {
   ComponentLimitPeriodField,
   LimitPeriodOption,
 } from './ComponentLimitPeriodField';
+import { ComponentMaxAvailableLimitField } from './ComponentMaxAvailableLimitField';
 import { ComponentMaxValueField } from './ComponentMaxValueField';
 import { ComponentMinValueField } from './ComponentMinValueField';
 
@@ -46,6 +46,8 @@ export const ComponentLimit = enhance((props: Values) => {
           <ComponentBooleanLimitField />
           <ComponentMinValueField />
           <ComponentMaxValueField />
+          <ComponentMaxAvailableLimitField />
+          <ComponentLimitPeriodField limitPeriod={props.limitPeriod} />
         </>
       );
     }

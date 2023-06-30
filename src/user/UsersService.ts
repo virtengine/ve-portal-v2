@@ -5,8 +5,8 @@ import { setCurrentUser } from '@waldur/workspace/actions';
 import { getUser } from '@waldur/workspace/selectors';
 import { UserDetails } from '@waldur/workspace/types';
 
-export const getCurrentUser = () =>
-  get<UserDetails>('/users/me/').then((response) => response.data);
+export const getCurrentUser = (config?) =>
+  get<UserDetails>('/users/me/', config).then((response) => response.data);
 
 class UsersServiceClass {
   get(userId) {
@@ -37,7 +37,7 @@ class UsersServiceClass {
   }
 
   mandatoryFieldsMissing(user) {
-    return ENV.userMandatoryFields.reduce(
+    return ENV.plugins.WALDUR_CORE.USER_MANDATORY_FIELDS.reduce(
       (result, item) => result || !user[item],
       false,
     );

@@ -8,14 +8,16 @@ import {
 import { userManageIsVisible, isVisibleForSupportOrStaff } from './selectors';
 
 const createState = (user) =>
-  (({
+  ({
     workspace: {
       user,
     },
     config: {
-      featuresVisible: true,
+      FEATURES: {
+        'support.user_manage': true,
+      },
     },
-  } as unknown) as RootState);
+  } as unknown as RootState);
 
 describe('UserDetailsView', () => {
   it('should conceal "Manage" tab for support user', () => {

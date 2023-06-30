@@ -37,6 +37,7 @@ export const InvitationCreateDialog = reduxForm<{}, OwnProps>({
     roles,
     projectEnabled,
   } = useInvitationCreateDialog(context);
+
   const disabled = submitting || fetchingUserDetails;
   return (
     <form onSubmit={handleSubmit(createInvitation)}>
@@ -45,7 +46,7 @@ export const InvitationCreateDialog = reduxForm<{}, OwnProps>({
       </ModalHeader>
       <ModalBody>
         <EmailGroup disabled={disabled} />
-        {isFeatureVisible('invitations.concealCivilNumber') ? null : (
+        {isFeatureVisible('invitations.conceal_civil_number') ? null : (
           <CivilNumberGroup disabled={disabled} />
         )}
         <TaxNumberGroup disabled={disabled} />
@@ -56,7 +57,7 @@ export const InvitationCreateDialog = reduxForm<{}, OwnProps>({
         <UserDetailsGroup userDetails={userDetails} />
         {!roleDisabled && <RoleGroup roles={roles} />}
 
-        {projectEnabled && (
+        {projectEnabled && !context.project && (
           <ProjectGroup customer={context.customer} disabled={disabled} />
         )}
       </ModalBody>
