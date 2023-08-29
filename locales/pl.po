@@ -17,14 +17,13 @@ msgid "Account removal"
 msgstr "Usunięcie konta"
 
 #: src/invoices/routes.ts
-#: src/marketplace/offerings/steps/AccountingSummary.tsx
-#: src/marketplace/offerings/update/OfferingUpdateDialog.tsx
 msgid "Accounting"
 msgstr "Księgowość"
 
 #: src/invitations/GroupInvitationsList.tsx
 #: src/marketplace/offerings/OfferingStateCell.tsx
 #: src/marketplace/offerings/OfferingStateFilter.tsx
+#: src/marketplace/offerings/update/plans/PlansSection.tsx
 #: src/user/support/UserFilter.tsx
 msgid "Active"
 msgstr "Aktywny"
@@ -102,8 +101,7 @@ msgid "Allocation name"
 msgstr "Nazwa alokacji"
 
 #: src/marketplace/offerings/PriceList.tsx
-#: src/marketplace/offerings/plan/PlanComponents.tsx
-#: src/marketplace/offerings/steps/PlanSummary.tsx
+#: src/marketplace/offerings/update/plans/PlanComponents.tsx
 #: src/marketplace/resources/usage/ResourceUsageForm.tsx
 msgid "Amount"
 msgstr "Kwota"
@@ -133,7 +131,7 @@ msgstr "Zastosuj"
 msgid "Are you sure you want to delete a {name} {resourceType}?"
 msgstr "Czy na pewno chcesz usunąć {name} {resourceType}?"
 
-#: src/marketplace/offerings/images/ImagesActions.tsx
+#: src/marketplace/offerings/images/DeleteImageButton.tsx
 msgid "Are you sure you want to delete the image?"
 msgstr "Czy na pewno chcesz usunąć ten obraz?"
 
@@ -185,7 +183,7 @@ msgstr "Token uwierzytelniania"
 msgid "Author"
 msgstr "Autor"
 
-#: src/marketplace/offerings/option/OfferingScheduler.tsx
+#: src/marketplace/offerings/update/integration/OfferingScheduler.tsx
 msgid "Availability"
 msgstr "Dostępność"
 
