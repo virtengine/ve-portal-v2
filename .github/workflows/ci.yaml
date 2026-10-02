@@ -38,20 +38,24 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v5
 
+      # corepack must be enabled BEFORE setup-node. setup-node's `cache: yarn`
+      # shells out to the global yarn while locating the cache directory, and
+      # ubuntu-latest ships yarn 1.22.22, which refuses the project outright:
+      #   error This project's package.json defines "packageManager": "yarn@4.18.0".
+      #   However the current global version of Yarn is 1.22.22.
+      # Enabling corepack here (not in a later step) is what fixes it.
+      - name: Enable corepack
+        run: |
+          corepack enable
+          corepack prepare yarn@${{ env.YARN_VERSION }} --activate
+          yarn --version
+
       - name: Setup Node.js
         uses: actions/setup-node@v6
         with:
           node-version: ${{ env.NODE_VERSION }}
           cache: yarn
 
-      - name: Enable corepack
-        run: |
-          corepack enable
-          corepack prepare yarn@${{ env.YARN_VERSION }} --activate
-
-      # CI=true is set by GitHub Actions already; --immutable makes a
-      # package.json/yarn.lock divergence a hard failure (YN0028) instead of a
-      # silent re-resolution. This is the regression guard for PR #21.
       - name: Install dependencies (immutable)
         run: yarn install --immutable
 
@@ -63,16 +67,17 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v5
 
+      - name: Enable corepack
+        run: |
+          corepack enable
+          corepack prepare yarn@${{ env.YARN_VERSION }} --activate
+          yarn --version
+
       - name: Setup Node.js
         uses: actions/setup-node@v6
         with:
           node-version: ${{ env.NODE_VERSION }}
           cache: yarn
-
-      - name: Enable corepack
-        run: |
-          corepack enable
-          corepack prepare yarn@${{ env.YARN_VERSION }} --activate
 
       - name: Install dependencies (immutable)
         run: yarn install --immutable
