@@ -1,0 +1,87 @@
+name: CI
+
+# This repository had no workflow at all before this file, so nothing ever ran
+# install / typecheck / lint / test on a pull request. That is how PR #21 could
+# sit open for three days looking MERGEABLE while `resolutions.undici` was
+# bumped in package.json without a matching yarn.lock entry: yarn 4 with CI=1
+# implies --immutable, so every install failed with YN0028 while the PR still
+# reported MERGEABLE (its only checks were SonarCloud and CodeQL, neither of
+# which installs).
+#
+# The immutable install is therefore the FIRST job and is not allowed to be
+# skipped: it is the check that catches a package.json/yarn.lock divergence.
+
+permissions:
+  contents: read
+
+on:
+  push:
+    branches: [develop]
+  pull_request:
+    branches: [develop]
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+env:
+  NODE_VERSION: "22"
+  # Must match packageManager in package.json (yarn@4.18.0). corepack is used so
+  # the runner resolves the exact pinned version rather than whatever is global.
+  YARN_VERSION: "4.18.0"
+
+jobs:
+  lockfile:
+    name: Lockfile (yarn install --immutable)
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v5
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v6
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: yarn
+
+      - name: Enable corepack
+        run: |
+          corepack enable
+          corepack prepare yarn@${{ env.YARN_VERSION }} --activate
+
+      # CI=true is set by GitHub Actions already; --immutable makes a
+      # package.json/yarn.lock divergence a hard failure (YN0028) instead of a
+      # silent re-resolution. This is the regression guard for PR #21.
+      - name: Install dependencies (immutable)
+        run: yarn install --immutable
+
+  verify:
+    name: Typecheck, lint, test
+    runs-on: ubuntu-latest
+    needs: [lockfile]
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v5
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v6
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: yarn
+
+      - name: Enable corepack
+        run: |
+          corepack enable
+          corepack prepare yarn@${{ env.YARN_VERSION }} --activate
+
+      - name: Install dependencies (immutable)
+        run: yarn install --immutable
+
+      - name: Type check (tsc --noEmit)
+        run: yarn tsc --noEmit -p tsconfig.json
+
+      - name: Lint (eslint)
+        run: yarn lint:check
+
+      - name: Unit tests (vitest --project=unit run)
+        run: yarn vitest --project=unit run
