@@ -5,11 +5,22 @@ import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 
 import { validateWindow } from '../utils';
 
-import { MaintenanceWindowPicker } from './MaintenanceWindowPicker';
-
 vi.mock('@/form/useFlatpickrTheme', () => ({
   useFlatpickrTheme: () => undefined,
 }));
+
+// Flatpickr reads its "today" from `defaults.now = new Date()`, evaluated ONCE
+// at module load. Vitest hoists every `import` above the test body, so a
+// `beforeEach` fake clock always loses the race: flatpickr latched the real
+// date, the calendar opened on the real month, and every `getByLabelText`
+// keyed to the frozen month missed. The freeze has to happen before the
+// component (and flatpickr) enter the module graph, which means the import
+// below is deferred rather than hoisted.
+const FROZEN_NOW = new Date(2026, 8, 2, 15, 30);
+vi.useFakeTimers({ toFake: ['Date'] });
+vi.setSystemTime(FROZEN_NOW);
+
+const { MaintenanceWindowPicker } = await import('./MaintenanceWindowPicker');
 
 // Drives the real react-flatpickr: every bug this file guards against lives in
 // how the library wires up its inputs, which a stub would define away.
@@ -36,8 +47,11 @@ const pickerInput = () => screen.getByRole('textbox');
 
 describe('MaintenanceWindowPicker', () => {
   beforeEach(() => {
+    // Re-assert the freeze per test: `afterEach` restores the real clock, and
+    // Flatpickr's module-level `defaults.now` cannot be re-read per test — the
+    // value below only ever has to match what was latched at import time.
     vi.useFakeTimers({ toFake: ['Date'] });
-    vi.setSystemTime(new Date(2026, 8, 2, 15, 30));
+    vi.setSystemTime(FROZEN_NOW);
   });
   afterEach(() => vi.useRealTimers());
 
