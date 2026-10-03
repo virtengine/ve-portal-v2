@@ -1,0 +1,33 @@
+# Dependabot configuration for virtengine/ve-portal-v2
+# (fork of waldur/waldur-homeport; upstream = https://github.com/waldur/waldur-homeport)
+#
+# POLICY: alerts-only. Dependabot does not open version-update pull requests on this fork.
+#
+# Why (estate decision 2026-09-29, kanban card t_6c506c53, decided by project-steward):
+#   * PRs authored by anyone other than the estate bot are refused by the merge gate
+#     (`safe-merge.py` refuses external authors, ESTATE.md "never merge external PRs").
+#     A Dependabot PR opened here is therefore structurally unmergeable: not stale, not
+#     conflicted by accident, but refused by policy, so it can never be actioned.
+#   * Cost of getting that wrong is measured, not hypothetical: 10 Dependabot PRs
+#     (#9, #11-#19) sat open and CONFLICTING from 2021-07-26 to 2023-07-20 and were only
+#     cleared on 2026-09-28, after being closed as superseded. All ten carried zero value
+#     by then (webpack was removed for Vite, bootstrap was two majors ahead, etc.) and
+#     none was driven by a live advisory (0 open Dependabot alerts at the time).
+#   * `open-pull-requests-limit: 0` is GitHub's documented way to disable version updates
+#     for an ecosystem. Security *alerts* stay enabled, so a real advisory still surfaces.
+#
+# How dependencies move here instead:
+#   1. A bot-authored PR against `develop` (the merge gate accepts it), or
+#   2. upstream absorption: take the release from waldur/waldur-homeport.
+#
+# Changing this policy means changing this file first, in its own PR.
+
+version: 2
+
+updates:
+  - package-ecosystem: "npm"
+    directory: "/"
+    schedule:
+      interval: "weekly"
+    # 0 = alerts only; no version-update PRs are opened for this ecosystem.
+    open-pull-requests-limit: 0
