@@ -1,5 +1,7 @@
 import { describe, expect, it, vi } from 'vitest';
 
+import { formatDateTime } from '@/core/dateUtils';
+
 import { getProtectedFieldProps } from './getProtectedFieldProps';
 
 vi.mock('@/features/connect', () => ({
@@ -38,8 +40,15 @@ describe('getProtectedFieldProps', () => {
       'Developer',
     );
 
+    // `formatDateTime` renders the clock with Luxon's `t` token, whose
+    // meridiem casing and presence come from the resolved system locale
+    // (en-AU → "12:00 pm", en-US → "12:00 PM", en-GB/de-DE → none). Spelling
+    // the whole string out made this file pass on the author's machine and
+    // fail everywhere else, so compose the expectation from the same shared
+    // formatter: the date part is `formatDateTime`'s contract to own, and this
+    // test's job is the composition around it.
     expect(result.tooltip).toBe(
-      'Managed by Tara. Last synced: 1 Jan 2023, 12:00 AM',
+      `Managed by Tara. Last synced: ${formatDateTime('2023-01-01')}`,
     );
   });
 
