@@ -50,12 +50,17 @@ ESTATE.md records the same *consequence* class (landed work disappears) for `mai
 1385-1395** (`t_9d87174e`), where `hermes_cli/update_cmd.py::_reconcile_diverged_checkout` ran
 `git reset --hard origin/main` on the hermes-ops **clone**. That is a **local** branch reset: it
 destroys local commits that were never pushed. This incident is the opposite — the **remote**
-`develop` was rewritten, which requires an explicit `push --force` and took eight PRs that had
-already merged *for everyone*.
+`develop` was rewritten, which requires a force-update operation (for example, a force push; the
+exact mechanism is not evidenced — GitHub's UI/API and automation can all force-update a branch)
+and took eight PRs that had already merged *for everyone*.
 
 Two consequences that matter:
 
-1. The `main` mechanism cannot have caused this one, and citing it as cause is wrong.
+1. The local reset *by itself* cannot have caused this one — resetting a clone does not rewrite a
+   remote branch — and citing it as cause is wrong. That is narrower than ruling the incident out
+   of the hermes-ops update path entirely: an unverified automation sequence that resets locally
+   *and then* performs a remote force update is not excluded by this evidence, and nothing here
+   should be read as clearing any particular script.
 2. The fixes are disjoint. `allow_force_pushes: false` blocks *this* incident and does nothing
    about a local reset; `bin/check-landing-durability.py` guards the local-reset class and does
    nothing about a remote rewrite.
@@ -85,8 +90,11 @@ So the force-push that caused this loss would now be rejected by GitHub. Two gap
 
 - **`required_status_checks` is still unset.** The gate runs, but nothing requires it to
   pass before a merge, so a red PR can still be merged without the gate's verdict.
-  Setting it to require `lockfile` and `verify` is a repo-admin change = human-only.
-  Tracked as kanban `t_23b6c597`.
+  Setting it is a repo-admin change = human-only. Tracked as kanban `t_23b6c597`.
+  Required contexts must be the job **display names** — `Lockfile (yarn install --immutable)`
+  and `Typecheck, lint, test` (verified against the check runs on the `develop` tip), not the
+  `lockfile`/`verify` job *keys* in `.github/workflows/ci.yaml`; GitHub matches on the display
+  name, so the keys would silently never be satisfied.
 - **`required_pull_request_reviews` is unset.** The estate's merge gate (`safe-merge.py`)
   enforces author policy in the bot fleet, but GitHub itself enforces nothing.
 
