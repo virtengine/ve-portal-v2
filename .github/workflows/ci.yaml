@@ -19,12 +19,18 @@ name: CI
 #
 #   * This repo has NO `main` branch. `develop` is the default branch, and it is
 #     the only target worth triggering on — hence `branches: [develop]` above.
-#   * `develop` carries NO branch protection
-#     (GET /branches/develop/protection -> 404 "Branch not protected"), so a
-#     force-push rewrites it with no check and no notification. The gate below
-#     detects *code* regressions, not branch rewrites; only protection prevents
-#     the rewrite, and branch protection is a repo-admin setting = human-only.
-#     Tracked for project-steward as t_20cbdbae-followup.
+#   * Branch protection now EXISTS on `develop` (verified 2026-10-05,
+#     t_20cbdbae): `allow_force_pushes: false`, `allow_deletions: false`,
+#     `enforce_admins: true`. A force-push of the kind that caused this loss
+#     would therefore now be rejected by GitHub.
+#
+#     What protection does NOT yet do, and what a reader should not assume:
+#       - `required_status_checks` is UNSET. This gate runs, but GitHub does not
+#         require it to pass before a merge, so a red PR is still mergeable.
+#       - `required_pull_request_reviews` is UNSET.
+#     Both are repo-admin one-click settings = human-only. The gate below detects
+#     *code* regressions; it never detected a branch rewrite, and no workflow
+#     can. Full postmortem: docs/ci-gate-force-push-postmortem.md.
 
 permissions:
   contents: read
