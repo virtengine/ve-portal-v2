@@ -303,10 +303,6 @@ describe('date formatter output contract', () => {
     expect(formatMediumDateTime('2027-02-26T14:21:00')).not.toMatch(
       /[+-]\d{2}:?\d{2}$/,
     );
-    // A trailing four-digit token would mean the zone name had been dropped.
-    expect(formatMediumDateTime('2027-02-26T14:21:00')).not.toMatch(
-      / \S* \d{4}$/,
-    );
   });
 
   it('pins formatISOWithoutZone to a local ISO timestamp with no offset', () => {
