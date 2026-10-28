@@ -141,7 +141,7 @@
     "@playwright/test": "^1.58.0",
     "@storybook/addon-a11y": "^10.5.8",
     "@storybook/addon-docs": "^10.5.8",
-    "@storybook/addon-vitest": "^10.5.8",
+    "@storybook/addon-vitest": "^10.6.2",
     "@storybook/react-vite": "^10.5.8",
     "@svgr/core": "^8.1.0",
     "@svgr/plugin-svgo": "^8.1.0",
