@@ -205,7 +205,7 @@
     "sass": "^1.85.0",
     "serve": "^14.2.4",
     "source-map": "^0.7.6",
-    "storybook": "^10.5.8",
+    "storybook": "^10.6.2",
     "storybook-addon-pseudo-states": "^10.5.8",
     "stylelint": "^17.14.0",
     "stylelint-config-standard-scss": "^17.0.0",
